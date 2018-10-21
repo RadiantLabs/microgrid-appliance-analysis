@@ -19,4 +19,6 @@ class App extends React.Component {
   }
 }
 
+console.log('set up router')
+
 export default App
