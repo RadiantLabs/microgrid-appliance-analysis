@@ -20,7 +20,8 @@
     "triple-equals": true,
     "object-literal-sort-keys": false,
     "no-console": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "ordered-imports": false
   }
 }
 
