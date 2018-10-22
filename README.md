@@ -33,7 +33,15 @@ They will not be included in the production build so you can use them for things
 - React Router
   - Find args for React router and make an interface for it
 - Decide on React.SFC
-- Add graphql & apollo dependencies and sample app code
+- Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
 - Add apollo devtools https://github.com/apollographql/apollo-client-devtools
 - Add React Semantic UI
 - Lay out basic (probably temporary) navigation
+
+## App Design
+
+- Generally using domain-driven development (DDD)
+- Define all fields with JSON schema (type, default value, min, max, prefix, suffix)
+- Define a component that incorporates all of these properties. It’s got a default, overridable value and it’s got a slider if a number, with min and max. Pass the component the field from the schema def and the store? Not sure how it would work with apollo link-state and graphql
+- Define typescript types based on this JSON schema for all fields: https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
+- Generate TS types from graphql queries: https://blog.apollographql.com/graphql-dx-d35bcf51c943

@@ -1,26 +1,26 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Link, Route, NavLink } from 'react-router-dom'
+import { Menu } from 'semantic-ui-react'
+import InputExample from './components/InputExample'
+import About from './components/About'
+
+// Integrating Semantic UI menu items with React Router
+// https://github.com/Semantic-Org/Semantic-UI-React/issues/142#issuecomment-364225477
+const NavItem = (props: any) => (
+  <NavLink exact={true} {...props} activeClassName="active" />
+)
 
 const App = () => (
   <Router>
     <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/topics">Topics</Link>
-        </li>
-      </ul>
-
-      <hr />
-
+      <Menu secondary={true}>
+        <Menu.Item as={NavItem} to="/" name="home" />
+        <Menu.Item as={NavItem} to="/input-example" name="input-example" />
+        <Menu.Item as={NavItem} to="/about" name="about" />
+      </Menu>
       <Route exact={true} path="/" component={Home} />
       <Route path="/about" component={About} />
-      <Route path="/topics" component={Topics} />
+      <Route path="/input-example" component={InputExample} />
     </div>
   </Router>
 )
@@ -28,42 +28,6 @@ const App = () => (
 const Home = () => (
   <div>
     <h2>Home</h2>
-  </div>
-)
-
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-)
-
-const Topics = ({ match }: { match: any }) => (
-  <div>
-    <h2>Topics</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/rendering`}>Rendering with React</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/components`}>Components</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
-      </li>
-    </ul>
-
-    <Route path={`${match.path}/:topicId`} component={Topic} />
-    <Route
-      exact={true}
-      path={match.path}
-      render={() => <h3>Please select a topic.</h3>}
-    />
-  </div>
-)
-
-const Topic = ({ match }: { match: any }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
   </div>
 )
 
