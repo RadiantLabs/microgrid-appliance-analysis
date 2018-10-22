@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Route, NavLink } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 import InputExample from './components/InputExample'
 import About from './components/About'
+import './App.css'
 
 // Integrating Semantic UI menu items with React Router
 // https://github.com/Semantic-Org/Semantic-UI-React/issues/142#issuecomment-364225477
@@ -18,9 +19,11 @@ const App = () => (
         <Menu.Item as={NavItem} to="/input-example" name="input-example" />
         <Menu.Item as={NavItem} to="/about" name="about" />
       </Menu>
-      <Route exact={true} path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/input-example" component={InputExample} />
+      <div className="mainContent">
+        <Route exact={true} path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/input-example" component={InputExample} />
+      </div>
     </div>
   </Router>
 )
