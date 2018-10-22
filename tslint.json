@@ -19,7 +19,8 @@
     "restrict-plus-operands": true,
     "triple-equals": true,
     "object-literal-sort-keys": false,
-    "no-console": false
+    "no-console": false,
+    "jsx-no-lambda": false
   }
 }
 
