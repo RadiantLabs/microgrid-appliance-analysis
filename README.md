@@ -37,6 +37,8 @@ They will not be included in the production build so you can use them for things
 - Add apollo devtools https://github.com/apollographql/apollo-client-devtools
 - Add React Semantic UI
 - Lay out basic (probably temporary) navigation
+- Update to CRA with Typescript support (copy this repo to a different folder, creat-react-app, bring back over .git and remotes and components): https://github.com/facebook/create-react-app/pull/4837
+- Automatic type annotation generation for Typescript: https://blog.apollographql.com/graphql-dx-d35bcf51c943, https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 ## App Design
 
@@ -45,3 +47,4 @@ They will not be included in the production build so you can use them for things
 - Define a component that incorporates all of these properties. It’s got a default, overridable value and it’s got a slider if a number, with min and max. Pass the component the field from the schema def and the store? Not sure how it would work with apollo link-state and graphql
 - Define typescript types based on this JSON schema for all fields: https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 - Generate TS types from graphql queries: https://blog.apollographql.com/graphql-dx-d35bcf51c943
+- JSON Schema validator: https://github.com/epoberezkin/ajv
