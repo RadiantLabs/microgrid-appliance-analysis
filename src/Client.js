@@ -5,7 +5,7 @@ import { withClientState } from 'apollo-link-state'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
-import * as Papa from 'papaparse'
+import Papa from 'papaparse'
 // import homer_12_50_oversize_20_csv from './data/homer_12_50_oversize_20.csv'
 // import homer_12_50_oversize_20_txt from './data/homer_12_50_oversize_20.txt'
 // import homer_12_50_oversize_20_json from './data/homer_12_50_oversize_20.json'
@@ -39,7 +39,7 @@ const addTodoQuery = gql`
   }
 `
 
-const addTodo = (_obj: any, { item }, { cache }) => {
+const addTodo = (_obj, { item }, { cache }) => {
   const query = todoQuery
   // Read the todo's from the cache
   const { currentTodos } = cache.readQuery({ query })
@@ -53,7 +53,7 @@ const addTodo = (_obj: any, { item }, { cache }) => {
   return null
 }
 
-const clearTodo = (_obj: any, _args, { cache }) => {
+const clearTodo = (_obj, _args, { cache }) => {
   cache.writeQuery({ query: todoQuery, data: todoDefaults })
   return null
 }
@@ -79,14 +79,14 @@ const Client = new ApolloClient({
   cache,
 })
 
-const todoQueryHandler: any = {
+const todoQueryHandler = {
   props: ({ ownProps, data: { currentTodos = [] } }) => ({
     ...ownProps,
     currentTodos,
   }),
 }
 
-const withTodo = compose<{}, {}>(
+const withTodo = compose(
   graphql(todoQuery, todoQueryHandler),
   graphql(addTodoQuery, { name: 'addTodoMutation' }),
   graphql(clearTodoQuery, { name: 'clearTodoMutation' })

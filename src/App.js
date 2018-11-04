@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Link, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Client } from './Client'
 import { Menu } from 'semantic-ui-react'
@@ -10,7 +10,7 @@ import './App.css'
 
 // Integrating Semantic UI menu items with React Router
 // https://github.com/Semantic-Org/Semantic-UI-React/issues/142#issuecomment-364225477
-const NavItem = (props: any) => (
+const NavItem = props => (
   <NavLink exact={true} {...props} activeClassName="active" />
 )
 
