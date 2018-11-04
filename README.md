@@ -1,3 +1,21 @@
+## TODO
+
+- Manually convert HOMER & usage profiles to JSON, store in default apollo store
+- Render HOMER file React Virtualized table
+- Render Load profile file React Virtualized table
+
+- Import HOMER, Load Profiles as CSV using Papa Parse and store in apollo state
+
+- React Router
+  - Find args for React router and make an interface for it
+- Decide on React.SFC
+- Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
+- Add apollo devtools https://github.com/apollographql/apollo-client-devtools
+- Add React Semantic UI
+- Lay out basic (probably temporary) navigation
+- Update to CRA with Typescript support (copy this repo to a different folder, creat-react-app, bring back over .git and remotes and components): https://github.com/facebook/create-react-app/pull/4837
+- Automatic type annotation generation for Typescript: https://blog.apollographql.com/graphql-dx-d35bcf51c943, https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -27,18 +45,6 @@ Read instructions below for using assets from JavaScript and HTML.
 
 You can, however, create more top-level directories.<br>
 They will not be included in the production build so you can use them for things like documentation.
-
-## TODO
-
-- React Router
-  - Find args for React router and make an interface for it
-- Decide on React.SFC
-- Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
-- Add apollo devtools https://github.com/apollographql/apollo-client-devtools
-- Add React Semantic UI
-- Lay out basic (probably temporary) navigation
-- Update to CRA with Typescript support (copy this repo to a different folder, creat-react-app, bring back over .git and remotes and components): https://github.com/facebook/create-react-app/pull/4837
-- Automatic type annotation generation for Typescript: https://blog.apollographql.com/graphql-dx-d35bcf51c943, https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 ## App Design
 

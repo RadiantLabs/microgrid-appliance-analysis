@@ -16,12 +16,20 @@
     "eject": "react-scripts-ts eject"
   },
   "dependencies": {
+    "apollo-boost": "^0.1.19",
+    "apollo-client-preset": "^1.0.8",
+    "apollo-link-state": "^0.4.2",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.0",
     "lodash": "^4.17.11",
     "react": "^16.5.2",
+    "react-apollo": "^2.2.4",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "3.1.0",
     "react-semantic-ui-range": "^0.6.2",
+    "react-virtualized": "^9.21.0",
+    "recompose": "^0.30.0",
     "semantic-ui-react": "^0.83.0"
   },
   "devDependencies": {
@@ -32,6 +40,7 @@
     "@types/react-dom": "^16.0.9",
     "@types/react-router": "^4.0.32",
     "@types/react-router-dom": "^4.3.1",
+    "@types/recompose": "^0.27.0",
     "husky": "^1.1.2",
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",

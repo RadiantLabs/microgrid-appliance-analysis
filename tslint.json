@@ -22,7 +22,8 @@
     "no-console": false,
     "jsx-no-lambda": false,
     "ordered-imports": false,
-    "member-access": false
+    "member-access": false,
+    "variable-name": false
   }
 }
 
