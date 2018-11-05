@@ -1,18 +1,18 @@
 import * as React from 'react'
-import { Form, Input, Label, Dropdown } from 'semantic-ui-react'
+import { Form, Input, Label } from 'semantic-ui-react'
 import { Slider } from 'react-semantic-ui-range'
 import './InputField.css'
 
-const options1 = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-]
+// const options1 = [
+//   { key: 'm', text: 'Male', value: 'male' },
+//   { key: 'f', text: 'Female', value: 'female' },
+// ]
 
-const options2 = [
-  { key: '.com', text: '.com', value: '.com' },
-  { key: '.net', text: '.net', value: '.net' },
-  { key: '.org', text: '.org', value: '.org' },
-]
+// const options2 = [
+//   { key: '.com', text: '.com', value: '.com' },
+//   { key: '.net', text: '.net', value: '.net' },
+//   { key: '.org', text: '.org', value: '.org' },
+// ]
 
 const rangeSettings = {
   start: 2,
@@ -21,15 +21,7 @@ const rangeSettings = {
   step: 1,
 }
 
-interface IProps {
-  disabled?: boolean
-}
-
-interface IState {
-  value: any
-}
-
-class InputField extends React.Component<{}, {}> {
+class InputField extends React.Component {
   state = {
     value: 5,
   }
@@ -42,7 +34,7 @@ class InputField extends React.Component<{}, {}> {
   //   })
   // }
 
-  handleChange = (value: number) => {
+  handleChange = value => {
     console.log('value: ', value)
     this.setState({
       value,

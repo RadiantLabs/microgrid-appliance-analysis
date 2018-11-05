@@ -5,17 +5,7 @@ import { withClientState } from 'apollo-link-state'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
-import Papa from 'papaparse'
-// import homer_12_50_oversize_20_csv from './data/homer_12_50_oversize_20.csv'
-// import homer_12_50_oversize_20_txt from './data/homer_12_50_oversize_20.txt'
-// import homer_12_50_oversize_20_json from './data/homer_12_50_oversize_20.json'
-// import homer_12_50_oversize_20_ts from './data/homer_12_50_oversize_20.ts'
-// import x from './data/homer_12_50_oversize_20.ts'
-
-// console.log('homer_12_50_oversize_20_csv: ', homer_12_50_oversize_20_csv)
-// console.log('homer_12_50_oversize_20_txt: ', homer_12_50_oversize_20_txt)
-// console.log('homer_12_50_oversize_20_json: ', homer_12_50_oversize_20_json)
-// console.log('homer_12_50_oversize_20_ts: ', homer_12_50_oversize_20_ts)
+// import Papa from 'papaparse'
 
 const todoDefaults = {
   currentTodos: [],

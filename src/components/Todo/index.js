@@ -4,7 +4,7 @@ import withState from 'recompose/withState'
 
 import { withTodo } from '../../Client'
 
-const TodoListPure: any = ({
+const TodoListPure = ({
   currentTodos,
   addTodoMutation,
   clearTodoMutation,
