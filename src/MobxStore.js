@@ -10,6 +10,7 @@ class MobxStore {
   loading = false
   fetchState = 'pendingggg'
   homer = []
+  homerKeyOrder = []
 
   constructor() {
     this.fetchHomer()
@@ -24,6 +25,7 @@ class MobxStore {
       const { data, errors } = Papa.parse(csv, csvOptions)
       if (_.isEmpty(errors)) {
         this.homer = _.tail(data)
+        this.homerKeyOrder = _.keys(this.homer[0])
         this.fetchState = 'loaded'
       } else {
         console.log('Error loading HOMER file: ', errors)
