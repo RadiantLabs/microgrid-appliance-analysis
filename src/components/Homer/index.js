@@ -7,12 +7,14 @@ import LoaderSpinner from '../Loader'
 
 class Homer extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
-    const { homerTableData, homerKeyOrder } = this.props.store
+    const {
+      activeHomer: { tableData, keyOrder },
+    } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
-    const row = homerTableData[rowIndex]
+    const row = tableData[rowIndex]
     return (
       <div key={key} style={headerStyle}>
-        {row[homerKeyOrder[columnIndex]]}
+        {row[keyOrder[columnIndex]]}
       </div>
     )
   }
@@ -22,7 +24,7 @@ class Homer extends React.Component {
   }
 
   render() {
-    const { homer, homerKeyOrder, homerIsLoaded } = this.props.store
+    const { activeHomer, homerIsLoaded } = this.props.store
     return (
       <div className="ui centered grid">
         <div className="column">
@@ -34,12 +36,12 @@ class Homer extends React.Component {
               {({ height, width }) => (
                 <MultiGrid
                   cellRenderer={this._cellRenderer}
-                  columnCount={_.size(homerKeyOrder)}
+                  columnCount={_.size(activeHomer.keyOrder)}
                   columnWidth={100}
                   fixedColumnCount={1}
                   fixedRowCount={2}
                   height={700}
-                  rowCount={_.size(homer)}
+                  rowCount={_.size(activeHomer.tableData)}
                   rowHeight={this._rowHeight}
                   estimatedRowSize={26}
                   width={width}

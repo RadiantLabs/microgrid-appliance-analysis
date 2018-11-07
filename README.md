@@ -1,13 +1,22 @@
 ## TODO
 
-- Manually convert HOMER & usage profiles to JSON, store in default apollo store
-- Render HOMER file React Virtualized table
-- Render Load profile file React Virtualized table
+- Import load profiles into app
+- Merge with HOMER in grid
+- Add calcs to match Adam's spreadsheet
+- Color columns based on if they are calculated or if they are for the appliance
+- Break fetch out into a reusable function, switch to avoid generators?
 
-- Import HOMER, Load Profiles as CSV using Papa Parse and store in apollo state
+* Create grid of inputs
 
-- React Router
-  - Find args for React router and make an interface for it
+  - Appliance:
+    - kW to kW-factor
+    - grain to grain-factor
+    - seasonal derate
+    - CAPEX
+    - OPEX
+
+* Render Load profile file React Virtualized table
+
 - Decide on React.SFC
 - Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
 - Add apollo devtools https://github.com/apollographql/apollo-client-devtools
