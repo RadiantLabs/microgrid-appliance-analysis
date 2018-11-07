@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { toJS } from 'mobx'
+// import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
@@ -57,8 +57,6 @@ class Homer extends React.Component {
 
 export default inject('store')(observer(Homer))
 
-// rowIndex === 1 ? { ...style, ...{ fontStyle: 'italic' } } : style
-// { color: '#605f5f' }
 function setHeaderStyles(styles, rowIndex) {
   let rowStyles = styles
   if (rowIndex === 0 || rowIndex === 1) {

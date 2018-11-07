@@ -31,6 +31,9 @@ export function setKeyOrder(rows) {
   return frontItems.concat(_.without(keys, ...frontItems))
 }
 
+// Convert output from raw CSV parse into something that React Virtualized
+// can display
+// Units come in as the first second row, header is the first but
 // TODO: Parse date and reformat
 export function processHomerFile(rows) {
   const headerRow = createHeaderRow(rows)
