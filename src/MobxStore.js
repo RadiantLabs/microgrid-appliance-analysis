@@ -1,7 +1,7 @@
-import { configure, observable, decorate, flow, computed } from 'mobx'
+import { configure, observable, decorate, flow } from 'mobx'
 import Papa from 'papaparse'
 import _ from 'lodash'
-import { createHeaderRow, processHomerFile } from './storeUtils'
+import { processHomerFile } from './storeUtils'
 const csvOptions = { header: true, dynamicTyping: true }
 configure({ enforceActions: 'observed' })
 
@@ -84,24 +84,6 @@ class MobxStore {
 decorate(MobxStore, {
   loading: observable,
   activeHomer: observable,
-  // homerHeaderRow: computed,
-  // homerTableData: observable,
 })
 
 export let mobxStore = new MobxStore()
-
-// get homerHeaderRow() {
-//   return createHeaderRow(this.homerRaw)
-// }
-
-// const augmented = addHourIndex(this.homerRaw)
-// units come in as the first second row, header is the first but
-// const units = _.tail(this.homer)  // not needed yet
-
-//   get homerTableData() {
-//   if (_.isEmpty(this.homerHeaderRow)) {
-//     return []
-//   } else {
-//     return
-//   }
-// }

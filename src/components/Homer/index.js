@@ -38,7 +38,7 @@ class Homer extends React.Component {
                   cellRenderer={this._cellRenderer}
                   columnCount={_.size(activeHomer.keyOrder)}
                   columnWidth={100}
-                  fixedColumnCount={1}
+                  fixedColumnCount={2}
                   fixedRowCount={2}
                   height={700}
                   rowCount={_.size(activeHomer.tableData)}

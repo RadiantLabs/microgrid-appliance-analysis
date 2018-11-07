@@ -9,24 +9,34 @@ export function createHeaderRow(rows) {
   return _.mapValues(thirdRow, (val, key) => key)
 }
 
-// TODO:
-// Probably want to shift this by 2 (as an argument so it's reusable) so we can
-// account for the header rows
-export function addHourIndex(rows) {
+export function addHourIndex(rows, headerColumnCount = 2) {
   return _.map(rows, (row, rowIndex) => {
-    console.log('rowIndex: ', rowIndex)
-    debugger
+    const hour = rowIndex - headerColumnCount
+    switch (hour) {
+      case -2:
+        return { ...row, ...{ Hour: 'Hour' } }
+      case -1:
+        return { ...row, ...{ Hour: null } }
+      default:
+        return { ...row, ...{ Hour: hour } }
+    }
   })
 }
 
-// TODO: Create a single computed function that takes a raw HOMER file
-// and processes it doing these things:
-// * Add header row
-// * Add hour index (add to front of keyOrder)
-// * Parse date and reformat
+// Sort keys manually (key order in objects is never deterministic) so I can put
+// columns I want as fixed columns
+export function setKeyOrder(rows) {
+  const frontItems = ['Hour']
+  const keys = _.keys(rows[0])
+  return frontItems.concat(_.without(keys, ...frontItems))
+}
+
+// TODO: Parse date and reformat
 export function processHomerFile(rows) {
-  const keyOrder = _.keys(rows[0])
   const headerRow = createHeaderRow(rows)
   const tableData = [headerRow].concat(rows)
-  return { tableData, keyOrder }
+  const addedHour = addHourIndex(tableData)
+
+  const keyOrder = setKeyOrder(addedHour)
+  return { tableData: addedHour, keyOrder }
 }
