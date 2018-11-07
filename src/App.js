@@ -10,6 +10,7 @@ import InputExample from './components/InputExample'
 import { NavItem } from './components/NavItem'
 import About from './components/About'
 import TodoExample from './components/Todo'
+import Home from './components/Home'
 import Homer from './components/Homer'
 import './App.css'
 
@@ -35,12 +36,6 @@ const App = () => (
       </ApolloProvider>
     </Router>
   </Provider>
-)
-
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
 )
 
 export default App
