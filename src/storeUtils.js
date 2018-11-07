@@ -1,4 +1,7 @@
+import { flow } from 'mobx'
 import _ from 'lodash'
+import Papa from 'papaparse'
+const csvOptions = { header: true, dynamicTyping: true }
 
 // Return an object with the values the same as the key.
 // This let's React Virtualized Grid component render the top row with the name
@@ -42,4 +45,29 @@ export function processHomerFile(rows) {
 
   const keyOrder = setKeyOrder(addedHour)
   return { tableData: addedHour, keyOrder }
+}
+
+export async function fetchFile(fileInfo) {
+  const { path, type } = fileInfo
+  try {
+    const res = await window.fetch(path)
+    const csv = await res.text()
+    const { data, errors } = Papa.parse(csv, csvOptions)
+    if (!_.isEmpty(errors)) {
+      throw new Error(`Problem parsing CSV: ${JSON.stringify(errors)}`)
+    }
+    switch (type) {
+      case 'homer':
+        return processHomerFile(data)
+      case 'appliance':
+        console.log('TODO: ', JSON.stringify(fileInfo))
+        return null
+      default:
+        throw new Error(
+          `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`
+        )
+    }
+  } catch (error) {
+    console.log(`File load fail for : ${JSON.stringify(fileInfo)} `, error)
+  }
 }

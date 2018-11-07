@@ -1,8 +1,8 @@
-import { configure, observable, decorate, flow } from 'mobx'
-import Papa from 'papaparse'
+import { configure, observable, decorate, action, runInAction } from 'mobx'
+// import Papa from 'papaparse'
 import _ from 'lodash'
-import { processHomerFile } from './storeUtils'
-const csvOptions = { header: true, dynamicTyping: true }
+import { fetchFile } from './storeUtils'
+// const csvOptions = { header: true, dynamicTyping: true }
 configure({ enforceActions: 'observed' })
 
 // Then have another computed function that takes a loaded appliance
@@ -18,6 +18,7 @@ configure({ enforceActions: 'observed' })
 
 const homerFiles = [
   {
+    type: 'homer',
     label: 'homer_12_50_oversize_20',
     path: './data/homer_12_50_oversize_20.csv',
     description: 'Fill in description about 12, 50, etc',
@@ -26,7 +27,8 @@ const homerFiles = [
 
 const applianceFiles = [
   {
-    type: 'Rice Mill',
+    type: 'appliance',
+    applianceType: 'Rice Mill',
     label: 'sample_mill_usage_profile',
     path: './data/sample_mill_usage_profile.csv',
     description: 'Fill in description about this mill',
@@ -40,50 +42,23 @@ class MobxStore {
   activeAppliances = null
 
   constructor() {
-    this.fetchHomer()
+    this.fetchHomer(homerFiles[0])
   }
 
   get homerIsLoaded() {
     return !_.isEmpty(this.activeHomer)
   }
 
-  fetchHomer = flow(function*() {
-    try {
-      const res = yield window.fetch(homerFiles[0].path)
-      const csv = yield res.text()
-      const { data, errors } = Papa.parse(csv, csvOptions)
-      if (_.isEmpty(errors)) {
-        this.activeHomer = processHomerFile(data)
-      } else {
-        console.log('Error loading HOMER file: ', errors)
-      }
-    } catch (error) {
-      console.log('HOMER load fail: ', error)
-      this.fetchState = 'error'
-    }
-  })
-
-  // fetchAppliance = flow(function*() {
-  //   console.log('fetching Appliance file')
-  //   try {
-  //     const res = yield window.fetch(applianceFiles[0].path)
-  //     const csv = yield res.text()
-  //     const { data, errors } = Papa.parse(csv, csvOptions)
-  //     if (_.isEmpty(errors)) {
-  //       this.applianceRaw = data
-  //     } else {
-  //       console.log('Error loading HOMER file: ', errors)
-  //     }
-  //   } catch (error) {
-  //     console.log('Appliance load fail: ', error)
-  //     this.fetchState = 'error'
-  //   }
-  // })
+  async fetchHomer(fileInfo) {
+    const homer = await fetchFile(fileInfo)
+    runInAction(() => (this.activeHomer = homer))
+  }
 }
 
 decorate(MobxStore, {
   loading: observable,
   activeHomer: observable,
+  fetchHomer: action,
 })
 
 export let mobxStore = new MobxStore()
