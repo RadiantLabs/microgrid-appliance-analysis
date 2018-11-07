@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import DevTools from 'mobx-react-devtools'
@@ -7,16 +7,11 @@ import { Client } from './Client'
 import { mobxStore } from './MobxStore'
 import { Menu } from 'semantic-ui-react'
 import InputExample from './components/InputExample'
+import { NavItem } from './components/NavItem'
 import About from './components/About'
 import TodoExample from './components/Todo'
 import Homer from './components/Homer'
 import './App.css'
-
-// Integrating Semantic UI menu items with React Router
-// https://github.com/Semantic-Org/Semantic-UI-React/issues/142#issuecomment-364225477
-const NavItem = props => (
-  <NavLink exact={true} {...props} activeClassName="active" />
-)
 
 const App = () => (
   <Provider store={mobxStore}>
