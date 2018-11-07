@@ -1,5 +1,5 @@
-import { flow } from 'mobx'
 import _ from 'lodash'
+// import { toJS } from 'mobx'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -42,9 +42,14 @@ export function processHomerFile(rows) {
   const headerRow = createHeaderRow(rows)
   const tableData = [headerRow].concat(rows)
   const addedHour = addHourIndex(tableData)
-
   const keyOrder = setKeyOrder(addedHour)
   return { tableData: addedHour, keyOrder }
+}
+
+export function processApplianceFile(rows) {
+  const keyOrder = _.keys(rows[0])
+  const tableData = [createHeaderRow(rows)].concat(rows)
+  return { tableData, keyOrder }
 }
 
 export async function fetchFile(fileInfo) {
@@ -60,8 +65,7 @@ export async function fetchFile(fileInfo) {
       case 'homer':
         return processHomerFile(data)
       case 'appliance':
-        console.log('TODO: ', JSON.stringify(fileInfo))
-        return null
+        return processApplianceFile(data)
       default:
         throw new Error(
           `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`

@@ -1,4 +1,11 @@
-import { configure, observable, decorate, action, runInAction } from 'mobx'
+import {
+  configure,
+  observable,
+  decorate,
+  action,
+  runInAction,
+  computed,
+} from 'mobx'
 // import Papa from 'papaparse'
 import _ from 'lodash'
 import { fetchFile } from './storeUtils'
@@ -36,28 +43,38 @@ const applianceFiles = [
 ]
 
 class MobxStore {
-  loading = false
-  fetchState = 'pending'
   activeHomer = null
-  activeAppliances = null
+  activeAppliances = []
 
   constructor() {
     this.fetchHomer(homerFiles[0])
+    this.fetchAppliance(applianceFiles[0])
   }
 
   get homerIsLoaded() {
     return !_.isEmpty(this.activeHomer)
   }
 
+  get applianceIsLoaded() {
+    return !_.isEmpty(this.activeAppliances)
+  }
+
   async fetchHomer(fileInfo) {
     const homer = await fetchFile(fileInfo)
     runInAction(() => (this.activeHomer = homer))
   }
+
+  async fetchAppliance(fileInfo) {
+    const appliance = await fetchFile(fileInfo)
+    runInAction(() => this.activeAppliances.push(appliance))
+  }
 }
 
 decorate(MobxStore, {
-  loading: observable,
   activeHomer: observable,
+  appliances: observable,
+  homerIsLoaded: computed,
+  applianceIsLoaded: computed,
   fetchHomer: action,
 })
 

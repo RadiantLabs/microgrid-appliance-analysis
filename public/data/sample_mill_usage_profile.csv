@@ -1,4 +1,4 @@
-,hour_of_year,day,hour_of_day,day_hour,kw_factor,grain_factor,kw
+datetime,hour_of_year,day,hour_of_day,day_hour,kw_factor,grain_factor,kw
 1/1/18 0:00,0,0mon,0,0mon_00,0,0,0
 1/1/18 1:00,1,0mon,1,0mon_01,0,0,0.426334426
 1/1/18 2:00,2,0mon,2,0mon_02,0,0,0.426334426
