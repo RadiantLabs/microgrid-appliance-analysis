@@ -1,13 +1,10 @@
 ## TODO
 
-- Import load profiles into app
-- Merge with HOMER in grid
+- Merge usage profile with HOMER Combined Table (as a computed property)
 - Add calcs to match Adam's spreadsheet
 - Color columns based on if they are calculated or if they are for the appliance
-- Break fetch out into a reusable function, switch to avoid generators?
 
-* Create grid of inputs
-
+- Create grid of inputs
   - Appliance:
     - kW to kW-factor
     - grain to grain-factor
