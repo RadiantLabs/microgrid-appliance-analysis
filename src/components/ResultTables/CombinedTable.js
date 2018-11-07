@@ -25,32 +25,29 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { activeHomer, homerIsLoaded } = this.props.store
+    const { activeHomer } = this.props.store
+    if (true) {
+      return <LoaderSpinner />
+    }
     return (
-      <div className="ui centered grid">
-        <div className="column">
-          <h5>TODO</h5>
-          {!homerIsLoaded ? (
-            <LoaderSpinner />
-          ) : (
-            <AutoSizer>
-              {({ height, width }) => (
-                <MultiGrid
-                  cellRenderer={this._cellRenderer}
-                  columnCount={_.size(activeHomer.keyOrder)}
-                  columnWidth={100}
-                  fixedColumnCount={2}
-                  fixedRowCount={2}
-                  height={700}
-                  rowCount={_.size(activeHomer.tableData)}
-                  rowHeight={this._rowHeight}
-                  estimatedRowSize={26}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
+      <div>
+        <h5>TODO</h5>
+        <AutoSizer>
+          {({ height, width }) => (
+            <MultiGrid
+              cellRenderer={this._cellRenderer}
+              columnCount={_.size(activeHomer.keyOrder)}
+              columnWidth={100}
+              fixedColumnCount={2}
+              fixedRowCount={2}
+              height={700}
+              rowCount={_.size(activeHomer.tableData)}
+              rowHeight={this._rowHeight}
+              estimatedRowSize={26}
+              width={width}
+            />
           )}
-        </div>
+        </AutoSizer>
       </div>
     )
   }

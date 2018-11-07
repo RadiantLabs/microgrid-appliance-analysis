@@ -1,15 +1,6 @@
-import {
-  configure,
-  observable,
-  decorate,
-  action,
-  runInAction,
-  computed,
-} from 'mobx'
-// import Papa from 'papaparse'
-import _ from 'lodash'
+import { configure, observable, decorate, action, runInAction } from 'mobx'
+// import _ from 'lodash'
 import { fetchFile } from './storeUtils'
-// const csvOptions = { header: true, dynamicTyping: true }
 configure({ enforceActions: 'observed' })
 
 // Then have another computed function that takes a loaded appliance
@@ -51,14 +42,6 @@ class MobxStore {
     this.fetchAppliance(applianceFiles[0])
   }
 
-  get homerIsLoaded() {
-    return !_.isEmpty(this.activeHomer)
-  }
-
-  get applianceIsLoaded() {
-    return !_.isEmpty(this.activeAppliances)
-  }
-
   async fetchHomer(fileInfo) {
     const homer = await fetchFile(fileInfo)
     runInAction(() => (this.activeHomer = homer))
@@ -73,8 +56,6 @@ class MobxStore {
 decorate(MobxStore, {
   activeHomer: observable,
   appliances: observable,
-  homerIsLoaded: computed,
-  applianceIsLoaded: computed,
   fetchHomer: action,
 })
 

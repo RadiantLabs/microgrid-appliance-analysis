@@ -1,24 +1,24 @@
 import * as React from 'react'
-import { Menu, Container } from 'semantic-ui-react'
+import { Menu, Grid } from 'semantic-ui-react'
 import HomerTable from '../ResultTables/HomerTable'
 import ApplianceTable from '../ResultTables/ApplianceTable'
+import CombinedTable from '../ResultTables/CombinedTable'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
     case 'combinedTable':
-      return <h4>Combined Table</h4>
+      return <CombinedTable />
     case 'homerTable':
       return <HomerTable />
-    case 'appliance1Table':
-      return <ApplianceTable applianceIndex={1} />
-
+    case 'appliance0Table':
+      return <ApplianceTable applianceIndex={0} />
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
 }
 
 class ResultsSection extends React.Component {
-  state = {}
+  state = { activeItem: 'homerTable' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -43,16 +43,18 @@ class ResultsSection extends React.Component {
           />
 
           <Menu.Item
-            name="appliance1Table"
-            active={activeItem === 'appliance1Table'}
-            content="Appliance 1 Table"
+            name="appliance0Table"
+            active={activeItem === 'appliance0Table'}
+            content="Appliance 0 Table"
             onClick={this.handleItemClick}
           />
         </Menu>
 
-        <Container>
-          <ActiveView viewName={this.state.activeItem} />
-        </Container>
+        <Grid padded>
+          <Grid.Column>
+            <ActiveView viewName={this.state.activeItem} />
+          </Grid.Column>
+        </Grid>
       </div>
     )
   }

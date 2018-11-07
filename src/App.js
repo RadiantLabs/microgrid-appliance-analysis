@@ -11,7 +11,6 @@ import { NavItem } from './components/NavItem'
 import About from './components/About'
 import TodoExample from './components/Todo'
 import Home from './components/Home'
-import Homer from './components/Homer'
 import './App.css'
 
 const App = () => (
@@ -20,14 +19,12 @@ const App = () => (
       <ApolloProvider client={Client}>
         <Menu secondary={true}>
           <Menu.Item as={NavItem} to="/" name="home" />
-          <Menu.Item as={NavItem} to="/homer" name="homer" />
           <Menu.Item as={NavItem} to="/input-example" name="input-example" />
           <Menu.Item as={NavItem} to="/about" name="about" />
           <Menu.Item as={NavItem} to="/todo" name="todo" />
         </Menu>
         <div className="mainContent">
           <Route exact={true} path="/" component={Home} />
-          <Route path="/homer" component={Homer} />
           <Route path="/about" component={About} />
           <Route path="/input-example" component={InputExample} />
           <Route path="/todo" component={TodoExample} />
