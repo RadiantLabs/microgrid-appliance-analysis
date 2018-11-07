@@ -4,8 +4,9 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Loader'
+import { setHeaderStyles } from './tableStyles'
 
-class Homer extends React.Component {
+class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const {
       activeHomer: { tableData, keyOrder },
@@ -28,7 +29,7 @@ class Homer extends React.Component {
     return (
       <div className="ui centered grid">
         <div className="column">
-          <h2>Homer</h2>
+          <h5>TODO</h5>
           {!homerIsLoaded ? (
             <LoaderSpinner />
           ) : (
@@ -55,30 +56,4 @@ class Homer extends React.Component {
   }
 }
 
-export default inject('store')(observer(Homer))
-
-function setHeaderStyles(styles, rowIndex) {
-  let rowStyles = styles
-  if (rowIndex === 0 || rowIndex === 1) {
-    rowStyles = {
-      ...rowStyles,
-      ...{
-        fontStyle: 'italic',
-        backgroundColor: '#f9fafb',
-      },
-    }
-  }
-  if (rowIndex === 0) {
-    rowStyles = {
-      ...rowStyles,
-      ...{ borderTop: '1px solid rgba(34,36,38,.1)' },
-    }
-  }
-  if (rowIndex === 1) {
-    rowStyles = {
-      ...rowStyles,
-      ...{ borderBottom: '1px solid rgba(34,36,38,.1)' },
-    }
-  }
-  return rowStyles
-}
+export default inject('store')(observer(CombinedTable))

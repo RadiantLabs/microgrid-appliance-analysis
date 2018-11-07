@@ -1,11 +1,17 @@
 import * as React from 'react'
-import { Grid, Segment, Menu, Container } from 'semantic-ui-react'
-import Homer from '../Homer'
+import { Menu, Container } from 'semantic-ui-react'
+import HomerTable from '../ResultTables/HomerTable'
+import ApplianceTable from '../ResultTables/ApplianceTable'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
     case 'combinedTable':
       return <h4>Combined Table</h4>
+    case 'homerTable':
+      return <HomerTable />
+    case 'appliance1Table':
+      return <ApplianceTable applianceIndex={1} />
+
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
@@ -30,15 +36,15 @@ class ResultsSection extends React.Component {
           />
 
           <Menu.Item
-            name="activeHomer"
-            active={activeItem === 'activeHomer'}
+            name="homerTable"
+            active={activeItem === 'homerTable'}
             content="HOMER Table"
             onClick={this.handleItemClick}
           />
 
           <Menu.Item
-            name="appliance1"
-            active={activeItem === 'appliance1'}
+            name="appliance1Table"
+            active={activeItem === 'appliance1Table'}
             content="Appliance 1 Table"
             onClick={this.handleItemClick}
           />
