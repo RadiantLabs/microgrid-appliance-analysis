@@ -1,5 +1,5 @@
 import { configure, observable, decorate, action, runInAction } from 'mobx'
-// import _ from 'lodash'
+import _ from 'lodash'
 import { fetchFile } from './storeUtils'
 configure({ enforceActions: 'observed' })
 
@@ -40,6 +40,10 @@ class MobxStore {
   constructor() {
     this.fetchHomer(homerFiles[0])
     this.fetchAppliance(applianceFiles[0])
+  }
+
+  get combinedTable() {
+    return _.isEmpty(this.activeHomer) ? null : this.activeHomer
   }
 
   async fetchHomer(fileInfo) {

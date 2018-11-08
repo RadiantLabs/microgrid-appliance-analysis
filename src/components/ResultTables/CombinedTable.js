@@ -25,8 +25,8 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { activeHomer } = this.props.store
-    if (true) {
+    const { combinedTable } = this.props.store
+    if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
     return (
@@ -36,12 +36,12 @@ class CombinedTable extends React.Component {
           {({ height, width }) => (
             <MultiGrid
               cellRenderer={this._cellRenderer}
-              columnCount={_.size(activeHomer.keyOrder)}
+              columnCount={_.size(combinedTable.keyOrder)}
               columnWidth={100}
               fixedColumnCount={2}
               fixedRowCount={2}
               height={700}
-              rowCount={_.size(activeHomer.tableData)}
+              rowCount={_.size(combinedTable.tableData)}
               rowHeight={this._rowHeight}
               estimatedRowSize={26}
               width={width}
