@@ -25,13 +25,16 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { combinedTable } = this.props.store
+    const { combinedTable, cachedHomerStats } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
     return (
       <div>
-        <h5>TODO</h5>
+        <h5>
+          cachedHomerStats - min: {cachedHomerStats.minBatteryEnergyContent},
+          max: {cachedHomerStats.minBatteryEnergyContent}
+        </h5>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid

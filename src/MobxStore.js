@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {
   configure,
   observable,
@@ -6,8 +7,12 @@ import {
   runInAction,
   computed,
 } from 'mobx'
-import _ from 'lodash'
-import { fetchFile, combineTables, addColumns } from './storeUtils'
+import {
+  fetchFile,
+  combineTables,
+  addColumns,
+  calculateHomerStats,
+} from './storeUtils'
 configure({ enforceActions: 'observed' })
 
 // Then have another computed function that takes a loaded appliance
@@ -57,6 +62,13 @@ class MobxStore {
     return addColumns(combined, 'Some Computed Value', 'kWh')
   }
 
+  get cachedHomerStats() {
+    if (_.isEmpty(this.activeHomer)) {
+      return {}
+    }
+    return calculateHomerStats(this.activeHomer)
+  }
+
   async fetchHomer(fileInfo) {
     const homer = await fetchFile(fileInfo)
     runInAction(() => (this.activeHomer = homer))
@@ -74,6 +86,7 @@ decorate(MobxStore, {
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
+  cachedHomerStats: computed,
 })
 
 export let mobxStore = new MobxStore()

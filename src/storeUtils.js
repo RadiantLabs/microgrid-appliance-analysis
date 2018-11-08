@@ -1,6 +1,6 @@
 import _ from 'lodash'
 // import { toJS } from 'mobx'
-import { arrayInsert } from './utils'
+import { arrayInsert, findColMin, findColMax } from './utils'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -86,6 +86,7 @@ export function combineTables(activeHomer, activeAppliances) {
   }
 }
 
+// This function isn't really used yet - it will be expanded and generalized
 export function addColumns(table, headerTitle, headerUnit) {
   const withColumn = _.map(table.tableData, (row, index) => {
     switch (index) {
@@ -101,6 +102,18 @@ export function addColumns(table, headerTitle, headerUnit) {
     tableData: withColumn,
     keyOrder: arrayInsert(table.keyOrder, headerTitle, 1),
   }
+}
+
+export function calculateHomerStats(homer) {
+  const minBatteryEnergyContent = findColMin(
+    homer.tableData,
+    'Generic 1kWh Lead Acid [ASM] Energy Content'
+  )
+  const maxBatteryEnergyContent = findColMax(
+    homer.tableData,
+    'Generic 1kWh Lead Acid [ASM] Energy Content'
+  )
+  return { minBatteryEnergyContent, maxBatteryEnergyContent }
 }
 
 export async function fetchFile(fileInfo) {

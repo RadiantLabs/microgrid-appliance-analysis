@@ -1,10 +1,11 @@
 ## TODO
 
-- Need function to add new column
-- Add calcs to match Adam's spreadsheet
-- Color columns based on if they are calculated or if they are for the appliance
+- [ ] Add calcs to match Adam's spreadsheet
+  - [x] Need to cache min and max of certain columns to make calcs faster (generic_1_k_wh_lead_acid_asm_energy_content)
+  - [x] Create a function that calculates all of columm calcs, then returns an array of columns to add. Each column needs to have a header, unit, and array of values. Do I need to stitch based on hour? Or just check that I have 8760, plus 2 column headers?
 
-- Create grid of inputs
+* Create grid of inputs
+
   - Appliance:
     - kW to kW-factor
     - grain to grain-factor
@@ -12,8 +13,11 @@
     - CAPEX
     - OPEX
 
-* Render Load profile file React Virtualized table
+* Color columns based on if they are calculated or if they are for the appliance
 
+## TODO: Long term
+
+- snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
 - Decide on React.SFC
 - Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
 - Add apollo devtools https://github.com/apollographql/apollo-client-devtools
