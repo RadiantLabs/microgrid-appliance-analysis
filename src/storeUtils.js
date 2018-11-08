@@ -85,6 +85,21 @@ export function combineTables(activeHomer, activeAppliances) {
   }
 }
 
+export function addColumns(table, headerTitle, headerUnit) {
+  const withColumn = _.map(table.tableData, (row, index) => {
+    switch (index) {
+      case 0:
+        return { ...row, ...{ [headerTitle]: headerTitle } }
+      case 1:
+        return { ...row, ...{ [headerTitle]: headerUnit } }
+      default:
+        return { ...row, ...{ [headerTitle]: 5 } }
+    }
+  })
+  // debugger
+  return { tableData: withColumn, keyOrder: table.keyOrder.concat(headerTitle) }
+}
+
 export async function fetchFile(fileInfo) {
   const { path, type } = fileInfo
   try {

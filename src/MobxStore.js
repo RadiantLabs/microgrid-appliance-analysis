@@ -7,7 +7,7 @@ import {
   computed,
 } from 'mobx'
 import _ from 'lodash'
-import { fetchFile, combineTables } from './storeUtils'
+import { fetchFile, combineTables, addColumns } from './storeUtils'
 configure({ enforceActions: 'observed' })
 
 // Then have another computed function that takes a loaded appliance
@@ -50,9 +50,11 @@ class MobxStore {
   }
 
   get combinedTable() {
-    return _.isEmpty(this.activeHomer)
-      ? null
-      : combineTables(this.activeHomer, this.activeAppliances)
+    const combined = combineTables(this.activeHomer, this.activeAppliances)
+    if (_.isEmpty(this.activeHomer)) {
+      return null
+    }
+    return addColumns(combined, 'Some Computed Value', 'kWh')
   }
 
   async fetchHomer(fileInfo) {
