@@ -9,7 +9,7 @@ import { setHeaderStyles } from './tableStyles'
 class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const {
-      activeHomer: { tableData, keyOrder },
+      combinedTable: { tableData, keyOrder },
     } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
     const row = tableData[rowIndex]

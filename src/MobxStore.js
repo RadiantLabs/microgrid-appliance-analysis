@@ -1,4 +1,11 @@
-import { configure, observable, decorate, action, runInAction } from 'mobx'
+import {
+  configure,
+  observable,
+  decorate,
+  action,
+  runInAction,
+  computed,
+} from 'mobx'
 import _ from 'lodash'
 import { fetchFile, combineTables } from './storeUtils'
 configure({ enforceActions: 'observed' })
@@ -55,7 +62,6 @@ class MobxStore {
 
   async fetchAppliance(fileInfo) {
     const appliance = await fetchFile(fileInfo)
-    console.log('appliance: ', appliance)
     runInAction(() => this.activeAppliances.push(appliance))
   }
 }
@@ -65,6 +71,7 @@ decorate(MobxStore, {
   activeAppliances: observable,
   fetchHomer: action,
   fetchAppliance: action,
+  combinedTable: computed,
 })
 
 export let mobxStore = new MobxStore()

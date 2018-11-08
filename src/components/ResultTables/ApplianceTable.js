@@ -8,8 +8,10 @@ import { setHeaderStyles } from './tableStyles'
 
 class ApplianceTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
-    const { applianceIndex, store } = this.props
-    const { activeAppliances } = store
+    const {
+      applianceIndex,
+      store: { activeAppliances },
+    } = this.props
     const { tableData, keyOrder } = activeAppliances[applianceIndex]
     const headerStyle = setHeaderStyles(style, rowIndex)
     const row = tableData[rowIndex]
@@ -42,7 +44,7 @@ class ApplianceTable extends React.Component {
               columnCount={_.size(appliance.keyOrder)}
               columnWidth={100}
               fixedColumnCount={1}
-              fixedRowCount={1}
+              fixedRowCount={2}
               height={700}
               rowCount={_.size(appliance.tableData)}
               rowHeight={this._rowHeight}

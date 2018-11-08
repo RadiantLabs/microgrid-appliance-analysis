@@ -18,7 +18,7 @@ const ActiveView = ({ viewName }) => {
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'appliance0Table' }
+  state = { activeItem: 'combinedTable' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 

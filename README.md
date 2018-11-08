@@ -1,7 +1,6 @@
 ## TODO
 
-- Merge usage profile with HOMER Combined Table (as a computed property)
-- Add units row to appliance table
+- Need function to add new column
 - Add calcs to match Adam's spreadsheet
 - Color columns based on if they are calculated or if they are for the appliance
 

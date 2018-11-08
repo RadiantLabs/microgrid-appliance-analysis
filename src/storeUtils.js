@@ -62,31 +62,27 @@ export function processApplianceFile(rows) {
   return { tableData, keyOrder }
 }
 
-// Below isn't working and it doesn't scale well with multiple appliance tables
-// const appointments = activeHomer.tableData
-// const patients = activeAppliances[0].tableData
-// const mergedTable = appointments.map(a => ({
-//   ...patients.find(p => a.Hour === p.Hour),
-//   ...a,
-// }))
 export function combineTables(activeHomer, activeAppliances) {
   if (_.isEmpty(activeHomer) || _.isEmpty(activeAppliances)) {
     return null
   }
-
-  // List multiple arrays or use spread in the concat step
-  // I could even use calculated values {'Hour': 5, 'newCalculatedValue': 50}
-  // TODO: The header columns are getting dropped.
-  // 1. Add a second units row to the appliances
-  // 2. Remove both header rows,  add them to the merged table
-  const mergedTable = _(activeHomer.tableData)
-    .concat(activeAppliances[0].tableData)
+  const headerRowCount = 2
+  const homerHeaders = _.take(activeHomer.tableData, headerRowCount)
+  const homerData = _.drop(activeHomer.tableData, headerRowCount)
+  const applianceHeaders = _.take(activeAppliances[0].tableData, headerRowCount)
+  const applianceData = _.drop(activeAppliances[0].tableData, headerRowCount)
+  const mergedTable = _(homerData)
+    .concat(applianceData) // Can list multiple arrays to concat here, including calculated columns
     .groupBy('hour')
     .map(_.spread(_.merge))
     .value()
 
-  const keyOrder = _.keys(mergedTable[0])
-  return { tableData: mergedTable, keyOrder }
+  const headerTitles = { ...homerHeaders[0], ...applianceHeaders[0] }
+  const headerUnits = { ...homerHeaders[1], ...applianceHeaders[1] }
+  return {
+    tableData: [headerTitles, headerUnits].concat(mergedTable),
+    keyOrder: setKeyOrder(mergedTable),
+  }
 }
 
 export async function fetchFile(fileInfo) {
