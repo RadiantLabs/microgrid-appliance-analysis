@@ -1,5 +1,6 @@
 import _ from 'lodash'
 // import { toJS } from 'mobx'
+import { arrayInsert } from './utils'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -96,8 +97,10 @@ export function addColumns(table, headerTitle, headerUnit) {
         return { ...row, ...{ [headerTitle]: 5 } }
     }
   })
-  // debugger
-  return { tableData: withColumn, keyOrder: table.keyOrder.concat(headerTitle) }
+  return {
+    tableData: withColumn,
+    keyOrder: arrayInsert(table.keyOrder, headerTitle, 1),
+  }
 }
 
 export async function fetchFile(fileInfo) {
