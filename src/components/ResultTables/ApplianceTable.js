@@ -21,7 +21,8 @@ class ApplianceTable extends React.Component {
   }
 
   _rowHeight = ({ index }) => {
-    return index === 0 ? 76 : 26
+    // return index === 0 ? 76 : 26
+    return index === 0 ? 26 : 26
   }
 
   render() {
@@ -40,8 +41,8 @@ class ApplianceTable extends React.Component {
               cellRenderer={this._cellRenderer}
               columnCount={_.size(appliance.keyOrder)}
               columnWidth={100}
-              fixedColumnCount={2}
-              fixedRowCount={2}
+              fixedColumnCount={1}
+              fixedRowCount={1}
               height={700}
               rowCount={_.size(appliance.tableData)}
               rowHeight={this._rowHeight}

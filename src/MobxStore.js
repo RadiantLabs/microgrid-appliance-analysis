@@ -17,7 +17,7 @@ configure({ enforceActions: 'observed' })
 const homerFiles = [
   {
     type: 'homer',
-    label: 'homer_12_50_oversize_20',
+    label: 'homer_12_50_oversize_20_AS',
     path: './data/homer_12_50_oversize_20.csv',
     description: 'Fill in description about 12, 50, etc',
   },
@@ -55,14 +55,16 @@ class MobxStore {
 
   async fetchAppliance(fileInfo) {
     const appliance = await fetchFile(fileInfo)
+    console.log('appliance: ', appliance)
     runInAction(() => this.activeAppliances.push(appliance))
   }
 }
 
 decorate(MobxStore, {
   activeHomer: observable,
-  appliances: observable,
+  activeAppliances: observable,
   fetchHomer: action,
+  fetchAppliance: action,
 })
 
 export let mobxStore = new MobxStore()

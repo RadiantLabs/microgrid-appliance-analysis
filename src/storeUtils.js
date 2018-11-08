@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { toJS } from 'mobx'
+// import { toJS } from 'mobx'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -17,11 +17,11 @@ export function addHourIndex(rows, headerColumnCount = 2) {
     const hour = rowIndex - headerColumnCount
     switch (hour) {
       case -2:
-        return { ...row, ...{ Hour: 'Hour' } }
+        return { ...row, ...{ hour: 'hour' } }
       case -1:
-        return { ...row, ...{ Hour: null } }
+        return { ...row, ...{ hour: '-' } }
       default:
-        return { ...row, ...{ Hour: hour } }
+        return { ...row, ...{ hour: hour } }
     }
   })
 }
@@ -29,7 +29,7 @@ export function addHourIndex(rows, headerColumnCount = 2) {
 // Sort keys manually (key order in objects is never deterministic) so I can put
 // columns I want as fixed columns
 export function setKeyOrder(rows) {
-  const frontItems = ['Hour']
+  const frontItems = ['hour']
   const keys = _.keys(rows[0])
   return frontItems.concat(_.without(keys, ...frontItems))
 }
@@ -48,7 +48,17 @@ export function processHomerFile(rows) {
 
 export function processApplianceFile(rows) {
   const keyOrder = _.keys(rows[0])
-  const tableData = [createHeaderRow(rows)].concat(rows)
+  const unitRow = {
+    datetime: '-',
+    hour: '-',
+    day: '-',
+    hour_of_day: '-',
+    day_hour: '-',
+    kw_factor: '-',
+    grain_factor: '-',
+    kw: 'kW',
+  }
+  const tableData = [createHeaderRow(rows), unitRow].concat(rows)
   return { tableData, keyOrder }
 }
 
@@ -71,7 +81,7 @@ export function combineTables(activeHomer, activeAppliances) {
   // 2. Remove both header rows,  add them to the merged table
   const mergedTable = _(activeHomer.tableData)
     .concat(activeAppliances[0].tableData)
-    .groupBy('Hour')
+    .groupBy('hour')
     .map(_.spread(_.merge))
     .value()
 
