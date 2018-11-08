@@ -18,7 +18,7 @@ const ActiveView = ({ viewName }) => {
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'homerTable' }
+  state = { activeItem: 'combinedTable' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 

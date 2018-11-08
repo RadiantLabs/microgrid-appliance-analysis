@@ -1,6 +1,6 @@
 import { configure, observable, decorate, action, runInAction } from 'mobx'
 import _ from 'lodash'
-import { fetchFile } from './storeUtils'
+import { fetchFile, combineTables } from './storeUtils'
 configure({ enforceActions: 'observed' })
 
 // Then have another computed function that takes a loaded appliance
@@ -43,7 +43,9 @@ class MobxStore {
   }
 
   get combinedTable() {
-    return _.isEmpty(this.activeHomer) ? null : this.activeHomer
+    return _.isEmpty(this.activeHomer)
+      ? null
+      : combineTables(this.activeHomer, this.activeAppliances)
   }
 
   async fetchHomer(fileInfo) {

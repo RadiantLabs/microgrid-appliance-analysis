@@ -38,7 +38,7 @@ class CombinedTable extends React.Component {
               cellRenderer={this._cellRenderer}
               columnCount={_.size(combinedTable.keyOrder)}
               columnWidth={100}
-              fixedColumnCount={2}
+              fixedColumnCount={1}
               fixedRowCount={2}
               height={700}
               rowCount={_.size(combinedTable.tableData)}
