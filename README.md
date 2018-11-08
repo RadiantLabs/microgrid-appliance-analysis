@@ -1,6 +1,7 @@
 ## TODO
 
 - [ ] Add calcs to match Adam's spreadsheet
+  - [x] Make general function that merges 2 tables, making sure both headers are dealt with properly (probably fairly imperative)
   - [x] Need to cache min and max of certain columns to make calcs faster (generic_1_k_wh_lead_acid_asm_energy_content)
   - [x] Create a function that calculates all of columm calcs, then returns an array of columns to add. Each column needs to have a header, unit, and array of values. Do I need to stitch based on hour? Or just check that I have 8760, plus 2 column headers?
 

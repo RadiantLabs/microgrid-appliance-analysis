@@ -9,7 +9,7 @@ import {
 } from 'mobx'
 import {
   fetchFile,
-  combineTables,
+  mergeTables,
   addColumns,
   calculateHomerStats,
 } from './storeUtils'
@@ -55,18 +55,19 @@ class MobxStore {
   }
 
   get combinedTable() {
-    const combined = combineTables(this.activeHomer, this.activeAppliances)
-    if (_.isEmpty(this.activeHomer)) {
+    if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliances)) {
       return null
     }
-    return addColumns(combined, 'Some Computed Value', 'kWh')
+    return mergeTables(
+      this.activeHomer.tableData,
+      this.activeAppliances[0].tableData
+    )
   }
 
   get cachedHomerStats() {
-    if (_.isEmpty(this.activeHomer)) {
-      return {}
-    }
-    return calculateHomerStats(this.activeHomer)
+    return _.isEmpty(this.activeHomer)
+      ? {}
+      : calculateHomerStats(this.activeHomer)
   }
 
   async fetchHomer(fileInfo) {

@@ -63,23 +63,29 @@ export function processApplianceFile(rows) {
   return { tableData, keyOrder }
 }
 
-export function combineTables(activeHomer, activeAppliances) {
-  if (_.isEmpty(activeHomer) || _.isEmpty(activeAppliances)) {
+// Merge tables based on 'hour' key, taking into account the 2 table headers
+// For now, this will only merge 2 tables. table2 cannot be an array of tables
+export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
+  if (
+    _.isEmpty(table1) ||
+    !_.isArray(table1) ||
+    _.isEmpty(table2) ||
+    !_.isArray(table2)
+  ) {
     return null
   }
-  const headerRowCount = 2
-  const homerHeaders = _.take(activeHomer.tableData, headerRowCount)
-  const homerData = _.drop(activeHomer.tableData, headerRowCount)
-  const applianceHeaders = _.take(activeAppliances[0].tableData, headerRowCount)
-  const applianceData = _.drop(activeAppliances[0].tableData, headerRowCount)
-  const mergedTable = _(homerData)
-    .concat(applianceData) // Can list multiple arrays to concat here, including calculated columns
-    .groupBy('hour')
+  const table1Headers = _.take(table1, headerCount)
+  const table1Data = _.drop(table1, headerCount)
+  const table2Headers = _.take(table2[0], headerCount)
+  const table2Data = _.drop(table2[0], headerCount)
+  const mergedTable = _(table1Data)
+    .concat(table2Data) // Can list multiple arrays to concat here, including calculated columns
+    .groupBy(joinKey)
     .map(_.spread(_.merge))
     .value()
 
-  const headerTitles = { ...homerHeaders[0], ...applianceHeaders[0] }
-  const headerUnits = { ...homerHeaders[1], ...applianceHeaders[1] }
+  const headerTitles = { ...table1Headers[0], ...table2Headers[0] }
+  const headerUnits = { ...table1Headers[1], ...table2Headers[1] }
   return {
     tableData: [headerTitles, headerUnits].concat(mergedTable),
     keyOrder: setKeyOrder(mergedTable),
