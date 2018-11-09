@@ -10,6 +10,7 @@ import {
 import { fetchFile, calculateHomerStats, calculateNewLoads } from './storeUtils'
 import { mergeTables } from './utils'
 import { homerFiles, applianceFiles } from './fileInfo'
+import { constants } from './constants'
 configure({ enforceActions: 'observed' })
 
 class MobxStore {
@@ -30,8 +31,13 @@ class MobxStore {
       this.activeAppliances[0].tableData
     )
 
-    const newLoadColumns = calculateNewLoads(mergedTables)
-    console.log('newLoadColumns')
+    const newLoadColumns = calculateNewLoads({
+      table: mergedTables,
+      fields: null,
+      tableStats: this.cachedHomerStats,
+      constants: constants,
+    })
+    console.log('newLoadColumns: ', newLoadColumns)
     return mergedTables
   }
 

@@ -41,4 +41,6 @@ export const APP_WIDE_FIELDS = {
     precision: 0, // If we have a precision of 0, does that defined an integer
     unit: 'Volts',
   },
+
+  // One possible key is isConstant = true, which will make the field non-editable
 }
