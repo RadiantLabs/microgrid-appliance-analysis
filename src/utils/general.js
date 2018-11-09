@@ -46,8 +46,8 @@ export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
   }
   const table1Headers = _.take(table1, headerCount)
   const table1Data = _.drop(table1, headerCount)
-  const table2Headers = _.take(table2[0], headerCount)
-  const table2Data = _.drop(table2[0], headerCount)
+  const table2Headers = _.take(table2, headerCount)
+  const table2Data = _.drop(table2, headerCount)
   const mergedTable = _(table1Data)
     .concat(table2Data) // Can list multiple arrays to concat here, including calculated columns
     .groupBy(joinKey)

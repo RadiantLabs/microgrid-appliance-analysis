@@ -32,14 +32,14 @@ class MobxStore {
       this.activeAppliances[0].tableData
     )
 
-    const newLoadColumns = calculateNewLoads({
-      table: mergedTables.tableData,
+    const withNewLoadColumns = calculateNewLoads({
+      table: mergedTables,
       fields: null,
       tableStats: this.cachedHomerStats,
       constants: constants,
     })
-    console.log('newLoadColumns: ', newLoadColumns)
-    return mergedTables
+    console.log('withNewLoadColumns: ', withNewLoadColumns)
+    return withNewLoadColumns
   }
 
   get cachedHomerStats() {

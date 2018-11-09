@@ -2,6 +2,7 @@
 
 - [ ] Add calcs to match Adam's spreadsheet
 
+  - [ ] Make functions that take `newColumns` and adds a header and units row
   - [x] Make general function that merges 2 tables, making sure both headers are dealt with properly (probably fairly imperative)
   - [x] Need to cache min and max of certain columns to make calcs faster (generic_1_k_wh_lead_acid_asm_energy_content)
   - [x] Create a function that calculates all of columm calcs, then returns an array of columns to add. Each column needs to have a header, unit, and array of values. Do I need to stitch based on hour? Or just check that I have 8760, plus 2 column headers?
@@ -16,7 +17,7 @@
     - OPEX
 
 - Color columns based on if they are calculated or if they are for the appliance
-
+- Split out Jupyter notebooks into their own repo
 - Then have another computed function that takes a loaded appliance and inserts it into the HOMER file. Or do I just update the homerKeyOrder so the \_cellRenderer pulls from the appliance file based on hour index?
 - Parse date and reformat
 - add kw and grain throughput based on factors
@@ -72,3 +73,9 @@ They will not be included in the production build so you can use them for things
 - Define typescript types based on this JSON schema for all fields: https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 - Generate TS types from graphql queries: https://blog.apollographql.com/graphql-dx-d35bcf51c943
 - JSON Schema validator: https://github.com/epoberezkin/ajv
+
+## Notes
+
+Welder and Water pump throughput:
+
+> I think what we need to do is let the tool apply some value to a unit of welding (maybe hours), and a value to a unit of water (liters) , but then it’ll be up to the user to decide what to put in there for water pumping in particular, one kind of pump (submersible) could be used to pump drinking water to be sold, which is a very standard economic model, but another kind of pump (surface) could be used to water small horticultural crops for which a person wouldn’t realize the economic value for several months until the harvest happens.
