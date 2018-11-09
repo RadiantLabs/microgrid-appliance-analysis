@@ -12,7 +12,10 @@ export const setHeaderStyles = (styles, rowIndex) => {
   if (rowIndex === 0) {
     rowStyles = {
       ...rowStyles,
-      ...{ borderTop: '1px solid rgba(34,36,38,.1)' },
+      ...{
+        borderTop: '1px solid rgba(34,36,38,.1)',
+        overflowWrap: 'break-word',
+      },
     }
   }
   if (rowIndex === 1) {

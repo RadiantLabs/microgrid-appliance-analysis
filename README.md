@@ -2,10 +2,20 @@
 
 - [ ] Add calcs to match Adam's spreadsheet
 
-  - [ ] Make functions that take `newColumns` and adds a header and units row
+  - [ ] Finish newBatteryEnergyContent that references a previous value
+  - [ ] Check calculations against Adam's spreadsheet
+  - [x] Make functions that take `newColumns` and adds a header and units row
   - [x] Make general function that merges 2 tables, making sure both headers are dealt with properly (probably fairly imperative)
   - [x] Need to cache min and max of certain columns to make calcs faster (generic_1_k_wh_lead_acid_asm_energy_content)
   - [x] Create a function that calculates all of columm calcs, then returns an array of columns to add. Each column needs to have a header, unit, and array of values. Do I need to stitch based on hour? Or just check that I have 8760, plus 2 column headers?
+
+- [ ] Calculate appliance loads based on usage factors
+
+  - [ ] Build component that saves to mobx store only when valid
+  - [ ] Pass in fields to calculateNewLoads to calculate appliance_load
+
+- [ ] Color columns to show calculated columns
+- [ ] wrap header based on character
 
 - Create grid of inputs
 
