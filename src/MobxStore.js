@@ -7,43 +7,10 @@ import {
   runInAction,
   computed,
 } from 'mobx'
-import {
-  fetchFile,
-  mergeTables,
-  addColumns,
-  calculateHomerStats,
-} from './storeUtils'
+import { fetchFile, calculateHomerStats, calculateNewLoads } from './storeUtils'
+import { mergeTables } from './utils'
+import { homerFiles, applianceFiles } from './fileInfo'
 configure({ enforceActions: 'observed' })
-
-// Then have another computed function that takes a loaded appliance
-// and inserts it into the HOMER file. Or do I just update the homerKeyOrder
-// so the _cellRenderer pulls from the appliance file based on hour index?
-// * Parse date and reformat
-// * add kw and grain throughput based on factors
-// * add hour offset
-// * add seasonal derating factor
-
-// Do Calculations like in Adam's spreadsheet - I should probably do that first
-// by using the sample data. Then I can add all of the other things ^
-
-const homerFiles = [
-  {
-    type: 'homer',
-    label: 'homer_12_50_oversize_20_AS',
-    path: './data/homer_12_50_oversize_20.csv',
-    description: 'Fill in description about 12, 50, etc',
-  },
-]
-
-const applianceFiles = [
-  {
-    type: 'appliance',
-    applianceType: 'Rice Mill',
-    label: 'sample_mill_usage_profile',
-    path: './data/sample_mill_usage_profile.csv',
-    description: 'Fill in description about this mill',
-  },
-]
 
 class MobxStore {
   activeHomer = null
@@ -58,10 +25,14 @@ class MobxStore {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliances)) {
       return null
     }
-    return mergeTables(
+    const mergedTables = mergeTables(
       this.activeHomer.tableData,
       this.activeAppliances[0].tableData
     )
+
+    const newLoadColumns = calculateNewLoads(mergedTables)
+    console.log('newLoadColumns')
+    return mergedTables
   }
 
   get cachedHomerStats() {

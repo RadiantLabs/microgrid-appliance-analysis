@@ -1,11 +1,12 @@
 ## TODO
 
 - [ ] Add calcs to match Adam's spreadsheet
+
   - [x] Make general function that merges 2 tables, making sure both headers are dealt with properly (probably fairly imperative)
   - [x] Need to cache min and max of certain columns to make calcs faster (generic_1_k_wh_lead_acid_asm_energy_content)
   - [x] Create a function that calculates all of columm calcs, then returns an array of columns to add. Each column needs to have a header, unit, and array of values. Do I need to stitch based on hour? Or just check that I have 8760, plus 2 column headers?
 
-* Create grid of inputs
+- Create grid of inputs
 
   - Appliance:
     - kW to kW-factor
@@ -14,7 +15,13 @@
     - CAPEX
     - OPEX
 
-* Color columns based on if they are calculated or if they are for the appliance
+- Color columns based on if they are calculated or if they are for the appliance
+
+- Then have another computed function that takes a loaded appliance and inserts it into the HOMER file. Or do I just update the homerKeyOrder so the \_cellRenderer pulls from the appliance file based on hour index?
+- Parse date and reformat
+- add kw and grain throughput based on factors
+- add hour offset
+- add seasonal derating factor
 
 ## TODO: Long term
 

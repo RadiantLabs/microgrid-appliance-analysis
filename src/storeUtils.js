@@ -1,6 +1,6 @@
 import _ from 'lodash'
 // import { toJS } from 'mobx'
-import { arrayInsert, findColMin, findColMax } from './utils'
+import { findColMin, findColMax, setKeyOrder } from './utils'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -25,14 +25,6 @@ export function addHourIndex(rows, headerColumnCount = 2) {
         return { ...row, ...{ hour: hour } }
     }
   })
-}
-
-// Sort keys manually (key order in objects is never deterministic) so I can put
-// columns I want as fixed columns
-export function setKeyOrder(rows) {
-  const frontItems = ['hour']
-  const keys = _.keys(rows[0])
-  return frontItems.concat(_.without(keys, ...frontItems))
 }
 
 // Convert output from raw CSV parse into something that React Virtualized
@@ -63,53 +55,6 @@ export function processApplianceFile(rows) {
   return { tableData, keyOrder }
 }
 
-// Merge tables based on 'hour' key, taking into account the 2 table headers
-// For now, this will only merge 2 tables. table2 cannot be an array of tables
-export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
-  if (
-    _.isEmpty(table1) ||
-    !_.isArray(table1) ||
-    _.isEmpty(table2) ||
-    !_.isArray(table2)
-  ) {
-    return null
-  }
-  const table1Headers = _.take(table1, headerCount)
-  const table1Data = _.drop(table1, headerCount)
-  const table2Headers = _.take(table2[0], headerCount)
-  const table2Data = _.drop(table2[0], headerCount)
-  const mergedTable = _(table1Data)
-    .concat(table2Data) // Can list multiple arrays to concat here, including calculated columns
-    .groupBy(joinKey)
-    .map(_.spread(_.merge))
-    .value()
-
-  const headerTitles = { ...table1Headers[0], ...table2Headers[0] }
-  const headerUnits = { ...table1Headers[1], ...table2Headers[1] }
-  return {
-    tableData: [headerTitles, headerUnits].concat(mergedTable),
-    keyOrder: setKeyOrder(mergedTable),
-  }
-}
-
-// This function isn't really used yet - it will be expanded and generalized
-export function addColumns(table, headerTitle, headerUnit) {
-  const withColumn = _.map(table.tableData, (row, index) => {
-    switch (index) {
-      case 0:
-        return { ...row, ...{ [headerTitle]: headerTitle } }
-      case 1:
-        return { ...row, ...{ [headerTitle]: headerUnit } }
-      default:
-        return { ...row, ...{ [headerTitle]: 5 } }
-    }
-  })
-  return {
-    tableData: withColumn,
-    keyOrder: arrayInsert(table.keyOrder, headerTitle, 1),
-  }
-}
-
 export function calculateHomerStats(homer) {
   const minBatteryEnergyContent = findColMin(
     homer.tableData,
@@ -122,6 +67,23 @@ export function calculateHomerStats(homer) {
   return { minBatteryEnergyContent, maxBatteryEnergyContent }
 }
 
+/**
+ * Pass in the merged table that includes Homer and Usage factors
+ * Also pass in adjustable fields from store and constants that are required
+ * to do the calculations
+ * @param {*} table
+ * @param {*} fields
+ * @param {*} tableStats
+ * @param {*} constants
+ */
+export function calculateNewLoads(table, fields, tableStats, constants) {
+  return { tableData: null, keyOrder: null }
+}
+
+/**
+ * Fetch Homer or Usage profile files.
+ * @param {*} fileInfo
+ */
 export async function fetchFile(fileInfo) {
   const { path, type } = fileInfo
   try {
