@@ -7,10 +7,11 @@ import {
   runInAction,
   computed,
 } from 'mobx'
-import { fetchFile, calculateHomerStats, calculateNewLoads } from './storeUtils'
-import { mergeTables } from './utils'
-import { homerFiles, applianceFiles } from './fileInfo'
-import { constants } from './constants'
+import { fetchFile, calculateHomerStats } from './utils/store'
+import { calculateNewLoads } from './utils/loads'
+import { mergeTables } from './utils/general'
+import { homerFiles, applianceFiles } from './utils/fileInfo'
+import { constants } from './utils/constants'
 configure({ enforceActions: 'observed' })
 
 class MobxStore {
@@ -32,7 +33,7 @@ class MobxStore {
     )
 
     const newLoadColumns = calculateNewLoads({
-      table: mergedTables,
+      table: mergedTables.tableData,
       fields: null,
       tableStats: this.cachedHomerStats,
       constants: constants,

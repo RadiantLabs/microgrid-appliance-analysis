@@ -1,6 +1,6 @@
 import _ from 'lodash'
 // import { toJS } from 'mobx'
-import { findColMin, findColMax, setKeyOrder } from './utils'
+import { findColMin, findColMax, setKeyOrder } from './general'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -65,19 +65,6 @@ export function calculateHomerStats(homer) {
     'Generic 1kWh Lead Acid [ASM] Energy Content'
   )
   return { minBatteryEnergyContent, maxBatteryEnergyContent }
-}
-
-/**
- * Pass in the merged table that includes Homer and Usage factors
- * Also pass in adjustable fields from store and constants that are required
- * to do the calculations
- * @param {*} table
- * @param {*} fields
- * @param {*} tableStats
- * @param {*} constants
- */
-export function calculateNewLoads(table, fields, tableStats, constants) {
-  return { tableData: null, keyOrder: null }
 }
 
 /**
