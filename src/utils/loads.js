@@ -17,46 +17,31 @@ export function calcAvailableCapacity(table, { minBatteryEnergyContent }) {
   })
 }
 
+export function addColumnTitles(columnInfo) {
+  return _.mapValues(columnInfo, (val, key) => key)
+}
+
 /**
  * Pass in the merged table that includes Homer and Usage factors
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
- * @param {*} table
- * @param {*} fields
- * @param {*} tableStats
- * @param {*} constants
  */
 export function calculateNewLoads({ table, fields, tableStats, constants }) {
   const { tableData, keyOrder } = table
   const { minBatteryEnergyContent } = tableStats
 
-  const newColumns = {
+  const columnInfo = {
     _availableCapacity: 'kW',
     _newAvailableCapacity: 'kW',
     _newUnmetLoad: 'kW',
   }
 
   const results = _.map(tableData, (row, rowIndex) => {
-    // TODO: Make this a little more elegant
     if (rowIndex === 0) {
-      return {
-        ...row,
-        ...{
-          _availableCapacity: '_availableCapacity',
-          _newAvailableCapacity: '_newAvailableCapacity',
-          _newUnmetLoad: '_newUnmetLoad',
-        },
-      }
+      return { ...row, ...addColumnTitles(columnInfo) }
     }
     if (rowIndex === 1) {
-      return {
-        ...row,
-        ...{
-          _availableCapacity: 'kW',
-          _newAvailableCapacity: 'kW',
-          _newUnmetLoad: 'kW',
-        },
-      }
+      return { ...row, ...columnInfo }
     }
 
     // Grab existing values:
@@ -80,5 +65,5 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
     }
   })
 
-  return { tableData: results, keyOrder: keyOrder.concat(_.keys(newColumns)) }
+  return { tableData: results, keyOrder: keyOrder.concat(_.keys(columnInfo)) }
 }
