@@ -1,5 +1,7 @@
 ## TODO
 
+- Load Curves
+  - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 - Calculate appliance loads based on usage factors
   - Build component that saves to mobx store only when valid
   - Pass in fields to calculateNewLoads to calculate appliance_load
