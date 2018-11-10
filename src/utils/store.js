@@ -8,6 +8,7 @@ import {
   countGreaterThanZero,
   percentOfYear,
   createGreaterThanZeroHistogram,
+  mergeArraysOfObjects,
 } from './general'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
@@ -90,7 +91,7 @@ export function getSummaryStats(combinedTable) {
     'hour_of_day',
     'totalUnmetLoad'
   )
-
+  const unmetLoadHist = mergeArraysOfObjects('hour_of_day', totalUnmetLoadHist, newUnmetLoadHist)
   return {
     newUnmetLoadCount,
     newUnmetLoadCountPercent,
@@ -100,6 +101,7 @@ export function getSummaryStats(combinedTable) {
     totalUnmetLoadCountPercent,
     totalUnmetLoadSum,
     totalUnmetLoadHist,
+    unmetLoadHist,
   }
 }
 

@@ -3,6 +3,7 @@ import { Menu, Grid } from 'semantic-ui-react'
 import HomerTable from '../ResultTables/HomerTable'
 import ApplianceTable from '../ResultTables/ApplianceTable'
 import CombinedTable from '../ResultTables/CombinedTable'
+import UnmetLoadsChart from '../ResultTables/UnmetLoadsChart'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
@@ -12,13 +13,15 @@ const ActiveView = ({ viewName }) => {
       return <HomerTable />
     case 'appliance0Table':
       return <ApplianceTable applianceIndex={0} />
+    case 'unmetLoads':
+      return <UnmetLoadsChart />
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'combinedTable' }
+  state = { activeItem: 'unmetLoads' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -32,6 +35,13 @@ class ResultsSection extends React.Component {
             name="combinedTable"
             active={activeItem === 'combinedTable'}
             content="Combined Table"
+            onClick={this.handleItemClick}
+          />
+
+          <Menu.Item
+            name="unmetLoads"
+            active={activeItem === 'unmetLoads'}
+            content="Unmet Loads"
             onClick={this.handleItemClick}
           />
 

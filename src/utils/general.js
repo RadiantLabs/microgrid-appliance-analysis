@@ -47,17 +47,16 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
-export const createGreaterThanZeroHistogram = (table, byKey, countKey, integerByKey = true) => {
+export const createGreaterThanZeroHistogram = (table, byKey, countKey, byKeyIsInteger = true) => {
   const counts = _.countBy(table, (row, rowIndex) => {
     if (!_.isNumber(row[byKey])) {
       return 'deleteme'
     }
     return row[countKey] > 0 ? row[byKey] : 'deleteme'
   })
-  const omitted = _.omit(counts, 'deleteme')
-  return _.map(omitted, (val, key) => ({
-    counts: val,
-    [byKey]: integerByKey ? parseInt(key, 10) : key,
+  return _.map(_.omit(counts, 'deleteme'), (val, key) => ({
+    [countKey]: val,
+    [byKey]: byKeyIsInteger ? parseInt(key, 10) : key,
   }))
 }
 
@@ -84,6 +83,15 @@ export function setKeyOrder(rows) {
   return frontItems.concat(_.without(keys, ...frontItems))
 }
 
+// TODO: rewrite to allow passing in more than 2 arrays
+export function mergeArraysOfObjects(joinKey, arr1, arr2) {
+  return _(arr1)
+    .concat(arr2) // Can list multiple arrays to concat here, including calculated columns
+    .groupBy(joinKey)
+    .map(_.spread(_.merge))
+    .value()
+}
+
 // Merge tables based on 'hour' key, taking into account the 2 table headers
 // For now, this will only merge 2 tables. table2 cannot be an array of tables
 export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
@@ -94,6 +102,8 @@ export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
   const table1Data = _.drop(table1, headerCount)
   const table2Headers = _.take(table2, headerCount)
   const table2Data = _.drop(table2, headerCount)
+
+  // TODO: call into the mergeArraysOfObjects function above
   const mergedTable = _(table1Data)
     .concat(table2Data) // Can list multiple arrays to concat here, including calculated columns
     .groupBy(joinKey)

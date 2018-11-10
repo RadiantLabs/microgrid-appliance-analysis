@@ -32,7 +32,12 @@ const GridOperatorSummary = ({ store }) => {
         <Table.Row>
           <Table.Cell>New Unmet Load By Hour</Table.Cell>
           <Table.Cell>
-            <TinyBarChart data={newUnmetLoadHist} x="hour_of_day" y="counts" domain={[0, 23]} />
+            <TinyBarChart
+              data={newUnmetLoadHist}
+              x="hour_of_day"
+              y="newUnmetLoad"
+              domain={[0, 23]}
+            />
           </Table.Cell>
         </Table.Row>
 
@@ -49,7 +54,12 @@ const GridOperatorSummary = ({ store }) => {
         <Table.Row>
           <Table.Cell>Total Unmet Load Sum</Table.Cell>
           <Table.Cell>
-            <TinyBarChart data={totalUnmetLoadHist} x="hour_of_day" y="counts" domain={[0, 23]} />
+            <TinyBarChart
+              data={totalUnmetLoadHist}
+              x="hour_of_day"
+              y="totalUnmetLoad"
+              domain={[0, 23]}
+            />
           </Table.Cell>
         </Table.Row>
       </Table.Body>
