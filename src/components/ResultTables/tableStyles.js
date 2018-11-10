@@ -14,6 +14,9 @@ export const setHeaderStyles = (styles, rowIndex) => {
       ...rowStyles,
       ...{
         borderTop: '1px solid rgba(34,36,38,.1)',
+        borderLeft: '1px solid rgba(34,36,38,.1)',
+        paddingLeft: '0.2rem',
+        paddingRight: '0.2rem',
         overflowWrap: 'break-word',
       },
     }
@@ -21,7 +24,12 @@ export const setHeaderStyles = (styles, rowIndex) => {
   if (rowIndex === 1) {
     rowStyles = {
       ...rowStyles,
-      ...{ borderBottom: '1px solid rgba(34,36,38,.1)' },
+      ...{
+        borderBottom: '1px solid rgba(34,36,38,.1)',
+        borderLeft: '1px solid rgba(34,36,38,.1)',
+        paddingLeft: '0.2rem',
+        paddingRight: '0.2rem',
+      },
     }
   }
   return rowStyles

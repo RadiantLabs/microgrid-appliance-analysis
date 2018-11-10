@@ -16,12 +16,13 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
   const { minBatteryEnergyContent } = tableStats
 
   const columnInfo = {
-    _availableCapacity: 'kW',
-    _newAvailableCapacity: 'kW',
-    _newUnmetLoad: 'kW',
-    _totalUnmetLoad: 'kW',
-    _newApplianceBatteryConsumption: 'kW',
-    _prevBatteryEnergyContentDelta: 'kWh',
+    availableCapacity: 'kW',
+    availableCapacityAfterNewLoad: 'kW',
+    newUnmetLoad: 'kW',
+    newApplianceBatteryConsumption: 'kW',
+    originalBatteryEnergyContentDelta: 'kWh',
+    newApplianceBatteryEnergyContent: 'kWh',
+    totalUnmetLoad: 'kW',
   }
 
   // Reducer function. This is needed so that we can have access to values in
@@ -37,42 +38,54 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
       return result
     }
 
-    // Grab existing values for this row:
+    // Get the previous row (from the original rows, not the new calculated rows)
+    const prevRow = rowIndex < 3 ? {} : rows[rowIndex - 1]
+
+    // Get the previous row from the calculated results (the reason for the reduce function)
+    const prevResult = rowIndex < 3 ? {} : result[rowIndex - 1]
+
+    // Get existing values from this row:
     const excessElecProd = row['Excess Electrical Production']
-    const energyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
     const unmetElecLoad = row['Unmet Electrical Load']
 
-    // Grab values from previous row
-    const prevRow = rowIndex < 3 ? {} : rows[rowIndex - 1]
-    const prevEnergyContent = prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
+    // Get values from previous row
+    const prevBatteryEnergyContent = prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
 
     // Calculate new values:
     const newApplianceLoad = row['appliance_load'] // TODO: This will be calculated based on field
-    const availableCapacity = excessElecProd + energyContent - minBatteryEnergyContent
-    const newAvailableCapacity = availableCapacity - newApplianceLoad
-    const newUnmetLoad = newAvailableCapacity > 0 ? 0 : -newAvailableCapacity
+    const availableCapacity = excessElecProd + batteryEnergyContent - minBatteryEnergyContent
+    const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
+    const newUnmetLoad = availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad
     const totalUnmetLoad = unmetElecLoad + newUnmetLoad
     const newApplianceBatteryConsumption =
       newApplianceLoad > excessElecProd ? newApplianceLoad - excessElecProd : 0
 
     // Original Battery Energy Content Delta
-    const prevBatteryEnergyContentDelta = rowIndex < 3 ? 0 : energyContent - prevEnergyContent
+    const originalBatteryEnergyContentDelta =
+      rowIndex === 2 ? 0 : batteryEnergyContent - prevBatteryEnergyContent
 
     // New Battery Energy Content: This is the hard one and why we need a reducer function instead of map
-    // const newBatteryEnergyContent =
-    //   prevNewBatteryEnergyContent + // Is this even available yet? This was calculated and returned in the last row
-    //   prevBatteryEnergyContentDelta -
-    //   newApplianceBatteryConsumption
+    const prevNewApplianceBatteryEnergyContent =
+      rowIndex === 2 ? 0 : prevResult['newApplianceBatteryEnergyContent']
+
+    const newApplianceBatteryEnergyContent =
+      rowIndex === 2
+        ? batteryEnergyContent + newApplianceBatteryConsumption
+        : prevNewApplianceBatteryEnergyContent +
+          originalBatteryEnergyContentDelta -
+          newApplianceBatteryConsumption
 
     result.push({
       ...row,
       ...{
-        _availableCapacity: _.round(availableCapacity, 2),
-        _newAvailableCapacity: _.round(newAvailableCapacity, 2),
-        _newUnmetLoad: _.round(newUnmetLoad, 2),
-        _totalUnmetLoad: _.round(totalUnmetLoad, 2),
-        _newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 2),
-        _prevBatteryEnergyContentDelta: _.round(prevBatteryEnergyContentDelta, 3),
+        availableCapacity: _.round(availableCapacity, 2),
+        availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 2),
+        newUnmetLoad: _.round(newUnmetLoad, 2),
+        newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 2),
+        originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 3),
+        newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 3),
+        totalUnmetLoad: _.round(totalUnmetLoad, 2),
       },
     })
     return result
@@ -80,9 +93,10 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
 
   // Iterate over tableData, pushing each new row into an array
   const withNewColumns = _.reduce(tableData, columnReducer, [])
+  const keys = _.keys(columnInfo).concat(keyOrder)
 
   return {
     tableData: withNewColumns,
-    keyOrder: keyOrder.concat(_.keys(columnInfo)),
+    keyOrder: ['hour', 'Time'].concat(_.without(keys, ...['hour', 'Time'])),
   }
 }

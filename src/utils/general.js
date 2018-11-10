@@ -27,6 +27,7 @@ export const findColMax = (table, key) => {
 
 // Sort keys manually (key order in objects is never deterministic) so I can put
 // columns I want as fixed columns
+// TODO: make this more generalizable
 export function setKeyOrder(rows) {
   const frontItems = ['hour']
   const keys = _.keys(rows[0])
@@ -36,12 +37,7 @@ export function setKeyOrder(rows) {
 // Merge tables based on 'hour' key, taking into account the 2 table headers
 // For now, this will only merge 2 tables. table2 cannot be an array of tables
 export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
-  if (
-    _.isEmpty(table1) ||
-    !_.isArray(table1) ||
-    _.isEmpty(table2) ||
-    !_.isArray(table2)
-  ) {
+  if (_.isEmpty(table1) || !_.isArray(table1) || _.isEmpty(table2) || !_.isArray(table2)) {
     return null
   }
   const table1Headers = _.take(table1, headerCount)

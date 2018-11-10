@@ -32,8 +32,8 @@ class CombinedTable extends React.Component {
     return (
       <div>
         <h5>
-          cachedHomerStats - min: {cachedHomerStats.minBatteryEnergyContent},
-          max: {cachedHomerStats.minBatteryEnergyContent}
+          cachedHomerStats - min: {cachedHomerStats.minBatteryEnergyContent}, max:{' '}
+          {cachedHomerStats.minBatteryEnergyContent}
         </h5>
         <AutoSizer>
           {({ height, width }) => (
@@ -41,7 +41,7 @@ class CombinedTable extends React.Component {
               cellRenderer={this._cellRenderer}
               columnCount={_.size(combinedTable.keyOrder)}
               columnWidth={100}
-              fixedColumnCount={1}
+              fixedColumnCount={2}
               fixedRowCount={2}
               height={700}
               rowCount={_.size(combinedTable.tableData)}
