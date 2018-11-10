@@ -90,7 +90,6 @@ export function getSummaryStats(combinedTable) {
     'hour_of_day',
     'totalUnmetLoad'
   )
-  // debugger
 
   return {
     newUnmetLoadCount,

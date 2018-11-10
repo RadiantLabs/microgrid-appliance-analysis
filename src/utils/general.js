@@ -47,14 +47,18 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
-export const createGreaterThanZeroHistogram = (table, byKey, countKey) => {
+export const createGreaterThanZeroHistogram = (table, byKey, countKey, integerByKey = true) => {
   const counts = _.countBy(table, (row, rowIndex) => {
     if (!_.isNumber(row[byKey])) {
       return 'deleteme'
     }
     return row[countKey] > 0 ? row[byKey] : 'deleteme'
   })
-  return _.omit(counts, 'deleteme')
+  const omitted = _.omit(counts, 'deleteme')
+  return _.map(omitted, (val, key) => ({
+    counts: val,
+    [byKey]: integerByKey ? parseInt(key, 10) : key,
+  }))
 }
 
 export const percentOfYear = count => {
