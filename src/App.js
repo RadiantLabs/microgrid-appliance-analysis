@@ -9,7 +9,7 @@ import { Menu } from 'semantic-ui-react'
 import InputExample from './components/InputExample'
 import { NavItem } from './components/NavItem'
 import About from './components/About'
-import TodoExample from './components/Todo'
+// import TodoExample from './components/Todo'
 import Home from './components/Home'
 import './App.css'
 
@@ -21,13 +21,13 @@ const App = () => (
           <Menu.Item as={NavItem} to="/" name="home" />
           <Menu.Item as={NavItem} to="/input-example" name="input-example" />
           <Menu.Item as={NavItem} to="/about" name="about" />
-          <Menu.Item as={NavItem} to="/todo" name="todo" />
+          {/* <Menu.Item as={NavItem} to="/todo" name="todo" /> */}
         </Menu>
         <div className="mainContent">
           <Route exact={true} path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/input-example" component={InputExample} />
-          <Route path="/todo" component={TodoExample} />
+          {/* <Route path="/todo" component={TodoExample} /> */}
         </div>
         <DevTools />
       </ApolloProvider>
