@@ -7,6 +7,7 @@ import {
   sumGreaterThanZero,
   countGreaterThanZero,
   percentOfYear,
+  createGreaterThanZeroHistogram,
 } from './general'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
@@ -79,19 +80,27 @@ export function getSummaryStats(combinedTable) {
   const newUnmetLoadCount = countGreaterThanZero(tableData, 'newUnmetLoad')
   const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
   const newUnmetLoadSum = sumGreaterThanZero(tableData, 'newUnmetLoad')
+  const newUnmetLoadHist = createGreaterThanZeroHistogram(tableData, 'hour_of_day', 'newUnmetLoad')
 
   const totalUnmetLoadCount = countGreaterThanZero(tableData, 'totalUnmetLoad')
   const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
   const totalUnmetLoadSum = sumGreaterThanZero(tableData, 'totalUnmetLoad')
-  debugger
+  const totalUnmetLoadHist = createGreaterThanZeroHistogram(
+    tableData,
+    'hour_of_day',
+    'totalUnmetLoad'
+  )
+  // debugger
 
   return {
     newUnmetLoadCount,
     newUnmetLoadCountPercent,
     newUnmetLoadSum,
+    newUnmetLoadHist,
     totalUnmetLoadCount,
     totalUnmetLoadCountPercent,
     totalUnmetLoadSum,
+    totalUnmetLoadHist,
   }
 }
 

@@ -47,6 +47,16 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
+export const createGreaterThanZeroHistogram = (table, byKey, countKey) => {
+  const counts = _.countBy(table, (row, rowIndex) => {
+    if (!_.isNumber(row[byKey])) {
+      return 'deleteme'
+    }
+    return row[countKey] > 0 ? row[byKey] : 'deleteme'
+  })
+  return _.omit(counts, 'deleteme')
+}
+
 export const percentOfYear = count => {
   return _.isFinite(count) ? _.round((count / HOURS_PER_YEAR) * 100, 1) : '-'
 }
