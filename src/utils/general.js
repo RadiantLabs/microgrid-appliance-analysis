@@ -12,7 +12,7 @@ export const arrayInsert = (arr, item, index) => {
   return [...arr.slice(0, index), item, ...arr.slice(index + 1)]
 }
 
-const checkKey = (table, key) => {
+export const checkKey = (table, key) => {
   if (!_.has(_.first(table), key)) {
     throw new Error(`Can't find key: ${key}: Check calling function`)
   }
