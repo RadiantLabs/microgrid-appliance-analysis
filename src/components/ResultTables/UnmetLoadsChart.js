@@ -2,11 +2,9 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Loader'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 
 // TODO:
-// Units on tooltip
-// title
 // Summary Stats
 class UnmetLoadsChart extends React.Component {
   render() {
@@ -17,7 +15,7 @@ class UnmetLoadsChart extends React.Component {
     const { unmetLoadHist } = summaryStats
     return (
       <div>
-        <h5>Unmet Loads</h5>
+        <h5>Unmet Loads by Hour of Day (kW)</h5>
         <BarChart
           width={900}
           height={400}

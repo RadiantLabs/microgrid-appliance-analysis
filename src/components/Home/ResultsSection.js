@@ -4,6 +4,7 @@ import HomerTable from '../ResultTables/HomerTable'
 import ApplianceTable from '../ResultTables/ApplianceTable'
 import CombinedTable from '../ResultTables/CombinedTable'
 import UnmetLoadsChart from '../ResultTables/UnmetLoadsChart'
+import LoadCurves from '../ResultTables/LoadCurves'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
@@ -15,13 +16,15 @@ const ActiveView = ({ viewName }) => {
       return <ApplianceTable applianceIndex={0} />
     case 'unmetLoads':
       return <UnmetLoadsChart />
+    case 'loadCurves':
+      return <LoadCurves />
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'unmetLoads' }
+  state = { activeItem: 'loadCurves' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -39,9 +42,16 @@ class ResultsSection extends React.Component {
           />
 
           <Menu.Item
+            name="loadCurves"
+            active={activeItem === 'loadCurves'}
+            content="Loads by Hour of Year"
+            onClick={this.handleItemClick}
+          />
+
+          <Menu.Item
             name="unmetLoads"
             active={activeItem === 'unmetLoads'}
-            content="Unmet Loads"
+            content="Unmet Loads By Hour"
             onClick={this.handleItemClick}
           />
 
