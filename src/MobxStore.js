@@ -1,10 +1,9 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed } from 'mobx'
-import { fetchFile, calculateHomerStats } from './utils/store'
+import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
 import { mergeTables } from './utils/general'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
-import { constants } from './utils/constants'
 configure({ enforceActions: 'observed' })
 
 class MobxStore {
@@ -25,12 +24,16 @@ class MobxStore {
       table: mergedTables,
       fields: null,
       tableStats: this.homerStats,
-      constants: constants,
+      constants: {},
     })
   }
 
   get homerStats() {
-    return _.isEmpty(this.activeHomer) ? {} : calculateHomerStats(this.activeHomer)
+    return _.isEmpty(this.activeHomer) ? null : getHomerStats(this.activeHomer)
+  }
+
+  get summaryStats() {
+    return _.isEmpty(this.combinedTable) ? null : getSummaryStats(this.combinedTable)
   }
 
   async fetchHomer(fileInfo) {
@@ -51,6 +54,7 @@ decorate(MobxStore, {
   fetchAppliance: action,
   combinedTable: computed,
   homerStats: computed,
+  summaryStats: computed,
 })
 
 export let mobxStore = new MobxStore()

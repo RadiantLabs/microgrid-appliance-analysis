@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { HOURS_PER_YEAR } from './constants'
 
 // import { toJS } from 'mobx'
 
@@ -11,8 +12,43 @@ export const arrayInsert = (arr, item, index) => {
   return [...arr.slice(0, index), item, ...arr.slice(index + 1)]
 }
 
+const checkKey = (table, key) => {
+  if (!_.has(_.first(table), key)) {
+    throw new Error(`Can't find key: ${key}: Check calling function`)
+  }
+}
+
 export const filterNums = (table, key) => {
-  return _.filter(_.map(table, key), _.isNumber)
+  checkKey(table, key)
+  return _.chain(table)
+    .map(key)
+    .filter(_.isNumber)
+    .value()
+}
+
+export const countGreaterThanZero = (table, key) => {
+  checkKey(table, key)
+  return _.chain(table)
+    .map(key)
+    .filter(_.isNumber)
+    .filter(num => num > 0)
+    .size()
+    .value()
+}
+
+export const sumGreaterThanZero = (table, key) => {
+  checkKey(table, key)
+  return _.chain(table)
+    .map(key)
+    .filter(_.isNumber)
+    .filter(num => num > 0)
+    .sum()
+    .round(2)
+    .value()
+}
+
+export const percentOfYear = count => {
+  return _.isFinite(count) ? _.round((count / HOURS_PER_YEAR) * 100, 1) : '-'
 }
 
 // Pass in an array of objects and a key, finds the min value for that key.

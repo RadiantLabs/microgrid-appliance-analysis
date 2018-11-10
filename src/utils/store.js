@@ -1,6 +1,13 @@
 import _ from 'lodash'
 // import { toJS } from 'mobx'
-import { findColMin, findColMax, setKeyOrder } from './general'
+import {
+  findColMin,
+  findColMax,
+  setKeyOrder,
+  sumGreaterThanZero,
+  countGreaterThanZero,
+  percentOfYear,
+} from './general'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true }
 
@@ -55,7 +62,7 @@ export function processApplianceFile(rows) {
   return { tableData, keyOrder }
 }
 
-export function calculateHomerStats(homer) {
+export function getHomerStats(homer) {
   const minBatteryEnergyContent = findColMin(
     homer.tableData,
     'Generic 1kWh Lead Acid [ASM] Energy Content'
@@ -65,6 +72,27 @@ export function calculateHomerStats(homer) {
     'Generic 1kWh Lead Acid [ASM] Energy Content'
   )
   return { minBatteryEnergyContent, maxBatteryEnergyContent }
+}
+
+export function getSummaryStats(combinedTable) {
+  const { tableData } = combinedTable
+  const newUnmetLoadCount = countGreaterThanZero(tableData, 'newUnmetLoad')
+  const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
+  const newUnmetLoadSum = sumGreaterThanZero(tableData, 'newUnmetLoad')
+
+  const totalUnmetLoadCount = countGreaterThanZero(tableData, 'totalUnmetLoad')
+  const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
+  const totalUnmetLoadSum = sumGreaterThanZero(tableData, 'totalUnmetLoad')
+  debugger
+
+  return {
+    newUnmetLoadCount,
+    newUnmetLoadCountPercent,
+    newUnmetLoadSum,
+    totalUnmetLoadCount,
+    totalUnmetLoadCountPercent,
+    totalUnmetLoadSum,
+  }
 }
 
 /**
@@ -86,9 +114,7 @@ export async function fetchFile(fileInfo) {
       case 'appliance':
         return processApplianceFile(data)
       default:
-        throw new Error(
-          `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`
-        )
+        throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
     }
   } catch (error) {
     console.log(`File load fail for : ${JSON.stringify(fileInfo)} `, error)
