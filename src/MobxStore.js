@@ -1,12 +1,5 @@
 import _ from 'lodash'
-import {
-  configure,
-  observable,
-  decorate,
-  action,
-  runInAction,
-  computed,
-} from 'mobx'
+import { configure, observable, decorate, action, runInAction, computed } from 'mobx'
 import { fetchFile, calculateHomerStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
 import { mergeTables } from './utils/general'
@@ -27,25 +20,17 @@ class MobxStore {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliances)) {
       return null
     }
-    const mergedTables = mergeTables(
-      this.activeHomer.tableData,
-      this.activeAppliances[0].tableData
-    )
-
-    const withNewLoadColumns = calculateNewLoads({
+    const mergedTables = mergeTables(this.activeHomer.tableData, this.activeAppliances[0].tableData)
+    return calculateNewLoads({
       table: mergedTables,
       fields: null,
-      tableStats: this.cachedHomerStats,
+      tableStats: this.homerStats,
       constants: constants,
     })
-    console.log('withNewLoadColumns: ', withNewLoadColumns)
-    return withNewLoadColumns
   }
 
-  get cachedHomerStats() {
-    return _.isEmpty(this.activeHomer)
-      ? {}
-      : calculateHomerStats(this.activeHomer)
+  get homerStats() {
+    return _.isEmpty(this.activeHomer) ? {} : calculateHomerStats(this.activeHomer)
   }
 
   async fetchHomer(fileInfo) {
@@ -65,7 +50,7 @@ decorate(MobxStore, {
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
-  cachedHomerStats: computed,
+  homerStats: computed,
 })
 
 export let mobxStore = new MobxStore()

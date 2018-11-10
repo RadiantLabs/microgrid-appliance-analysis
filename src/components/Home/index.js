@@ -19,13 +19,13 @@ const Home = () => (
       </Grid.Column>
       <Grid.Column>
         <Segment>
-          <h3>Appliance Operator Summary</h3>
+          <h3>Grid Operator Summary</h3>
           <p>Pellentesque habitant morbi tristique senectus.</p>
         </Segment>
       </Grid.Column>
       <Grid.Column>
         <Segment>
-          <h3>Grid Operator Summary</h3>
+          <h3>Appliance Operator Summary</h3>
           <p>Pellentesque habitant morbi tristique senectus.</p>
         </Segment>
       </Grid.Column>
