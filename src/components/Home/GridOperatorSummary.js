@@ -6,15 +6,19 @@ import { TinyBarChart } from '../Charts/TinyBar'
 
 const GridOperatorSummary = ({ store }) => {
   const { summaryStats } = store
-  const newUnmetLoadCount = _.get(summaryStats, 'newUnmetLoadCount', '-')
-  const newUnmetLoadCountPercent = _.get(summaryStats, 'newUnmetLoadCountPercent', '-')
-  const newUnmetLoadSum = _.get(summaryStats, 'newUnmetLoadSum', '-')
-  const newUnmetLoadHist = _.get(summaryStats, 'newUnmetLoadHist', [])
+  const additionalUnmetLoadCount = _.get(summaryStats, 'additionalUnmetLoadCount', '-')
+  const additionalUnmetLoadCountPercent = _.get(
+    summaryStats,
+    'additionalUnmetLoadCountPercent',
+    '-'
+  )
+  const additionalUnmetLoadSum = _.get(summaryStats, 'additionalUnmetLoadSum', '-')
+  const additionalUnmetLoadHist = _.get(summaryStats, 'additionalUnmetLoadHist', [])
 
-  const totalUnmetLoadCount = _.get(summaryStats, 'totalUnmetLoadCount', '-')
-  const totalUnmetLoadCountPercent = _.get(summaryStats, 'totalUnmetLoadCountPercent', '-')
-  const totalUnmetLoadSum = _.get(summaryStats, 'totalUnmetLoadSum', '-')
-  const totalUnmetLoadHist = _.get(summaryStats, 'totalUnmetLoadHist', [])
+  const newTotalUnmetLoadCount = _.get(summaryStats, 'newTotalUnmetLoadCount', '-')
+  const newTotalUnmetLoadCountPercent = _.get(summaryStats, 'newTotalUnmetLoadCountPercent', '-')
+  const newTotalUnmetLoadSum = _.get(summaryStats, 'newTotalUnmetLoadSum', '-')
+  const newTotalUnmetLoadHist = _.get(summaryStats, 'newTotalUnmetLoadHist', [])
 
   return (
     <Table basic="very" celled collapsing>
@@ -22,46 +26,46 @@ const GridOperatorSummary = ({ store }) => {
         <Table.Row>
           <Table.Cell>New Unmet Load Count</Table.Cell>
           <Table.Cell>
-            {newUnmetLoadCount} hr/year <em> ({newUnmetLoadCountPercent} %)</em>
+            {additionalUnmetLoadCount} hr/year <em> ({additionalUnmetLoadCountPercent} %)</em>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>New Unmet Load Sum</Table.Cell>
-          <Table.Cell>{newUnmetLoadSum} kWh</Table.Cell>
+          <Table.Cell>{additionalUnmetLoadSum} kWh</Table.Cell>
         </Table.Row>
-        <Table.Row>
+        {/* <Table.Row>
           <Table.Cell>New Unmet Load By Hour</Table.Cell>
           <Table.Cell>
             <TinyBarChart
-              data={newUnmetLoadHist}
+              data={additionalUnmetLoadHist}
               x="hour_of_day"
-              y="newUnmetLoad"
+              y="additionalUnmetLoad"
               domain={[0, 23]}
             />
           </Table.Cell>
-        </Table.Row>
+        </Table.Row> */}
 
         <Table.Row>
           <Table.Cell>Total Unmet Load Count</Table.Cell>
           <Table.Cell>
-            {totalUnmetLoadCount} hr/year <em> ({totalUnmetLoadCountPercent} %)</em>
+            {newTotalUnmetLoadCount} hr/year <em> ({newTotalUnmetLoadCountPercent} %)</em>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Total Unmet Load Sum</Table.Cell>
-          <Table.Cell>{totalUnmetLoadSum} kWh</Table.Cell>
+          <Table.Cell>{newTotalUnmetLoadSum} kWh</Table.Cell>
         </Table.Row>
-        <Table.Row>
-          <Table.Cell>Total Unmet Load Sum</Table.Cell>
+        {/* <Table.Row>
+          <Table.Cell>New Total Unmet Load By Hour</Table.Cell>
           <Table.Cell>
             <TinyBarChart
-              data={totalUnmetLoadHist}
+              data={newTotalUnmetLoadHist}
               x="hour_of_day"
-              y="totalUnmetLoad"
+              y="newTotalUnmetLoad"
               domain={[0, 23]}
             />
           </Table.Cell>
-        </Table.Row>
+        </Table.Row> */}
       </Table.Body>
     </Table>
   )

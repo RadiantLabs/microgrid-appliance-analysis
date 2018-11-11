@@ -78,29 +78,37 @@ export function getHomerStats(homer) {
 
 export function getSummaryStats(combinedTable) {
   const { tableData } = combinedTable
-  const newUnmetLoadCount = countGreaterThanZero(tableData, 'newUnmetLoad')
-  const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
-  const newUnmetLoadSum = sumGreaterThanZero(tableData, 'newUnmetLoad')
-  const newUnmetLoadHist = createGreaterThanZeroHistogram(tableData, 'hour_of_day', 'newUnmetLoad')
-
-  const totalUnmetLoadCount = countGreaterThanZero(tableData, 'totalUnmetLoad')
-  const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
-  const totalUnmetLoadSum = sumGreaterThanZero(tableData, 'totalUnmetLoad')
-  const totalUnmetLoadHist = createGreaterThanZeroHistogram(
+  const additionalUnmetLoadCount = countGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
+  const additionalUnmetLoadSum = sumGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
-    'totalUnmetLoad'
+    'additionalUnmetLoad'
   )
-  const unmetLoadHist = mergeArraysOfObjects('hour_of_day', totalUnmetLoadHist, newUnmetLoadHist)
+
+  const newTotalUnmetLoadCount = countGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
+  const newTotalUnmetLoadSum = sumGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
+    tableData,
+    'hour_of_day',
+    'newTotalUnmetLoad'
+  )
+  const unmetLoadHist = mergeArraysOfObjects(
+    'hour_of_day',
+    newTotalUnmetLoadHist,
+    additionalUnmetLoadHist
+  )
   return {
-    newUnmetLoadCount,
-    newUnmetLoadCountPercent,
-    newUnmetLoadSum,
-    newUnmetLoadHist,
-    totalUnmetLoadCount,
-    totalUnmetLoadCountPercent,
-    totalUnmetLoadSum,
-    totalUnmetLoadHist,
+    additionalUnmetLoadCount,
+    additionalUnmetLoadCountPercent,
+    additionalUnmetLoadSum,
+    additionalUnmetLoadHist,
+    newTotalUnmetLoadCount,
+    newTotalUnmetLoadCountPercent,
+    newTotalUnmetLoadSum,
+    newTotalUnmetLoadHist,
     unmetLoadHist,
   }
 }

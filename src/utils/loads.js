@@ -18,11 +18,11 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
   const columnInfo = {
     availableCapacity: 'kW',
     availableCapacityAfterNewLoad: 'kW',
-    newUnmetLoad: 'kW',
+    additionalUnmetLoad: 'kW',
     newApplianceBatteryConsumption: 'kW',
     originalBatteryEnergyContentDelta: 'kWh',
     newApplianceBatteryEnergyContent: 'kWh',
-    totalUnmetLoad: 'kW',
+    newTotalUnmetLoad: 'kW',
   }
 
   // Reducer function. This is needed so that we can have access to values in
@@ -56,8 +56,9 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
     const newApplianceLoad = row['appliance_load'] // TODO: This will be calculated based on field
     const availableCapacity = excessElecProd + batteryEnergyContent - minBatteryEnergyContent
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
-    const newUnmetLoad = availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad
-    const totalUnmetLoad = unmetElecLoad + newUnmetLoad
+    const additionalUnmetLoad =
+      availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad
+    const newTotalUnmetLoad = unmetElecLoad + additionalUnmetLoad
     const newApplianceBatteryConsumption =
       newApplianceLoad > excessElecProd ? newApplianceLoad - excessElecProd : 0
 
@@ -81,11 +82,11 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
       ...{
         availableCapacity: _.round(availableCapacity, 2),
         availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 2),
-        newUnmetLoad: _.round(newUnmetLoad, 2),
+        additionalUnmetLoad: _.round(additionalUnmetLoad, 2),
         newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 2),
         originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 3),
         newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 3),
-        totalUnmetLoad: _.round(totalUnmetLoad, 2),
+        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 2),
       },
     })
     return result

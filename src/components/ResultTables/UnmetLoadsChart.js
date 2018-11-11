@@ -25,8 +25,8 @@ class UnmetLoadsChart extends React.Component {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="newUnmetLoad" fill="#8884d8" />
-          <Bar dataKey="totalUnmetLoad" fill="#82ca9d" />
+          <Bar dataKey="additionalUnmetLoad" fill="#8884d8" />
+          <Bar dataKey="newTotalUnmetLoad" fill="#82ca9d" />
         </BarChart>
       </div>
     )
