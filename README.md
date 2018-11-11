@@ -8,8 +8,6 @@
     - Additional Unmet Load
     - When battery state of charge floor is first hit (as percent specified by user - 52.46135%), then take the energy content from the battery (29.97862)
 
--
-
 * Load Curves
   - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 * Calculate appliance loads based on usage factors
@@ -24,7 +22,6 @@
     - CAPEX
     - OPEX
     - add hour offset
-    - add seasonal derating factor
 * Split out Jupyter notebooks into their own repo
 * Parse dates on HOMER and Usage profiles so I can chart by date instead of hour of year
 

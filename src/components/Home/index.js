@@ -2,14 +2,15 @@ import * as React from 'react'
 import { Grid, Segment } from 'semantic-ui-react'
 import ResultsSection from './ResultsSection'
 import GridOperatorSummary from './GridOperatorSummary'
+import ModelInputs from './ModelInputs'
 
 const Home = () => (
   <Grid columns="equal">
     <Grid.Row>
       <Grid.Column>
         <Segment>
-          <h3>Col 1</h3>
-          <p>Pellentesque habitant morbi tristique senectus.</p>
+          <h3>Inputs</h3>
+          <ModelInputs />
         </Segment>
       </Grid.Column>
       <Grid.Column>

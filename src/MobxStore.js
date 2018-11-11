@@ -7,12 +7,15 @@ import { homerFiles, applianceFiles } from './utils/fileInfo'
 configure({ enforceActions: 'observed' })
 
 class MobxStore {
-  activeHomer = null
-  activeAppliances = []
-
   constructor() {
     this.fetchHomer(homerFiles[0])
     this.fetchAppliance(applianceFiles[0])
+  }
+
+  activeHomer = null
+  activeAppliances = []
+  modelInputs = {
+    homerMinStateOfChargePercent: 52.46,
   }
 
   get combinedTable() {
@@ -50,6 +53,7 @@ class MobxStore {
 decorate(MobxStore, {
   activeHomer: observable,
   activeAppliances: observable,
+  modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
