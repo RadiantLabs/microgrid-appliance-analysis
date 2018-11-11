@@ -87,8 +87,8 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
     // What is the battery consumption (kW) now that we have a new appliance on the grid?
     // If the new appliance load is greater than the excess electrical production, we are
     // draining the battery by the difference between new load and the excess production.
-    // If the excess load is greater than the new appliance load, then we aren't draining
-    // the battery.
+    // If the excess electrical production is greater than the new appliance load, then we
+    // aren't draining the battery.
     // excessElecProd is the excess after taking into acount the original load
     const newApplianceBatteryConsumption =
       newApplianceLoad > excessElecProd ? newApplianceLoad - excessElecProd : 0
