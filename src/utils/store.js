@@ -89,14 +89,19 @@ export function getHomerStats(homer) {
   // of charge) and the energy content. So to find the useful minimum energy content, look up
   // the state of charge when we *first* hit the specified minimum percent.
   // HOMER starts out the year with a fully charged battery
+
+  // TODO: How to make this more robust by using a <= or >= or deciles?
+  // This is inherently fragile. At least it falls back to the absolute min value if nothing is found
   const minBatteryStateOfChargeId = _.findIndex(homer.tableData, row => {
     return (
-      _.round(row['Generic 1kWh Lead Acid [ASM] State of Charge'], 3) ===
-      _.round(minBatteryStateOfCharge, 3)
+      _.round(row['Generic 1kWh Lead Acid [ASM] State of Charge']) ===
+      _.round(minBatteryStateOfCharge)
     )
   })
   const effectiveMinBatteryEnergyContent =
-    homer.tableData[minBatteryStateOfChargeId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+    minBatteryStateOfChargeId > 0
+      ? homer.tableData[minBatteryStateOfChargeId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+      : minBatteryStateOfCharge
 
   return {
     minBatteryEnergyContent,

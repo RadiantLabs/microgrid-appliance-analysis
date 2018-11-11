@@ -15,7 +15,7 @@ class UnmetLoadsChart extends React.Component {
     const { unmetLoadHist } = summaryStats
     return (
       <div>
-        <h5>Unmet Loads by Hour of Day (kW)</h5>
+        <h5>Unmet Loads by Hour of Day (Average kW for 1 hour)</h5>
         <BarChart
           width={900}
           height={400}

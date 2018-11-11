@@ -2,12 +2,13 @@
 
 - FIXES:
 
-  - fix Available Capacity
-  - min percent of charge for the batttery -> make a field. Default it 52.46135.
-    - Total Unmet Load -> Original Unmet Load
-    - Additional Unmet Load
-    - When battery state of charge floor is first hit (as percent specified by user - 52.46135%), then take the energy content from the battery (29.97862). This is a homerStats() calculation
+  - [x] fix Available Capacity
+  - [x] min percent of charge for the batttery -> make a field. Default it 52.46135.
+    - [x]Total Unmet Load -> Original Unmet Load
+    - [x] Additional Unmet Load
+    - [x] When battery state of charge floor is first hit (as percent specified by user - 52.46135%), then take the energy content from the battery (29.97862). This is a homerStats() calculation
 
+* Min State of chart is fragile. Find a more robust way of finding the floor
 * Load Curves
   - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 * Calculate appliance loads based on usage factors

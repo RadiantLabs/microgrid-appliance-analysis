@@ -11,9 +11,9 @@ export function addColumnTitles(columnInfo) {
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
  */
-export function calculateNewLoads({ table, fields, tableStats, constants }) {
+export function calculateNewLoads({ table, fields, homerStats, constants }) {
   const { tableData, keyOrder } = table
-  const { minBatteryEnergyContent } = tableStats
+  const { effectiveMinBatteryEnergyContent, minBatteryStateOfCharge } = homerStats
 
   const columnInfo = {
     availableCapacity: 'kW',
@@ -47,6 +47,7 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
     // Get existing values from this row:
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const batteryStateOfCharge = row['Generic 1kWh Lead Acid [ASM] State of Charge']
     const unmetElecLoad = row['Unmet Electrical Load']
 
     // Get values from previous row
@@ -54,7 +55,13 @@ export function calculateNewLoads({ table, fields, tableStats, constants }) {
 
     // Calculate new values:
     const newApplianceLoad = row['appliance_load'] // TODO: This will be calculated based on field
-    const availableCapacity = excessElecProd + batteryEnergyContent - minBatteryEnergyContent
+
+    // TODO: Need to implement a calculation that looks at the floor
+    // Dupelicate Adam's spreadsheet and see if I can do Z17>52.46135
+    const energyContentAboveMin = batteryEnergyContent - effectiveMinBatteryEnergyContent
+    const availableCapacity =
+      excessElecProd + (batteryStateOfCharge <= minBatteryStateOfCharge ? 0 : energyContentAboveMin)
+
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
     const additionalUnmetLoad =
       availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad

@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Loader'
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Brush, Legend } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, Brush, Legend } from 'recharts'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines

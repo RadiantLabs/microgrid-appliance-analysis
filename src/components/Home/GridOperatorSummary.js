@@ -2,7 +2,7 @@ import * as React from 'react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
-import { TinyBarChart } from '../Charts/TinyBar'
+// import { TinyBarChart } from '../Charts/TinyBar'
 
 const GridOperatorSummary = ({ store }) => {
   const { summaryStats } = store
@@ -13,12 +13,12 @@ const GridOperatorSummary = ({ store }) => {
     '-'
   )
   const additionalUnmetLoadSum = _.get(summaryStats, 'additionalUnmetLoadSum', '-')
-  const additionalUnmetLoadHist = _.get(summaryStats, 'additionalUnmetLoadHist', [])
+  // const additionalUnmetLoadHist = _.get(summaryStats, 'additionalUnmetLoadHist', [])
 
   const newTotalUnmetLoadCount = _.get(summaryStats, 'newTotalUnmetLoadCount', '-')
   const newTotalUnmetLoadCountPercent = _.get(summaryStats, 'newTotalUnmetLoadCountPercent', '-')
   const newTotalUnmetLoadSum = _.get(summaryStats, 'newTotalUnmetLoadSum', '-')
-  const newTotalUnmetLoadHist = _.get(summaryStats, 'newTotalUnmetLoadHist', [])
+  // const newTotalUnmetLoadHist = _.get(summaryStats, 'newTotalUnmetLoadHist', [])
 
   return (
     <Table basic="very" celled collapsing>

@@ -23,7 +23,7 @@ class MobxStore {
     return calculateNewLoads({
       table: mergedTables,
       fields: null,
-      tableStats: this.homerStats,
+      homerStats: this.homerStats,
       constants: {},
     })
   }
