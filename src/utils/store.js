@@ -110,7 +110,9 @@ export function getHomerStats(homer) {
   // We need to understand HOMER's algorithms better
   const effectiveMinBatteryEnergyContent =
     minBatteryStateOfChargeRowId > 0
-      ? homer.tableData[minBatteryStateOfChargeRowId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+      ? homer.tableData[minBatteryStateOfChargeRowId][
+          'Generic 1kWh Lead Acid [ASM] Energy Content'
+        ]
       : minBatteryStateOfCharge
 
   return {
@@ -124,18 +126,32 @@ export function getHomerStats(homer) {
 
 export function getSummaryStats(combinedTable) {
   const { tableData } = combinedTable
-  const additionalUnmetLoadCount = countGreaterThanZero(tableData, 'additionalUnmetLoad')
-  const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
-  const additionalUnmetLoadSum = sumGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadCount = countGreaterThanZero(
+    tableData,
+    'additionalUnmetLoad'
+  )
+  const additionalUnmetLoadCountPercent = percentOfYear(
+    additionalUnmetLoadCount
+  )
+  const additionalUnmetLoadSum = sumGreaterThanZero(
+    tableData,
+    'additionalUnmetLoad'
+  )
   const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
     'additionalUnmetLoad'
   )
 
-  const newTotalUnmetLoadCount = countGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadCount = countGreaterThanZero(
+    tableData,
+    'newTotalUnmetLoad'
+  )
   const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadSum = sumGreaterThanZero(
+    tableData,
+    'newTotalUnmetLoad'
+  )
   const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
@@ -178,7 +194,9 @@ export async function fetchFile(fileInfo) {
       case 'appliance':
         return processApplianceFile(data)
       default:
-        throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
+        throw new Error(
+          `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`
+        )
     }
   } catch (error) {
     console.log(`File load fail for : ${JSON.stringify(fileInfo)} `, error)

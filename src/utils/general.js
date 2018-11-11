@@ -47,7 +47,12 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
-export const createGreaterThanZeroHistogram = (table, byKey, countKey, byKeyIsInteger = true) => {
+export const createGreaterThanZeroHistogram = (
+  table,
+  byKey,
+  countKey,
+  byKeyIsInteger = true
+) => {
   const counts = _.countBy(table, (row, rowIndex) => {
     if (!_.isNumber(row[byKey])) {
       return 'deleteme'
@@ -95,7 +100,12 @@ export function mergeArraysOfObjects(joinKey, arr1, arr2) {
 // Merge tables based on 'hour' key, taking into account the 2 table headers
 // For now, this will only merge 2 tables. table2 cannot be an array of tables
 export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
-  if (_.isEmpty(table1) || !_.isArray(table1) || _.isEmpty(table2) || !_.isArray(table2)) {
+  if (
+    _.isEmpty(table1) ||
+    !_.isArray(table1) ||
+    _.isEmpty(table2) ||
+    !_.isArray(table2)
+  ) {
     return null
   }
   const table1Headers = _.take(table1, headerCount)
