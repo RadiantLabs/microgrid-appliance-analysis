@@ -4,16 +4,16 @@ import HomerTable from '../ResultTables/HomerTable'
 import ApplianceTable from '../ResultTables/ApplianceTable'
 import CombinedTable from '../ResultTables/CombinedTable'
 import UnmetLoadsChart from '../ResultTables/UnmetLoadsChart'
-import LoadCurves from '../ResultTables/LoadCurves'
+import AvailableLoadChart from '../ResultTables/AvailableLoadChart'
 import BatteryEnergyContentChart from '../ResultTables/BatteryEnergyContentChart'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
-    case 'loadCurves':
-      return <LoadCurves />
-    case 'unmetLoads':
+    case 'availableLoadChart':
+      return <AvailableLoadChart />
+    case 'unmetLoadChart':
       return <UnmetLoadsChart />
-    case 'batteryEnergyContent':
+    case 'batteryEnergyContentChart':
       return <BatteryEnergyContentChart />
     case 'combinedTable':
       return <CombinedTable />
@@ -27,7 +27,7 @@ const ActiveView = ({ viewName }) => {
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'loadCurves' }
+  state = { activeItem: 'availableLoadChart' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -38,22 +38,22 @@ class ResultsSection extends React.Component {
       <div>
         <Menu>
           <Menu.Item
-            name="loadCurves"
-            active={activeItem === 'loadCurves'}
+            name="availableLoadChart"
+            active={activeItem === 'availableLoadChart'}
             content="Loads by Hour of Year"
             onClick={this.handleItemClick}
           />
 
           <Menu.Item
-            name="unmetLoads"
-            active={activeItem === 'unmetLoads'}
+            name="unmetLoadChart"
+            active={activeItem === 'unmetLoadChart'}
             content="Unmet Loads By Hour"
             onClick={this.handleItemClick}
           />
 
           <Menu.Item
-            name="batteryEnergyContent"
-            active={activeItem === 'batteryEnergyContent'}
+            name="batteryEnergyContentChart"
+            active={activeItem === 'batteryEnergyContentChart'}
             content="Battery Energy Content"
             onClick={this.handleItemClick}
           />

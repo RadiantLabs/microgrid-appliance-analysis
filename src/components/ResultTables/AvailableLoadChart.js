@@ -8,7 +8,7 @@ import { getChartColors, greyColors } from '../../utils/constants'
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 // Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
-class LoadCurves extends React.Component {
+class AvailableLoadChart extends React.Component {
   render() {
     const { combinedTable, summaryStats, homerStats } = this.props.store
     if (_.isEmpty(combinedTable)) {
@@ -62,4 +62,4 @@ class LoadCurves extends React.Component {
   }
 }
 
-export default inject('store')(observer(LoadCurves))
+export default inject('store')(observer(AvailableLoadChart))
