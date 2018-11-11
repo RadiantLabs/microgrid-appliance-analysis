@@ -73,7 +73,38 @@ export function getHomerStats(homer) {
     homer.tableData,
     'Generic 1kWh Lead Acid [ASM] Energy Content'
   )
-  return { minBatteryEnergyContent, maxBatteryEnergyContent }
+  const minBatteryStateOfCharge = findColMin(
+    homer.tableData,
+    'Generic 1kWh Lead Acid [ASM] State of Charge'
+  )
+  const maxBatteryStateOfCharge = findColMax(
+    homer.tableData,
+    'Generic 1kWh Lead Acid [ASM] State of Charge'
+  )
+
+  // TODO: Ask Adam about this explanation. This seems fragile
+  // When creating a HOMER run, the user determines the minimum (suggested) percent that the
+  // battery discharges. In theory, this determines the minimum energy content (kWh) of the
+  // battery. But apparently there is a non-linear relationship with the charge percent (state
+  // of charge) and the energy content. So to find the useful minimum energy content, look up
+  // the state of charge when we *first* hit the specified minimum percent.
+  // HOMER starts out the year with a fully charged battery
+  const minBatteryStateOfChargeId = _.findIndex(homer.tableData, row => {
+    return (
+      _.round(row['Generic 1kWh Lead Acid [ASM] State of Charge'], 3) ===
+      _.round(minBatteryStateOfCharge, 3)
+    )
+  })
+  const effectiveMinBatteryEnergyContent =
+    homer.tableData[minBatteryStateOfChargeId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+
+  return {
+    minBatteryEnergyContent,
+    maxBatteryEnergyContent,
+    effectiveMinBatteryEnergyContent,
+    minBatteryStateOfCharge,
+    maxBatteryStateOfCharge,
+  }
 }
 
 export function getSummaryStats(combinedTable) {

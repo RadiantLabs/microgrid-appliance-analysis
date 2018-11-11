@@ -3,9 +3,9 @@ import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 
 const ModelInputs = ({ store }) => {
-  const {
-    modelInputs: { homerMinStateOfChargePercent },
-  } = store
+  // const {
+  //   modelInputs: { homerMinStateOfCharge },
+  // } = store
 
   return (
     <Table basic="very" celled collapsing>
@@ -32,7 +32,7 @@ const ModelInputs = ({ store }) => {
 
         <Table.Row>
           <Table.Cell>HOMER Minimum State of Charge</Table.Cell>
-          <Table.Cell>{homerMinStateOfChargePercent} %</Table.Cell>
+          <Table.Cell>homerMinStateOfCharge %</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

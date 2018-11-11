@@ -14,9 +14,6 @@ class MobxStore {
 
   activeHomer = null
   activeAppliances = []
-  modelInputs = {
-    homerMinStateOfChargePercent: 52.46,
-  }
 
   get combinedTable() {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliances)) {
@@ -53,7 +50,6 @@ class MobxStore {
 decorate(MobxStore, {
   activeHomer: observable,
   activeAppliances: observable,
-  modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
