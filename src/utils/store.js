@@ -73,6 +73,7 @@ export function getHomerStats(homer) {
     homer.tableData,
     'Generic 1kWh Lead Acid [ASM] Energy Content'
   )
+  // Absolute minimum battery state of charge
   const minBatteryStateOfCharge = findColMin(
     homer.tableData,
     'Generic 1kWh Lead Acid [ASM] State of Charge'
@@ -82,25 +83,34 @@ export function getHomerStats(homer) {
     'Generic 1kWh Lead Acid [ASM] State of Charge'
   )
 
-  // TODO: Ask Adam about this explanation. This seems fragile
+  // Effective Minimum Battery Energy Content
   // When creating a HOMER run, the user determines the minimum (suggested) percent that the
   // battery discharges. In theory, this determines the minimum energy content (kWh) of the
   // battery. But apparently there is a non-linear relationship with the charge percent (state
-  // of charge) and the energy content. So to find the useful minimum energy content, look up
-  // the state of charge when we *first* hit the specified minimum percent.
-  // HOMER starts out the year with a fully charged battery
+  // of charge) and the energy content.
+  // HOMER starts out the year with a fully charged battery. It looks like HOMER only allows
+  // the battery to get to the absolute minimum in the last few hours of the year. So the effective
+  // minimum for most of the year is a little higher than that.
 
-  // TODO: How to make this more robust by using a <= or >= or deciles?
-  // This is inherently fragile. At least it falls back to the absolute min value if nothing is found
-  const minBatteryStateOfChargeId = _.findIndex(homer.tableData, row => {
+  // So to find the effective minimum energy content, first look up the absolute minimum state of
+  // charge (minBatteryStateOfCharge) and round up to the nearest integer.
+  // Then go down, hour-by-hour, looking for the first hour we get near that point
+  // (within a value of 1, which is 1%).
+  const minBatteryStateOfChargeRowId = _.findIndex(homer.tableData, row => {
     return (
-      _.round(row['Generic 1kWh Lead Acid [ASM] State of Charge']) ===
-      _.round(minBatteryStateOfCharge)
+      // Round up to nearest integer (ceil) of absolute min
+      _.ceil(minBatteryStateOfCharge) >=
+      // Will be greater than rounding down to nearest integer of the current row
+      _.floor(row['Generic 1kWh Lead Acid [ASM] State of Charge'])
     )
   })
+  // If no row meets this condition, just take the absolute min as a fallback.
+  // I'm assuming effective min will be within 1% of absolute min, otherwise take absolute
+  // That may not be an assumption we want to make.
+  // We need to understand HOMER's algorithms better
   const effectiveMinBatteryEnergyContent =
-    minBatteryStateOfChargeId > 0
-      ? homer.tableData[minBatteryStateOfChargeId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+    minBatteryStateOfChargeRowId > 0
+      ? homer.tableData[minBatteryStateOfChargeRowId]['Generic 1kWh Lead Acid [ASM] Energy Content']
       : minBatteryStateOfCharge
 
   return {
