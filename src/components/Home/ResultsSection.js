@@ -5,19 +5,22 @@ import ApplianceTable from '../ResultTables/ApplianceTable'
 import CombinedTable from '../ResultTables/CombinedTable'
 import UnmetLoadsChart from '../ResultTables/UnmetLoadsChart'
 import LoadCurves from '../ResultTables/LoadCurves'
+import BatteryEnergyContentChart from '../ResultTables/BatteryEnergyContentChart'
 
 const ActiveView = ({ viewName }) => {
   switch (viewName) {
+    case 'loadCurves':
+      return <LoadCurves />
+    case 'unmetLoads':
+      return <UnmetLoadsChart />
+    case 'batteryEnergyContent':
+      return <BatteryEnergyContentChart />
     case 'combinedTable':
       return <CombinedTable />
     case 'homerTable':
       return <HomerTable />
     case 'appliance0Table':
       return <ApplianceTable applianceIndex={0} />
-    case 'unmetLoads':
-      return <UnmetLoadsChart />
-    case 'loadCurves':
-      return <LoadCurves />
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
@@ -45,6 +48,13 @@ class ResultsSection extends React.Component {
             name="unmetLoads"
             active={activeItem === 'unmetLoads'}
             content="Unmet Loads By Hour"
+            onClick={this.handleItemClick}
+          />
+
+          <Menu.Item
+            name="batteryEnergyContent"
+            active={activeItem === 'batteryEnergyContent'}
+            content="Battery Energy Content"
             onClick={this.handleItemClick}
           />
 

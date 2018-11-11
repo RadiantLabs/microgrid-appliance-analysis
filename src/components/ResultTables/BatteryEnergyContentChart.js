@@ -7,8 +7,8 @@ import { getChartColors, greyColors } from '../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-// Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
-class LoadCurves extends React.Component {
+
+class BatteryEnergyContentChart extends React.Component {
   render() {
     const { combinedTable, summaryStats, homerStats } = this.props.store
     if (_.isEmpty(combinedTable)) {
@@ -18,8 +18,8 @@ class LoadCurves extends React.Component {
     return (
       <div>
         <h3>
-          Loads by hour of year{' '}
-          <small style={{ color: greyColors[1] }}>Average kW for 1 hour</small>
+          Battery Energy Content by hour of year{' '}
+          <small style={{ color: greyColors[1] }}>kWh</small>
         </h3>
         <LineChart
           width={1400}
@@ -32,27 +32,21 @@ class LoadCurves extends React.Component {
           <Tooltip />
           <Line
             type="monotone"
-            dataKey="newApplianceLoad"
+            dataKey="originalBatteryEnergyContentDelta"
             dot={false}
-            stroke={getChartColors('newApplianceLoad')}
+            stroke={getChartColors('originalBatteryEnergyContentDelta')}
           />
           <Line
             type="monotone"
-            dataKey="availableCapacity"
+            dataKey="energyContentAboveMin"
             dot={false}
-            stroke={getChartColors('availableCapacity')}
+            stroke={getChartColors('energyContentAboveMin')}
           />
           <Line
             type="monotone"
-            dataKey="availableCapacityAfterNewLoad"
+            dataKey="newApplianceBatteryEnergyContent"
             dot={false}
-            stroke={getChartColors('availableCapacityAfterNewLoad')}
-          />
-          <Line
-            type="monotone"
-            dataKey="newApplianceBatteryConsumption"
-            dot={false}
-            stroke={getChartColors('newApplianceBatteryConsumption')}
+            stroke={getChartColors('newApplianceBatteryEnergyContent')}
           />
           <Legend />
           <Brush startIndex={0} endIndex={200} />
@@ -62,4 +56,4 @@ class LoadCurves extends React.Component {
   }
 }
 
-export default inject('store')(observer(LoadCurves))
+export default inject('store')(observer(BatteryEnergyContentChart))

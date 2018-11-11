@@ -29,9 +29,9 @@ export const chartColorsByIndex = [
 
 export const chartColorsByKey = {
   // Loads
-  newApplianceLoad: '#444e86',
+  newApplianceLoad: '#003f5c',
   availableCapacity: '#DD5182',
-  availableCapacityAfterNewLoad: '#FF6E54',
+  availableCapacityAfterNewLoad: '#955196',
   newApplianceBatteryConsumption: '#FFA601',
 
   // Unmet Loads
@@ -39,9 +39,9 @@ export const chartColorsByKey = {
   additionalUnmetLoad: '#FF6E54',
 
   // Battery Energy Content
-  energyContentAboveMin: '#444e86',
-  newApplianceBatteryEnergyContent: '#955196',
-  originalBatteryEnergyContentDelta: '#DD5182',
+  energyContentAboveMin: '#003f5c',
+  newApplianceBatteryEnergyContent: '#DD5182',
+  originalBatteryEnergyContentDelta: '#FFA601',
 }
 
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])

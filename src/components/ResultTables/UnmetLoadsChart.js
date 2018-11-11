@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
+import { Header } from 'semantic-ui-react'
 import LoaderSpinner from '../Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
-import { getChartColors } from '../../utils/constants'
+import { getChartColors, greyColors } from '../../utils/constants'
 
 // TODO:
 // Summary Stats
@@ -16,7 +17,10 @@ class UnmetLoadsChart extends React.Component {
     const { unmetLoadHist } = summaryStats
     return (
       <div>
-        <h5>Unmet Loads by Hour of Day (Average kW for 1 hour)</h5>
+        <h3>
+          Unmet Loads by Hour of Day{' '}
+          <small style={{ color: greyColors[1] }}>Average kW for 1 hour</small>
+        </h3>
         <BarChart
           width={900}
           height={400}
