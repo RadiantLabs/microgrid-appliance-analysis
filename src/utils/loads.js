@@ -46,7 +46,8 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
     const prevResult = rowIndex <= headerRowCount ? {} : result[rowIndex - 1]
 
     // Get existing values from the current row we are iterating over:
-    // Excess electrical production: Original energy production minus original load (not new appliances)
+    // Excess electrical production:  Original energy production minus original load (not new
+    // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
     const batteryStateOfCharge = row['Generic 1kWh Lead Acid [ASM] State of Charge']
