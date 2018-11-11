@@ -3,9 +3,11 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Loader'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Brush, Legend } from 'recharts'
+import { getChartColors } from '../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
+// Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
 
 class LoadCurves extends React.Component {
   render() {
@@ -14,9 +16,6 @@ class LoadCurves extends React.Component {
       return <LoaderSpinner />
     }
     const { tableData } = combinedTable
-    console.log('summaryStats: ', summaryStats)
-    console.log('available keys: ', _.first(tableData))
-    // debugger
     return (
       <div>
         <h4>Loads by hour of year</h4>
@@ -31,13 +30,28 @@ class LoadCurves extends React.Component {
           <Tooltip />
           <Line
             type="monotone"
-            dataKey="newApplianceBatteryEnergyContent"
+            dataKey="newApplianceLoad"
             dot={false}
-            stroke="#82ca9d"
+            stroke={getChartColors('newApplianceLoad')}
           />
-          <Line type="monotone" dataKey="appliance_load" dot={false} stroke="#red" />
-          <Line type="monotone" dataKey="appliance_load" dot={false} stroke="#82ca9d" />
-          <Line type="monotone" dataKey="availableCapacityAfterNewLoad" dot={false} stroke="red" />
+          <Line
+            type="monotone"
+            dataKey="availableCapacity"
+            dot={false}
+            stroke={getChartColors('availableCapacity')}
+          />
+          <Line
+            type="monotone"
+            dataKey="availableCapacityAfterNewLoad"
+            dot={false}
+            stroke={getChartColors('availableCapacityAfterNewLoad')}
+          />
+          <Line
+            type="monotone"
+            dataKey="newApplianceBatteryConsumption"
+            dot={false}
+            stroke={getChartColors('newApplianceBatteryConsumption')}
+          />
           <Legend />
           <Brush startIndex={0} endIndex={200} />
         </LineChart>

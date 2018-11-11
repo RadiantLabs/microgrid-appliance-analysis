@@ -13,7 +13,10 @@ export function addColumnTitles(columnInfo) {
  */
 export function calculateNewLoads({ table, fields, homerStats, constants }) {
   const { tableData, keyOrder } = table
-  const { effectiveMinBatteryEnergyContent, minBatteryStateOfCharge } = homerStats
+  const {
+    effectiveMinBatteryEnergyContent,
+    minBatteryStateOfCharge,
+  } = homerStats
   const headerRowCount = 2
 
   const columnInfo = {
@@ -49,15 +52,19 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
-    const batteryStateOfCharge = row['Generic 1kWh Lead Acid [ASM] State of Charge']
+    const batteryEnergyContent =
+      row['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const batteryStateOfCharge =
+      row['Generic 1kWh Lead Acid [ASM] State of Charge']
     const unmetElecLoad = row['Unmet Electrical Load']
 
     // Get values from previous row
-    const prevBatteryEnergyContent = prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const prevBatteryEnergyContent =
+      prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
 
     // Calculate load profile from usage profile
-    const newApplianceLoad = row['appliance_load'] // TODO: This will be calculated based on field
+    // TODO: This will be calculated based on field
+    const newApplianceLoad = row['appliance_load']
 
     /*
      * Now calculate new values based on the HOMER and usage profiles
@@ -65,11 +72,15 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
 
     // This is the energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
-    const energyContentAboveMin = batteryEnergyContent - effectiveMinBatteryEnergyContent
+    const energyContentAboveMin =
+      batteryEnergyContent - effectiveMinBatteryEnergyContent
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
-      excessElecProd + (batteryStateOfCharge <= minBatteryStateOfCharge ? 0 : energyContentAboveMin)
+      excessElecProd +
+      (batteryStateOfCharge <= minBatteryStateOfCharge
+        ? 0
+        : energyContentAboveMin)
 
     // Find available capacity after the new appliance is added
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
@@ -94,10 +105,12 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
       newApplianceLoad > excessElecProd ? newApplianceLoad - excessElecProd : 0
 
     // Original Battery Energy Content Delta
-    // This is how much the energy content in the battery has increased or decreased in the last hour
-    // Takes into account the 2 column headers that are text, not real values
+    // This is how much the energy content in the battery has increased or decreased in
+    // the last hour. Takes into account the 2 column headers that are text, not real values
     const originalBatteryEnergyContentDelta =
-      rowIndex <= headerRowCount ? 0 : batteryEnergyContent - prevBatteryEnergyContent
+      rowIndex <= headerRowCount
+        ? 0
+        : batteryEnergyContent - prevBatteryEnergyContent
 
     // New Appliance Battery Energy Content:
     // The battery energy content under the scenario of adding a new appliance.
@@ -105,7 +118,9 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
     // which means we need to look at the previous row than the one we are iterating over.
     // This is why these values are being calculated in a reducing function instead of a map
     const prevNewApplianceBatteryEnergyContent =
-      rowIndex <= headerRowCount ? 0 : prevResult['newApplianceBatteryEnergyContent']
+      rowIndex <= headerRowCount
+        ? 0
+        : prevResult['newApplianceBatteryEnergyContent']
     const newApplianceBatteryEnergyContent =
       rowIndex <= headerRowCount
         ? // For the first hour (row 3 if there are 2 header rows):
@@ -124,14 +139,27 @@ export function calculateNewLoads({ table, fields, homerStats, constants }) {
     result.push({
       ...row,
       ...{
+        newApplianceLoad: _.round(newApplianceLoad, 3),
         energyContentAboveMin: _.round(energyContentAboveMin, 3),
-        availableCapacity: _.round(availableCapacity, 2),
-        availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 2),
-        additionalUnmetLoad: _.round(additionalUnmetLoad, 2),
-        newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 2),
-        originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 3),
-        newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 3),
-        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 2),
+        availableCapacity: _.round(availableCapacity, 3),
+        availableCapacityAfterNewLoad: _.round(
+          availableCapacityAfterNewLoad,
+          3
+        ),
+        additionalUnmetLoad: _.round(additionalUnmetLoad, 3),
+        newApplianceBatteryConsumption: _.round(
+          newApplianceBatteryConsumption,
+          3
+        ),
+        originalBatteryEnergyContentDelta: _.round(
+          originalBatteryEnergyContentDelta,
+          3
+        ),
+        newApplianceBatteryEnergyContent: _.round(
+          newApplianceBatteryEnergyContent,
+          3
+        ),
+        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 3),
       },
     })
     return result

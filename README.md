@@ -22,6 +22,7 @@
     - add hour offset
 - Split out Jupyter notebooks into their own repo
 - Parse dates on HOMER and Usage profiles so I can chart by date instead of hour of year
+- Have option to plot charts based on time, not hour of year (toggle in chart view?)
 
 ## TODO: Long term
 
