@@ -35,13 +35,6 @@ class ResultsSection extends React.Component {
       <div>
         <Menu>
           <Menu.Item
-            name="combinedTable"
-            active={activeItem === 'combinedTable'}
-            content="Combined Table"
-            onClick={this.handleItemClick}
-          />
-
-          <Menu.Item
             name="loadCurves"
             active={activeItem === 'loadCurves'}
             content="Loads by Hour of Year"
@@ -52,6 +45,13 @@ class ResultsSection extends React.Component {
             name="unmetLoads"
             active={activeItem === 'unmetLoads'}
             content="Unmet Loads By Hour"
+            onClick={this.handleItemClick}
+          />
+
+          <Menu.Item
+            name="combinedTable"
+            active={activeItem === 'combinedTable'}
+            content="Combined Table"
             onClick={this.handleItemClick}
           />
 

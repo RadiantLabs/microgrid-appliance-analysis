@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
+import { getChartColors } from '../../utils/constants'
 
 // TODO:
 // Summary Stats
@@ -25,8 +26,14 @@ class UnmetLoadsChart extends React.Component {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="additionalUnmetLoad" fill="#8884d8" />
-          <Bar dataKey="newTotalUnmetLoad" fill="#82ca9d" />
+          <Bar
+            dataKey="additionalUnmetLoad"
+            fill={getChartColors('additionalUnmetLoad')}
+          />
+          <Bar
+            dataKey="newTotalUnmetLoad"
+            fill={getChartColors('newTotalUnmetLoad')}
+          />
         </BarChart>
       </div>
     )
