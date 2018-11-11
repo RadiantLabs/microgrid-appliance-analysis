@@ -19,7 +19,7 @@ const App = () => (
       <ApolloProvider client={Client}>
         <Menu secondary={true} pointing={true}>
           <Menu.Item as={NavItem} to="/" name="home" />
-          <Menu.Item as={NavItem} to="/input-example" name="input-example" />
+          {/* <Menu.Item as={NavItem} to="/input-example" name="input-example" /> */}
           <Menu.Item as={NavItem} to="/about" name="about" />
           {/* <Menu.Item as={NavItem} to="/todo" name="todo" /> */}
         </Menu>

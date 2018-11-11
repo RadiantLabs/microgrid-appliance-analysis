@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Header } from 'semantic-ui-react'
 import LoaderSpinner from '../Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 import { getChartColors, greyColors } from '../../utils/constants'
