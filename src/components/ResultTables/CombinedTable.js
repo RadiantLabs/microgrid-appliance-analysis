@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Loader'
 import { setHeaderStyles } from './tableStyles'
+import { greyColors } from '../../utils/constants'
 
 class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
@@ -31,10 +32,16 @@ class CombinedTable extends React.Component {
     }
     return (
       <div>
-        <h5>
+        {/* <h5>
           homerStats - min: {homerStats.minBatteryEnergyContent}, max:{' '}
           {homerStats.minBatteryEnergyContent}
-        </h5>
+        </h5> */}
+        <h3>
+          {' '}
+          <small style={{ color: greyColors[1] }}>
+            TODO: Show combined column stats
+          </small>
+        </h3>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid

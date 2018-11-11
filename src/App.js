@@ -2,7 +2,7 @@ import * as React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
-import DevTools from 'mobx-react-devtools'
+// import DevTools from 'mobx-react-devtools'
 import { Client } from './Client'
 import { mobxStore } from './MobxStore'
 import { Menu } from 'semantic-ui-react'
@@ -17,7 +17,7 @@ const App = () => (
   <Provider store={mobxStore}>
     <Router>
       <ApolloProvider client={Client}>
-        <Menu secondary={true}>
+        <Menu secondary={true} pointing={true}>
           <Menu.Item as={NavItem} to="/" name="home" />
           <Menu.Item as={NavItem} to="/input-example" name="input-example" />
           <Menu.Item as={NavItem} to="/about" name="about" />
@@ -29,7 +29,7 @@ const App = () => (
           <Route path="/input-example" component={InputExample} />
           {/* <Route path="/todo" component={TodoExample} /> */}
         </div>
-        <DevTools />
+        {/* <DevTools /> */}
       </ApolloProvider>
     </Router>
   </Provider>

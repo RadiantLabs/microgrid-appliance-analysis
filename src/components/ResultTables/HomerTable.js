@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Loader'
 import { setHeaderStyles } from './tableStyles'
+import { greyColors } from '../../utils/constants'
 
 class HomerTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
@@ -31,7 +32,12 @@ class HomerTable extends React.Component {
     }
     return (
       <div>
-        <h5>Homer</h5>
+        <h3>
+          {' '}
+          <small style={{ color: greyColors[1] }}>
+            TODO: Show homer column stats
+          </small>
+        </h3>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid

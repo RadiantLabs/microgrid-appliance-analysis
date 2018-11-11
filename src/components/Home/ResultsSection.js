@@ -36,7 +36,7 @@ class ResultsSection extends React.Component {
 
     return (
       <div>
-        <Menu>
+        <Menu pointing>
           <Menu.Item
             name="availableLoadChart"
             active={activeItem === 'availableLoadChart'}
