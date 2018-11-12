@@ -1,8 +1,17 @@
 ## TODO
 
+- Load files by using dropdown:
+    - Move welder, rice, maize profiles to app folder
+    - Specify in Mobx store constructor which file to load first
+    - Load in entire fileInfo to activeHomer (activeGrid) and activeAppliance
+    - Update dropdowns to show which is active
+    - Load other files in the background?
+    - When switching dropdown, immediately nullify activeHomer or activeAppliance
+
 - Calculate appliance loads based on usage factors
-  - Build component that saves to mobx store only when valid
-  - Pass in fields to calculateNewLoads to calculate appliance_load
+    - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
+    - Build component that saves to mobx store only when valid
+    - Pass in fields to calculateNewLoads to calculate appliance_load
 
 - Chart Updates:
     - Summarized columns: Total kWh of the new appliance
