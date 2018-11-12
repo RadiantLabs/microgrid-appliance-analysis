@@ -6,7 +6,18 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 // Will be converted to typescript types:
 // https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
-export const APP_WIDE_FIELDS = {
+export const fieldDefinitions = {
+  kwFactorToKw: {
+    $schema: jsonSchemaStandard,
+    title: 'kW Factor to kW',
+    type: 'float',
+    minimum: 0,
+    maximum: 2,
+    step: 0.1,
+    defaultValue: 0.9,
+    units: '-',
+  },
+
   // Example with min and max, which is editable
   grainThroughput: {
     $schema: jsonSchemaStandard,

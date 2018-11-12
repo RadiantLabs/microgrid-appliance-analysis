@@ -11,7 +11,12 @@ export function addColumnTitles(columnInfo) {
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
  */
-export function calculateNewLoads({ table, inputs, homerStats, constants }) {
+export function calculateNewLoads({
+  table,
+  modelInputs,
+  homerStats,
+  constants,
+}) {
   const { tableData, keyOrder } = table
   const {
     effectiveMinBatteryEnergyContent,
@@ -63,7 +68,7 @@ export function calculateNewLoads({ table, inputs, homerStats, constants }) {
       prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
 
     // Calculate load profile from usage profile
-    const newApplianceLoad = inputs['kwFactorTokw'] * row['kw_factor']
+    const newApplianceLoad = modelInputs['kwFactorTokw'] * row['kw_factor']
 
     /*
      * Now calculate new values based on the HOMER and usage profiles

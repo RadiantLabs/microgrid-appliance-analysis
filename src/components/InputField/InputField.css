@@ -1,11 +1,11 @@
 .InputFieldWrapper {
-  padding: 1rem;
+  /* padding: 1rem; */
   /* outline: 1px solid #0051a369; */
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   /* width: 600px; */
 }
 
 .ui.icon.input.input input {
   /* padding-right: 1em !important; some new value */
-  background-color: pink !important;
+  /* background-color: pink !important; */
 }

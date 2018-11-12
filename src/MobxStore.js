@@ -28,8 +28,8 @@ class MobxStore {
   activeHomerFileInfo = _.find(homerFiles, { path: initHomerPath })
   activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
 
-  inputFields = {
-    kwFactorTokw: 1,
+  modelInputs = {
+    kwFactorToKw: { value: 1.1, error: null },
   }
 
   get combinedTable() {
@@ -42,7 +42,7 @@ class MobxStore {
     )
     return calculateNewLoads({
       table: mergedTables,
-      inputs: this.inputFields,
+      modelInputs: this.modelInputs,
       homerStats: this.homerStats,
       constants: {},
     })
@@ -74,10 +74,19 @@ class MobxStore {
       path: data.value,
     })
   }
+
   setActiveApplianceFile(event, data) {
     this.activeApplianceFileInfo = _.find(applianceFiles, {
       path: data.value,
     })
+  }
+
+  // Model Input form change handlers
+  onModelInputChange(event, data, a, b) {
+    console.log('data: ', data)
+
+    debugger
+    // parseFloat
   }
 }
 
@@ -86,7 +95,7 @@ decorate(MobxStore, {
   activeHomerFileInfo: observable,
   activeAppliance: observable,
   activeApplianceFileInfo: observable,
-  inputFields: observable,
+  modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
@@ -94,6 +103,7 @@ decorate(MobxStore, {
   summaryStats: computed,
   setActiveHomerFile: action.bound,
   setActiveApplianceFile: action.bound,
+  onModelInputChange: action.bound,
 })
 
 export let mobxStore = new MobxStore()
