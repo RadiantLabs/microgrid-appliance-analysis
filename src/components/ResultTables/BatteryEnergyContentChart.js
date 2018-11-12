@@ -32,12 +32,6 @@ class BatteryEnergyContentChart extends React.Component {
           <Tooltip />
           <Line
             type="monotone"
-            dataKey="originalBatteryEnergyContentDelta"
-            dot={false}
-            stroke={getChartColors('originalBatteryEnergyContentDelta')}
-          />
-          <Line
-            type="monotone"
             dataKey="energyContentAboveMin"
             dot={false}
             stroke={getChartColors('energyContentAboveMin')}

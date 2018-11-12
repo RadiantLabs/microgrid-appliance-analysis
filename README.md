@@ -1,17 +1,26 @@
 ## TODO
 
-- Charts:
-
-  - Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
-  - Plot Battery data: energyContentAboveMin
-
-- Min State of chart is fragile. Find a more robust way of finding the floor
-- Load Curves
-  - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 - Calculate appliance loads based on usage factors
   - Build component that saves to mobx store only when valid
   - Pass in fields to calculateNewLoads to calculate appliance_load
-- Color columns to show calculated columns
+
+- Chart Updates:
+    - Summarized columns: Total kWh of the new appliance
+
+    - Unmet Loads: Stacked bar chart of original unmet load and new unmet load. Play around with 100% stacked
+    - Add context for battery chart: why is it broken and what do we need to do
+    - Unmet load 3 column table
+        - Base, new appliance, total for both count and sum
+        - Keep wording consistent: Additional Unmet Load Sum (fuel costs when I run that generator)
+    - A new bar chart: (histogram by hour)
+        - New appliance load
+        - Excess production
+    - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
+
+- Calculate battery rate of charge based on excess production and based on input power
+
+- Min State of chart is fragile. Find a more robust way of finding the floor
+- Color Combined Table columns to show calculated columns
 - Create grid of inputs
   - Appliance:
     - kW to kW-factor
@@ -20,9 +29,11 @@
     - CAPEX
     - OPEX
     - add hour offset
-- Parse dates on HOMER and Usage profiles so I can chart by date instead of hour of year
-- Have option to plot charts based on time, not hour of year (toggle in chart view?)
+- Parse Table dates
+    - Show chart by datetime instead of hour of year (toggle between hour and datetime)
+    - Page through datetime chart by day, week, month
 - Show column stats (max, min, avg, std) for HOMER and combined tables
+- Add error logging and analytics
 
 ## TODO: Long term
 
@@ -34,6 +45,7 @@
 - Lay out basic (probably temporary) navigation
 - Update to CRA with Typescript support (copy this repo to a different folder, creat-react-app, bring back over .git and remotes and components): https://github.com/facebook/create-react-app/pull/4837
 - Automatic type annotation generation for Typescript: https://blog.apollographql.com/graphql-dx-d35bcf51c943, https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
+- Add analytics
 
 ## Available Scripts
 
