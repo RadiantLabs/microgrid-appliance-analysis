@@ -13,6 +13,8 @@ import About from './components/About'
 import Home from './components/Home'
 import './App.css'
 
+window.mobxStore = mobxStore
+
 const App = () => (
   <Provider store={mobxStore}>
     <Router>
