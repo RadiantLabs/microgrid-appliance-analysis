@@ -28,6 +28,10 @@ class MobxStore {
   activeHomerFileInfo = _.find(homerFiles, { path: initHomerPath })
   activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
 
+  inputFields = {
+    kwFactorTokw: 1,
+  }
+
   get combinedTable() {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
@@ -38,7 +42,7 @@ class MobxStore {
     )
     return calculateNewLoads({
       table: mergedTables,
-      fields: null,
+      inputs: this.inputFields,
       homerStats: this.homerStats,
       constants: {},
     })
@@ -82,6 +86,7 @@ decorate(MobxStore, {
   activeHomerFileInfo: observable,
   activeAppliance: observable,
   activeApplianceFileInfo: observable,
+  inputFields: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,

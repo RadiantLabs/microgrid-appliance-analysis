@@ -10,7 +10,11 @@ import { getChartColors, greyColors } from '../../utils/constants'
 // Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
 class AvailableLoadChart extends React.Component {
   render() {
-    const { combinedTable, summaryStats, homerStats } = this.props.store
+    const {
+      combinedTable,
+      // summaryStats,
+      // homerStats
+    } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }

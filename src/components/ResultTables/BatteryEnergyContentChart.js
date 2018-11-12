@@ -10,7 +10,11 @@ import { getChartColors, greyColors } from '../../utils/constants'
 
 class BatteryEnergyContentChart extends React.Component {
   render() {
-    const { combinedTable, summaryStats, homerStats } = this.props.store
+    const {
+      combinedTable,
+      // summaryStats,
+      // homerStats
+    } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }

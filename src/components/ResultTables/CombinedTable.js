@@ -26,7 +26,10 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { combinedTable, homerStats } = this.props.store
+    const {
+      combinedTable,
+      // homerStats
+    } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
