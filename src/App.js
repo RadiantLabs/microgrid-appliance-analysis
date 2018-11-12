@@ -13,6 +13,7 @@ import About from './components/About'
 import Home from './components/Home'
 import './App.css'
 
+// This is to be able to inspect the store from the inspector at any time.
 window.mobxStore = mobxStore
 
 const App = () => (

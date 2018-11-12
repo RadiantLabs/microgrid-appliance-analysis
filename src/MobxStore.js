@@ -6,6 +6,7 @@ import {
   action,
   runInAction,
   computed,
+  autorun,
 } from 'mobx'
 import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
@@ -13,13 +14,22 @@ import { mergeTables } from './utils/general'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 configure({ enforceActions: 'observed' })
 
+// TODO:
+// 1. Set active dropdown item based on activeHomerFileInfo
+// 2. Fetch appliance based on autorun
 class MobxStore {
   constructor() {
-    this.fetchHomer(homerFiles[0])
+    autorun(() => {
+      console.log('Fetching new HOMER file: ', this.activeHomerFileInfo.path)
+      this.fetchHomer(this.activeHomerFileInfo)
+    })
     this.fetchAppliance(applianceFiles[0])
   }
 
   activeHomer = null
+  activeHomerFileInfo = _.find(homerFiles, {
+    path: './data/homer/homer_12_50_oversize_20_AS.csv',
+  })
   activeAppliances = []
 
   get combinedTable() {
@@ -48,8 +58,8 @@ class MobxStore {
       : getSummaryStats(this.combinedTable)
   }
 
-  async fetchHomer(fileInfo) {
-    const homer = await fetchFile(fileInfo)
+  async fetchHomer(activeHomerFileInfo) {
+    const homer = await fetchFile(activeHomerFileInfo)
     runInAction(() => (this.activeHomer = homer))
   }
 
@@ -60,21 +70,22 @@ class MobxStore {
 
   // Form changes
   setActiveHomerFile(event, data) {
-    console.log(event)
-    console.log(data)
-    debugger
+    this.activeHomerFileInfo = _.find(homerFiles, {
+      path: data.value,
+    })
   }
 }
 
 decorate(MobxStore, {
   activeHomer: observable,
+  activeHomerFileInfo: observable,
   activeAppliances: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
   homerStats: computed,
   summaryStats: computed,
-  setActiveHomerFile: action,
+  setActiveHomerFile: action.bound,
 })
 
 export let mobxStore = new MobxStore()

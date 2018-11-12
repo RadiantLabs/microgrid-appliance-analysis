@@ -40,15 +40,15 @@ export function addHourIndex(rows, headerColumnCount = 2) {
 // can display
 // Units come in as the first second row, header is the first but
 // TODO: Parse date and reformat
-export function processHomerFile(rows) {
+export function processHomerFile(rows, fileInfo) {
   const headerRow = createHeaderRow(rows)
   const tableData = [headerRow].concat(rows)
   const addedHour = addHourIndex(tableData)
   const keyOrder = setKeyOrder(addedHour)
-  return { tableData: addedHour, keyOrder }
+  return { tableData: addedHour, keyOrder, fileInfo }
 }
 
-export function processApplianceFile(rows) {
+export function processApplianceFile(rows, fileInfo) {
   const keyOrder = _.keys(rows[0])
   const unitRow = {
     datetime: '-',
@@ -61,7 +61,7 @@ export function processApplianceFile(rows) {
     kw: 'kW',
   }
   const tableData = [createHeaderRow(rows), unitRow].concat(rows)
-  return { tableData, keyOrder }
+  return { tableData, keyOrder, fileInfo }
 }
 
 export function getHomerStats(homer) {
@@ -190,9 +190,9 @@ export async function fetchFile(fileInfo) {
     }
     switch (type) {
       case 'homer':
-        return processHomerFile(data)
+        return processHomerFile(data, fileInfo)
       case 'appliance':
-        return processApplianceFile(data)
+        return processApplianceFile(data, fileInfo)
       default:
         throw new Error(
           `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`

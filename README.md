@@ -1,10 +1,8 @@
 ## TODO
 
 - Load files by using dropdown:
-    - Move welder, rice, maize profiles to app folder
-    - Specify in Mobx store constructor which file to load first
-    - Load in entire fileInfo to activeHomer (activeGrid) and activeAppliance
-    - Update dropdowns to show which is active
+    - Set active dropdown item based on activeHomerFileInfo
+    - Fetch appliance based on autorun
     - Load other files in the background?
     - When switching dropdown, immediately nullify activeHomer or activeAppliance
 
