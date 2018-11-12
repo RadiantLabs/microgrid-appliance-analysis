@@ -10,6 +10,10 @@ export const homerFiles = [
     label: 'homer_12_50_oversize_20_AS',
     path: './data/homer/homer_12_50_oversize_20_AS.csv',
     description: 'Fill in description about 12, 50, etc',
+    // columns: {
+    //   batteryEnergyContent: 'Generic 1kWh Lead Acid [ASM] Energy Content',
+    //   batteryStateOfCharge: 'Generic 1kWh Lead Acid [ASM] State of Charge',
+    // },
   },
   {
     type: 'homer',

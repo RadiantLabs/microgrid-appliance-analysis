@@ -1,5 +1,5 @@
 import _ from 'lodash'
-// import { toJS } from 'mobx'
+import { toJS } from 'mobx'
 import {
   findColMin,
   findColMax,
@@ -199,6 +199,11 @@ export async function fetchFile(fileInfo) {
         )
     }
   } catch (error) {
-    console.log(`File load fail for : ${JSON.stringify(fileInfo)} `, error)
+    console.error(
+      `File load fail for : ${
+        fileInfo.path
+      }. Make sure appliance CSV has all headers.`,
+      error
+    )
   }
 }

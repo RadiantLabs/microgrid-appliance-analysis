@@ -19,8 +19,8 @@ const ActiveView = ({ viewName }) => {
       return <CombinedTable />
     case 'homerTable':
       return <HomerTable />
-    case 'appliance0Table':
-      return <ApplianceTable applianceIndex={0} />
+    case 'applianceTable':
+      return <ApplianceTable />
     default:
       return <h4>Can't find view name: {viewName}</h4>
   }
@@ -73,9 +73,9 @@ class ResultsSection extends React.Component {
           />
 
           <Menu.Item
-            name="appliance0Table"
-            active={activeItem === 'appliance0Table'}
-            content="Appliance 0 Table"
+            name="applianceTable"
+            active={activeItem === 'applianceTable'}
+            content="Appliance Table"
             onClick={this.handleItemClick}
           />
         </Menu>

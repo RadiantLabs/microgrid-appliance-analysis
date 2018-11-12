@@ -14,31 +14,27 @@ import { mergeTables } from './utils/general'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 configure({ enforceActions: 'observed' })
 
-// TODO:
-// 1. Set active dropdown item based on activeHomerFileInfo
-// 2. Fetch appliance based on autorun
+const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
+const initAppliancePath = './data/appliances/sample_mill_usage_profile.csv'
+
 class MobxStore {
   constructor() {
-    autorun(() => {
-      console.log('Fetching new HOMER file: ', this.activeHomerFileInfo.path)
-      this.fetchHomer(this.activeHomerFileInfo)
-    })
-    this.fetchAppliance(applianceFiles[0])
+    autorun(() => this.fetchHomer(this.activeHomerFileInfo))
+    autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
   }
 
   activeHomer = null
-  activeHomerFileInfo = _.find(homerFiles, {
-    path: './data/homer/homer_12_50_oversize_20_AS.csv',
-  })
-  activeAppliances = []
+  activeAppliance = null
+  activeHomerFileInfo = _.find(homerFiles, { path: initHomerPath })
+  activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
 
   get combinedTable() {
-    if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliances)) {
+    if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
     }
     const mergedTables = mergeTables(
       this.activeHomer.tableData,
-      this.activeAppliances[0].tableData
+      this.activeAppliance.tableData
     )
     return calculateNewLoads({
       table: mergedTables,
@@ -65,12 +61,17 @@ class MobxStore {
 
   async fetchAppliance(fileInfo) {
     const appliance = await fetchFile(fileInfo)
-    runInAction(() => this.activeAppliances.push(appliance))
+    runInAction(() => (this.activeAppliance = appliance))
   }
 
-  // Form changes
+  // Choose HOMER or Appliance File Form changes
   setActiveHomerFile(event, data) {
     this.activeHomerFileInfo = _.find(homerFiles, {
+      path: data.value,
+    })
+  }
+  setActiveApplianceFile(event, data) {
+    this.activeApplianceFileInfo = _.find(applianceFiles, {
       path: data.value,
     })
   }
@@ -79,13 +80,15 @@ class MobxStore {
 decorate(MobxStore, {
   activeHomer: observable,
   activeHomerFileInfo: observable,
-  activeAppliances: observable,
+  activeAppliance: observable,
+  activeApplianceFileInfo: observable,
   fetchHomer: action,
   fetchAppliance: action,
   combinedTable: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,
+  setActiveApplianceFile: action.bound,
 })
 
 export let mobxStore = new MobxStore()

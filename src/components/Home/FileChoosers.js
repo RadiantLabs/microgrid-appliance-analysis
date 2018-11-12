@@ -18,7 +18,12 @@ import { homerFiles, applianceFiles } from '../../utils/fileInfo'
 class FileChoosers extends Component {
   render() {
     const {
-      store: { setActiveHomerFile, activeHomerFileInfo },
+      store: {
+        setActiveHomerFile,
+        setActiveApplianceFile,
+        activeHomerFileInfo,
+        activeApplianceFileInfo,
+      },
     } = this.props
     return (
       <Table basic="very" selectable className="fileChooser">
@@ -51,13 +56,16 @@ class FileChoosers extends Component {
               <Header as="h5">Select Appliance Usage Profile:</Header>
             </Table.Cell>
             <Table.Cell>
-              <Dropdown text="Sample mill usage profile">
+              <Dropdown text={activeApplianceFileInfo.label}>
                 <Dropdown.Menu>
-                  {_.map(applianceFiles, file => (
+                  {_.map(applianceFiles, fileInfo => (
                     <Dropdown.Item
-                      text={file.label}
-                      key={file.path}
-                      description={file.description}
+                      text={fileInfo.label}
+                      key={fileInfo.path}
+                      description={fileInfo.description}
+                      value={fileInfo.path}
+                      active={fileInfo.path === activeApplianceFileInfo.path}
+                      onClick={setActiveApplianceFile}
                       // icon="check" // If currently active (or bold)
                     />
                   ))}

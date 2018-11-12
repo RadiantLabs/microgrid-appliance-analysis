@@ -8,9 +8,6 @@ import FileChoosers from './FileChoosers'
 
 class Home extends Component {
   render() {
-    // const {
-    //   store: { setActiveHomerFile, activeHomerFileInfo },
-    // } = this.props
     return (
       <div>
         {/* Grid for Selecting HOMER and Appliance usage profiles */}

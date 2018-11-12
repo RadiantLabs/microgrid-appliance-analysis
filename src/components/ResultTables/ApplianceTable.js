@@ -10,10 +10,9 @@ import { greyColors } from '../../utils/constants'
 class ApplianceTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const {
-      applianceIndex,
-      store: { activeAppliances },
+      store: { activeAppliance },
     } = this.props
-    const { tableData, keyOrder } = activeAppliances[applianceIndex]
+    const { tableData, keyOrder } = activeAppliance
     const headerStyle = setHeaderStyles(style, rowIndex)
     const row = tableData[rowIndex]
     return (
@@ -24,15 +23,13 @@ class ApplianceTable extends React.Component {
   }
 
   _rowHeight = ({ index }) => {
-    // return index === 0 ? 76 : 26
     return index === 0 ? 26 : 26
   }
 
   render() {
-    const { applianceIndex, store } = this.props
-    const { activeAppliances } = store
-    const appliance = activeAppliances[applianceIndex]
-    if (_.isEmpty(appliance)) {
+    const { store } = this.props
+    const { activeAppliance } = store
+    if (_.isEmpty(activeAppliance)) {
       return <LoaderSpinner />
     }
     return (
@@ -47,12 +44,12 @@ class ApplianceTable extends React.Component {
           {({ height, width }) => (
             <MultiGrid
               cellRenderer={this._cellRenderer}
-              columnCount={_.size(appliance.keyOrder)}
+              columnCount={_.size(activeAppliance.keyOrder)}
               columnWidth={100}
               fixedColumnCount={1}
               fixedRowCount={2}
               height={700}
-              rowCount={_.size(appliance.tableData)}
+              rowCount={_.size(activeAppliance.tableData)}
               rowHeight={this._rowHeight}
               estimatedRowSize={26}
               width={width}

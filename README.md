@@ -1,10 +1,15 @@
 ## TODO
 
+- *** Load profiles from usage profiles
+    - Create input under 'Inputs' section, store input value in store
+    - Input value should have default, max, min, step
+    - Create function that converts kw_factor to kw
+    - Create load profile under `calculateNewLoads` and attached to combinedTable
+    - Ignore current appliance_load
+    - Throw errors if something is missing, such as form inputs
+
 - Load files by using dropdown:
-    - Set active dropdown item based on activeHomerFileInfo
-    - Fetch appliance based on autorun
-    - Load other files in the background?
-    - When switching dropdown, immediately nullify activeHomer or activeAppliance
+    - Show `loading` immediately after switching until `combinedTable` is finished
 
 - Calculate appliance loads based on usage factors
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
@@ -43,7 +48,7 @@
 - Add error logging and analytics
 
 ## TODO: Long term
-
+- Load other HOMER and appliance files in the background
 - snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
 - Decide on React.SFC
 - Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
