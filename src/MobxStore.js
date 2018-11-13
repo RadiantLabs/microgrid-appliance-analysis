@@ -82,11 +82,12 @@ class MobxStore {
   }
 
   // Model Input form change handlers
-  onModelInputChange(event, data, a, b) {
-    console.log('data: ', data)
-
-    debugger
-    // parseFloat
+  onModelInputChange(fieldKey, value) {
+    console.log('value: ', value)
+    // TODO:
+    // 1. update modelInputs with value,
+    // 2. fix Nan in appliance calc (path to value is incorrect)
+    // debugger
   }
 }
 

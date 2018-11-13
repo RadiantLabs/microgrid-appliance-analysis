@@ -18,6 +18,26 @@ export const checkKey = (table, key) => {
   }
 }
 
+// Check for a valid float, can pass in a string or number
+// https://stackoverflow.com/a/52710457/1884101
+export const isFloat = val => {
+  if (val == null || ('' + val).trim() === '' || isNaN(+val)) {
+    return false // not a float
+  } else {
+    return true
+  }
+}
+
+// Check for a valid integer, can pass in a string or number
+// https://stackoverflow.com/a/52710457/1884101
+export const isInteger = val => {
+  if (val == null || ('' + val).trim() === '' || ~~val !== +val) {
+    return false // not an integer
+  } else {
+    return true
+  }
+}
+
 export const filterNums = (table, key) => {
   checkKey(table, key)
   return _.chain(table)
