@@ -27,29 +27,33 @@ export const applianceFiles = [
   {
     type: 'appliance',
     applianceType: 'rice_mill',
-    label: 'Sample Mill Usage Profile',
-    path: './data/appliances/sample_mill_usage_profile.csv',
-    description: 'This is just an example. May not be correct.',
-  },
-  {
-    type: 'appliance',
-    applianceType: 'rice_mill',
     label: 'Rice Mill (Tanzania)',
     path: './data/appliances/rice_mill_usage_profile.csv',
-    description: 'Rice mill usage profile from measured usage (Tanzania)',
+    description:
+      'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
   },
   {
     type: 'appliance',
     applianceType: 'maize_mill',
     label: 'Maize Mill (Tanzania)',
-    path: './data/appliances/maize_mill_usage_profile.csv',
-    description: 'Maize mill usage profile from measured usage (Tanzania)',
+    path: './data/appliances/maize_mill_usage_profile_1.csv',
+    description:
+      'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
+  },
+  {
+    type: 'appliance',
+    applianceType: 'maize_mill',
+    label: 'Maize Mill (Tanzania)',
+    path: './data/appliances/maize_mill_usage_profile_2.csv',
+    description:
+      'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
   },
   {
     type: 'appliance',
     applianceType: 'welder',
     label: 'Welder (Tanzania)',
     path: './data/appliances/welder_usage_profile.csv',
-    description: 'Welder usage profile from measured usage (Tanzania)',
+    description:
+      'Welder usage profile from downloaded UTC sensor file (Tanzania)',
   },
 ]

@@ -16,7 +16,7 @@ import { fieldDefinitions } from './utils/fieldDefinitions'
 configure({ enforceActions: 'observed' })
 
 const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
-const initAppliancePath = './data/appliances/sample_mill_usage_profile.csv'
+const initAppliancePath = './data/appliances/rice_mill_usage_profile.csv'
 
 class MobxStore {
   constructor() {

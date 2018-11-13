@@ -11,7 +11,7 @@ import {
   mergeArraysOfObjects,
 } from './general'
 import Papa from 'papaparse'
-const csvOptions = { header: true, dynamicTyping: true }
+const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 
 // Return an object with the values the same as the key.
 // This let's React Virtualized Grid component render the top row with the name
@@ -57,8 +57,7 @@ export function processApplianceFile(rows, fileInfo) {
     hour_of_day: '-',
     day_hour: '-',
     kw_factor: '-',
-    grain_factor: '-',
-    kw: 'kW',
+    production_factor: '-',
   }
   const tableData = [createHeaderRow(rows), unitRow].concat(rows)
   return { tableData, keyOrder, fileInfo }
@@ -181,6 +180,7 @@ export function getSummaryStats(combinedTable) {
  */
 export async function fetchFile(fileInfo) {
   const { path, type } = fileInfo
+  console.log('fileInfo:', fileInfo)
   try {
     const res = await window.fetch(path)
     const csv = await res.text()
