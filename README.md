@@ -12,10 +12,7 @@
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
 
 - Chart Updates:
-    - Summarized columns: Total kWh of the new appliance
-
     - Unmet Loads: Stacked bar chart of original unmet load and new unmet load. Play around with 100% stacked
-    - Add context for battery chart: why is it broken and what do we need to do
     - Unmet load 3 column table
         - Base, new appliance, total for both count and sum
         - Keep wording consistent: Additional Unmet Load Sum (fuel costs when I run that generator)
