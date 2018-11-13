@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { HOURS_PER_YEAR } from './constants'
-import { toJS } from 'mobx'
+// import { toJS } from 'mobx'
 
 /**
  * These are more general purpose utility functions, not directly related to the store
