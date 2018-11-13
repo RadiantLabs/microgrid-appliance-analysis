@@ -55,6 +55,7 @@ export const countGreaterThanZero = (table, key) => {
     .value()
 }
 
+// There may be negative numbers when summing. This only sums positive.
 export const sumGreaterThanZero = (table, key) => {
   checkKey(table, key)
   return _.chain(table)
@@ -128,11 +129,14 @@ export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
     return null
   }
 
+  checkKey(table1, joinKey)
+  checkKey(table2, joinKey)
+
   // TODO: Trying to fix this error: [mobx] Computed values are not allowed to cause side effects by changing observables that are already being observed
   // Recreated by changing some combination of usage factor to kW and the appliance or homer file
-  const table1Headers = _.take(toJS(table1), headerCount)
+  const table1Headers = _.take(table1, headerCount)
   const table1Data = _.drop(table1, headerCount)
-  const table2Headers = _.take(toJS(table2), headerCount)
+  const table2Headers = _.take(table2, headerCount)
   const table2Data = _.drop(table2, headerCount)
 
   // TODO: call into the mergeArraysOfObjects function above

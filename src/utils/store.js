@@ -125,6 +125,11 @@ export function getHomerStats(homer) {
 
 export function getSummaryStats(combinedTable) {
   const { tableData } = combinedTable
+
+  // Total kWh for the year
+  const yearlyKwh = sumGreaterThanZero(tableData, 'newApplianceLoad')
+
+  // Unmet Loads
   const additionalUnmetLoadCount = countGreaterThanZero(
     tableData,
     'additionalUnmetLoad'
@@ -141,7 +146,6 @@ export function getSummaryStats(combinedTable) {
     'hour_of_day',
     'additionalUnmetLoad'
   )
-
   const newTotalUnmetLoadCount = countGreaterThanZero(
     tableData,
     'newTotalUnmetLoad'
