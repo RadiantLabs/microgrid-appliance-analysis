@@ -25,6 +25,7 @@ export function calculateNewLoads({
   const headerRowCount = 2
 
   const columnInfo = {
+    newApplianceLoad: 'kW',
     availableCapacity: 'kW',
     availableCapacityAfterNewLoad: 'kW',
     additionalUnmetLoad: 'kW',
@@ -172,9 +173,9 @@ export function calculateNewLoads({
   // Iterate over tableData, pushing each new row into an array
   const withNewColumns = _.reduce(tableData, columnReducer, [])
   const keys = _.keys(columnInfo).concat(keyOrder)
-
+  const frontColumns = ['hour', 'Time', 'newApplianceLoad']
   return {
     tableData: withNewColumns,
-    keyOrder: ['hour', 'Time'].concat(_.without(keys, ...['hour', 'Time'])),
+    keyOrder: frontColumns.concat(_.without(keys, ...frontColumns)),
   }
 }

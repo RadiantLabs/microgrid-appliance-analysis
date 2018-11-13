@@ -1,9 +1,12 @@
-## TODO
+## Questions for Amanda:
+- Usage Factor to kW:
+    - Should this be a function or a single number?
+    - Should it be different for different appliances (presumably yes)
 
-- Load files by using dropdown:
-    - Show `loading` immediately after switching until `combinedTable` is finished
-    - Why isn't maize mill and rice mill changing when switching?
-        - Is it React Virtualized not comparing deep or Mobx not observing deep? (Turns out it's React Virtualized)
+
+## TODO
+- Combined table does not update when switching appliance
+- Use forceUpdateGrids() for HOMER table
 
 - Calculate appliance loads based on usage factors
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable

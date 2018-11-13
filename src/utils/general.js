@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import { HOURS_PER_YEAR } from './constants'
-
-// import { toJS } from 'mobx'
+import { toJS } from 'mobx'
 
 /**
  * These are more general purpose utility functions, not directly related to the store
@@ -128,9 +127,12 @@ export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
   ) {
     return null
   }
-  const table1Headers = _.take(table1, headerCount)
+
+  // TODO: Trying to fix this error: [mobx] Computed values are not allowed to cause side effects by changing observables that are already being observed
+  // Recreated by changing some combination of usage factor to kW and the appliance or homer file
+  const table1Headers = _.take(toJS(table1), headerCount)
   const table1Data = _.drop(table1, headerCount)
-  const table2Headers = _.take(table2, headerCount)
+  const table2Headers = _.take(toJS(table2), headerCount)
   const table2Data = _.drop(table2, headerCount)
 
   // TODO: call into the mergeArraysOfObjects function above

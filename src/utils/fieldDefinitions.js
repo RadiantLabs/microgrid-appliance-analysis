@@ -14,7 +14,7 @@ export const fieldDefinitions = {
     minimum: 0,
     maximum: 2,
     step: 0.1,
-    defaultValue: 0.1,
+    defaultValue: 1.1,
     units: '-',
   },
 

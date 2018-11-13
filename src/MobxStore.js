@@ -12,6 +12,7 @@ import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
 import { mergeTables } from './utils/general'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
+import { fieldDefinitions } from './utils/fieldDefinitions'
 configure({ enforceActions: 'observed' })
 
 const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
@@ -31,7 +32,7 @@ class MobxStore {
   applianceIsLoading = false
 
   modelInputs = {
-    kwFactorToKw: 1.1,
+    kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
   }
 
   get combinedTable() {

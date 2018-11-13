@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Loader'
+import { Loader } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 
@@ -25,29 +26,48 @@ class CombinedTable extends React.Component {
     return index === 0 ? 76 : 26
   }
 
+  componentDidUpdate(prevProps) {
+    // const appliance = 'store.activeApplianceFileInfo.path'
+    // const homer = 'store.activeHomerFileInfo.path'
+    // if (!this.multigrid) {
+    //   return null
+    // }
+    // if (_.get(prevProps, appliance) === _.get(this.props, appliance)) {
+    //   this.multigrid.forceUpdateGrids()
+    // }
+    // if (_.get(prevProps, homer) === _.get(this.props, homer)) {
+    //   this.multigrid.forceUpdateGrids()
+    // }
+    if (this.multigrid) {
+      this.multigrid.forceUpdateGrids()
+    }
+  }
+
   render() {
+    const { store } = this.props
     const {
       combinedTable,
-      // homerStats
-    } = this.props.store
+      homerIsLoading,
+      // activeApplianceFileInfo,
+      activeHomerFileInfo,
+    } = store
+
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
     return (
       <div>
-        {/* <h5>
-          homerStats - min: {homerStats.minBatteryEnergyContent}, max:{' '}
-          {homerStats.minBatteryEnergyContent}
-        </h5> */}
         <h3>
-          {' '}
+          {activeHomerFileInfo.label}{' '}
           <small style={{ color: greyColors[1] }}>
-            TODO: Show combined column stats
-          </small>
+            {activeHomerFileInfo.description}
+          </small>{' '}
+          {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
         </h3>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid
+              ref={c => (this.multigrid = c)}
               cellRenderer={this._cellRenderer}
               columnCount={_.size(combinedTable.keyOrder)}
               columnWidth={100}

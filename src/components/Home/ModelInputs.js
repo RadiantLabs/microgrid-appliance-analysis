@@ -16,12 +16,12 @@ const ModelInputs = ({ store }) => {
 
         <Table.Row>
           <Table.Cell>Usage Factor Seasonal Derate</Table.Cell>
-          <Table.Cell>-</Table.Cell>
+          <Table.Cell>TBD</Table.Cell>
         </Table.Row>
 
         <Table.Row>
           <Table.Cell>HOMER Minimum State of Charge</Table.Cell>
-          <Table.Cell>homerMinStateOfCharge %</Table.Cell>
+          <Table.Cell>TBD</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
