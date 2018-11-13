@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Loader'
+import { Loader } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 
@@ -26,23 +27,37 @@ class ApplianceTable extends React.Component {
     return index === 0 ? 26 : 26
   }
 
+  componentDidUpdate(prevProps) {
+    const prevPath = _.get(prevProps, 'store.activeApplianceFileInfo.path')
+    const nowPath = _.get(this.props, 'store.activeApplianceFileInfo.path')
+    if (this.multigrid && prevPath === nowPath) {
+      this.multigrid.forceUpdateGrids()
+    }
+  }
+
   render() {
     const { store } = this.props
-    const { activeAppliance } = store
+    const {
+      activeAppliance,
+      applianceIsLoading,
+      activeApplianceFileInfo,
+    } = store
     if (_.isEmpty(activeAppliance)) {
       return <LoaderSpinner />
     }
     return (
       <div>
         <h3>
-          {' '}
+          {activeApplianceFileInfo.label}{' '}
           <small style={{ color: greyColors[1] }}>
-            TODO: Render appliance info
-          </small>
+            {activeApplianceFileInfo.description}
+          </small>{' '}
+          {applianceIsLoading ? <Loader active inline size="mini" /> : <span />}
         </h3>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid
+              ref={c => (this.multigrid = c)}
               cellRenderer={this._cellRenderer}
               columnCount={_.size(activeAppliance.keyOrder)}
               columnWidth={100}

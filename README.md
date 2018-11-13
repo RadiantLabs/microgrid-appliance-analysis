@@ -3,6 +3,7 @@
 - Load files by using dropdown:
     - Show `loading` immediately after switching until `combinedTable` is finished
     - Why isn't maize mill and rice mill changing when switching?
+        - Is it React Virtualized not comparing deep or Mobx not observing deep? (Turns out it's React Virtualized)
 
 - Calculate appliance loads based on usage factors
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
