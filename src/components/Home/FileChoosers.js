@@ -4,17 +4,6 @@ import _ from 'lodash'
 import { Dropdown, Header, Table } from 'semantic-ui-react'
 import { homerFiles, applianceFiles } from '../../utils/fileInfo'
 
-// TODO: Render file description
-// const activeFileDisplay = fileInfo => {
-//   debugger
-//   return (
-//     <div>
-//       {fileInfo.label}
-//       <small>{fileInfo.description}</small>
-//     </div>
-//   )
-// }
-
 class FileChoosers extends Component {
   render() {
     const {
@@ -23,6 +12,8 @@ class FileChoosers extends Component {
         setActiveApplianceFile,
         activeHomerFileInfo,
         activeApplianceFileInfo,
+        homerIsLoading,
+        applianceIsLoading,
       },
     } = this.props
     return (
@@ -34,7 +25,9 @@ class FileChoosers extends Component {
             </Table.Cell>
             <Table.Cell>
               {/* TODO: loading */}
-              <Dropdown text={activeHomerFileInfo.label}>
+              <Dropdown
+                text={activeHomerFileInfo.label}
+                loading={homerIsLoading}>
                 <Dropdown.Menu>
                   {_.map(homerFiles, fileInfo => (
                     <Dropdown.Item
@@ -56,7 +49,9 @@ class FileChoosers extends Component {
               <Header as="h5">Select Appliance Usage Profile:</Header>
             </Table.Cell>
             <Table.Cell>
-              <Dropdown text={activeApplianceFileInfo.label}>
+              <Dropdown
+                text={activeApplianceFileInfo.label}
+                loading={applianceIsLoading}>
                 <Dropdown.Menu>
                   {_.map(applianceFiles, fileInfo => (
                     <Dropdown.Item

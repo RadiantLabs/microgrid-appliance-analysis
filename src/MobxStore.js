@@ -27,6 +27,8 @@ class MobxStore {
   activeAppliance = null
   activeHomerFileInfo = _.find(homerFiles, { path: initHomerPath })
   activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
+  homerIsLoading = false
+  applianceIsLoading = false
 
   modelInputs = {
     kwFactorToKw: 1.1,
@@ -59,13 +61,21 @@ class MobxStore {
   }
 
   async fetchHomer(activeHomerFileInfo) {
+    this.homerIsLoading = true
     const homer = await fetchFile(activeHomerFileInfo)
-    runInAction(() => (this.activeHomer = homer))
+    runInAction(() => {
+      this.activeHomer = homer
+      this.homerIsLoading = false
+    })
   }
 
   async fetchAppliance(fileInfo) {
+    this.applianceIsLoading = true
     const appliance = await fetchFile(fileInfo)
-    runInAction(() => (this.activeAppliance = appliance))
+    runInAction(() => {
+      this.activeAppliance = appliance
+      this.applianceIsLoading = false
+    })
   }
 
   // Choose HOMER or Appliance File Form changes
@@ -92,6 +102,8 @@ decorate(MobxStore, {
   activeHomerFileInfo: observable,
   activeAppliance: observable,
   activeApplianceFileInfo: observable,
+  homerIsLoading: observable,
+  applianceIsLoading: observable,
   modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,

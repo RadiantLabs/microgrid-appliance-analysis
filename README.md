@@ -2,11 +2,10 @@
 
 - Load files by using dropdown:
     - Show `loading` immediately after switching until `combinedTable` is finished
+    - Why isn't maize mill and rice mill changing when switching?
 
 - Calculate appliance loads based on usage factors
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
-    - Build component that saves to mobx store only when valid
-    - Pass in fields to calculateNewLoads to calculate appliance_load
 
 - Chart Updates:
     - Summarized columns: Total kWh of the new appliance
@@ -20,6 +19,7 @@
         - New appliance load
         - Excess production
     - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
+- Render appliance summary stats
 
 - Calculate battery rate of charge based on excess production and based on input power
 
