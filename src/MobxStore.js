@@ -29,7 +29,7 @@ class MobxStore {
   activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
 
   modelInputs = {
-    kwFactorToKw: { value: 1.1, error: null },
+    kwFactorToKw: 1.1,
   }
 
   get combinedTable() {
@@ -83,11 +83,7 @@ class MobxStore {
 
   // Model Input form change handlers
   onModelInputChange(fieldKey, value) {
-    console.log('value: ', value)
-    // TODO:
-    // 1. update modelInputs with value,
-    // 2. fix Nan in appliance calc (path to value is incorrect)
-    // debugger
+    this.modelInputs[fieldKey] = value
   }
 }
 
