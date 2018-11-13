@@ -1,13 +1,5 @@
 ## TODO
 
-- *** Load profiles from usage profiles
-    - Create input under 'Inputs' section, store input value in store
-    - Input value should have default, max, min, step
-    - Create function that converts kw_factor to kw
-    - Create load profile under `calculateNewLoads` and attached to combinedTable
-    - Ignore current appliance_load
-    - Throw errors if something is missing, such as form inputs
-
 - Load files by using dropdown:
     - Show `loading` immediately after switching until `combinedTable` is finished
 

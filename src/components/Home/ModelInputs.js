@@ -2,13 +2,8 @@ import * as React from 'react'
 import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import InputField from '../InputField'
-import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const ModelInputs = ({ store }) => {
-  // const {
-  //   modelInputs: { homerMinStateOfCharge },
-  // } = store
-
   return (
     <Table basic="very" celled collapsing>
       <Table.Body>

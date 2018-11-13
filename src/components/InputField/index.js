@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Form, Input, Label } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 import _ from 'lodash'
 import { isFloat, isInteger } from '../../utils/general'
 // import { Slider } from 'react-semantic-ui-range'
@@ -60,7 +60,7 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey, store } = this.props
+    const { fieldKey } = this.props
     const { value, error } = this.state
     if (_.isNil(fieldKey)) {
       return <Input disabled loading />
