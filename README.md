@@ -7,7 +7,7 @@
 ## TODO
 - Combined table does not update when switching appliance
 - Use forceUpdateGrids() for HOMER table
-
+- Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - Calculate appliance loads based on usage factors
     - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
 

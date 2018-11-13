@@ -1,15 +1,9 @@
 export const homerFiles = [
   {
     type: 'homer',
-    label: 'homer_12_50_baseline',
-    path: './data/homer/homer_12_50_baseline.csv',
-    description: 'Fill in description about 12, 50, etc',
-  },
-  {
-    type: 'homer',
-    label: 'homer_12_50_oversize_20_AS',
-    path: './data/homer/homer_12_50_oversize_20_AS.csv',
-    description: 'Fill in description about 12, 50, etc',
+    label: '12-50 Baseline',
+    path: './data/homer/12-50 Baseline.csv',
+    description: 'Baseline: Fill in description about 12, 50, etc',
     // columns: {
     //   batteryEnergyContent: 'Generic 1kWh Lead Acid [ASM] Energy Content',
     //   batteryStateOfCharge: 'Generic 1kWh Lead Acid [ASM] State of Charge',
@@ -17,10 +11,22 @@ export const homerFiles = [
   },
   {
     type: 'homer',
-    label: 'homer_12_50_oversize_20',
-    path: './data/homer/homer_12_50_oversize_20.csv',
-    description: 'Fill in description about 12, 50, etc',
+    label: '12-50 Oversize 20',
+    path: './data/homer/12-50 Oversize 20.csv',
+    description: 'Oversized: Fill in description about 12, 50, etc',
   },
+  {
+    type: 'homer',
+    label: '12-50 Undersize 20',
+    path: './data/homer/12-50 Undersize 20.csv',
+    description: 'Undersized: Fill in description about 12, 50, etc',
+  },
+  // {
+  //   type: 'homer',
+  //   label: 'homer_12_50_oversize_20_AS',
+  //   path: './data/homer/homer_12_50_oversize_20_AS.csv',
+  //   description: 'Fill in description about 12, 50, etc',
+  // },
 ]
 
 export const applianceFiles = [

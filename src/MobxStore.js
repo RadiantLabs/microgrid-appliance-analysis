@@ -15,7 +15,7 @@ import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 configure({ enforceActions: 'observed' })
 
-const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
+const initHomerPath = './data/homer/12-50 Baseline.csv'
 const initAppliancePath = './data/appliances/rice_mill_usage_profile.csv'
 
 class MobxStore {
