@@ -166,6 +166,7 @@ export function getSummaryStats(combinedTable) {
     additionalUnmetLoadHist
   )
   return {
+    yearlyKwh,
     additionalUnmetLoadCount,
     additionalUnmetLoadCountPercent,
     additionalUnmetLoadSum,

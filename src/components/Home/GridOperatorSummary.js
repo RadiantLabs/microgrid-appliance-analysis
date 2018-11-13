@@ -5,6 +5,9 @@ import { inject, observer } from 'mobx-react'
 
 const GridOperatorSummary = ({ store }) => {
   const { summaryStats } = store
+
+  const yearlyKwh = _.get(summaryStats, 'yearlyKwh', '-')
+
   const additionalUnmetLoadCount = _.get(
     summaryStats,
     'additionalUnmetLoadCount',
@@ -38,6 +41,10 @@ const GridOperatorSummary = ({ store }) => {
   return (
     <Table basic="very" celled collapsing>
       <Table.Body>
+        <Table.Row>
+          <Table.Cell>Yearly kWh from new appliance</Table.Cell>
+          <Table.Cell>{yearlyKwh} kWh</Table.Cell>
+        </Table.Row>
         <Table.Row>
           <Table.Cell>New Unmet Load Count</Table.Cell>
           <Table.Cell>
