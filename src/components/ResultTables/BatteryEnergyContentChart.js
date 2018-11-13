@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
+import { Message } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Loader'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Brush, Legend } from 'recharts'
@@ -25,6 +26,10 @@ class BatteryEnergyContentChart extends React.Component {
           Battery Energy Content by hour of year{' '}
           <small style={{ color: greyColors[1] }}>kWh</small>
         </h3>
+        <Message warning>
+          This chart isn't useful yet. I need to calculate the charging curve of
+          the battery first.
+        </Message>
         <LineChart
           width={1400}
           height={400}
