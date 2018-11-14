@@ -79,6 +79,7 @@ class InputField extends React.Component {
             onChange={this.handleChange}
             onBlur={this.handleBlur}
             error={Boolean(error)}
+            size="small"
             // disabled
             // loading
             // label={{ basic: true, content: 'kg' }}
