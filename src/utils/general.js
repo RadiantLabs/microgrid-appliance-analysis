@@ -108,7 +108,11 @@ export function setKeyOrder(rows) {
   return frontItems.concat(_.without(keys, ...frontItems))
 }
 
-// TODO: rewrite to allow passing in more than 2 arrays
+// This is lodash approach is ~100x faster than doing a iterating over
+// arrays and merging row objects together with spread operator.
+// This runs ~300ms the first time, ~100ms subsequent times.
+// The other version took ~18 seconds
+// You could rewrite this function to allow passing in more than 2 arrays
 export function mergeArraysOfObjects(joinKey, arr1, arr2) {
   return _(arr1)
     .concat(arr2) // Can list multiple arrays to concat here, including calculated columns
@@ -117,8 +121,6 @@ export function mergeArraysOfObjects(joinKey, arr1, arr2) {
     .value()
 }
 
-// Merge tables based on 'hour' key, taking into account the 2 table headers
-// For now, this will only merge 2 tables. table2 cannot be an array of tables
 export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
   if (
     _.isEmpty(table1) ||
@@ -128,24 +130,14 @@ export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
   ) {
     return null
   }
-
   checkKey(table1, joinKey)
   checkKey(table2, joinKey)
 
-  // TODO: Trying to fix this error: [mobx] Computed values are not allowed to cause side effects by changing observables that are already being observed
-  // Recreated by changing some combination of usage factor to kW and the appliance or homer file
   const table1Headers = _.take(table1, headerCount)
   const table1Data = _.drop(table1, headerCount)
   const table2Headers = _.take(table2, headerCount)
   const table2Data = _.drop(table2, headerCount)
-
-  // TODO: call into the mergeArraysOfObjects function above
-  const mergedTable = _(table1Data)
-    .concat(table2Data) // Can list multiple arrays to concat here, including calculated columns
-    .groupBy(joinKey)
-    .map(_.spread(_.merge))
-    .value()
-
+  const mergedTable = mergeArraysOfObjects(joinKey, table1Data, table2Data)
   const headerTitles = { ...table1Headers[0], ...table2Headers[0] }
   const headerUnits = { ...table1Headers[1], ...table2Headers[1] }
   return {
