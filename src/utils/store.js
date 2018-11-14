@@ -137,7 +137,23 @@ export function getSummaryStats(combinedTable) {
   // Total kWh for the year
   const yearlyKwh = sumGreaterThanZero(tableData, 'newApplianceLoad')
 
-  // Unmet Loads
+  // Unmet Loads: Original without new appliance
+  const originalUnmetLoadCount = countGreaterThanZero(
+    tableData,
+    'Unmet Electrical Load'
+  )
+  const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
+  const originalUnmetLoadSum = sumGreaterThanZero(
+    tableData,
+    'Unmet Electrical Load'
+  )
+  const originalUnmetLoadHist = createGreaterThanZeroHistogram(
+    tableData,
+    'hour_of_day',
+    'Unmet Electrical Load'
+  )
+
+  // Unmet Loads: Additional Appliance
   const additionalUnmetLoadCount = countGreaterThanZero(
     tableData,
     'additionalUnmetLoad'
@@ -154,6 +170,8 @@ export function getSummaryStats(combinedTable) {
     'hour_of_day',
     'additionalUnmetLoad'
   )
+
+  // Unmet Loads: Total with new appliance
   const newTotalUnmetLoadCount = countGreaterThanZero(
     tableData,
     'newTotalUnmetLoad'
@@ -168,21 +186,33 @@ export function getSummaryStats(combinedTable) {
     'hour_of_day',
     'newTotalUnmetLoad'
   )
+
+  // TODO: make mergeArrayOfObjects take multiple args
   const unmetLoadHist = mergeArraysOfObjects(
     'hour_of_day',
-    newTotalUnmetLoadHist,
-    additionalUnmetLoadHist
+    // originalUnmetLoadHist,
+    additionalUnmetLoadHist,
+    newTotalUnmetLoadHist
   )
+
   return {
     yearlyKwh,
+
+    originalUnmetLoadCount,
+    originalUnmetLoadCountPercent,
+    originalUnmetLoadSum,
+    originalUnmetLoadHist,
+
     additionalUnmetLoadCount,
     additionalUnmetLoadCountPercent,
     additionalUnmetLoadSum,
     additionalUnmetLoadHist,
+
     newTotalUnmetLoadCount,
     newTotalUnmetLoadCountPercent,
     newTotalUnmetLoadSum,
     newTotalUnmetLoadHist,
+
     unmetLoadHist,
   }
 }
