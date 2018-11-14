@@ -40,14 +40,22 @@ class MobxStore {
     ),
   }
 
+  // Make sure to clone tables being passed in otherwise mergeTables will mutate
+  // the observable arrays and generate this error:
+  // > [mobx] Computed values are not allowed to cause side effects by changing
+  // > observables that are already being observed
+  // With cloneDeep it runs in ~1000ms instead of 330ms, but better than 18 seconds
   get combinedTable() {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
     }
+    const t0 = performance.now()
     const mergedTables = mergeTables(
-      this.activeHomer.tableData,
-      this.activeAppliance.tableData
+      _.cloneDeep(this.activeHomer.tableData),
+      _.cloneDeep(this.activeAppliance.tableData)
     )
+    const t1 = performance.now()
+    console.log('mergeTables took ' + (t1 - t0) + ' milliseconds.')
     return calculateNewLoads({
       table: mergedTables,
       modelInputs: this.modelInputs,
