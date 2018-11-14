@@ -13,6 +13,12 @@ const ModelInputs = ({ store }) => {
             <InputField fieldKey="kwFactorToKw" />
           </Table.Cell>
         </Table.Row>
+        <Table.Row>
+          <Table.Cell>Duty Cycle Derate Factor</Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="dutyCycleDerateFactor" />
+          </Table.Cell>
+        </Table.Row>
 
         <Table.Row>
           <Table.Cell>Usage Factor Seasonal Derate</Table.Cell>

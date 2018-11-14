@@ -185,7 +185,6 @@ export function getSummaryStats(combinedTable) {
  */
 export async function fetchFile(fileInfo) {
   const { path, type } = fileInfo
-  console.log('fileInfo:', fileInfo)
   try {
     const res = await window.fetch(path)
     const csv = await res.text()

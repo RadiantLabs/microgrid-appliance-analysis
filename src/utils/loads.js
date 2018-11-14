@@ -69,7 +69,10 @@ export function calculateNewLoads({
       prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
 
     // Calculate load profile from usage profile
-    const newApplianceLoad = modelInputs['kwFactorToKw'] * row['kw_factor']
+    const newApplianceLoad =
+      row['kw_factor'] *
+      modelInputs['kwFactorToKw'] *
+      modelInputs['dutyCycleDerateFactor']
 
     /*
      * Now calculate new values based on the HOMER and usage profiles

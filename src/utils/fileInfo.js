@@ -61,5 +61,8 @@ export const applianceFiles = [
     path: './data/appliances/welder_usage_profile.csv',
     description:
       'Welder usage profile from downloaded UTC sensor file (Tanzania)',
+    defaults: {
+      dutyCycleDerateFactor: 0.2,
+    },
   },
 ]

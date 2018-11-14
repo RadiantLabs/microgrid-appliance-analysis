@@ -18,6 +18,17 @@ export const fieldDefinitions = {
     units: '-',
   },
 
+  dutyCycleDerateFactor: {
+    $schema: jsonSchemaStandard,
+    title: 'Duty Cycle Derate Factor',
+    type: 'float',
+    minimum: 0,
+    maximum: 2,
+    step: 0.05,
+    defaultValue: 1,
+    units: '-',
+  },
+
   // Example with min and max, which is editable
   // grainThroughput: {
   //   $schema: jsonSchemaStandard,

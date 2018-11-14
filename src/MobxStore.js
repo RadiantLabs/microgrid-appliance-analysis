@@ -33,6 +33,11 @@ class MobxStore {
 
   modelInputs = {
     kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
+    dutyCycleDerateFactor: _.get(
+      this.activeApplianceFileInfo,
+      'defaults.dutyCycleDerateFactor',
+      1
+    ),
   }
 
   get combinedTable() {
