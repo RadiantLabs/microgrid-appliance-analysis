@@ -3,7 +3,9 @@ Here’s what I will work on next:
 - [x] Calculate % of full rated load running over 1 hour in 3 usage profile notebooks
 - [x] Duty cycle derate: welder defaults to 20%, other appliance default to 100% - all are adjustable
 - [x] Clarify in app that kw_factor_to_kw is Appliance Power (nominal power)
-- [ ] Clarify unmet loads in app: table of new, original and total, stacked bar charts of original and new (which will give us the total)
+- [x] Clarify unmet loads in table of new, original and total,
+- [x] Allow mergeArraysOfObject function to take more than 1 table
+- [x] Stacked bar charts of original and new (which will give us the total)
 - [ ] Model inputs: input tariff ($/kWh)
 
 If I get that done, then:

@@ -99,6 +99,12 @@ export const findColMax = (table, key) => {
   return _.max(filterNums(table, key))
 }
 
+export const remapKeyInArrayOfObjects = (table, oldKey, newKey) => {
+  return _.map(table, row => {
+    return _.mapKeys(row, (val, key) => (key === oldKey ? newKey : key))
+  })
+}
+
 // Sort keys manually (key order in objects is never deterministic) so I can put
 // columns I want as fixed columns
 // TODO: make this more generalizable
@@ -113,9 +119,9 @@ export function setKeyOrder(rows) {
 // This runs ~300ms the first time, ~100ms subsequent times.
 // The other version took ~18 seconds
 // You could rewrite this function to allow passing in more than 2 arrays
-export function mergeArraysOfObjects(joinKey, arr1, arr2) {
+export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
   return _(arr1)
-    .concat(arr2) // Can list multiple arrays to concat here, including calculated columns
+    .concat(...arrays) // Can list multiple arrays to concat here
     .groupBy(joinKey)
     .map(_.spread(_.merge))
     .value()
