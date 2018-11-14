@@ -74,10 +74,19 @@ export function calculateNewLoads({
       modelInputs['kwFactorToKw'] *
       modelInputs['dutyCycleDerateFactor']
 
+    if (!_.isFinite(newApplianceLoad)) {
+      throw new Error(
+        `newApplianceLoad did not calculate properly. Check your file has all required columns and that all values are finite. Row: ${JSON.stringify(
+          row
+        )}. Also make sure modelInputs are numbers and not strings or undefined: ${JSON.stringify(
+          modelInputs
+        )}`
+      )
+    }
+
     /*
      * Now calculate new values based on the HOMER and usage profiles
      */
-
     // This is the energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
     const energyContentAboveMin =

@@ -49,7 +49,6 @@ export function processHomerFile(rows, fileInfo) {
 }
 
 export function processApplianceFile(rows, fileInfo) {
-  const keyOrder = _.keys(rows[0])
   const unitRow = {
     datetime: '-',
     hour: '-',
@@ -58,6 +57,15 @@ export function processApplianceFile(rows, fileInfo) {
     day_hour: '-',
     kw_factor: '-',
     production_factor: '-',
+  }
+  const keyOrder = _.keys(unitRow)
+  const incomingColumns = _.keys(rows[0])
+  if (!_.isEqual(keyOrder, incomingColumns)) {
+    throw new Error(
+      `Missing a required column in appliance file: Passed in ${JSON.stringify(
+        incomingColumns
+      )}. Required is ${JSON.stringify(keyOrder)}`
+    )
   }
   const tableData = [createHeaderRow(rows), unitRow].concat(rows)
   return { tableData, keyOrder, fileInfo }

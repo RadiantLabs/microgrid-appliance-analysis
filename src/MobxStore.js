@@ -30,6 +30,7 @@ class MobxStore {
   activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
   homerIsLoading = false
   applianceIsLoading = false
+  appCalculating = false
 
   modelInputs = {
     kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
@@ -49,19 +50,23 @@ class MobxStore {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
     }
+    // this.appCalculating = true
+
     const t0 = performance.now()
     const mergedTables = mergeTables(
       _.cloneDeep(this.activeHomer.tableData),
       _.cloneDeep(this.activeAppliance.tableData)
     )
     const t1 = performance.now()
-    console.log('mergeTables took ' + (t1 - t0) + ' milliseconds.')
-    return calculateNewLoads({
+    console.log('mergeTables took ' + _.round(t1 - t0) + ' milliseconds.')
+    const calculatedNewLoads = calculateNewLoads({
       table: mergedTables,
       modelInputs: this.modelInputs,
       homerStats: this.homerStats,
       constants: {},
     })
+    // this.appCalculating = false
+    return calculatedNewLoads
   }
 
   get homerStats() {
@@ -118,6 +123,7 @@ decorate(MobxStore, {
   activeApplianceFileInfo: observable,
   homerIsLoading: observable,
   applianceIsLoading: observable,
+  // appCalculating: observable,
   modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
