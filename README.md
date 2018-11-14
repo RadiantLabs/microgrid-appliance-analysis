@@ -1,11 +1,19 @@
-## Questions for Amanda:
-- Usage Factor to kW:
-    - Should this be a function or a single number?
-    - Should it be different for different appliances (presumably yes)
+## TODO: Short terms
+Here’s what I will work on next:
+- [x] Calculate % of full rated load running over 1 hour in 3 usage profile notebooks
+- [ ] Duty cycle derate: welder defaults to 20%, other appliance default to 100% - all are adjustable
+- [ ] Clarify in app that kw_factor_to_kw is Appliance Power (nominal power)
+- [ ] Clarify unmet loads in app: table of new, original and total, stacked bar charts of original and new (which will give us the total)
+- [ ] Model inputs: input tariff ($/kWh)
 
+If I get that done, then:
+- [ ] Model Inputs: production_factor->throughput: For example, production_factor -> kg of grain
+- [ ] Throughput to revenue factor: For example: $ / kg of grain
+- [ ] Cost per kWh for unmet loads (original and new appliance)
 
-## TODO
+## TODO Medium
 - Combined table does not update when switching appliance
+- Add Sentry logging
 - Use forceUpdateGrids() for HOMER table
 - Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - Calculate appliance loads based on usage factors
