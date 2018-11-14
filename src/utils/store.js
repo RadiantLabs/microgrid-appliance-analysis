@@ -196,21 +196,21 @@ export function getSummaryStats(combinedTable) {
   )
 
   return {
-    yearlyKwh,
+    yearlyKwh: _.round(yearlyKwh),
 
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
-    originalUnmetLoadSum,
+    originalUnmetLoadSum: _.round(originalUnmetLoadSum),
     originalUnmetLoadHist,
 
     additionalUnmetLoadCount,
     additionalUnmetLoadCountPercent,
-    additionalUnmetLoadSum,
+    additionalUnmetLoadSum: _.round(additionalUnmetLoadSum),
     additionalUnmetLoadHist,
 
     newTotalUnmetLoadCount,
     newTotalUnmetLoadCountPercent,
-    newTotalUnmetLoadSum,
+    newTotalUnmetLoadSum: _.round(newTotalUnmetLoadSum),
     newTotalUnmetLoadHist,
 
     unmetLoadHist,

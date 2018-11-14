@@ -6,8 +6,7 @@ import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import { mobxStore } from './MobxStore'
 import { Menu } from 'semantic-ui-react'
-// import InputExample from './components/InputExample'
-import { NavItem } from './components/NavItem'
+import { NavItem } from './components/Elements/NavItem'
 import About from './components/About'
 // import TodoExample from './components/Todo'
 import Home from './components/Home'
@@ -29,7 +28,6 @@ const App = () => (
         <div className="mainContent">
           <Route exact={true} path="/" component={Home} />
           <Route path="/about" component={About} />
-          {/* <Route path="/input-example" component={InputExample} /> */}
           {/* <Route path="/todo" component={TodoExample} /> */}
         </div>
         {/* <DevTools /> */}

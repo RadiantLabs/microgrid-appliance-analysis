@@ -59,28 +59,6 @@ const GridOperatorSummary = ({ store }) => {
             <Table.Cell>Yearly kWh from new appliance</Table.Cell>
             <Table.Cell>{yearlyKwh} kWh</Table.Cell>
           </Table.Row>
-          <Table.Row>
-            <Table.Cell>New Unmet Load Count</Table.Cell>
-            <Table.Cell>
-              {additionalUnmetLoadCount} hr/year{' '}
-              <em> ({additionalUnmetLoadCountPercent} %)</em>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>New Unmet Load Sum</Table.Cell>
-            <Table.Cell>{additionalUnmetLoadSum} kWh</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Total Unmet Load Count</Table.Cell>
-            <Table.Cell>
-              {newTotalUnmetLoadCount} hr/year{' '}
-              <em> ({newTotalUnmetLoadCountPercent} %)</em>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Total Unmet Load Sum</Table.Cell>
-            <Table.Cell>{newTotalUnmetLoadSum} kWh</Table.Cell>
-          </Table.Row>
         </Table.Body>
       </Table>
       <Table definition>
@@ -91,7 +69,7 @@ const GridOperatorSummary = ({ store }) => {
               Count <em>hrs/year</em>
             </Table.HeaderCell>
             <Table.HeaderCell>
-              Sum <em>hrs/year</em>
+              Sum <em>kWh</em>
             </Table.HeaderCell>
             <Table.HeaderCell>Percent of Year</Table.HeaderCell>
           </Table.Row>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Table, Icon, Popup } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
-import InputField from '../InputField'
+import InputField from '../Elements/InputField'
 
 const HelperPopup = content => (
   <Popup

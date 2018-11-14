@@ -2,7 +2,7 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Message } from 'semantic-ui-react'
 import _ from 'lodash'
-import LoaderSpinner from '../Loader'
+import LoaderSpinner from '../Elements/Loader'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Brush, Legend } from 'recharts'
 import { getChartColors, greyColors } from '../../utils/constants'
 
