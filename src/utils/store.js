@@ -141,21 +141,16 @@ export function getSummaryStats(combinedTable) {
   // Unmet Loads: Original without new appliance
   const originalUnmetLoadCount = countGreaterThanZero(
     tableData,
-    'Unmet Electrical Load'
+    'originalUnmetLoad'
   )
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
   const originalUnmetLoadSum = sumGreaterThanZero(
     tableData,
-    'Unmet Electrical Load'
+    'originalUnmetLoad'
   )
-  const originalUnmetLoadHistTemp = createGreaterThanZeroHistogram(
+  const originalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
-    'Unmet Electrical Load'
-  )
-  const originalUnmetLoadHist = remapKeyInArrayOfObjects(
-    originalUnmetLoadHistTemp,
-    'Unmet Electrical Load',
     'originalUnmetLoad'
   )
 

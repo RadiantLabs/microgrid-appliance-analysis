@@ -53,7 +53,7 @@ const GridOperatorSummary = ({ store }) => {
 
   return (
     <div>
-      <Table basic="very" celled collapsing>
+      <Table basic="very" celled collapsing compact>
         <Table.Body>
           <Table.Row>
             <Table.Cell>Yearly kWh from new appliance</Table.Cell>
@@ -61,7 +61,7 @@ const GridOperatorSummary = ({ store }) => {
           </Table.Row>
         </Table.Body>
       </Table>
-      <Table definition>
+      <Table definition compact>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
@@ -82,7 +82,7 @@ const GridOperatorSummary = ({ store }) => {
             <Table.Cell>{originalUnmetLoadCountPercent}%</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Unmet load from new appliance</Table.Cell>
+            <Table.Cell>Additional unmet load</Table.Cell>
             <Table.Cell>{additionalUnmetLoadCount}</Table.Cell>
             <Table.Cell>{additionalUnmetLoadSum}</Table.Cell>
             <Table.Cell>{additionalUnmetLoadCountPercent}%</Table.Cell>

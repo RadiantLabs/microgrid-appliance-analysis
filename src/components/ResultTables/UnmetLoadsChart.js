@@ -13,7 +13,8 @@ class UnmetLoadsChart extends React.Component {
     if (_.isEmpty(summaryStats)) {
       return <LoaderSpinner />
     }
-    const { unmetLoadHist } = summaryStats
+    const { allUnmetLoadHist } = summaryStats
+
     return (
       <div>
         <h3>
@@ -23,13 +24,19 @@ class UnmetLoadsChart extends React.Component {
         <BarChart
           width={900}
           height={400}
-          data={unmetLoadHist}
+          data={allUnmetLoadHist}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <XAxis dataKey="hour_of_day" />
           <YAxis />
           <Tooltip />
           <Legend />
           <Bar
+            stackId="a"
+            dataKey="originalUnmetLoad"
+            fill={getChartColors('originalUnmetLoad')}
+          />
+          <Bar
+            stackId="a"
             dataKey="additionalUnmetLoad"
             fill={getChartColors('additionalUnmetLoad')}
           />

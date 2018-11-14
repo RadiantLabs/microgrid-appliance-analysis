@@ -27,7 +27,7 @@ const ActiveView = ({ viewName }) => {
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'availableLoadChart' }
+  state = { activeItem: 'unmetLoadChart' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 

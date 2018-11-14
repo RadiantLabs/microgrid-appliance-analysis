@@ -32,6 +32,7 @@ export function calculateNewLoads({
     newApplianceBatteryConsumption: 'kW',
     originalBatteryEnergyContentDelta: 'kWh',
     newApplianceBatteryEnergyContent: 'kWh',
+    originalUnmetLoad: 'kW',
     newTotalUnmetLoad: 'kW',
   }
 
@@ -62,7 +63,9 @@ export function calculateNewLoads({
       row['Generic 1kWh Lead Acid [ASM] Energy Content']
     const batteryStateOfCharge =
       row['Generic 1kWh Lead Acid [ASM] State of Charge']
-    const unmetElecLoad = row['Unmet Electrical Load']
+
+    // Some of these numbers from HOMER are -1x10-16
+    const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
 
     // Get values from previous row
     const prevBatteryEnergyContent =
@@ -87,7 +90,7 @@ export function calculateNewLoads({
     /*
      * Now calculate new values based on the HOMER and usage profiles
      */
-    // This is the energy content above what HOMER (or the user) decides is the minimum
+    // The energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
     const energyContentAboveMin =
       batteryEnergyContent - effectiveMinBatteryEnergyContent
@@ -103,16 +106,16 @@ export function calculateNewLoads({
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
 
     // Is there an unmet load after the new appliance is added?
-    // If there is no available capacity (or goes negative) after the new appliance is added,
-    // then the unmet load equals that (negative) "available" capacity
+    // If there is no available capacity (or goes negative) after the new appliance
+    // is added, then the unmet load equals that (negative) "available" capacity
     const additionalUnmetLoad =
       availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad
 
-    // Add up the original unmet load with no new appliance and now the additional unmet load
-    // now that we have a new appliance on the grid
-    const newTotalUnmetLoad = unmetElecLoad + additionalUnmetLoad
+    // Add up the original unmet load with no new appliance and now the additional
+    // unmet load now that we have a new appliance on the grid
+    const newTotalUnmetLoad = originalUnmetLoad + additionalUnmetLoad
 
-    // What is the battery consumption (kW) now that we have a new appliance on the grid?
+    // Battery consumption (kW) now that we have a new appliance on the grid.
     // If the new appliance load is greater than the excess electrical production, we are
     // draining the battery by the difference between new load and the excess production.
     // If the excess electrical production is greater than the new appliance load, then we
@@ -156,27 +159,31 @@ export function calculateNewLoads({
     result.push({
       ...row,
       ...{
-        newApplianceLoad: _.round(newApplianceLoad, 3),
-        energyContentAboveMin: _.round(energyContentAboveMin, 3),
-        availableCapacity: _.round(availableCapacity, 3),
+        newApplianceLoad: _.round(newApplianceLoad, 4),
+        energyContentAboveMin: _.round(energyContentAboveMin, 4),
+        availableCapacity: _.round(availableCapacity, 4),
         availableCapacityAfterNewLoad: _.round(
           availableCapacityAfterNewLoad,
-          3
+          4
         ),
+        // TODO: Explain why rounding decisions are so critical for unmet loads
+        // Rounding to 3 decimals equates to an unmet load of 1 watt
+        // Rounding to 0 decimals equates to an unmet load of 1 kW
+        originalUnmetLoad: _.round(originalUnmetLoad, 3),
         additionalUnmetLoad: _.round(additionalUnmetLoad, 3),
+        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 3),
         newApplianceBatteryConsumption: _.round(
           newApplianceBatteryConsumption,
-          3
+          4
         ),
         originalBatteryEnergyContentDelta: _.round(
           originalBatteryEnergyContentDelta,
-          3
+          4
         ),
         newApplianceBatteryEnergyContent: _.round(
           newApplianceBatteryEnergyContent,
-          3
+          4
         ),
-        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 3),
       },
     })
     return result

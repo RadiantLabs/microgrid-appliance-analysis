@@ -5,7 +5,9 @@ Here’s what I will work on next:
 - [x] Clarify in app that kw_factor_to_kw is Appliance Power (nominal power)
 - [x] Clarify unmet loads in table of new, original and total,
 - [x] Allow mergeArraysOfObject function to take more than 1 table
-- [x] Stacked bar charts of original and new (which will give us the total)
+- [x] Remap key in table
+- [x] Stacked bar charts of original and new unmet loads
+- [ ] Talk with Amanda regarding unmet load rounding
 - [ ] Model inputs: input tariff ($/kWh)
 
 If I get that done, then:

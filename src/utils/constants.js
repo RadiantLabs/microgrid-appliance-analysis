@@ -35,6 +35,7 @@ export const chartColorsByKey = {
   newApplianceBatteryConsumption: '#FFA601',
 
   // Unmet Loads
+  originalUnmetLoad: '#003f5c',
   newTotalUnmetLoad: '#444e86',
   additionalUnmetLoad: '#FF6E54',
 

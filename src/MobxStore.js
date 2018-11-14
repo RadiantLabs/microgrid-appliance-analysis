@@ -51,7 +51,6 @@ class MobxStore {
       return null
     }
     // this.appCalculating = true
-
     const t0 = performance.now()
     const mergedTables = mergeTables(
       _.cloneDeep(this.activeHomer.tableData),
