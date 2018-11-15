@@ -1,16 +1,9 @@
 import * as React from 'react'
-import { Table, Icon, Popup } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import InputField from '../Elements/InputField'
+import { HelperPopup } from '../Elements/HelperPopup'
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
-
-const HelperPopup = content => (
-  <Popup
-    trigger={<Icon name="question circle outline" size="small" color="grey" />}
-    position="bottom left"
-    content={content}
-  />
-)
 
 // TODO: Generate these in a loop
 const ModelInputs = ({ store }) => {
@@ -68,20 +61,20 @@ const ModelInputs = ({ store }) => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            {fieldDefinitions['productionToThroughput'].title}{' '}
-            <HelperPopup content={fieldDefinitions['productionToThroughput'].description} />
+            {fieldDefinitions['productionUnitsPerKwh'].title}{' '}
+            <HelperPopup content={fieldDefinitions['productionUnitsPerKwh'].description} />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="productionToThroughput" />
+            <InputField fieldKey="productionUnitsPerKwh" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            {fieldDefinitions['throughputToRevenue'].title}{' '}
-            <HelperPopup content={fieldDefinitions['throughputToRevenue'].description} />
+            {fieldDefinitions['revenuePerProductionUnits'].title}{' '}
+            <HelperPopup content={fieldDefinitions['revenuePerProductionUnits'].description} />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="throughputToRevenue" />
+            <InputField fieldKey="revenuePerProductionUnits" />
             {/* TODO: units */}
           </Table.Cell>
         </Table.Row>

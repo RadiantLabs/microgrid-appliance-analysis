@@ -10,9 +10,9 @@ const ApplianceOperatorSummary = ({ store }) => {
 
   // Note: this is a cost for the appliance operator, but revenue for grid operator
   const newApplianceElectricityCost = get(stats, 'newApplianceElectricityRevenue', '-')
-  const yearlyProductionFactor = get(stats, 'yearlyProductionFactor', '-')
-  const yearlyThroughput = get(stats, 'yearlyThroughput', '-')
-  const yearlyThroughputRevenue = get(stats, 'yearlyThroughputRevenue', '-')
+  // const yearlyProductionFactor = get(stats, 'yearlyProductionFactor', '-')
+  const yearlyProductionUnits = get(stats, 'yearlyProductionUnits', '-')
+  const yearlyProductionUnitsRevenue = get(stats, 'yearlyProductionUnitsRevenue', '-')
   const netApplianceOwnerRevenue = get(stats, 'netApplianceOwnerRevenue', '-')
 
   return (
@@ -26,17 +26,17 @@ const ApplianceOperatorSummary = ({ store }) => {
           <Table.Cell>Yearly Appliance Electricity Cost</Table.Cell>
           <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
         </Table.Row>
-        <Table.Row>
+        {/* <Table.Row>
           <Table.Cell>Yearly Production Factor</Table.Cell>
           <Table.Cell>{yearlyProductionFactor}</Table.Cell>
+        </Table.Row> */}
+        <Table.Row>
+          <Table.Cell>Yearly Units Produced</Table.Cell>
+          <Table.Cell>{yearlyProductionUnits} units</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Yearly Throughput</Table.Cell>
-          <Table.Cell>{yearlyThroughput} units</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Yearly Throughput Revenue</Table.Cell>
-          <Table.Cell>${yearlyThroughputRevenue}</Table.Cell>
+          <Table.Cell>Yearly Production Units Revenue</Table.Cell>
+          <Table.Cell>${yearlyProductionUnitsRevenue}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Net Revenue</Table.Cell>

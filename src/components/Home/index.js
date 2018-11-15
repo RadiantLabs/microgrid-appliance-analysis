@@ -19,7 +19,7 @@ class Home extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <h3>Inputs</h3>
+                <h3>Model Inputs</h3>
                 <ModelInputs />
               </Segment>
             </Grid.Column>

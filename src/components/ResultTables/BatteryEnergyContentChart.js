@@ -17,7 +17,6 @@ import { getChartColors, greyColors } from '../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-
 class BatteryEnergyContentChart extends React.Component {
   render() {
     const {

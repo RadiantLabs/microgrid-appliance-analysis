@@ -200,10 +200,10 @@ export function getSummaryStats(combinedTable, modelInputs) {
    */
 
   // Calculate throughput of new appliance based on production_factor
-  const yearlyProductionFactor = sumGreaterThanZero(tableData, 'production_factor')
-  const yearlyThroughput = yearlyProductionFactor * modelInputs['productionToThroughput']
-  const yearlyThroughputRevenue = yearlyThroughput * modelInputs['throughputToRevenue']
-  const netApplianceOwnerRevenue = yearlyThroughputRevenue - newApplianceElectricityRevenue
+  const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
+  const yearlyProductionUnitsRevenue =
+    yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
+  const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
 
   return {
     originalUnmetLoadCount,
@@ -229,9 +229,8 @@ export function getSummaryStats(combinedTable, modelInputs) {
     newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
     newApplianceNetRevenue: _.round(newApplianceNetRevenue),
 
-    yearlyProductionFactor: yearlyProductionFactor,
-    yearlyThroughput: yearlyThroughput,
-    yearlyThroughputRevenue: _.round(yearlyThroughputRevenue),
+    yearlyProductionUnits: yearlyProductionUnits,
+    yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
   }
 }

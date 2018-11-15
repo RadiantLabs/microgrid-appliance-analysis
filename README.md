@@ -1,4 +1,13 @@
 ## TODO: Short terms
+- [ ] Ignore production_factor and use kWh_to_throughput: this factor is more commonly known and probably roughly accurate as long as the machine is working within it's normal operating parameters
+    * Rename variables as we would write equations: throughputToRevenue->revenuePerThroughput
+    * Switch from throughput (which is a rate: units/second) to units produced or units or production units
+- [ ] Clarify: Throughput to Revenue is $/unit
+- [ ] Check on duty cycle calculation: see screenshot. duty cycle goes down, revenue goes up?
+- [ ] Explain why unmet load counts are sensitive to rounding in a tooltip
+- [ ] Table in tooltip explaining why total != original + additional
+
+## Last sprint
 Here’s what I will work on next:
 - [x] Calculate % of full rated load running over 1 hour in 3 usage profile notebooks
 - [x] Duty cycle derate: welder defaults to 20%, other appliance default to 100% - all are adjustable
@@ -15,7 +24,7 @@ Here’s what I will work on next:
 If I get that done, then:
 - [x] Model Inputs: production_factor->throughput: For example, production_factor -> kg of grain
 - [x] Throughput to revenue factor: For example: $ / kg of grain
-- [x    ] Cost per kWh for unmet loads (original and new appliance)
+- [x] Cost per kWh for unmet loads (original and new appliance)
 
 ## TODO Medium
 - Combined table does not update when switching appliance

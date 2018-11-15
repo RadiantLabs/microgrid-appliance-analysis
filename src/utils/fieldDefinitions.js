@@ -9,7 +9,7 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 export const fieldDefinitions = {
   kwFactorToKw: {
     $schema: jsonSchemaStandard,
-    title: 'Usage Factor to kW',
+    title: 'Full Capacity Usage Factor to kW',
     description:
       'Apply the appliance nominal power (in kW) to determine the load profile for this appliance',
     type: 'float',
@@ -19,12 +19,11 @@ export const fieldDefinitions = {
     defaultValue: 0.5,
     units: '-',
   },
-
   dutyCycleDerateFactor: {
     $schema: jsonSchemaStandard,
     title: 'Duty Cycle Derate Factor',
     description:
-      "A welder, for example, may only run 20% within a 2 minute measured interval. In that case, enter 0.2. If an appliance is running for it's full 2 minute interval, enter 1",
+      'A welder, for example, may only run 20% within a 2 minute measured interval. In that case, enter 0.2. Mills likely run for the entire 2 minute measured interval, so would have a value of 1',
     type: 'float',
     minimum: 0,
     maximum: 2,
@@ -32,20 +31,15 @@ export const fieldDefinitions = {
     defaultValue: 1,
     units: '-',
   },
-
   wholesaleElectricityCost: {
     $schema: jsonSchemaStandard,
     title: 'Wholesale Electricity Cost',
     description:
       'Cost to produce or purchase electricity for the grid operator, not including unmet load costs.',
     type: 'float',
-    // minimum: 0,
-    // maximum: 2,
-    // step: 0.05,
     defaultValue: 5,
     units: '$/kWh',
   },
-
   unmetLoadCostPerKwh: {
     $schema: jsonSchemaStandard,
     title: 'Unmet Load Electricity Cost',
@@ -55,7 +49,6 @@ export const fieldDefinitions = {
     defaultValue: 6,
     units: '$/kWh',
   },
-
   retailElectricityPrice: {
     $schema: jsonSchemaStandard,
     title: 'Retail Electricity Price',
@@ -65,70 +58,44 @@ export const fieldDefinitions = {
     defaultValue: 8,
     units: '$/kWh',
   },
-
-  productionToThroughput: {
+  productionUnitsPerKwh: {
     $schema: jsonSchemaStandard,
-    title: 'Production Factor to Throughput',
+    title: 'Units of Production per kWh',
     description:
-      'Given utilization of the appliance (production factor), how much grain is milled, water pumped or material is welded.',
+      'How many units can be produced for a single kwh. Multiply by yearly kWh to get number of units produced in a year. Units could be kg grain / kWh.',
+    type: 'float',
+    defaultValue: 1,
+    units: '-',
+  },
+  revenuePerProductionUnits: {
+    $schema: jsonSchemaStandard,
+    title: 'Revenue Per Production Units',
+    description:
+      'Revenue generated per unit of production. For example, multiply by yearly kg of grain to get yearly revenue: $ / kg of grain milled.',
     type: 'float',
     defaultValue: 1,
     units: '-',
   },
 
-  throughputToRevenue: {
+  revenuePerProductionUnitsUnits: {
     $schema: jsonSchemaStandard,
-    title: 'Throughput to Revenue',
-    description:
-      'Given a unit of throughput (kg of grain, for example), what revenue is generated?',
-    type: 'float',
-    defaultValue: 1,
-    units: '-',
-  },
-
-  throughputToRevenueUnits: {
-    $schema: jsonSchemaStandard,
-    title: 'Throughput to Revenue',
+    title:
+      'The suffix (units) attached to revenuePerProductionUnits. Could be $ / kg, $ / hour, $ / liter',
     type: 'array',
     values: ['$ / kg of grain', '$ / hour', '$ / liter'],
     defaultValue: '-',
     units: '-',
   },
-
-  // Example with min and max, which is editable
-  // grainThroughput: {
-  //   $schema: jsonSchemaStandard,
-  //   title: 'Grain Mill Throughput',
-  //   type: 'integer', // Should this be 'number' for typescript?
-  //   minimum: 200,
-  //   maximum: 400,
-  //   step: 10,
-  //   defaultValue: 300,
-  //   units: 'kg/hour',
-  // },
-
-  // Example with no min and max, so this is not editable
-  // nominalAppliancePower: {
-  //   $schema: jsonSchemaStandard,
-  //   title: 'Nominal Appliance Power',
-  //   subtitle: 'some subtitle',
-  //   type: 'integer',
-  //   defaultValue: 6000,
-  //   unit: 'W',
-  // },
-
-  // Smaller steps
-  // nominalMotorVoltage: {
-  //   $schema: jsonSchemaStandard,
-  //   title: 'Nominal Motor Voltage',
-  //   type: 'integer',
-  //   minimum: 200,
-  //   maximum: 280,
-  //   step: 1,
-  //   defaultValue: 240,
-  //   precision: 0, // If we have a precision of 0, does that defined an integer
-  //   unit: 'Volts',
-  // },
-
-  // One possible key is isConstant = true, which will make the field non-editable
 }
+
+// We won't use productionToThroughput right now because kWh to grain production
+// is a common metrics that's measured. So we will go off that.
+// productionToThroughput: {
+//   $schema: jsonSchemaStandard,
+//   title: 'Production Factor to Throughput',
+//   description:
+//     'Given utilization of the appliance (production factor), how much grain is milled, water pumped or material is welded.',
+//   type: 'float',
+//   defaultValue: 1,
+//   units: '-',
+// },

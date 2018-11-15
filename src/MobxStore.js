@@ -32,9 +32,9 @@ class MobxStore {
     wholesaleElectricityCost: 5,
     unmetLoadCostPerKwh: 6,
     retailElectricityPrice: 8,
-    productionToThroughput: 1,
-    throughputToRevenue: 2,
-    throughputToRevenueUnits: '$ / kg of grain',
+    productionUnitsPerKwh: 5,
+    revenuePerProductionUnits: 2,
+    revenuePerProductionUnitsUnits: '$ / kg',
   }
 
   // Make sure to clone tables being passed in otherwise mergeTables will mutate

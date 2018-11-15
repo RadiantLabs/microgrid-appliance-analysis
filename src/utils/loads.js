@@ -1,6 +1,4 @@
 import _ from 'lodash'
-// import { toJS } from 'mobx'
-// import { arrayInsert, setKeyOrder } from './general'
 
 export function addColumnTitles(columnInfo) {
   return _.mapValues(columnInfo, (val, key) => key)
@@ -11,17 +9,9 @@ export function addColumnTitles(columnInfo) {
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
  */
-export function calculateNewLoads({
-  table,
-  modelInputs,
-  homerStats,
-  constants,
-}) {
+export function calculateNewLoads({ table, modelInputs, homerStats, constants }) {
   const { tableData, keyOrder } = table
-  const {
-    effectiveMinBatteryEnergyContent,
-    minBatteryStateOfCharge,
-  } = homerStats
+  const { effectiveMinBatteryEnergyContent, minBatteryStateOfCharge } = homerStats
   const headerRowCount = 2
 
   const columnInfo = {
@@ -59,23 +49,18 @@ export function calculateNewLoads({
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent =
-      row['Generic 1kWh Lead Acid [ASM] Energy Content']
-    const batteryStateOfCharge =
-      row['Generic 1kWh Lead Acid [ASM] State of Charge']
+    const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const batteryStateOfCharge = row['Generic 1kWh Lead Acid [ASM] State of Charge']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
 
     // Get values from previous row
-    const prevBatteryEnergyContent =
-      prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const prevBatteryEnergyContent = prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
 
     // Calculate load profile from usage profile
     const newApplianceLoad =
-      row['kw_factor'] *
-      modelInputs['kwFactorToKw'] *
-      modelInputs['dutyCycleDerateFactor']
+      row['kw_factor'] * modelInputs['kwFactorToKw'] * modelInputs['dutyCycleDerateFactor']
 
     if (!_.isFinite(newApplianceLoad)) {
       throw new Error(
@@ -92,15 +77,11 @@ export function calculateNewLoads({
      */
     // The energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
-    const energyContentAboveMin =
-      batteryEnergyContent - effectiveMinBatteryEnergyContent
+    const energyContentAboveMin = batteryEnergyContent - effectiveMinBatteryEnergyContent
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
-      excessElecProd +
-      (batteryStateOfCharge <= minBatteryStateOfCharge
-        ? 0
-        : energyContentAboveMin)
+      excessElecProd + (batteryStateOfCharge <= minBatteryStateOfCharge ? 0 : energyContentAboveMin)
 
     // Find available capacity after the new appliance is added
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
@@ -128,9 +109,7 @@ export function calculateNewLoads({
     // This is how much the energy content in the battery has increased or decreased in
     // the last hour. Takes into account the 2 column headers that are text, not real values
     const originalBatteryEnergyContentDelta =
-      rowIndex <= headerRowCount
-        ? 0
-        : batteryEnergyContent - prevBatteryEnergyContent
+      rowIndex <= headerRowCount ? 0 : batteryEnergyContent - prevBatteryEnergyContent
 
     // New Appliance Battery Energy Content:
     // The battery energy content under the scenario of adding a new appliance.
@@ -138,9 +117,7 @@ export function calculateNewLoads({
     // which means we need to look at the previous row than the one we are iterating over.
     // This is why these values are being calculated in a reducing function instead of a map
     const prevNewApplianceBatteryEnergyContent =
-      rowIndex <= headerRowCount
-        ? 0
-        : prevResult['newApplianceBatteryEnergyContent']
+      rowIndex <= headerRowCount ? 0 : prevResult['newApplianceBatteryEnergyContent']
     const newApplianceBatteryEnergyContent =
       rowIndex <= headerRowCount
         ? // For the first hour (row 3 if there are 2 header rows):
@@ -162,28 +139,17 @@ export function calculateNewLoads({
         newApplianceLoad: _.round(newApplianceLoad, 4),
         energyContentAboveMin: _.round(energyContentAboveMin, 4),
         availableCapacity: _.round(availableCapacity, 4),
-        availableCapacityAfterNewLoad: _.round(
-          availableCapacityAfterNewLoad,
-          4
-        ),
-        // TODO: Explain why rounding decisions are so critical for unmet loads
-        // Rounding to 3 decimals equates to an unmet load of 1 watt
-        // Rounding to 0 decimals equates to an unmet load of 1 kW
-        originalUnmetLoad: _.round(originalUnmetLoad, 3),
-        additionalUnmetLoad: _.round(additionalUnmetLoad, 3),
-        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 3),
-        newApplianceBatteryConsumption: _.round(
-          newApplianceBatteryConsumption,
-          4
-        ),
-        originalBatteryEnergyContentDelta: _.round(
-          originalBatteryEnergyContentDelta,
-          4
-        ),
-        newApplianceBatteryEnergyContent: _.round(
-          newApplianceBatteryEnergyContent,
-          4
-        ),
+        availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
+        // Unmet load counts are very sensitive to how many decimals you round to
+        // Rounding to 3 decimals filters out loads less than 1 watthour
+        // Rounding to 0 decimals filters out loads less than 1 kWh
+        // Amanda decided to filter out anything less than 100 watthours (1 decimal)
+        originalUnmetLoad: _.round(originalUnmetLoad, 1),
+        additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
+        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
+        newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
+        originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
+        newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
       },
     })
     return result

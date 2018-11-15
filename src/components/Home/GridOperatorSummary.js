@@ -2,6 +2,7 @@ import * as React from 'react'
 import { get } from 'lodash'
 import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
+import { UnmetLoadHelperPopup } from '../Elements/HelperPopup/UnmetLoadHelperPopup'
 
 const GridOperatorSummary = ({ store }) => {
   const { summaryStats: stats } = store
@@ -62,7 +63,7 @@ const GridOperatorSummary = ({ store }) => {
           <Table.Row>
             <Table.HeaderCell />
             <Table.HeaderCell>
-              Count <em>hrs/year</em>
+              Count <em>hrs/year</em> <UnmetLoadHelperPopup />
             </Table.HeaderCell>
             <Table.HeaderCell>
               Sum <em>kWh</em>
