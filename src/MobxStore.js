@@ -32,6 +32,7 @@ class MobxStore {
   applianceIsLoading = false
   appCalculating = false
 
+  // Model inputs must have a definition in the fieldDefinitions file
   modelInputs = {
     kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
     dutyCycleDerateFactor: _.get(
@@ -39,6 +40,13 @@ class MobxStore {
       'defaults.dutyCycleDerateFactor',
       1
     ),
+    seasonalDerateFactor: null,
+    wholesaleElectricityCost: 5,
+    unmetLoadCostPerKwh: 6,
+    retailElectricityPrice: 8,
+    productionToThroughput: 1,
+    throughputToRevenue: 2,
+    throughputToRevenueUnits: '$ / kg of grain',
   }
 
   // Make sure to clone tables being passed in otherwise mergeTables will mutate
@@ -75,7 +83,7 @@ class MobxStore {
   get summaryStats() {
     return _.isEmpty(this.combinedTable)
       ? null
-      : getSummaryStats(this.combinedTable)
+      : getSummaryStats(this.combinedTable, this.modelInputs)
   }
 
   async fetchHomer(activeHomerFileInfo) {

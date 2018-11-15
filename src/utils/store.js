@@ -118,9 +118,7 @@ export function getHomerStats(homer) {
   // We need to understand HOMER's algorithms better
   const effectiveMinBatteryEnergyContent =
     minBatteryStateOfChargeRowId > 0
-      ? homer.tableData[minBatteryStateOfChargeRowId][
-          'Generic 1kWh Lead Acid [ASM] Energy Content'
-        ]
+      ? homer.tableData[minBatteryStateOfChargeRowId]['Generic 1kWh Lead Acid [ASM] Energy Content']
       : minBatteryStateOfCharge
 
   return {
@@ -132,22 +130,16 @@ export function getHomerStats(homer) {
   }
 }
 
-export function getSummaryStats(combinedTable) {
+export function getSummaryStats(combinedTable, modelInputs) {
   const { tableData } = combinedTable
 
-  // Total kWh for the year
-  const yearlyKwh = sumGreaterThanZero(tableData, 'newApplianceLoad')
-
+  /**
+   * Unmet Load cals
+   */
   // Unmet Loads: Original without new appliance
-  const originalUnmetLoadCount = countGreaterThanZero(
-    tableData,
-    'originalUnmetLoad'
-  )
+  const originalUnmetLoadCount = countGreaterThanZero(tableData, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
-  const originalUnmetLoadSum = sumGreaterThanZero(
-    tableData,
-    'originalUnmetLoad'
-  )
+  const originalUnmetLoadSum = sumGreaterThanZero(tableData, 'originalUnmetLoad')
   const originalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
@@ -155,17 +147,9 @@ export function getSummaryStats(combinedTable) {
   )
 
   // Unmet Loads: Additional Appliance
-  const additionalUnmetLoadCount = countGreaterThanZero(
-    tableData,
-    'additionalUnmetLoad'
-  )
-  const additionalUnmetLoadCountPercent = percentOfYear(
-    additionalUnmetLoadCount
-  )
-  const additionalUnmetLoadSum = sumGreaterThanZero(
-    tableData,
-    'additionalUnmetLoad'
-  )
+  const additionalUnmetLoadCount = countGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
+  const additionalUnmetLoadSum = sumGreaterThanZero(tableData, 'additionalUnmetLoad')
   const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
@@ -173,15 +157,9 @@ export function getSummaryStats(combinedTable) {
   )
 
   // Unmet Loads: Total with new appliance
-  const newTotalUnmetLoadCount = countGreaterThanZero(
-    tableData,
-    'newTotalUnmetLoad'
-  )
+  const newTotalUnmetLoadCount = countGreaterThanZero(tableData, 'newTotalUnmetLoad')
   const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(
-    tableData,
-    'newTotalUnmetLoad'
-  )
+  const newTotalUnmetLoadSum = sumGreaterThanZero(tableData, 'newTotalUnmetLoad')
   const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
     tableData,
     'hour_of_day',
@@ -195,9 +173,39 @@ export function getSummaryStats(combinedTable) {
     newTotalUnmetLoadHist
   )
 
-  return {
-    yearlyKwh: _.round(yearlyKwh),
+  //
 
+  /**
+   * Yearly kWh and Financial Calculations
+   */
+  // New Appliance kWh for the year
+  const newApplianceYearlyKwh = sumGreaterThanZero(tableData, 'newApplianceLoad')
+
+  // New Appliance kWh revenue for grid operator (cost for appliance owner)
+  const newApplianceElectricityRevenue =
+    newApplianceYearlyKwh * modelInputs['retailElectricityPrice']
+
+  // Electricity cost to grid operator
+  const newApplianceElectricityCost =
+    newApplianceYearlyKwh * modelInputs['wholesaleElectricityCost']
+
+  // Cost to grid operator of new appliance's unmet load
+  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * modelInputs['unmetLoadCostPerKwh']
+
+  const newApplianceNetRevenue =
+    newApplianceElectricityRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
+
+  /**
+   * Yearly Throughput
+   */
+
+  // Calculate throughput of new appliance based on production_factor
+  const yearlyProductionFactor = sumGreaterThanZero(tableData, 'production_factor')
+  const yearlyThroughput = yearlyProductionFactor * modelInputs['productionToThroughput']
+  const yearlyThroughputRevenue = yearlyThroughput * modelInputs['throughputToRevenue']
+  const netApplianceOwnerRevenue = yearlyThroughputRevenue - newApplianceElectricityRevenue
+
+  return {
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
     originalUnmetLoadSum: _.round(originalUnmetLoadSum),
@@ -214,6 +222,17 @@ export function getSummaryStats(combinedTable) {
     newTotalUnmetLoadHist,
 
     allUnmetLoadHist,
+
+    newApplianceYearlyKwh: _.round(newApplianceYearlyKwh),
+    newApplianceElectricityRevenue: _.round(newApplianceElectricityRevenue),
+    newApplianceElectricityCost: _.round(newApplianceElectricityCost),
+    newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
+    newApplianceNetRevenue: _.round(newApplianceNetRevenue),
+
+    yearlyProductionFactor: yearlyProductionFactor,
+    yearlyThroughput: yearlyThroughput,
+    yearlyThroughputRevenue: _.round(yearlyThroughputRevenue),
+    netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
   }
 }
 
@@ -236,15 +255,11 @@ export async function fetchFile(fileInfo) {
       case 'appliance':
         return processApplianceFile(data, fileInfo)
       default:
-        throw new Error(
-          `File fetched does not have a known type: ${JSON.stringify(fileInfo)}`
-        )
+        throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
     }
   } catch (error) {
     console.error(
-      `File load fail for : ${
-        fileInfo.path
-      }. Make sure appliance CSV has all headers.`,
+      `File load fail for : ${fileInfo.path}. Make sure appliance CSV has all headers.`,
       error
     )
   }

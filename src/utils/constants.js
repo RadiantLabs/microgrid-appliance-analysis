@@ -18,14 +18,7 @@ export const greyColors = [
   '#F8F9FA',
 ]
 
-export const chartColorsByIndex = [
-  '#003f5c',
-  '#444e86',
-  '#955196',
-  '#DD5182',
-  '#FF6E54',
-  '#FFA601',
-]
+export const chartColorsByIndex = ['#003f5c', '#444e86', '#955196', '#DD5182', '#FF6E54', '#FFA601']
 
 export const chartColorsByKey = {
   // Loads
@@ -35,7 +28,7 @@ export const chartColorsByKey = {
   newApplianceBatteryConsumption: '#FFA601',
 
   // Unmet Loads
-  originalUnmetLoad: '#003f5c',
+  originalUnmetLoad: '#FFA601',
   newTotalUnmetLoad: '#444e86',
   additionalUnmetLoad: '#FF6E54',
 

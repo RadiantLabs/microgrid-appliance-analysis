@@ -7,13 +7,15 @@ Here’s what I will work on next:
 - [x] Allow mergeArraysOfObject function to take more than 1 table
 - [x] Remap key in table
 - [x] Stacked bar charts of original and new unmet loads
+- [ ] Explain in app why total != additional + origina unmet load counts
 - [ ] Talk with Amanda regarding unmet load rounding
-- [ ] Model inputs: input tariff ($/kWh)
+- [ ] Unmet load sums by hour, by day
+- [x] Model inputs: input tariff ($/kWh)
 
 If I get that done, then:
-- [ ] Model Inputs: production_factor->throughput: For example, production_factor -> kg of grain
-- [ ] Throughput to revenue factor: For example: $ / kg of grain
-- [ ] Cost per kWh for unmet loads (original and new appliance)
+- [x] Model Inputs: production_factor->throughput: For example, production_factor -> kg of grain
+- [x] Throughput to revenue factor: For example: $ / kg of grain
+- [x] Cost per kWh for unmet loads (original and new appliance)
 
 ## TODO Medium
 - Combined table does not update when switching appliance

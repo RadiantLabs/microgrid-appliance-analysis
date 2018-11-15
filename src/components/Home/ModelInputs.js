@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Table, Icon, Popup } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import InputField from '../Elements/InputField'
+import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const HelperPopup = content => (
   <Popup
@@ -11,14 +12,15 @@ const HelperPopup = content => (
   />
 )
 
+// TODO: Generate these in a loop
 const ModelInputs = ({ store }) => {
   return (
     <Table basic="very" celled collapsing compact>
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            Usage Factor to kW{' '}
-            <HelperPopup content="Apply the appliance nominal power (in kW) to determine the load profile for this appliance" />
+            {fieldDefinitions['kwFactorToKw'].title}{' '}
+            <HelperPopup content={fieldDefinitions['kwFactorToKw'].description} />
           </Table.Cell>
           <Table.Cell>
             <InputField fieldKey="kwFactorToKw" />
@@ -26,22 +28,62 @@ const ModelInputs = ({ store }) => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Duty Cycle Derate Factor{' '}
-            <HelperPopup content="A welder, for exaple, may only run 20% within a 2 minute measured interval. In that case, enter 0.2. If an appliance is running for it's full 2 minute interval, enter 1" />
+            {fieldDefinitions['dutyCycleDerateFactor'].title}{' '}
+            <HelperPopup content={fieldDefinitions['dutyCycleDerateFactor'].description} />
           </Table.Cell>
           <Table.Cell>
             <InputField fieldKey="dutyCycleDerateFactor" />
           </Table.Cell>
         </Table.Row>
-
         <Table.Row>
-          <Table.Cell>Usage Factor Seasonal Derate</Table.Cell>
+          <Table.Cell>Usage Factor Seasonal Derate Curve</Table.Cell>
           <Table.Cell>TBD</Table.Cell>
         </Table.Row>
-
         <Table.Row>
-          <Table.Cell>HOMER Minimum State of Charge</Table.Cell>
-          <Table.Cell>TBD</Table.Cell>
+          <Table.Cell>
+            {fieldDefinitions['wholesaleElectricityCost'].title}{' '}
+            <HelperPopup content={fieldDefinitions['wholesaleElectricityCost'].description} />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="wholesaleElectricityCost" />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['unmetLoadCostPerKwh'].title}{' '}
+            <HelperPopup content={fieldDefinitions['unmetLoadCostPerKwh'].description} />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="unmetLoadCostPerKwh" />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['retailElectricityPrice'].title}{' '}
+            <HelperPopup content={fieldDefinitions['retailElectricityPrice'].description} />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="retailElectricityPrice" />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['productionToThroughput'].title}{' '}
+            <HelperPopup content={fieldDefinitions['productionToThroughput'].description} />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="productionToThroughput" />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['throughputToRevenue'].title}{' '}
+            <HelperPopup content={fieldDefinitions['throughputToRevenue'].description} />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="throughputToRevenue" />
+            {/* TODO: units */}
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

@@ -1,67 +1,63 @@
 import * as React from 'react'
-import _ from 'lodash'
+import { get } from 'lodash'
 import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 
 const GridOperatorSummary = ({ store }) => {
-  const { summaryStats } = store
+  const { summaryStats: stats } = store
 
-  const yearlyKwh = _.get(summaryStats, 'yearlyKwh', '-')
+  // Financials
+  const newApplianceYearlyKwh = get(stats, 'newApplianceYearlyKwh', '-')
+  const newApplianceElectricityRevenue = get(stats, 'newApplianceElectricityRevenue')
+  const newApplianceElectricityCost = get(stats, 'newApplianceElectricityCost')
+  const newApplianceUnmetLoadCost = get(stats, 'newApplianceUnmetLoadCost', '-')
+  const newApplianceNetRevenue = get(stats, 'newApplianceNetRevenue', '-')
 
-  // Original unmet
-  const originalUnmetLoadCount = _.get(
-    summaryStats,
-    'originalUnmetLoadCount',
-    '-'
-  )
-  const originalUnmetLoadCountPercent = _.get(
-    summaryStats,
-    'originalUnmetLoadCountPercent',
-    '-'
-  )
-  const originalUnmetLoadSum = _.get(summaryStats, 'originalUnmetLoadSum', '-')
+  // Original unmet loads
+  const originalUnmetLoadCount = get(stats, 'originalUnmetLoadCount', '-')
+  const originalUnmetLoadCountPercent = get(stats, 'originalUnmetLoadCountPercent', '-')
+  const originalUnmetLoadSum = get(stats, 'originalUnmetLoadSum', '-')
 
-  // Additional unmet
-  const additionalUnmetLoadCount = _.get(
-    summaryStats,
-    'additionalUnmetLoadCount',
-    '-'
-  )
-  const additionalUnmetLoadCountPercent = _.get(
-    summaryStats,
-    'additionalUnmetLoadCountPercent',
-    '-'
-  )
-  const additionalUnmetLoadSum = _.get(
-    summaryStats,
-    'additionalUnmetLoadSum',
-    '-'
-  )
+  // Additional unmet loads
+  const additionalUnmetLoadCount = get(stats, 'additionalUnmetLoadCount', '-')
+  const additionalUnmetLoadCountPercent = get(stats, 'additionalUnmetLoadCountPercent', '-')
+  const additionalUnmetLoadSum = get(stats, 'additionalUnmetLoadSum', '-')
 
-  // Total unmet
-  const newTotalUnmetLoadCount = _.get(
-    summaryStats,
-    'newTotalUnmetLoadCount',
-    '-'
-  )
-  const newTotalUnmetLoadCountPercent = _.get(
-    summaryStats,
-    'newTotalUnmetLoadCountPercent',
-    '-'
-  )
-  const newTotalUnmetLoadSum = _.get(summaryStats, 'newTotalUnmetLoadSum', '-')
+  // Total unmet loads
+  const newTotalUnmetLoadCount = get(stats, 'newTotalUnmetLoadCount', '-')
+  const newTotalUnmetLoadCountPercent = get(stats, 'newTotalUnmetLoadCountPercent', '-')
+  const newTotalUnmetLoadSum = get(stats, 'newTotalUnmetLoadSum', '-')
 
   return (
     <div>
+      {/* Yearly summary stats */}
       <Table basic="very" celled collapsing compact>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Yearly kWh from new appliance</Table.Cell>
-            <Table.Cell>{yearlyKwh} kWh</Table.Cell>
+            <Table.Cell>Yearly new appliance kWh</Table.Cell>
+            <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Yearly new appliance revenue</Table.Cell>
+            <Table.Cell>${newApplianceElectricityRevenue}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Yearly new appliance electricity cost</Table.Cell>
+            <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>New appliance unmet load cost</Table.Cell>
+            <Table.Cell>${newApplianceUnmetLoadCost}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>New appliance net revenue</Table.Cell>
+            <Table.Cell>${newApplianceNetRevenue}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
-      <Table definition compact>
+
+      {/* Unmet Load Table */}
+      <Table definition basic compact>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />

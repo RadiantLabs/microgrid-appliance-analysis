@@ -9,7 +9,9 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 export const fieldDefinitions = {
   kwFactorToKw: {
     $schema: jsonSchemaStandard,
-    title: 'kW Factor to kW',
+    title: 'Usage Factor to kW',
+    description:
+      'Apply the appliance nominal power (in kW) to determine the load profile for this appliance',
     type: 'float',
     minimum: 0,
     maximum: 2,
@@ -21,11 +23,75 @@ export const fieldDefinitions = {
   dutyCycleDerateFactor: {
     $schema: jsonSchemaStandard,
     title: 'Duty Cycle Derate Factor',
+    description:
+      "A welder, for example, may only run 20% within a 2 minute measured interval. In that case, enter 0.2. If an appliance is running for it's full 2 minute interval, enter 1",
     type: 'float',
     minimum: 0,
     maximum: 2,
     step: 0.05,
     defaultValue: 1,
+    units: '-',
+  },
+
+  wholesaleElectricityCost: {
+    $schema: jsonSchemaStandard,
+    title: 'Wholesale Electricity Cost',
+    description:
+      'Cost to produce or purchase electricity for the grid operator, not including unmet load costs.',
+    type: 'float',
+    // minimum: 0,
+    // maximum: 2,
+    // step: 0.05,
+    defaultValue: 5,
+    units: '$/kWh',
+  },
+
+  unmetLoadCostPerKwh: {
+    $schema: jsonSchemaStandard,
+    title: 'Unmet Load Electricity Cost',
+    description:
+      'Cost to produce or purchase electricity for the grid operator, above what their system can handle. For example, this may be the cost of diesel for a generator',
+    type: 'float',
+    defaultValue: 6,
+    units: '$/kWh',
+  },
+
+  retailElectricityPrice: {
+    $schema: jsonSchemaStandard,
+    title: 'Retail Electricity Price',
+    description:
+      'Price of electricity for the consumer (appliance operator). This is also the revenue for the grid operator.',
+    type: 'float',
+    defaultValue: 8,
+    units: '$/kWh',
+  },
+
+  productionToThroughput: {
+    $schema: jsonSchemaStandard,
+    title: 'Production Factor to Throughput',
+    description:
+      'Given utilization of the appliance (production factor), how much grain is milled, water pumped or material is welded.',
+    type: 'float',
+    defaultValue: 1,
+    units: '-',
+  },
+
+  throughputToRevenue: {
+    $schema: jsonSchemaStandard,
+    title: 'Throughput to Revenue',
+    description:
+      'Given a unit of throughput (kg of grain, for example), what revenue is generated?',
+    type: 'float',
+    defaultValue: 1,
+    units: '-',
+  },
+
+  throughputToRevenueUnits: {
+    $schema: jsonSchemaStandard,
+    title: 'Throughput to Revenue',
+    type: 'array',
+    values: ['$ / kg of grain', '$ / hour', '$ / liter'],
+    defaultValue: '-',
     units: '-',
   },
 
