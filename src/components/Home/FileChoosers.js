@@ -25,9 +25,7 @@ class FileChoosers extends Component {
             </Table.Cell>
             <Table.Cell>
               {/* TODO: loading */}
-              <Dropdown
-                text={activeHomerFileInfo.label}
-                loading={homerIsLoading}>
+              <Dropdown text={activeHomerFileInfo.label} loading={homerIsLoading}>
                 <Dropdown.Menu>
                   {_.map(homerFiles, fileInfo => (
                     <Dropdown.Item
@@ -43,15 +41,11 @@ class FileChoosers extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell collapsing>
               <Header as="h5">Select Appliance Usage Profile:</Header>
             </Table.Cell>
             <Table.Cell>
-              <Dropdown
-                text={activeApplianceFileInfo.label}
-                loading={applianceIsLoading}>
+              <Dropdown text={activeApplianceFileInfo.label} loading={applianceIsLoading}>
                 <Dropdown.Menu>
                   {_.map(applianceFiles, fileInfo => (
                     <Dropdown.Item

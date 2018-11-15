@@ -67,12 +67,7 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
-export const createGreaterThanZeroHistogram = (
-  table,
-  byKey,
-  countKey,
-  byKeyIsInteger = true
-) => {
+export const createGreaterThanZeroHistogram = (table, byKey, countKey, byKeyIsInteger = true) => {
   const counts = _.countBy(table, (row, rowIndex) => {
     if (!_.isNumber(row[byKey])) {
       return 'deleteme'
@@ -99,11 +94,12 @@ export const findColMax = (table, key) => {
   return _.max(filterNums(table, key))
 }
 
-export const remapKeyInArrayOfObjects = (table, oldKey, newKey) => {
-  return _.map(table, row => {
-    return _.mapKeys(row, (val, key) => (key === oldKey ? newKey : key))
-  })
-}
+// This isn't used yet
+// export const remapKeyInArrayOfObjects = (table, oldKey, newKey) => {
+//   return _.map(table, row => {
+//     return _.mapKeys(row, (val, key) => (key === oldKey ? newKey : key))
+//   })
+// }
 
 // Sort keys manually (key order in objects is never deterministic) so I can put
 // columns I want as fixed columns
@@ -128,12 +124,7 @@ export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
 }
 
 export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
-  if (
-    _.isEmpty(table1) ||
-    !_.isArray(table1) ||
-    _.isEmpty(table2) ||
-    !_.isArray(table2)
-  ) {
+  if (_.isEmpty(table1) || !_.isArray(table1) || _.isEmpty(table2) || !_.isArray(table2)) {
     return null
   }
   checkKey(table1, joinKey)

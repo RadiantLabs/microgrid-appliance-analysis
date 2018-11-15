@@ -1,13 +1,5 @@
 import _ from 'lodash'
-import {
-  configure,
-  observable,
-  decorate,
-  action,
-  runInAction,
-  computed,
-  autorun,
-} from 'mobx'
+import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
 import { mergeTables } from './utils/general'
@@ -35,11 +27,7 @@ class MobxStore {
   // Model inputs must have a definition in the fieldDefinitions file
   modelInputs = {
     kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
-    dutyCycleDerateFactor: _.get(
-      this.activeApplianceFileInfo,
-      'defaults.dutyCycleDerateFactor',
-      1
-    ),
+    dutyCycleDerateFactor: _.get(this.activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
     seasonalDerateFactor: null,
     wholesaleElectricityCost: 5,
     unmetLoadCostPerKwh: 6,
