@@ -18,8 +18,7 @@ class UnmetLoadsChart extends React.Component {
     return (
       <div>
         <h3>
-          Unmet Loads by Hour of Day{' '}
-          <small style={{ color: greyColors[1] }}>Average kW for 1 hour</small>
+          Unmet Loads by Hour of Day <small style={{ color: greyColors[1] }}>kW for 1 hour</small>
         </h3>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart

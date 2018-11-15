@@ -31,8 +31,7 @@ class AvailableLoadChart extends React.Component {
     return (
       <div>
         <h3>
-          Loads by hour of year{' '}
-          <small style={{ color: greyColors[1] }}>Average kW for 1 hour</small>
+          Loads by hour of year <small style={{ color: greyColors[1] }}>kW for 1 hour</small>
         </h3>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <LineChart
