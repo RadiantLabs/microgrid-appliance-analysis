@@ -12,28 +12,51 @@ export const UnmetLoadHelperPopup = content => (
       <p>The counts are the number of hours in a year where there is an unmet load.</p>
       <p>TODO: What is the threshold of unmet vs met? It depends on how we round it.</p>
       <p>TODO: Why don't original and additional counts add up to total? Add a table below</p>
-      {/* <Table definition>
+      <Table compact celled definition>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
-            <Table.HeaderCell>Arguments</Table.HeaderCell>
-            <Table.HeaderCell>Description</Table.HeaderCell>
+            <Table.HeaderCell>Original Unmet Load</Table.HeaderCell>
+            <Table.HeaderCell>Additional Unmet Load</Table.HeaderCell>
+            <Table.HeaderCell>Total Unmet Load</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           <Table.Row>
-            <Table.Cell>reset rating</Table.Cell>
-            <Table.Cell>None</Table.Cell>
-            <Table.Cell>Resets rating to default value</Table.Cell>
+            <Table.Cell collapsing />
+            <Table.Cell>1</Table.Cell>
+            <Table.Cell>0</Table.Cell>
+            <Table.Cell>2</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>set rating</Table.Cell>
-            <Table.Cell>rating (integer)</Table.Cell>
-            <Table.Cell>Sets the current star rating to specified value</Table.Cell>
+            <Table.Cell />
+            <Table.Cell>3</Table.Cell>
+            <Table.Cell>2</Table.Cell>
+            <Table.Cell>1</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell />
+            <Table.Cell>6</Table.Cell>
+            <Table.Cell>3</Table.Cell>
+            <Table.Cell>0</Table.Cell>
           </Table.Row>
         </Table.Body>
-      </Table> */}
+
+        <Table.Footer fullWidth>
+          <Table.Row>
+            <Table.HeaderCell>Count above zero summed</Table.HeaderCell>
+            <Table.HeaderCell>4</Table.HeaderCell>
+            <Table.HeaderCell>4</Table.HeaderCell>
+            <Table.HeaderCell>6</Table.HeaderCell>
+          </Table.Row>
+          <Table.Row>
+            <Table.HeaderCell>Sum</Table.HeaderCell>
+            <Table.HeaderCell colspan={2}>4</Table.HeaderCell>
+            <Table.HeaderCell>4</Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
     </div>
   </Popup>
 )
