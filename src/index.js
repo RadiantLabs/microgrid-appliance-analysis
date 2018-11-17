@@ -2,10 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
+import * as Sentry from '@sentry/browser'
 import * as serviceWorker from './serviceWorker'
 import './styles/semantic.css'
 import './styles/index.css'
 import 'react-virtualized/styles.css'
+
+Sentry.init({
+  dsn: 'https://89977b0faa6a4d1aa58dd8dd1eb469ca@sentry.io/1325177',
+})
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

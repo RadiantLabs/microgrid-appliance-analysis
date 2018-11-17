@@ -17,7 +17,6 @@ Here’s what I will work on next:
 - [x] Remap key in table
 - [x] Stacked bar charts of original and new unmet loads
 - [ ] Explain in app why total != additional + origina unmet load counts
-- [ ] Talk with Amanda regarding unmet load rounding
 - [ ] Unmet load sums by hour, by day
 - [x] Model inputs: input tariff ($/kWh)
 
