@@ -1,9 +1,9 @@
 ## TODO: Short terms
-- [ ] Ignore production_factor and use kWh_to_throughput: this factor is more commonly known and probably roughly accurate as long as the machine is working within it's normal operating parameters
+- [x] Ignore production_factor and use kWh_to_throughput: this factor is more commonly known and probably roughly accurate as long as the machine is working within it's normal operating parameters
     * Rename variables as we would write equations: throughputToRevenue->revenuePerThroughput
     * Switch from throughput (which is a rate: units/second) to units produced or units or production units
-- [ ] Clarify: Throughput to Revenue is $/unit
-- [ ] Check on duty cycle calculation: see screenshot. duty cycle goes down, revenue goes up?
+- [x] Clarify: Throughput to Revenue is $/unit
+- [x] Check on duty cycle calculation: see screenshot. duty cycle goes down, revenue goes up?
 - [ ] Explain why unmet load counts are sensitive to rounding in a tooltip
 - [ ] Table in tooltip explaining why total != original + additional
 
@@ -28,6 +28,7 @@ If I get that done, then:
 
 ## TODO Medium
 - Combined table does not update when switching appliance
+- Speed up calculations by manually creating a multigrid component. Update only the calculated columns with no merging. That will save ~1second per update
 - Add Sentry logging
 - Use forceUpdateGrids() for HOMER table
 - Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
@@ -64,6 +65,7 @@ If I get that done, then:
 - Add error logging and analytics
 
 ## TODO: Long term
+- Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them
 - Load other HOMER and appliance files in the background
 - snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
 - Decide on React.SFC

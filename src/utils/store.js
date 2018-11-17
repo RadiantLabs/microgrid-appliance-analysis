@@ -199,7 +199,7 @@ export function getSummaryStats(combinedTable, modelInputs) {
    * Yearly Throughput
    */
 
-  // Calculate throughput of new appliance based on production_factor
+  // Calculate production of new appliance based on
   const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
   const yearlyProductionUnitsRevenue =
     yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
