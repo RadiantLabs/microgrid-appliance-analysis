@@ -11,7 +11,7 @@ export const UnmetLoadHelperPopup = content => (
       <h4>Number of unmet load hours in a year</h4>
       <p>The counts are the number of hours in a year where there is an unmet load.</p>
       <p>TODO: What is the threshold of unmet vs met? It depends on how we round it.</p>
-      <p>TODO: Why don't original and additional counts add up to total?</p>
+      <p>TODO: Why don't original and additional counts add up to total? Add a table below</p>
       {/* <Table definition>
         <Table.Header>
           <Table.Row>
