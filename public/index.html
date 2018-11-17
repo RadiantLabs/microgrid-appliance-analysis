@@ -21,7 +21,10 @@
     -->
     <title>Microgrid Appliance Analysis</title>
     <script type="text/javascript">
-      console.log('environment:', '%NODE_ENV%', '%NODE_ENV%' === 'production');
+      console.log('environment:', '%NODE_ENV%',
+        '%NODE_ENV%' === 'production',
+        '%NODE_ENV%'.toString() === 'production'
+      );
     </script>
     <script type="text/javascript">
       if ('%NODE_ENV%' === 'production') {
