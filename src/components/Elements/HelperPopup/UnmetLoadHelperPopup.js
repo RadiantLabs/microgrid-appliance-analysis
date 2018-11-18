@@ -1,14 +1,19 @@
 import * as React from 'react'
-import { Icon, Popup, Table } from 'semantic-ui-react'
+import { Icon, Popup, Table, Modal } from 'semantic-ui-react'
 
 export const UnmetLoadHelperPopup = content => (
-  <Popup
-    trigger={<Icon name="question circle outline" size="small" color="grey" />}
-    position="right center"
-    wide="very"
-    inverted>
-    <div>
-      <h4>Count of unmet load hours per year</h4>
+  <Modal
+    trigger={
+      <Icon
+        name="question circle outline"
+        size="small"
+        color="grey"
+        style={{ cursor: 'pointer' }}
+      />
+    }
+    closeIcon>
+    <Modal.Header>Count of unmet load hours per year</Modal.Header>
+    <Modal.Content>
       <p>
         This is the estimated number of hours that the grid can't support the load. This may be, for
         example, how many times per year the backup generator has to turn on.
@@ -103,6 +108,6 @@ export const UnmetLoadHelperPopup = content => (
           </Table.Row>
         </Table.Footer>
       </Table>
-    </div>
-  </Popup>
+    </Modal.Content>
+  </Modal>
 )
