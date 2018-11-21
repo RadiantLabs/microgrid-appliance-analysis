@@ -66,9 +66,7 @@ class InputField extends React.Component {
       return <Input disabled loading />
     }
     if (_.isNil(fieldDefinitions[fieldKey])) {
-      throw new Error(
-        `fieldKey passed in isn't found in fieldDefinitions: ${fieldKey}`
-      )
+      throw new Error(`fieldKey passed in isn't found in fieldDefinitions: ${fieldKey}`)
     }
 
     return (
@@ -92,44 +90,3 @@ class InputField extends React.Component {
 }
 
 export default inject('store')(observer(InputField))
-
-// <Form.Field
-// // label={value}
-// // value={value}
-// control={Slider}
-// color="grey"
-// settings={{
-//   start: value,
-//   min: field.min,
-//   max: field.max,
-//   step: field.step || 1,
-//   // onChange: this.handleChange,
-// }}
-// />
-
-// <Input
-//   labelPosition="right"
-//   type="text"
-//   placeholder="Amount"
-//   size="mini">
-//   <Label basic={true}>$</Label>
-//   <input />
-//   <Label>.00</Label>
-// </Input>
-
-/* <div className="InputFieldWrapper">
-    <Form.Field
-      label={value}
-      control={Slider}
-      color="grey"
-      // style={{ backgroundColor: '#000' }}
-      value={value}
-      settings={{
-        start: value,
-        min: rangeSettings.min,
-        max: rangeSettings.max,
-        step: rangeSettings.step || 1,
-        onChange: this.handleChange,
-      }}
-    />
-  </div> */

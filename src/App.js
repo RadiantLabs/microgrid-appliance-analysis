@@ -4,7 +4,8 @@ import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 // import DevTools from 'mobx-react-devtools'
 import { Client } from './Client'
-import { mobxStore } from './MobxStore'
+import MobxStore from './MobxStore'
+// import { mobxStore } from './MobxStore'
 import { Menu } from 'semantic-ui-react'
 import { NavItem } from './components/Elements/NavItem'
 import About from './components/About'
@@ -13,6 +14,7 @@ import Home from './components/Home'
 import './App.css'
 
 // This is to be able to inspect the store from the inspector at any time.
+let mobxStore = new MobxStore()
 window.mobxStore = mobxStore
 
 const App = () => (
@@ -21,7 +23,6 @@ const App = () => (
       <ApolloProvider client={Client}>
         <Menu secondary={true} pointing={true}>
           <Menu.Item as={NavItem} to="/" name="home" />
-          {/* <Menu.Item as={NavItem} to="/input-example" name="input-example" /> */}
           <Menu.Item as={NavItem} to="/about" name="about" />
           {/* <Menu.Item as={NavItem} to="/todo" name="todo" /> */}
         </Menu>

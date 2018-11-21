@@ -130,4 +130,5 @@ decorate(MobxStore, {
   onModelInputChange: action.bound,
 })
 
-export let mobxStore = new MobxStore()
+export default MobxStore
+// export let mobxStore = new MobxStore()
