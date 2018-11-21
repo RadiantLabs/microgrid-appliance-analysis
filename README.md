@@ -1,4 +1,5 @@
 ## TODO: Until next sprint
+- [ ] Write 'renders without crashing' tests for all components
 - [ ] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
 - [ ] Color Combined Table columns to show calculated columns
 - [ ] Combined table does not update when switching appliance (Use forceUpdateGrids() for HOMER table)
