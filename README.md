@@ -1,85 +1,34 @@
-## TODO: Short terms
-- [x] Ignore production_factor and use kWh_to_throughput: this factor is more commonly known and probably roughly accurate as long as the machine is working within it's normal operating parameters
-    * Rename variables as we would write equations: throughputToRevenue->revenuePerThroughput
-    * Switch from throughput (which is a rate: units/second) to units produced or units or production units
-- [x] Clarify: Throughput to Revenue is $/unit
-- [x] Check on duty cycle calculation: see screenshot. duty cycle goes down, revenue goes up?
-- [ ] Explain why unmet load counts are sensitive to rounding in a tooltip
-- [ ] Table in tooltip explaining why total != original + additional
+## TODO: Until next sprint
+- [ ] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
+- [ ] Color Combined Table columns to show calculated columns
+- [ ] Combined table does not update when switching appliance (Use forceUpdateGrids() for HOMER table)
+- [ ] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
+- [ ] Indicator that we are currently calculating
 
-## Last sprint
-Here’s what I will work on next:
-- [x] Calculate % of full rated load running over 1 hour in 3 usage profile notebooks
-- [x] Duty cycle derate: welder defaults to 20%, other appliance default to 100% - all are adjustable
-- [x] Clarify in app that kw_factor_to_kw is Appliance Power (nominal power)
-- [x] Clarify unmet loads in table of new, original and total,
-- [x] Allow mergeArraysOfObject function to take more than 1 table
-- [x] Remap key in table
-- [x] Stacked bar charts of original and new unmet loads
-- [ ] Explain in app why total != additional + origina unmet load counts
-- [ ] Unmet load sums by hour, by day
-- [x] Model inputs: input tariff ($/kWh)
+Unbilled
+- [ ] Unmet load sums by hour, by day. Try 100% stacked. (unbilled)
+- [ ] Calculate battery rate of charge based on excess production and based on input power
+- [ ] A new bar chart: (histogram by hour)
+    - [ ] New appliance load
+    - [ ] Excess production
 
-If I get that done, then:
-- [x] Model Inputs: production_factor->throughput: For example, production_factor -> kg of grain
-- [x] Throughput to revenue factor: For example: $ / kg of grain
-- [x] Cost per kWh for unmet loads (original and new appliance)
-
-## TODO Medium
-- Combined table does not update when switching appliance
-- Speed up calculations by manually creating a multigrid component. Update only the calculated columns with no merging. That will save ~1second per update
-- Add Sentry logging
-- Use forceUpdateGrids() for HOMER table
-- Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
-- Calculate appliance loads based on usage factors
-    - Implement Amandas usage-to-kW algorithm, but make the factor adjustable
-
-- Chart Updates:
-    - Unmet Loads: Stacked bar chart of original unmet load and new unmet load. Play around with 100% stacked
-    - Unmet load 3 column table
-        - Base, new appliance, total for both count and sum
-        - Keep wording consistent: Additional Unmet Load Sum (fuel costs when I run that generator)
-    - A new bar chart: (histogram by hour)
-        - New appliance load
-        - Excess production
-    - Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-- Render appliance summary stats
-
-- Calculate battery rate of charge based on excess production and based on input power
-
-- Min State of chart is fragile. Find a more robust way of finding the floor
-- Color Combined Table columns to show calculated columns
-- Create grid of inputs
-  - Appliance:
-    - kW to kW-factor
-    - grain to grain-factor
-    - seasonal derate
-    - CAPEX
-    - OPEX
-    - add hour offset
-- Parse Table dates
-    - Show chart by datetime instead of hour of year (toggle between hour and datetime)
-    - Page through datetime chart by day, week, month
-- Show column stats (max, min, avg, std) for HOMER and combined tables
-- Add error logging and analytics
+## TODO
+- [ ] Render appliance summary stats
+- [ ] Min State of chart is fragile. Find a more robust way of finding the floor
+- [ ] Add hour offset input(?)
+- [ ] Parse Table dates
+    - [ ] Show chart by datetime instead of hour of year (toggle between hour and datetime)
+    - [ ] Page through datetime chart by day, week, month
+- [ ] Show column stats (max, min, avg, std) for HOMER and combined tables
 
 ## TODO: Long term
-- Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them
-- Load other HOMER and appliance files in the background
-- snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
-- Decide on React.SFC
-- Add graphql & apollo dependencies and sample app code (see https://www.robinwieruch.de/react-apollo-link-state-tutorial/)
-- Add apollo devtools https://github.com/apollographql/apollo-client-devtools
-- Add React Semantic UI
-- Lay out basic (probably temporary) navigation
-- Update to CRA with Typescript support (copy this repo to a different folder, creat-react-app, bring back over .git and remotes and components): https://github.com/facebook/create-react-app/pull/4837
-- Automatic type annotation generation for Typescript: https://blog.apollographql.com/graphql-dx-d35bcf51c943, https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
-- Add analytics
+- [ ] Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
+- [ ] Load other HOMER and appliance files in the background
+- [ ] Snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
+
 
 ## Available Scripts
-
 In the project directory, you can run:
-
 ```
 yarn start    // Runs the app in the development mode at http://localhost:3000
 
