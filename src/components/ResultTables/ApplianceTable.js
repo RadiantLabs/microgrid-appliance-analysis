@@ -11,7 +11,7 @@ import { greyColors } from '../../utils/constants'
 class ApplianceTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const { activeAppliance } = this.props.store
-    const headerStyle = setHeaderStyles(style, rowIndex)
+    const headerStyle = setHeaderStyles(style, rowIndex, 'appliance')
     const keyOrder = _.keys(activeAppliance[0])
     const row = activeAppliance[rowIndex]
     return (

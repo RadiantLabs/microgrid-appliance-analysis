@@ -1,11 +1,13 @@
-export const setHeaderStyles = (styles, rowIndex) => {
+import { tableColorsByKey } from '../../utils/constants'
+
+export const setHeaderStyles = (styles, rowIndex, tableName) => {
   let rowStyles = styles
   if (rowIndex === 0 || rowIndex === 1) {
     rowStyles = {
       ...rowStyles,
       ...{
         fontStyle: 'italic',
-        backgroundColor: '#f9fafb',
+        backgroundColor: tableColorsByKey[tableName],
       },
     }
   }
@@ -32,5 +34,6 @@ export const setHeaderStyles = (styles, rowIndex) => {
       },
     }
   }
+
   return rowStyles
 }

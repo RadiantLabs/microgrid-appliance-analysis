@@ -1,13 +1,12 @@
 ## TODO: Current branch (refactor combinedTables and remove mergeTables)
 - [x] Replace combinedTable with calculatedColumns
-- [ ] Consolidate all util functions into a single file
-- [ ] Remove activeHomer.keyOrder and just pass the table. Search for
+- [x] Consolidate all util functions into a single file
+- [x] Remove activeHomer.keyOrder and just pass the table. Search for
     * activeHomer.tableData and tableData
     * activeHomer.keyOrder and keyOrder
-
-- [ ] Pass in both and calculatedColumns and activeHomer into summaryStats()
-- [ ] Color headers in homer, appliance and combined
-
+- [?] Pass in both and calculatedColumns and activeHomer into summaryStats()
+- [x] Color headers in homer, appliance and combined
+- [ ] Render kw_factor from appliance (and color it) in CombinedTable
 
 ## TODO: Until next sprint
 - [ ] Round kw_factor, excess electrical production

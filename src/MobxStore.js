@@ -57,7 +57,6 @@ class MobxStore {
   }
 
   get summaryStats() {
-    // TODO: pass in both calculatedColumns and activeHomer
     return _.isEmpty(this.calculatedColumns)
       ? null
       : getSummaryStats(this.calculatedColumns, this.modelInputs)

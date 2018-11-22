@@ -10,7 +10,6 @@ import { greyColors } from '../../utils/constants'
 class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const { activeHomer, calculatedColumns } = this.props.store
-    const headerStyle = setHeaderStyles(style, rowIndex)
     const homerColumnHeaders = _.keys(activeHomer[0])
     const calculatedColumnHeaders = _.keys(calculatedColumns[0])
     const calculatedColumnCount = _.size(calculatedColumnHeaders)
@@ -18,7 +17,7 @@ class CombinedTable extends React.Component {
 
     if (currentTable === 'calculatedColumns') {
       return (
-        <div key={key} style={headerStyle}>
+        <div key={key} style={setHeaderStyles(style, rowIndex, 'calculatedColumns')}>
           {calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]]}
         </div>
       )
@@ -26,7 +25,7 @@ class CombinedTable extends React.Component {
 
     if (currentTable === 'homer') {
       return (
-        <div key={key} style={headerStyle}>
+        <div key={key} style={setHeaderStyles(style, rowIndex, 'homer')}>
           {activeHomer[rowIndex][homerColumnHeaders[columnIndex - calculatedColumnCount]]}
         </div>
       )

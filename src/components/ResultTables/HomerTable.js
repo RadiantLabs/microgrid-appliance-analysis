@@ -11,7 +11,7 @@ class HomerTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const { activeHomer } = this.props.store
     const keyOrder = _.keys(activeHomer[0])
-    const headerStyle = setHeaderStyles(style, rowIndex)
+    const headerStyle = setHeaderStyles(style, rowIndex, 'homer')
     const row = activeHomer[rowIndex]
     return (
       <div key={key} style={headerStyle}>

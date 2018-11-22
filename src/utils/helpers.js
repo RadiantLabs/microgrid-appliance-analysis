@@ -380,9 +380,6 @@ export function getHomerStats(homer) {
 }
 
 export function getSummaryStats(calculatedColumns, modelInputs) {
-  /**
-   * Unmet Load cals
-   */
   // Unmet Loads: Original without new appliance
   const originalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
@@ -420,9 +417,7 @@ export function getSummaryStats(calculatedColumns, modelInputs) {
     newTotalUnmetLoadHist
   )
 
-  /**
-   * Yearly kWh and Financial Calculations
-   */
+  // Yearly kWh and Financial Calculations
   // New Appliance kWh for the year
   const newApplianceYearlyKwh = sumGreaterThanZero(calculatedColumns, 'newApplianceLoad')
 
@@ -439,10 +434,6 @@ export function getSummaryStats(calculatedColumns, modelInputs) {
 
   const newApplianceNetRevenue =
     newApplianceElectricityRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
-
-  /**
-   * Yearly Throughput
-   */
 
   // Calculate production of new appliance based on
   const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
