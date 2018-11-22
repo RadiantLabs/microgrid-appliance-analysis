@@ -1,12 +1,17 @@
 ## TODO: Current branch (refactor combinedTables and remove mergeTables)
-- [ ] Replace combinedTable with calculatedColumns
-- [ ] Remove activeHomer.keyOrder and just pass the table
+- [x] Replace combinedTable with calculatedColumns
+- [ ] Consolidate all util functions into a single file
+- [ ] Remove activeHomer.keyOrder and just pass the table. Search for
+    * activeHomer.tableData and tableData
+    * activeHomer.keyOrder and keyOrder
+
 - [ ] Pass in both and calculatedColumns and activeHomer into summaryStats()
 - [ ] Color headers in homer, appliance and combined
 
 
 ## TODO: Until next sprint
 - [ ] Round kw_factor, excess electrical production
+- [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
 - [ ] Write 'renders without crashing' tests for all components
 - [ ] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
 - [ ] Color Combined Table columns to show calculated columns

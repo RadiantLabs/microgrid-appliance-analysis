@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
-import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
-import { calculateNewLoads } from './utils/loads'
+import { fetchFile, getHomerStats, getSummaryStats, calculateNewLoads } from './utils/helpers'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 configure({ enforceActions: 'observed' })
@@ -42,8 +41,8 @@ class MobxStore {
     }
     const t0 = performance.now()
     const calculatedNewLoads = calculateNewLoads({
-      homer: this.activeHomer.tableData,
-      appliance: this.activeAppliance.tableData,
+      homer: this.activeHomer,
+      appliance: this.activeAppliance,
       modelInputs: this.modelInputs,
       homerStats: this.homerStats,
       constants: {},

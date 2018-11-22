@@ -10,12 +10,10 @@ import { greyColors } from '../../utils/constants'
 
 class ApplianceTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
-    const {
-      store: { activeAppliance },
-    } = this.props
-    const { tableData, keyOrder } = activeAppliance
+    const { activeAppliance } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
-    const row = tableData[rowIndex]
+    const keyOrder = _.keys(activeAppliance[0])
+    const row = activeAppliance[rowIndex]
     return (
       <div key={key} style={headerStyle}>
         {row[keyOrder[columnIndex]]}
@@ -36,22 +34,16 @@ class ApplianceTable extends React.Component {
   }
 
   render() {
-    const { store } = this.props
-    const {
-      activeAppliance,
-      applianceIsLoading,
-      activeApplianceFileInfo,
-    } = store
+    const { activeAppliance, applianceIsLoading, activeApplianceFileInfo } = this.props.store
     if (_.isEmpty(activeAppliance)) {
       return <LoaderSpinner />
     }
+    const columnCount = _.size(_.keys(activeAppliance[0]))
     return (
       <div>
         <h3>
           {activeApplianceFileInfo.label}{' '}
-          <small style={{ color: greyColors[1] }}>
-            {activeApplianceFileInfo.description}
-          </small>{' '}
+          <small style={{ color: greyColors[1] }}>{activeApplianceFileInfo.description}</small>{' '}
           {applianceIsLoading ? <Loader active inline size="mini" /> : <span />}
         </h3>
         <AutoSizer>
@@ -59,12 +51,12 @@ class ApplianceTable extends React.Component {
             <MultiGrid
               ref={c => (this.multigrid = c)}
               cellRenderer={this._cellRenderer}
-              columnCount={_.size(activeAppliance.keyOrder)}
+              columnCount={columnCount}
               columnWidth={100}
               fixedColumnCount={1}
               fixedRowCount={2}
               height={700}
-              rowCount={_.size(activeAppliance.tableData)}
+              rowCount={_.size(activeAppliance)}
               rowHeight={this._rowHeight}
               estimatedRowSize={26}
               width={width}

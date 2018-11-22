@@ -9,12 +9,9 @@ import { greyColors } from '../../utils/constants'
 
 class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
-    const {
-      activeHomer: { tableData: homer },
-      calculatedColumns,
-    } = this.props.store
+    const { activeHomer, calculatedColumns } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
-    const homerColumnHeaders = _.keys(homer[0])
+    const homerColumnHeaders = _.keys(activeHomer[0])
     const calculatedColumnHeaders = _.keys(calculatedColumns[0])
     const calculatedColumnCount = _.size(calculatedColumnHeaders)
     const currentTable = columnIndex < calculatedColumnCount ? 'calculatedColumns' : 'homer'
@@ -30,7 +27,7 @@ class CombinedTable extends React.Component {
     if (currentTable === 'homer') {
       return (
         <div key={key} style={headerStyle}>
-          {homer[rowIndex][homerColumnHeaders[columnIndex - calculatedColumnCount]]}
+          {activeHomer[rowIndex][homerColumnHeaders[columnIndex - calculatedColumnCount]]}
         </div>
       )
     }
@@ -63,12 +60,11 @@ class CombinedTable extends React.Component {
   render() {
     const { store } = this.props
     const { calculatedColumns, homerIsLoading, activeHomerFileInfo, activeHomer } = store
-    if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer.tableData)) {
+    if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer)) {
       return <LoaderSpinner />
     }
     const rowCount = _.size(calculatedColumns)
-    const columnCount =
-      _.size(_.keys(calculatedColumns[0])) + _.size(_.keys(activeHomer.tableData[0]))
+    const columnCount = _.size(_.keys(calculatedColumns[0])) + _.size(_.keys(activeHomer[0]))
     return (
       <div>
         <h3>
