@@ -20,14 +20,13 @@ import { getChartColors, greyColors } from '../../utils/constants'
 class AvailableLoadChart extends React.Component {
   render() {
     const {
-      combinedTable,
+      calculatedColumns,
       // summaryStats,
       // homerStats
     } = this.props.store
-    if (_.isEmpty(combinedTable)) {
+    if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
-    const { tableData } = combinedTable
     return (
       <div>
         <h3>
@@ -37,7 +36,7 @@ class AvailableLoadChart extends React.Component {
           <LineChart
             // width={1400}
             // height={400}
-            data={tableData}
+            data={calculatedColumns}
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />

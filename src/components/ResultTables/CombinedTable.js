@@ -11,7 +11,7 @@ class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const {
       activeHomer: { tableData: homer },
-      combinedTable: calculatedColumns,
+      calculatedColumns,
     } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
     const homerColumnHeaders = _.keys(homer[0])
@@ -62,12 +62,7 @@ class CombinedTable extends React.Component {
 
   render() {
     const { store } = this.props
-    const {
-      combinedTable: calculatedColumns,
-      homerIsLoading,
-      activeHomerFileInfo,
-      activeHomer,
-    } = store
+    const { calculatedColumns, homerIsLoading, activeHomerFileInfo, activeHomer } = store
     if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer.tableData)) {
       return <LoaderSpinner />
     }

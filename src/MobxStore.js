@@ -36,22 +36,7 @@ class MobxStore {
     revenuePerProductionUnitsUnits: '$ / kg',
   }
 
-  // Columns returned from calculatedColumns:
-  // hour
-  // datetime
-  // hour_of_day
-  // day
-  // day_hour
-  // newApplianceLoad
-  // availableCapacity
-  // availableCapacityAfterNewLoad
-  // additionalUnmetLoad
-  // newApplianceBatteryConsumption
-  // originalBatteryEnergyContentDelta
-  // newApplianceBatteryEnergyContent
-  // originalUnmetLoad
-  // newTotalUnmetLoad
-  get combinedTable() {
+  get calculatedColumns() {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
     }
@@ -74,9 +59,9 @@ class MobxStore {
 
   get summaryStats() {
     // TODO: pass in both calculatedColumns and activeHomer
-    return _.isEmpty(this.combinedTable)
+    return _.isEmpty(this.calculatedColumns)
       ? null
-      : getSummaryStats(this.combinedTable, this.modelInputs)
+      : getSummaryStats(this.calculatedColumns, this.modelInputs)
   }
 
   async fetchHomer(activeHomerFileInfo) {
@@ -127,7 +112,7 @@ decorate(MobxStore, {
   modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
-  combinedTable: computed,
+  calculatedColumns: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,
