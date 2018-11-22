@@ -1,5 +1,4 @@
 import * as React from 'react'
-// import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
@@ -11,15 +10,30 @@ import { greyColors } from '../../utils/constants'
 class CombinedTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
     const {
-      combinedTable: { tableData, keyOrder },
+      activeHomer: { tableData: homer },
+      combinedTable: calculatedColumns,
     } = this.props.store
     const headerStyle = setHeaderStyles(style, rowIndex)
-    const row = tableData[rowIndex]
-    return (
-      <div key={key} style={headerStyle}>
-        {row[keyOrder[columnIndex]]}
-      </div>
-    )
+    const homerColumnHeaders = _.keys(homer[0])
+    const calculatedColumnHeaders = _.keys(calculatedColumns[0])
+    const calculatedColumnCount = _.size(calculatedColumnHeaders)
+    const currentTable = columnIndex < calculatedColumnCount ? 'calculatedColumns' : 'homer'
+
+    if (currentTable === 'calculatedColumns') {
+      return (
+        <div key={key} style={headerStyle}>
+          {calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]]}
+        </div>
+      )
+    }
+
+    if (currentTable === 'homer') {
+      return (
+        <div key={key} style={headerStyle}>
+          {homer[rowIndex][homerColumnHeaders[columnIndex - calculatedColumnCount]]}
+        </div>
+      )
+    }
   }
 
   _rowHeight = ({ index }) => {
@@ -38,6 +52,9 @@ class CombinedTable extends React.Component {
     // if (_.get(prevProps, homer) === _.get(this.props, homer)) {
     //   this.multigrid.forceUpdateGrids()
     // }
+
+    // TODO: Can I make a calculated value for the 'schema' of the combined data
+    // that this listens to?
     if (this.multigrid) {
       this.multigrid.forceUpdateGrids()
     }
@@ -46,22 +63,22 @@ class CombinedTable extends React.Component {
   render() {
     const { store } = this.props
     const {
-      combinedTable,
+      combinedTable: calculatedColumns,
       homerIsLoading,
-      // activeApplianceFileInfo,
       activeHomerFileInfo,
+      activeHomer,
     } = store
-
-    if (_.isEmpty(combinedTable)) {
+    if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer.tableData)) {
       return <LoaderSpinner />
     }
+    const rowCount = _.size(calculatedColumns)
+    const columnCount =
+      _.size(_.keys(calculatedColumns[0])) + _.size(_.keys(activeHomer.tableData[0]))
     return (
       <div>
         <h3>
           {activeHomerFileInfo.label}{' '}
-          <small style={{ color: greyColors[1] }}>
-            {activeHomerFileInfo.description}
-          </small>{' '}
+          <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
           {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
         </h3>
         <AutoSizer>
@@ -69,12 +86,12 @@ class CombinedTable extends React.Component {
             <MultiGrid
               ref={c => (this.multigrid = c)}
               cellRenderer={this._cellRenderer}
-              columnCount={_.size(combinedTable.keyOrder)}
+              columnCount={columnCount}
               columnWidth={100}
               fixedColumnCount={2}
               fixedRowCount={2}
               height={700}
-              rowCount={_.size(combinedTable.tableData)}
+              rowCount={rowCount}
               rowHeight={this._rowHeight}
               estimatedRowSize={26}
               width={width}

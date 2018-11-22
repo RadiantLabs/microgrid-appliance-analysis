@@ -130,38 +130,36 @@ export function getHomerStats(homer) {
   }
 }
 
-export function getSummaryStats(combinedTable, modelInputs) {
-  const { tableData } = combinedTable
-
+export function getSummaryStats(calculatedColumns, modelInputs) {
   /**
    * Unmet Load cals
    */
   // Unmet Loads: Original without new appliance
-  const originalUnmetLoadCount = countGreaterThanZero(tableData, 'originalUnmetLoad')
+  const originalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
-  const originalUnmetLoadSum = sumGreaterThanZero(tableData, 'originalUnmetLoad')
+  const originalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
   const originalUnmetLoadHist = createGreaterThanZeroHistogram(
-    tableData,
+    calculatedColumns,
     'hour_of_day',
     'originalUnmetLoad'
   )
 
   // Unmet Loads: Additional Appliance
-  const additionalUnmetLoadCount = countGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'additionalUnmetLoad')
   const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
-  const additionalUnmetLoadSum = sumGreaterThanZero(tableData, 'additionalUnmetLoad')
+  const additionalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'additionalUnmetLoad')
   const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
-    tableData,
+    calculatedColumns,
     'hour_of_day',
     'additionalUnmetLoad'
   )
 
   // Unmet Loads: Total with new appliance
-  const newTotalUnmetLoadCount = countGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'newTotalUnmetLoad')
   const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(tableData, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'newTotalUnmetLoad')
   const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
-    tableData,
+    calculatedColumns,
     'hour_of_day',
     'newTotalUnmetLoad'
   )
@@ -173,13 +171,11 @@ export function getSummaryStats(combinedTable, modelInputs) {
     newTotalUnmetLoadHist
   )
 
-  //
-
   /**
    * Yearly kWh and Financial Calculations
    */
   // New Appliance kWh for the year
-  const newApplianceYearlyKwh = sumGreaterThanZero(tableData, 'newApplianceLoad')
+  const newApplianceYearlyKwh = sumGreaterThanZero(calculatedColumns, 'newApplianceLoad')
 
   // New Appliance kWh revenue for grid operator (cost for appliance owner)
   const newApplianceElectricityRevenue =

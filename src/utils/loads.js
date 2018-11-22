@@ -9,12 +9,17 @@ export function addColumnTitles(columnInfo) {
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
  */
-export function calculateNewLoads({ table, modelInputs, homerStats, constants }) {
-  const { tableData, keyOrder } = table
+export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, constants }) {
   const { effectiveMinBatteryEnergyContent, minBatteryStateOfCharge } = homerStats
   const headerRowCount = 2
 
   const columnInfo = {
+    hour: '-',
+    datetime: '-',
+    hour_of_day: '-',
+    day: '-',
+    day_hour: '-',
+    kw_factor: 'full cap./kW',
     newApplianceLoad: 'kW',
     availableCapacity: 'kW',
     availableCapacityAfterNewLoad: 'kW',
@@ -31,16 +36,19 @@ export function calculateNewLoads({ table, modelInputs, homerStats, constants })
   const columnReducer = (result, row, rowIndex, rows) => {
     // Deal with top 2 header rows
     if (rowIndex === 0) {
-      result.push({ ...row, ...addColumnTitles(columnInfo) })
+      result.push(addColumnTitles(columnInfo))
       return result
     }
     if (rowIndex === 1) {
-      result.push({ ...row, ...columnInfo })
+      result.push(columnInfo)
       return result
     }
 
-    // Get the previous row (from the original rows, not the new calculated rows)
+    // Get the previous HOMER row (from the original rows, not the new calculated rows)
     const prevRow = rowIndex <= headerRowCount ? {} : rows[rowIndex - 1]
+
+    // Get the matching row for the appliance
+    const applianceRow = appliance[rowIndex]
 
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex <= headerRowCount ? {} : result[rowIndex - 1]
@@ -60,12 +68,12 @@ export function calculateNewLoads({ table, modelInputs, homerStats, constants })
 
     // Calculate load profile from usage profile
     const newApplianceLoad =
-      row['kw_factor'] * modelInputs['kwFactorToKw'] * modelInputs['dutyCycleDerateFactor']
+      applianceRow['kw_factor'] * modelInputs['kwFactorToKw'] * modelInputs['dutyCycleDerateFactor']
 
     if (!_.isFinite(newApplianceLoad)) {
       throw new Error(
         `newApplianceLoad did not calculate properly. Check your file has all required columns and that all values are finite. Row: ${JSON.stringify(
-          row
+          applianceRow
         )}. Also make sure modelInputs are numbers and not strings or undefined: ${JSON.stringify(
           modelInputs
         )}`
@@ -134,33 +142,30 @@ export function calculateNewLoads({ table, modelInputs, homerStats, constants })
           newApplianceBatteryConsumption
 
     result.push({
-      ...row,
-      ...{
-        newApplianceLoad: _.round(newApplianceLoad, 4),
-        energyContentAboveMin: _.round(energyContentAboveMin, 4),
-        availableCapacity: _.round(availableCapacity, 4),
-        availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
-        // Unmet load counts are very sensitive to how many decimals you round to
-        // Rounding to 3 decimals filters out loads less than 1 watthour
-        // Rounding to 0 decimals filters out loads less than 1 kWh
-        // Amanda decided to filter out anything less than 100 watthours (1 decimal)
-        originalUnmetLoad: _.round(originalUnmetLoad, 1),
-        additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
-        newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
-        newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
-        originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
-        newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
-      },
+      hour: row['hour'],
+      datetime: row['Time'],
+      hour_of_day: applianceRow['hour_of_day'],
+      day: applianceRow['day'],
+      day_hour: applianceRow['day_hour'],
+      kw_factor: applianceRow['kw_factor'],
+      newApplianceLoad: _.round(newApplianceLoad, 4),
+      energyContentAboveMin: _.round(energyContentAboveMin, 4),
+      availableCapacity: _.round(availableCapacity, 4),
+      availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
+      // Unmet load counts are very sensitive to how many decimals you round to
+      // Rounding to 3 decimals filters out loads less than 1 watthour
+      // Rounding to 0 decimals filters out loads less than 1 kWh
+      // Amanda decided to filter out anything less than 100 watthours (1 decimal)
+      originalUnmetLoad: _.round(originalUnmetLoad, 1),
+      additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
+      newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
+      newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
+      originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
+      newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
     })
     return result
   }
 
-  // Iterate over tableData, pushing each new row into an array
-  const withNewColumns = _.reduce(tableData, columnReducer, [])
-  const keys = _.keys(columnInfo).concat(keyOrder)
-  const frontColumns = ['hour', 'Time', 'newApplianceLoad']
-  return {
-    tableData: withNewColumns,
-    keyOrder: frontColumns.concat(_.without(keys, ...frontColumns)),
-  }
+  // Iterate over homer data, pushing each new row into an array
+  return _.reduce(homer, columnReducer, [])
 }

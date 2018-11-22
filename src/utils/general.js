@@ -123,40 +123,40 @@ export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
     .value()
 }
 
-export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
-  if (_.isEmpty(table1) || !_.isArray(table1) || _.isEmpty(table2) || !_.isArray(table2)) {
-    return null
-  }
-  checkKey(table1, joinKey)
-  checkKey(table2, joinKey)
+// export function mergeTables(table1, table2, headerCount = 2, joinKey = 'hour') {
+//   if (_.isEmpty(table1) || !_.isArray(table1) || _.isEmpty(table2) || !_.isArray(table2)) {
+//     return null
+//   }
+//   checkKey(table1, joinKey)
+//   checkKey(table2, joinKey)
 
-  const table1Headers = _.take(table1, headerCount)
-  const table1Data = _.drop(table1, headerCount)
-  const table2Headers = _.take(table2, headerCount)
-  const table2Data = _.drop(table2, headerCount)
-  const mergedTable = mergeArraysOfObjects(joinKey, table1Data, table2Data)
-  const headerTitles = { ...table1Headers[0], ...table2Headers[0] }
-  const headerUnits = { ...table1Headers[1], ...table2Headers[1] }
-  return {
-    tableData: [headerTitles, headerUnits].concat(mergedTable),
-    keyOrder: setKeyOrder(mergedTable),
-  }
-}
+//   const table1Headers = _.take(table1, headerCount)
+//   const table1Data = _.drop(table1, headerCount)
+//   const table2Headers = _.take(table2, headerCount)
+//   const table2Data = _.drop(table2, headerCount)
+//   const mergedTable = mergeArraysOfObjects(joinKey, table1Data, table2Data)
+//   const headerTitles = { ...table1Headers[0], ...table2Headers[0] }
+//   const headerUnits = { ...table1Headers[1], ...table2Headers[1] }
+//   return {
+//     tableData: [headerTitles, headerUnits].concat(mergedTable),
+//     keyOrder: setKeyOrder(mergedTable),
+//   }
+// }
 
 // This function isn't  used yet - it will be expanded and generalized
-export function addColumns(table, headerTitle, headerUnit) {
-  const withColumn = _.map(table.tableData, (row, index) => {
-    switch (index) {
-      case 0:
-        return { ...row, ...{ [headerTitle]: headerTitle } }
-      case 1:
-        return { ...row, ...{ [headerTitle]: headerUnit } }
-      default:
-        return { ...row, ...{ [headerTitle]: 5 } }
-    }
-  })
-  return {
-    tableData: withColumn,
-    keyOrder: arrayInsert(table.keyOrder, headerTitle, 1),
-  }
-}
+// export function addColumns(table, headerTitle, headerUnit) {
+//   const withColumn = _.map(table.tableData, (row, index) => {
+//     switch (index) {
+//       case 0:
+//         return { ...row, ...{ [headerTitle]: headerTitle } }
+//       case 1:
+//         return { ...row, ...{ [headerTitle]: headerUnit } }
+//       default:
+//         return { ...row, ...{ [headerTitle]: 5 } }
+//     }
+//   })
+//   return {
+//     tableData: withColumn,
+//     keyOrder: arrayInsert(table.keyOrder, headerTitle, 1),
+//   }
+// }

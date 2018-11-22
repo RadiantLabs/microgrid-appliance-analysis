@@ -1,13 +1,22 @@
+## TODO: Current branch (refactor combinedTables and remove mergeTables)
+- [ ] Replace combinedTable with calculatedColumns
+- [ ] Remove activeHomer.keyOrder and just pass the table
+- [ ] Pass in both and calculatedColumns and activeHomer into summaryStats()
+- [ ] Color headers in homer, appliance and combined
+
+
 ## TODO: Until next sprint
+- [ ] Round kw_factor, excess electrical production
 - [ ] Write 'renders without crashing' tests for all components
 - [ ] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
 - [ ] Color Combined Table columns to show calculated columns
 - [ ] Combined table does not update when switching appliance (Use forceUpdateGrids() for HOMER table)
 - [ ] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - [ ] Indicator that we are currently calculating
+- [ ] Sentry should only trigger on production
 
-Unbilled
-- [ ] Unmet load sums by hour, by day. Try 100% stacked. (unbilled)
+Exploratory
+- [ ] Unmet load sums by hour, by day. Try 100% stacked.
 - [ ] Calculate battery rate of charge based on excess production and based on input power
 - [ ] A new bar chart: (histogram by hour)
     - [ ] New appliance load

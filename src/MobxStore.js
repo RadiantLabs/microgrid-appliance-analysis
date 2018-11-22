@@ -2,7 +2,6 @@ import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import { fetchFile, getHomerStats, getSummaryStats } from './utils/store'
 import { calculateNewLoads } from './utils/loads'
-import { mergeTables } from './utils/general'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 configure({ enforceActions: 'observed' })
@@ -37,30 +36,35 @@ class MobxStore {
     revenuePerProductionUnitsUnits: '$ / kg',
   }
 
-  // Make sure to clone tables being passed in otherwise mergeTables will mutate
-  // the observable arrays and generate this error:
-  // > [mobx] Computed values are not allowed to cause side effects by changing
-  // > observables that are already being observed
-  // With cloneDeep it runs in ~1000ms instead of 330ms, but better than 18 seconds
+  // Columns returned from calculatedColumns:
+  // hour
+  // datetime
+  // hour_of_day
+  // day
+  // day_hour
+  // newApplianceLoad
+  // availableCapacity
+  // availableCapacityAfterNewLoad
+  // additionalUnmetLoad
+  // newApplianceBatteryConsumption
+  // originalBatteryEnergyContentDelta
+  // newApplianceBatteryEnergyContent
+  // originalUnmetLoad
+  // newTotalUnmetLoad
   get combinedTable() {
     if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
       return null
     }
-    // this.appCalculating = true
     const t0 = performance.now()
-    const mergedTables = mergeTables(
-      _.cloneDeep(this.activeHomer.tableData),
-      _.cloneDeep(this.activeAppliance.tableData)
-    )
-    const t1 = performance.now()
-    console.log('mergeTables took ' + _.round(t1 - t0) + ' milliseconds.')
     const calculatedNewLoads = calculateNewLoads({
-      table: mergedTables,
+      homer: this.activeHomer.tableData,
+      appliance: this.activeAppliance.tableData,
       modelInputs: this.modelInputs,
       homerStats: this.homerStats,
       constants: {},
     })
-    // this.appCalculating = false
+    const t1 = performance.now()
+    console.log('calculateNewLoads took ' + _.round(t1 - t0) + ' milliseconds.')
     return calculatedNewLoads
   }
 
@@ -69,6 +73,7 @@ class MobxStore {
   }
 
   get summaryStats() {
+    // TODO: pass in both calculatedColumns and activeHomer
     return _.isEmpty(this.combinedTable)
       ? null
       : getSummaryStats(this.combinedTable, this.modelInputs)
