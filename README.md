@@ -7,9 +7,11 @@
 - [?] Pass in both and calculatedColumns and activeHomer into summaryStats()
 - [x] Color headers in homer, appliance and combined
 - [x] Render kw_factor from appliance (and color it) in CombinedTable
-- [ ] Check that combined table matches deployed production app
+- [x] Check that combined table matches deployed production app
 
 ## TODO: Until next sprint
+- [x] Met and unmet demand didn't change in percent no matter what appliance. It was driven by system type.
+    * This is working correctly
 - [ ] Round kw_factor, excess electrical production
 - [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
 - [ ] Write 'renders without crashing' tests for all components
