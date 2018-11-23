@@ -6,7 +6,8 @@
     * activeHomer.keyOrder and keyOrder
 - [?] Pass in both and calculatedColumns and activeHomer into summaryStats()
 - [x] Color headers in homer, appliance and combined
-- [ ] Render kw_factor from appliance (and color it) in CombinedTable
+- [x] Render kw_factor from appliance (and color it) in CombinedTable
+- [ ] Check that combined table matches deployed production app
 
 ## TODO: Until next sprint
 - [ ] Round kw_factor, excess electrical production

@@ -127,7 +127,7 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     hour_of_day: '-',
     day: '-',
     day_hour: '-',
-    kw_factor: 'full cap./kW',
+    // kw_factor: 'full cap./kW',
     newApplianceLoad: 'kW',
     availableCapacity: 'kW',
     availableCapacityAfterNewLoad: 'kW',
@@ -255,7 +255,7 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
       hour_of_day: applianceRow['hour_of_day'],
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
-      kw_factor: applianceRow['kw_factor'],
+      // kw_factor: applianceRow['kw_factor'],
       newApplianceLoad: _.round(newApplianceLoad, 4),
       energyContentAboveMin: _.round(energyContentAboveMin, 4),
       availableCapacity: _.round(availableCapacity, 4),
@@ -318,7 +318,7 @@ export function processApplianceFile(rows) {
     day: '-',
     hour_of_day: '-',
     day_hour: '-',
-    kw_factor: '-',
+    kw_factor: 'fullcapacity/kW',
     production_factor: '-',
   }
   const keyOrder = _.keys(unitRow)
