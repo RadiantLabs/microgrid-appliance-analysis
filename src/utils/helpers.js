@@ -307,7 +307,16 @@ export function addHourIndex(rows, headerColumnCount = 2) {
 // TODO: Parse date and reformat
 export function processHomerFile(rows) {
   const headerRow = createHeaderRow(rows)
-  const tableData = [headerRow].concat(rows)
+  const modifiedTable = _.map(rows, (row, rowIndex) => {
+    // Pass the first row without modification, which is column's units after Papaparse is done,
+    if (rowIndex === 0) {
+      return row
+    }
+    return _.mapValues(row, (val, key) => {
+      return key === 'Time' ? val : _.round(val, 5)
+    })
+  })
+  const tableData = [headerRow].concat(modifiedTable)
   return addHourIndex(tableData)
 }
 
@@ -330,7 +339,10 @@ export function processApplianceFile(rows) {
       )}. Required is ${JSON.stringify(keyOrder)}`
     )
   }
-  return [createHeaderRow(rows), unitRow].concat(rows)
+  const modifiedTable = _.map(rows, row => {
+    return { ...row, ...{ kw_factor: _.round(row['kw_factor'], 5) } }
+  })
+  return [createHeaderRow(rows), unitRow].concat(modifiedTable)
 }
 
 export function getHomerStats(homer) {

@@ -8,6 +8,7 @@ export const setHeaderStyles = (styles, rowIndex, tableName) => {
       ...{
         fontStyle: 'italic',
         backgroundColor: tableColorsByKey[tableName],
+        // backgroundColor: '#f9fafb',
       },
     }
   }

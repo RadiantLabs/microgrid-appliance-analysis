@@ -102,13 +102,14 @@ class CombinedTable extends React.Component {
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
           </Grid.Column>
-          <Grid.Column floated="right" width={5} textAlign="right">
+
+          {/* <Grid.Column floated="right" width={5} textAlign="right">
             <div style={{ width: 130, marginBottom: '0.4rem', float: 'right' }}>
               <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
               <div style={setLegendStyles('appliance')}>Appliance Columns</div>
               <div style={setLegendStyles('homer')}>HOMER Columns</div>
             </div>
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid>
 
         <AutoSizer>

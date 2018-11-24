@@ -1,4 +1,5 @@
 ## TODO: Current branch (refactor combinedTables and remove mergeTables)
+- [x] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
 - [x] Replace combinedTable with calculatedColumns
 - [x] Consolidate all util functions into a single file
 - [x] Remove activeHomer.keyOrder and just pass the table. Search for
@@ -8,26 +9,35 @@
 - [x] Color headers in homer, appliance and combined
 - [x] Render kw_factor from appliance (and color it) in CombinedTable
 - [x] Check that combined table matches deployed production app
-
-## TODO: Until next sprint
+- [x] Color Combined Table columns to show calculated columns
 - [x] Met and unmet demand didn't change in percent no matter what appliance. It was driven by system type.
     * This is working correctly
-- [ ] Round kw_factor, excess electrical production
-- [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
+
+## TODO: Until next sprint
+- [x] Round kw_factor, round homer values
+- [ ] Sentry should only trigger on production
 - [ ] Write 'renders without crashing' tests for all components
-- [ ] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
-- [ ] Color Combined Table columns to show calculated columns
+- [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
 - [ ] Combined table does not update when switching appliance (Use forceUpdateGrids() for HOMER table)
 - [ ] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - [ ] Indicator that we are currently calculating
-- [ ] Sentry should only trigger on production
-
+- [ ] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through the HOMER config file
 Exploratory
 - [ ] Unmet load sums by hour, by day. Try 100% stacked.
 - [ ] Calculate battery rate of charge based on excess production and based on input power
 - [ ] A new bar chart: (histogram by hour)
     - [ ] New appliance load
     - [ ] Excess production
+
+## Battery charging problem
+- [ ] Do tensorflow.js examples:
+    * https://github.com/tensorflow/tfjs-examples/tree/master/boston-housing
+    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
+    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
+- [ ] Two approaches:
+    1. Do the Boston Housing project type training, where we use the columns that we would have access to in the "additional appliance" scenario to predict the new battery state of charge
+    2. Figure out the coefficients of a polynomial cureve that would predict the charge rate
+
 
 ## TODO
 - [ ] Render appliance summary stats
