@@ -8,9 +8,12 @@ import './styles/semantic.css'
 import './styles/index.css'
 import 'react-virtualized/styles.css'
 
-Sentry.init({
-  dsn: 'https://89977b0faa6a4d1aa58dd8dd1eb469ca@sentry.io/1325177',
-})
+if (process.env.NODE_ENV === 'production') {
+  console.log('Initializing Sentry Error logging for production environment')
+  Sentry.init({
+    dsn: 'https://89977b0faa6a4d1aa58dd8dd1eb469ca@sentry.io/1325177',
+  })
+}
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

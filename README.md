@@ -16,21 +16,17 @@
 ## TODO: Until next sprint
 - [x] Round kw_factor, round homer values
 - [x] Parse all dates to ISO 8606, reformat for display in tables
-- [ ] Sentry should only trigger on production
+- [x] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
+- [x] Sentry should only trigger on production
 - [ ] Write 'renders without crashing' tests for all components
 - [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
 - [ ] Combined table does not update when switching appliance (Use forceUpdateGrids() for HOMER table)
-- [ ] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - [ ] Indicator that we are currently calculating
 - [ ] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through the HOMER config file
 Exploratory
-- [ ] Unmet load sums by hour, by day. Try 100% stacked.
-- [ ] Calculate battery rate of charge based on excess production and based on input power
-- [ ] A new bar chart: (histogram by hour)
-    - [ ] New appliance load
-    - [ ] Excess production
 
 ## Battery charging problem
+- [ ] Calculate battery rate of charge based on excess production and based on input power
 - [ ] Do tensorflow.js examples:
     * https://github.com/tensorflow/tfjs-examples/tree/master/boston-housing
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
@@ -41,6 +37,10 @@ Exploratory
 
 
 ## TODO
+- [ ] Unmet load sums by hour, by day. Try 100% stacked.
+- [ ] A new bar chart: (histogram by hour)
+    - [ ] New appliance load
+    - [ ] Excess production
 - [ ] Render appliance summary stats
 - [ ] Min State of chart is fragile. Find a more robust way of finding the floor
 - [ ] Add hour offset input(?)
