@@ -1,7 +1,14 @@
 import _ from 'lodash'
-import { HOURS_PER_YEAR } from './constants'
+import { DateTime } from 'luxon'
+import {
+  HOURS_PER_YEAR,
+  homerParseFormat,
+  applianceParseFormat,
+  tableDateFormat,
+} from './constants'
 import Papa from 'papaparse'
 const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
+// window.LuxonDateTime = DateTime    // Used for debugging Luxon tokens
 
 /**
  * These are more general purpose utility functions, not directly related to the store
@@ -66,6 +73,25 @@ export const sumGreaterThanZero = (table, key) => {
     .sum()
     .round(2)
     .value()
+}
+
+// Date formatting
+export const isLuxonObject = val => {
+  return _.isObject(val) && typeof val.fromISO == 'function'
+}
+
+export const isValidLuxonDate = dateObj => {
+  return _.get(dateObj, 'isValid', false)
+}
+
+// Convert all dates from files into Luxon objects and then store them as ISO
+// date strings (not date objects). ISO dates are long for display - If we need
+// to display the dates, convert them from ISO to Luxon objects and back out to
+// friendlier formats. It's more processing but storing the dates as Luxon objects
+// instead of strings makes the app brittle
+export const formatDateForTable = val => {
+  const dateObj = DateTime.fromISO(val)
+  return isValidLuxonDate(dateObj) ? dateObj.toFormat(tableDateFormat) : val
 }
 
 export const createGreaterThanZeroHistogram = (table, byKey, countKey, byKeyIsInteger = true) => {
@@ -313,7 +339,10 @@ export function processHomerFile(rows) {
       return row
     }
     return _.mapValues(row, (val, key) => {
-      return key === 'Time' ? val : _.round(val, 5)
+      if (key === 'Time') {
+        return DateTime.fromFormat(val, homerParseFormat).toISO()
+      }
+      return _.round(val, 5)
     })
   })
   const tableData = [headerRow].concat(modifiedTable)
@@ -340,7 +369,14 @@ export function processApplianceFile(rows) {
     )
   }
   const modifiedTable = _.map(rows, row => {
-    return { ...row, ...{ kw_factor: _.round(row['kw_factor'], 5) } }
+    return {
+      ...row,
+      ...{
+        // Convert all dates into ISO 8606 format. Format them for display elsewhere
+        datetime: DateTime.fromFormat(row['datetime'], applianceParseFormat).toISO(),
+        kw_factor: _.round(row['kw_factor'], 5),
+      },
+    }
   })
   return [createHeaderRow(rows), unitRow].concat(modifiedTable)
 }

@@ -7,6 +7,7 @@ import LoaderSpinner from '../Elements/Loader'
 import { Loader } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
+import { formatDateForTable } from '../../utils/helpers'
 
 class ApplianceTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
@@ -14,9 +15,17 @@ class ApplianceTable extends React.Component {
     const headerStyle = setHeaderStyles(style, rowIndex, 'appliance')
     const keyOrder = _.keys(activeAppliance[0])
     const row = activeAppliance[rowIndex]
+    const val = row[keyOrder[columnIndex]]
+    if (keyOrder[columnIndex] === 'datetime') {
+      return (
+        <div key={key} style={headerStyle}>
+          {formatDateForTable(val)}
+        </div>
+      )
+    }
     return (
       <div key={key} style={headerStyle}>
-        {row[keyOrder[columnIndex]]}
+        {val}
       </div>
     )
   }

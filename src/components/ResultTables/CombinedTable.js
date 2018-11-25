@@ -6,6 +6,7 @@ import LoaderSpinner from '../Elements/Loader'
 import { Loader, Grid } from 'semantic-ui-react'
 import { setHeaderStyles, setLegendStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
+import { formatDateForTable } from '../../utils/helpers'
 
 function getCurrentTable(columnIndex, calculatedColumnCount, applianceColumnCount) {
   switch (true) {
@@ -35,6 +36,13 @@ class CombinedTable extends React.Component {
     const currentTable = getCurrentTable(columnIndex, calculatedColumnCount, applianceColumnCount)
 
     if (currentTable === 'calculatedColumns') {
+      if (calculatedColumnHeaders[columnIndex] === 'datetime') {
+        return (
+          <div key={key} style={setHeaderStyles(style, rowIndex, 'calculatedColumns')}>
+            {formatDateForTable(calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]])}
+          </div>
+        )
+      }
       return (
         <div key={key} style={setHeaderStyles(style, rowIndex, 'calculatedColumns')}>
           {calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]]}

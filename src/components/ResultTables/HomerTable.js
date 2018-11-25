@@ -6,6 +6,7 @@ import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Elements/Loader'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
+import { formatDateForTable } from '../../utils/helpers'
 
 class HomerTable extends React.Component {
   _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
@@ -13,9 +14,19 @@ class HomerTable extends React.Component {
     const keyOrder = _.keys(activeHomer[0])
     const headerStyle = setHeaderStyles(style, rowIndex, 'homer')
     const row = activeHomer[rowIndex]
+    const val = row[keyOrder[columnIndex]]
+
+    if (keyOrder[columnIndex] === 'Time') {
+      return (
+        <div key={key} style={headerStyle}>
+          {formatDateForTable(val)}
+        </div>
+      )
+    }
+
     return (
       <div key={key} style={headerStyle}>
-        {row[keyOrder[columnIndex]]}
+        {val}
       </div>
     )
   }

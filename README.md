@@ -15,6 +15,7 @@
 
 ## TODO: Until next sprint
 - [x] Round kw_factor, round homer values
+- [x] Parse all dates to ISO 8606, reformat for display in tables
 - [ ] Sentry should only trigger on production
 - [ ] Write 'renders without crashing' tests for all components
 - [ ] Make sure all tables update when changing modelInputs, HOMER files or appliance files
