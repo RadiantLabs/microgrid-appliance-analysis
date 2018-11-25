@@ -43,7 +43,7 @@ export const setLegendStyles = tableName => {
   return {
     paddingRight: '4px',
     fontStyle: 'italic',
-    // fontSize: '12px',
+    fontSize: '12px',
     backgroundColor: tableColorsByKey[tableName],
   }
 }

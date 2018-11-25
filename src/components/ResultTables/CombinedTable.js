@@ -80,8 +80,7 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { store } = this.props
-    const { calculatedColumns, homerIsLoading, activeHomerFileInfo, activeHomer } = store
+    const { calculatedColumns, homerIsLoading, activeHomerFileInfo, activeHomer } = this.props.store
     if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer)) {
       return <LoaderSpinner />
     }
@@ -91,7 +90,7 @@ class CombinedTable extends React.Component {
     return (
       <div>
         <Grid>
-          <Grid.Column floated="left" width={5}>
+          <Grid.Column floated="left" width={11}>
             <h3>
               {activeHomerFileInfo.label}{' '}
               <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
@@ -99,13 +98,13 @@ class CombinedTable extends React.Component {
             </h3>
           </Grid.Column>
 
-          {/* <Grid.Column floated="right" width={5} textAlign="right">
+          <Grid.Column floated="right" width={5} textAlign="right">
             <div style={{ width: 130, marginBottom: '0.4rem', float: 'right' }}>
               <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
               <div style={setLegendStyles('appliance')}>Appliance Columns</div>
               <div style={setLegendStyles('homer')}>HOMER Columns</div>
             </div>
-          </Grid.Column> */}
+          </Grid.Column>
         </Grid>
 
         <AutoSizer>

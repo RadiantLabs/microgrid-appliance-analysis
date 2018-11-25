@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Elements/Loader'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Grid } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
@@ -50,11 +50,15 @@ class ApplianceTable extends React.Component {
     const columnCount = _.size(_.keys(activeAppliance[0]))
     return (
       <div>
-        <h3>
-          {activeApplianceFileInfo.label}{' '}
-          <small style={{ color: greyColors[1] }}>{activeApplianceFileInfo.description}</small>{' '}
-          {applianceIsLoading ? <Loader active inline size="mini" /> : <span />}
-        </h3>
+        <Grid>
+          <Grid.Column floated="left" width={5}>
+            <h3>
+              {activeApplianceFileInfo.label}{' '}
+              <small style={{ color: greyColors[1] }}>{activeApplianceFileInfo.description}</small>{' '}
+              {applianceIsLoading ? <Loader active inline size="mini" /> : <span />}
+            </h3>
+          </Grid.Column>
+        </Grid>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid

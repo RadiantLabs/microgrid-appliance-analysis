@@ -18,16 +18,16 @@
 - [x] Parse all dates to ISO 8606, reformat for display in tables
 - [x] Create a better error for when a file isn't found (currently it's found in the csv parsing step and things the rows aren't correct)
 - [x] Sentry should only trigger on production
-- [ ] Deploy Sentry to production to check
-- [ ] Add Grid to top of every table, add is loader spinner
 - [x] Make sure all tables update when changing data:
     - [x] Appliance table: change  appliance
     - [x] HOMER table: change HOMER
     - [x] CombinedTable: modelInputs, HOMER file change, Appliance file change
     - [x] Unmet loads update with modelInput, HOMER and Appliance changes
+- [x] Add Grid to top of every table, add is loader spinner
 - [ ] Write 'renders without crashing' tests for all components
 - [ ] Indicator that we are currently calculating
 - [ ] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through the HOMER config file
+- [ ] Deploy Sentry to production to check
 Exploratory
 
 ## Battery charging problem

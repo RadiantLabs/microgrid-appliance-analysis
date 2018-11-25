@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Elements/Loader'
+import { Loader, Grid, Table } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
@@ -44,17 +45,25 @@ class HomerTable extends React.Component {
   }
 
   render() {
-    const { activeHomer } = this.props.store
+    const { homerIsLoading, activeHomer, activeHomerFileInfo, homerStats } = this.props.store
     if (_.isEmpty(activeHomer)) {
       return <LoaderSpinner />
     }
     const columnCount = _.size(_.keys(activeHomer[0]))
     return (
       <div>
-        <h3>
-          {' '}
-          <small style={{ color: greyColors[1] }}>TODO: Show homer column stats</small>
-        </h3>
+        <Grid>
+          <Grid.Column floated="left" width={5}>
+            <h3>
+              {activeHomerFileInfo.label}{' '}
+              <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
+              {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
+            </h3>
+          </Grid.Column>
+          <Grid.Column floated="right" width={11}>
+            <HomerStatsTable stats={homerStats} />
+          </Grid.Column>
+        </Grid>
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid
@@ -75,6 +84,60 @@ class HomerTable extends React.Component {
       </div>
     )
   }
+}
+
+const HomerStatsTable = ({ stats }) => {
+  const {
+    effectiveMinBatteryEnergyContent,
+    maxBatteryEnergyContent,
+    minBatteryEnergyContent,
+
+    minBatteryStateOfCharge,
+    maxBatteryStateOfCharge,
+  } = stats
+  return (
+    <div>
+      <Table
+        basic="very"
+        // selectable
+        // celled
+        collapsing
+        // compact="very"
+        size="small"
+        style={{ float: 'right' }}>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>
+              <strong>Max Battery State of Charge</strong>
+            </Table.Cell>
+            <Table.Cell>{_.round(maxBatteryStateOfCharge, 4)} %</Table.Cell>
+
+            <Table.Cell>
+              <strong>Max Battery Energy Content</strong>
+            </Table.Cell>
+            <Table.Cell>{_.round(maxBatteryEnergyContent, 4)}</Table.Cell>
+
+            <Table.Cell>
+              <strong>Effective Min Battery Energy Content</strong>
+            </Table.Cell>
+            <Table.Cell>{_.round(effectiveMinBatteryEnergyContent, 4)}</Table.Cell>
+          </Table.Row>
+
+          <Table.Row>
+            <Table.Cell>
+              <strong>Min Battery State of Charge</strong>
+            </Table.Cell>
+            <Table.Cell>{_.round(minBatteryStateOfCharge, 4)} %</Table.Cell>
+
+            <Table.Cell>
+              <strong>Min Battery Energy Content</strong>
+            </Table.Cell>
+            <Table.Cell>{_.round(minBatteryEnergyContent, 4)}</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </div>
+  )
 }
 
 export default inject('store')(observer(HomerTable))

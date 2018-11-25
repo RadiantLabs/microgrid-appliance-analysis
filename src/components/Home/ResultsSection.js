@@ -27,7 +27,7 @@ const ActiveView = ({ viewName }) => {
 }
 
 class ResultsSection extends React.Component {
-  state = { activeItem: 'combinedTable' }
+  state = { activeItem: 'homerTable' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -36,7 +36,7 @@ class ResultsSection extends React.Component {
 
     return (
       <div>
-        <Menu pointing>
+        <Menu pointing style={{ marginBottom: '0.2rem' }}>
           <Menu.Item
             name="availableLoadChart"
             active={activeItem === 'availableLoadChart'}
