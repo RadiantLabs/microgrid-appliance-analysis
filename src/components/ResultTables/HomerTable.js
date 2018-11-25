@@ -35,6 +35,14 @@ class HomerTable extends React.Component {
     return index === 0 ? 76 : 26
   }
 
+  // This table only should update if the HOMER file updates. React Virtualized
+  // aggressively caches and prevents updates even for some props changes
+  componentDidUpdate(prevProps) {
+    if (this.multigrid) {
+      this.multigrid.forceUpdateGrids()
+    }
+  }
+
   render() {
     const { activeHomer } = this.props.store
     if (_.isEmpty(activeHomer)) {
@@ -50,6 +58,7 @@ class HomerTable extends React.Component {
         <AutoSizer>
           {({ height, width }) => (
             <MultiGrid
+              ref={c => (this.multigrid = c)}
               cellRenderer={this._cellRenderer}
               columnCount={columnCount}
               columnWidth={100}

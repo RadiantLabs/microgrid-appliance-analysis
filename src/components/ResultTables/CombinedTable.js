@@ -71,21 +71,9 @@ class CombinedTable extends React.Component {
     return index === 0 ? 76 : 26
   }
 
+  // This table updates if the HOMER file, appliance or model inputs changes.
+  // React Virtualized aggressively caches & prevents updates even for props changes
   componentDidUpdate(prevProps) {
-    // const appliance = 'store.activeApplianceFileInfo.path'
-    // const homer = 'store.activeHomerFileInfo.path'
-    // if (!this.multigrid) {
-    //   return null
-    // }
-    // if (_.get(prevProps, appliance) === _.get(this.props, appliance)) {
-    //   this.multigrid.forceUpdateGrids()
-    // }
-    // if (_.get(prevProps, homer) === _.get(this.props, homer)) {
-    //   this.multigrid.forceUpdateGrids()
-    // }
-
-    // TODO: Can I make a calculated value for the 'schema' of the combined data
-    // that this listens to?
     if (this.multigrid) {
       this.multigrid.forceUpdateGrids()
     }

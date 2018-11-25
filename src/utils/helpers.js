@@ -375,6 +375,7 @@ export function processApplianceFile(rows) {
         // Convert all dates into ISO 8606 format. Format them for display elsewhere
         datetime: DateTime.fromFormat(row['datetime'], applianceParseFormat).toISO(),
         kw_factor: _.round(row['kw_factor'], 5),
+        production_factor: _.round(row['production_factor'], 5),
       },
     }
   })

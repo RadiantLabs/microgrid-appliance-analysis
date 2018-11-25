@@ -34,10 +34,10 @@ class ApplianceTable extends React.Component {
     return index === 0 ? 26 : 26
   }
 
+  // This table only should update if the Appliance file updates. React Virtualized
+  // aggressively caches and prevents updates even for some props changes
   componentDidUpdate(prevProps) {
-    const prevPath = _.get(prevProps, 'store.activeApplianceFileInfo.path')
-    const nowPath = _.get(this.props, 'store.activeApplianceFileInfo.path')
-    if (this.multigrid && prevPath === nowPath) {
+    if (this.multigrid) {
       this.multigrid.forceUpdateGrids()
     }
   }
