@@ -26,10 +26,6 @@ const ApplianceOperatorSummary = ({ store }) => {
           <Table.Cell>Yearly Appliance Electricity Cost</Table.Cell>
           <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
         </Table.Row>
-        {/* <Table.Row>
-          <Table.Cell>Yearly Production Factor</Table.Cell>
-          <Table.Cell>{yearlyProductionFactor}</Table.Cell>
-        </Table.Row> */}
         <Table.Row>
           <Table.Cell>Yearly Units Produced</Table.Cell>
           <Table.Cell>{yearlyProductionUnits} units</Table.Cell>
