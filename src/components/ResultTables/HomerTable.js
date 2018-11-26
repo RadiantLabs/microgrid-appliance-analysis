@@ -53,14 +53,18 @@ class HomerTable extends React.Component {
     return (
       <div>
         <Grid>
-          <Grid.Column floated="left" width={5}>
+          <Grid.Column floated="left" width={6}>
             <h3>
               {activeHomerFileInfo.label}{' '}
-              <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
+              <small style={subheaderStyle}>{activeHomerFileInfo.description}</small>
+              <br />
+              <small style={subheaderStyle}>Battery: {activeHomerFileInfo.battery}</small>
+              <br />
+              <small style={subheaderStyle}>PV System: {activeHomerFileInfo.pvSystem}</small>
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
           </Grid.Column>
-          <Grid.Column floated="right" width={11}>
+          <Grid.Column floated="right" width={10}>
             <HomerStatsTable stats={homerStats} />
           </Grid.Column>
         </Grid>
@@ -141,3 +145,5 @@ const HomerStatsTable = ({ stats }) => {
 }
 
 export default inject('store')(observer(HomerTable))
+
+const subheaderStyle = { color: greyColors[1], fontWeight: 200 }

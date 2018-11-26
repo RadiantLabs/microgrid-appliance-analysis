@@ -4,29 +4,25 @@ export const homerFiles = [
     label: '12-50 Baseline',
     path: './data/homer/12-50 Baseline.csv',
     description: 'Baseline: Fill in HOMER file description.',
-    // columns: {
-    //   batteryEnergyContent: 'Generic 1kWh Lead Acid [ASM] Energy Content',
-    //   batteryStateOfCharge: 'Generic 1kWh Lead Acid [ASM] State of Charge',
-    // },
+    battery: 'Generic 1kWh Lead Acid [ASM]',
+    pvSystem: 'Generic flat plate',
   },
   {
     type: 'homer',
     label: '12-50 Oversize 20',
     path: './data/homer/12-50 Oversize 20.csv',
     description: 'Oversized: Fill in HOMER file description.',
+    battery: 'Generic 1kWh Lead Acid [ASM]',
+    pvSystem: 'Generic flat plate',
   },
   {
     type: 'homer',
     label: '12-50 Undersize 20',
     path: './data/homer/12-50 Undersize 20.csv',
     description: 'Undersized: Fill in HOMER file description.',
+    battery: 'Generic 1kWh Lead Acid [ASM]',
+    pvSystem: 'Generic flat plate',
   },
-  // {
-  //   type: 'homer',
-  //   label: 'homer_12_50_oversize_20_AS',
-  //   path: './data/homer/homer_12_50_oversize_20_AS.csv',
-  //   description: 'Fill in description.',
-  // },
 ]
 
 export const applianceFiles = [

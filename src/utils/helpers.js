@@ -191,14 +191,14 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent = row['Generic 1kWh Lead Acid [ASM] Energy Content']
-    const batteryStateOfCharge = row['Generic 1kWh Lead Acid [ASM] State of Charge']
+    const batteryEnergyContent = row['Battery Energy Content']
+    const batteryStateOfCharge = row['Battery State of Charge']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
 
     // Get values from previous row
-    const prevBatteryEnergyContent = prevRow['Generic 1kWh Lead Acid [ASM] Energy Content']
+    const prevBatteryEnergyContent = prevRow['Battery Energy Content']
 
     // Calculate load profile from usage profile
     const newApplianceLoad =
@@ -327,13 +327,34 @@ export function addHourIndex(rows, headerColumnCount = 2) {
   })
 }
 
+// Rename HOMER column names so we have consistent variables to do calculations with.
+// If HOMER had Litium Ion batteries, all calculations would break. Example of changes:
+// "Generic 1kWh Lead Acid [ASM] Energy Content" => "Battery Energy Content"
+// "Generic flat plate PV Solar Altitude" => "PV Solar Altitude"
+function renameHomerKeys(row, fileInfo) {
+  const { battery, pvSystem } = fileInfo
+  return _.mapKeys(row, (val, key) => {
+    switch (true) {
+      case _.includes(key, battery):
+        return _.replace(key, battery, 'Battery')
+      case _.includes(key, pvSystem):
+        return _.replace(key, `${pvSystem} `, '')
+      default:
+        return key
+    }
+  })
+}
+
 // Convert output from raw CSV parse into something that React Virtualized
 // can display
 // Units come in as the first second row, header is the first but
-// TODO: Parse date and reformat
-export function processHomerFile(rows) {
-  const headerRow = createHeaderRow(rows)
-  const modifiedTable = _.map(rows, (row, rowIndex) => {
+export function processHomerFile(rows, fileInfo) {
+  const renamedRows = _.map(rows, (row, rowIndex) => {
+    return renameHomerKeys(row, fileInfo)
+  })
+
+  const headerRow = createHeaderRow(renamedRows)
+  const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
     // Pass the first row without modification, which is column's units after Papaparse is done,
     if (rowIndex === 0) {
       return row
@@ -349,7 +370,7 @@ export function processHomerFile(rows) {
   return addHourIndex(tableData)
 }
 
-export function processApplianceFile(rows) {
+export function processApplianceFile(rows, fileInfo) {
   const unitRow = {
     datetime: '-',
     hour: '-',
@@ -383,11 +404,11 @@ export function processApplianceFile(rows) {
 }
 
 export function getHomerStats(homer) {
-  const minBatteryEnergyContent = findColMin(homer, 'Generic 1kWh Lead Acid [ASM] Energy Content')
-  const maxBatteryEnergyContent = findColMax(homer, 'Generic 1kWh Lead Acid [ASM] Energy Content')
+  const minBatteryEnergyContent = findColMin(homer, 'Battery Energy Content')
+  const maxBatteryEnergyContent = findColMax(homer, 'Battery Energy Content')
   // Absolute minimum battery state of charge
-  const minBatteryStateOfCharge = findColMin(homer, 'Generic 1kWh Lead Acid [ASM] State of Charge')
-  const maxBatteryStateOfCharge = findColMax(homer, 'Generic 1kWh Lead Acid [ASM] State of Charge')
+  const minBatteryStateOfCharge = findColMin(homer, 'Battery State of Charge')
+  const maxBatteryStateOfCharge = findColMax(homer, 'Battery State of Charge')
 
   // Effective Minimum Battery Energy Content
   // When creating a HOMER run, the user determines the minimum (suggested) percent that the
@@ -407,7 +428,7 @@ export function getHomerStats(homer) {
       // Round up to nearest integer (ceil) of absolute min
       _.ceil(minBatteryStateOfCharge) >=
       // Will be greater than rounding down to nearest integer of the current row
-      _.floor(row['Generic 1kWh Lead Acid [ASM] State of Charge'])
+      _.floor(row['Battery State of Charge'])
     )
   })
   // If no row meets this condition, just take the absolute min as a fallback.
@@ -416,7 +437,7 @@ export function getHomerStats(homer) {
   // We need to understand HOMER's algorithms better
   const effectiveMinBatteryEnergyContent =
     minBatteryStateOfChargeRowId > 0
-      ? homer[minBatteryStateOfChargeRowId]['Generic 1kWh Lead Acid [ASM] Energy Content']
+      ? homer[minBatteryStateOfChargeRowId]['Battery Energy Content']
       : minBatteryStateOfCharge
 
   return {
@@ -535,9 +556,9 @@ export async function fetchFile(fileInfo) {
     }
     switch (type) {
       case 'homer':
-        return processHomerFile(data)
+        return processHomerFile(data, fileInfo)
       case 'appliance':
-        return processApplianceFile(data)
+        return processApplianceFile(data, fileInfo)
       default:
         throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
     }
