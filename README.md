@@ -24,9 +24,9 @@
     - [x] CombinedTable: modelInputs, HOMER file change, Appliance file change
     - [x] Unmet loads update with modelInput, HOMER and Appliance changes
 - [x] Add Grid to top of every table, add is loader spinner
-- [ ] Write 'renders without crashing' tests for all components
-- [ ] Indicator that we are currently calculating
+- [x] Write 'renders without crashing' tests for all components
 - [ ] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through the HOMER config file
+- [ ] Indicator that we are currently calculating
 - [ ] Deploy Sentry to production to check
 Exploratory
 

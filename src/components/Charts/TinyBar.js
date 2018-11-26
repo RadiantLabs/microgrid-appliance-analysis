@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, Tooltip } from 'recharts'
 import _ from 'lodash'
 import { checkKey } from '../../utils/helpers'
 
+// This is unused at the moment
 export const TinyBarChart = props => {
   const { data, x, y, domain } = props
   if (_.isEmpty(data)) {
