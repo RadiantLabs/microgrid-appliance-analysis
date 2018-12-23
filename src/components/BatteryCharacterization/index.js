@@ -7,7 +7,7 @@ import { greyColors } from '../../utils/constants'
 
 class BatteryCharacterization extends React.Component {
   render() {
-    const { calculatedColumns, activeHomer, homerIsLoading, homerStats } = this.props.store
+    const { calculatedColumns, activeHomer } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }

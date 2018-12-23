@@ -10,7 +10,13 @@ yarn build    // Builds the app for production to the `build` folder. It correct
 
 yarn eject    // Unpack create-react-app presets. Once you `eject`, you can’t go back!
 
+```
+
+## Deploy
+```
+yarn build
 git push heroku master  // Deploy master branch to production heroku instance (need to be logged in and have authorization)
+
 ```
 
 For the project to build, **these files must exist with exact filenames**:
