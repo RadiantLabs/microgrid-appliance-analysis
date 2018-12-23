@@ -52,13 +52,6 @@ class ResultsSection extends React.Component {
           />
 
           <Menu.Item
-            name="batteryEnergyContentChart"
-            active={activeItem === 'batteryEnergyContentChart'}
-            content="Battery Energy Content"
-            onClick={this.handleItemClick}
-          />
-
-          <Menu.Item
             name="combinedTable"
             active={activeItem === 'combinedTable'}
             content="Combined Table"
@@ -76,6 +69,13 @@ class ResultsSection extends React.Component {
             name="applianceTable"
             active={activeItem === 'applianceTable'}
             content="Appliance Table"
+            onClick={this.handleItemClick}
+          />
+
+          <Menu.Item
+            name="batteryEnergyContentChart"
+            active={activeItem === 'batteryEnergyContentChart'}
+            content="Battery Energy Content"
             onClick={this.handleItemClick}
           />
         </Menu>

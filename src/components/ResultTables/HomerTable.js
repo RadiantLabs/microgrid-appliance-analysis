@@ -1,5 +1,4 @@
 import * as React from 'react'
-// import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
