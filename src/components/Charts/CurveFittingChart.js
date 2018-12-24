@@ -1,5 +1,5 @@
 import * as React from 'react'
-// import { Loader } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 // import _ from 'lodash'
 import {
   CartesianGrid,
@@ -18,16 +18,16 @@ const CurveFittingChart = ({
   batteryPredictionData,
   xAccessor,
   yAccessor,
-  // isTraining,
+  isTraining,
   predictionLegend,
 }) => {
   return (
     <div>
-      {/* <Loader
+      <Loader
         active={isTraining}
         inline="centered"
         style={{ position: 'absolute', top: '40%', left: '50%' }}
-      /> */}
+      />
       <ResponsiveContainer height={500}>
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <XAxis
