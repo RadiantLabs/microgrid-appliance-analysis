@@ -4,6 +4,7 @@ import _ from 'lodash'
 import CurveFittingChart from '../Charts/CurveFittingChart'
 import LoaderSpinner from '../Elements/Loader'
 import { greyColors } from '../../utils/constants'
+import { Grid } from 'semantic-ui-react'
 
 class BatteryCharacterization extends React.Component {
   render() {
@@ -14,22 +15,28 @@ class BatteryCharacterization extends React.Component {
     return (
       <div>
         <h3>
-          Battery Charge Rate <small style={{ color: greyColors[1] }}>TODO</small>
+          Battery Charge Rate <small style={{ color: greyColors[1] }}>TODO </small>
         </h3>
-        <CurveFittingChart
-          // isTraining={true}
-          batteryData={_.drop(activeHomer, 2)}
-          xAccessor="Battery Energy Content"
-          yAccessor="Battery Maximum Charge Power"
-          predictionLegend="Prediction Before Training"
-        />
-        <CurveFittingChart
-          // isTraining={true}
-          batteryData={_.drop(activeHomer, 2)}
-          xAccessor="Battery Energy Content"
-          yAccessor="Battery Discharge Power"
-          predictionLegend="Prediction Before Training"
-        />
+        <Grid columns={2}>
+          <Grid.Column>
+            <CurveFittingChart
+              // isTraining={true}
+              batteryData={_.drop(activeHomer, 2)}
+              xAccessor="Battery Energy Content"
+              yAccessor="Battery Maximum Charge Power"
+              predictionLegend="Prediction Before Training"
+            />
+          </Grid.Column>
+          <Grid.Column>
+            <CurveFittingChart
+              // isTraining={true}
+              batteryData={_.drop(activeHomer, 2)}
+              xAccessor="Battery Energy Content"
+              yAccessor="Battery Discharge Power"
+              predictionLegend="Prediction Before Training"
+            />
+          </Grid.Column>
+        </Grid>
       </div>
     )
   }

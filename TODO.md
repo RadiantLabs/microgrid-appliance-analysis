@@ -8,6 +8,10 @@
 - [ ] Two approaches:
     1. Do the Boston Housing project type training, where we use the columns that we would have access to in the "additional appliance" scenario to predict the new battery state of charge
     2. Figure out the coefficients of a polynomial cureve that would predict the charge rate
+- [ ] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
+    - totalElectricalProduction (right now it only includes PV Power Output)
+    - totalElectricalLoadServed (Total Electrical Load Served)
+    - electricalProductionLoadDiff
 
 
 ## TODO:
@@ -31,6 +35,7 @@
 - [ ] Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 - [ ] Load other HOMER and appliance files in the background
 - [ ] Snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
+- [ ] Measure battery capacity in the field and compare with HOMER models. Quantify
 
 
 ## Done
@@ -60,3 +65,21 @@
 - [x] Add Grid to top of every table, add is loader spinner
 - [x] Write 'renders without crashing' tests for all components
 - [x] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through
+
+
+__________________________________________________________________
+
+## Battery charge calculation notes
+
+Goal: Calculate Battery SOC for every hour. Use the spreadsheet values without new loads applied to generate the SoC based on loads we know.
+
+The SOC depends on:
+* Charge/Discharge rate. These depend on
+    * Excess
+    * Demand
+* Previous hour's SOC
+
+The predictive model may just want to calculate Charge Rate and Discharge Rate (or Max Charge Rate and Max Discharge Rate)
+
+- Removing
+    * Available Capacity: Because it depends on Excess Electrical, SoC and Energy Content for the given row.
