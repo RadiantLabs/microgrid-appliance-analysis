@@ -2,7 +2,7 @@
 ## Available Scripts
 In the project directory, you can run:
 ```
-yarn start    // Runs the app in the development mode at http://localhost:3000
+yarn dev    // Runs the app in the development mode at http://localhost:3000
 
 yarn test     // Launches the test runner in the interactive watch mode.
 

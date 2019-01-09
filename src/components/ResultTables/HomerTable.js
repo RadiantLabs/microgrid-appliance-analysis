@@ -95,8 +95,8 @@ const HomerStatsTable = ({ stats }) => {
     maxBatteryEnergyContent,
     minBatteryEnergyContent,
 
-    minBatteryStateOfCharge,
-    maxBatteryStateOfCharge,
+    minbatterySOC,
+    maxbatterySOC,
   } = stats
   return (
     <div>
@@ -113,7 +113,7 @@ const HomerStatsTable = ({ stats }) => {
             <Table.Cell>
               <strong>Max Battery State of Charge</strong>
             </Table.Cell>
-            <Table.Cell>{_.round(maxBatteryStateOfCharge, 4)} %</Table.Cell>
+            <Table.Cell>{_.round(maxbatterySOC, 4)} %</Table.Cell>
 
             <Table.Cell>
               <strong>Max Battery Energy Content</strong>
@@ -130,7 +130,7 @@ const HomerStatsTable = ({ stats }) => {
             <Table.Cell>
               <strong>Min Battery State of Charge</strong>
             </Table.Cell>
-            <Table.Cell>{_.round(minBatteryStateOfCharge, 4)} %</Table.Cell>
+            <Table.Cell>{_.round(minbatterySOC, 4)} %</Table.Cell>
 
             <Table.Cell>
               <strong>Min Battery Energy Content</strong>

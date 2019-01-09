@@ -19,7 +19,7 @@ class BatteryCharacterization extends React.Component {
         </h3>
         <Grid columns={2}>
           <Grid.Column>
-            <CurveFittingChart
+            {/* <CurveFittingChart
               // isTraining={true}
               batteryData={_.drop(activeHomer, 2)}
               xAccessor="Battery Energy Content"
@@ -34,7 +34,7 @@ class BatteryCharacterization extends React.Component {
               xAccessor="Battery Energy Content"
               yAccessor="Battery Discharge Power"
               predictionLegend="Prediction Before Training"
-            />
+            /> */}
           </Grid.Column>
         </Grid>
       </div>

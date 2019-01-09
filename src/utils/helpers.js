@@ -144,7 +144,7 @@ export function addColumnTitles(columnInfo) {
  * to do the calculations
  */
 export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, constants }) {
-  const { effectiveMinBatteryEnergyContent, minBatteryStateOfCharge } = homerStats
+  const { effectiveMinBatteryEnergyContent, minbatterySOC } = homerStats
   const headerRowCount = 2
 
   const columnInfo = {
@@ -154,6 +154,10 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     day: '-',
     day_hour: '-',
     // kw_factor: 'full cap./kW',
+    totalElectricalProduction: 'kW',
+    electricalProductionLoadDiff: 'kW',
+    prevBatterySOC: '%',
+    prevBatteryEnergyContent: 'kWh',
     newApplianceLoad: 'kW',
     availableCapacity: 'kW',
     availableCapacityAfterNewLoad: 'kW',
@@ -192,13 +196,28 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Battery Energy Content']
-    const batteryStateOfCharge = row['Battery State of Charge']
+    const batterySOC = row['Battery State of Charge']
+
+    const prevBatteryEnergyContent =
+      rowIndex <= headerRowCount ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
+
+    const prevBatterySOC =
+      rowIndex <= headerRowCount
+        ? row['Battery State of Charge']
+        : prevRow['Battery State of Charge']
+
+    // TODO: Eventually add other generation to this value
+    const totalElectricalProduction = row['PV Power Output']
+
+    // electricalProductionLoadDiff defines whether we are producing excess (positive)
+    // or in deficit (negative).
+    // If excess (positive), `Inverter Power Input` kicks in
+    // If deficit (negative), `Rectifier Power Input` kicks in
+    const electricalProductionLoadDiff =
+      totalElectricalProduction - row['Total Electrical Load Served']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
-
-    // Get values from previous row
-    const prevBatteryEnergyContent = prevRow['Battery Energy Content']
 
     // Calculate load profile from usage profile
     const newApplianceLoad =
@@ -223,7 +242,7 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
-      excessElecProd + (batteryStateOfCharge <= minBatteryStateOfCharge ? 0 : energyContentAboveMin)
+      excessElecProd + (batterySOC <= minbatterySOC ? 0 : energyContentAboveMin)
 
     // Find available capacity after the new appliance is added
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
@@ -282,6 +301,10 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
       // kw_factor: applianceRow['kw_factor'],
+      totalElectricalProduction: _.round(totalElectricalProduction, 4),
+      electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
+      prevBatterySOC: _.round(prevBatterySOC, 4),
+      prevBatteryEnergyContent: _.round(prevBatteryEnergyContent, 4),
       newApplianceLoad: _.round(newApplianceLoad, 4),
       energyContentAboveMin: _.round(energyContentAboveMin, 4),
       availableCapacity: _.round(availableCapacity, 4),
@@ -407,8 +430,8 @@ export function getHomerStats(homer) {
   const minBatteryEnergyContent = findColMin(homer, 'Battery Energy Content')
   const maxBatteryEnergyContent = findColMax(homer, 'Battery Energy Content')
   // Absolute minimum battery state of charge
-  const minBatteryStateOfCharge = findColMin(homer, 'Battery State of Charge')
-  const maxBatteryStateOfCharge = findColMax(homer, 'Battery State of Charge')
+  const minbatterySOC = findColMin(homer, 'Battery State of Charge')
+  const maxbatterySOC = findColMax(homer, 'Battery State of Charge')
 
   // Effective Minimum Battery Energy Content
   // When creating a HOMER run, the user determines the minimum (suggested) percent that the
@@ -420,13 +443,13 @@ export function getHomerStats(homer) {
   // minimum for most of the year is a little higher than that.
 
   // So to find the effective minimum energy content, first look up the absolute minimum state of
-  // charge (minBatteryStateOfCharge) and round up to the nearest integer.
+  // charge (minbatterySOC) and round up to the nearest integer.
   // Then go down, hour-by-hour, looking for the first hour we get near that point
   // (within a value of 1, which is 1%).
-  const minBatteryStateOfChargeRowId = _.findIndex(homer, row => {
+  const minbatterySOCRowId = _.findIndex(homer, row => {
     return (
       // Round up to nearest integer (ceil) of absolute min
-      _.ceil(minBatteryStateOfCharge) >=
+      _.ceil(minbatterySOC) >=
       // Will be greater than rounding down to nearest integer of the current row
       _.floor(row['Battery State of Charge'])
     )
@@ -436,16 +459,14 @@ export function getHomerStats(homer) {
   // That may not be an assumption we want to make.
   // We need to understand HOMER's algorithms better
   const effectiveMinBatteryEnergyContent =
-    minBatteryStateOfChargeRowId > 0
-      ? homer[minBatteryStateOfChargeRowId]['Battery Energy Content']
-      : minBatteryStateOfCharge
+    minbatterySOCRowId > 0 ? homer[minbatterySOCRowId]['Battery Energy Content'] : minbatterySOC
 
   return {
     minBatteryEnergyContent,
     maxBatteryEnergyContent,
     effectiveMinBatteryEnergyContent,
-    minBatteryStateOfCharge,
-    maxBatteryStateOfCharge,
+    minbatterySOC,
+    maxbatterySOC,
   }
 }
 
