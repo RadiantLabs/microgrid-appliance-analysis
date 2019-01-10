@@ -1,10 +1,16 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import CurveFittingChart from '../Charts/CurveFittingChart'
-import LoaderSpinner from '../Elements/Loader'
-import { greyColors } from '../../utils/constants'
 import { Grid } from 'semantic-ui-react'
+// import CurveFittingChart from '../Charts/CurveFittingChart'
+import LossChart from '../Charts/LossChart'
+import LoaderSpinner from '../Elements/Loader'
+// import { greyColors } from '../../utils/constants'
+import {
+  // WeightsMagnitudeTable,
+  // ModelParametersTable,
+  FinalLossTable,
+} from '../Elements/MLResultsTables'
 
 class BatteryCharacterization extends React.Component {
   render() {
@@ -14,28 +20,18 @@ class BatteryCharacterization extends React.Component {
     }
     return (
       <div>
-        <h3>
-          Battery Charge Rate <small style={{ color: greyColors[1] }}>TODO </small>
-        </h3>
+        <h2>Battery Charge & Discharge Characterization</h2>
+        <p>Use machine learning to create a model of the battery State of Charge based on:</p>
+        <ul>
+          <li>Production Load Difference (Total generated power - Load Served)</li>
+          <li>Previous Battery State of Charge</li>
+        </ul>
         <Grid columns={2}>
           <Grid.Column>
-            {/* <CurveFittingChart
-              // isTraining={true}
-              batteryData={_.drop(activeHomer, 2)}
-              xAccessor="Battery Energy Content"
-              yAccessor="Battery Maximum Charge Power"
-              predictionLegend="Prediction Before Training"
-            />
+            <h3>Training Progress</h3>
+            <LossChartWrapper />
           </Grid.Column>
-          <Grid.Column>
-            <CurveFittingChart
-              // isTraining={true}
-              batteryData={_.drop(activeHomer, 2)}
-              xAccessor="Battery Energy Content"
-              yAccessor="Battery Discharge Power"
-              predictionLegend="Prediction Before Training"
-            /> */}
-          </Grid.Column>
+          <Grid.Column>Predicted vs. Actual</Grid.Column>
         </Grid>
       </div>
     )
@@ -43,3 +39,28 @@ class BatteryCharacterization extends React.Component {
 }
 
 export default inject('store')(observer(BatteryCharacterization))
+
+const LossChartWrapper = inject('store')(
+  observer(props => {
+    const { store, modelName } = props
+    const { batteryEpochCount, batteryCurrentEpoch } = store
+    const trainingState = store.batteryTrainingState
+    if (trainingState === 'None') {
+      return null
+    }
+    return (
+      <div style={{ marginBottom: 20 }}>
+        <LossChart modelName="linear" trainLogs={store.trainLogs[modelName]} />
+        <h4>
+          Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
+        </h4>
+        <FinalLossTable
+          isTrained={trainingState === 'Trained'}
+          finalTrainSetLoss={store.finalTrainSetLoss[modelName]}
+          finalValidationSetLoss={store.finalValidationSetLoss[modelName]}
+          testSetLoss={store.testSetLoss[modelName]}
+        />
+      </div>
+    )
+  })
+)

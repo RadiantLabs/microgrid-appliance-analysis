@@ -1,18 +1,19 @@
 ## Battery charging problem
-- [ ] Create new page for battery characterization
-- [ ] Calculate battery rate of charge based on excess production and based on input power
-- [ ] Do tensorflow.js examples:
+- [x] Create new page for battery characterization
+- [ ] Create model of battery State of Charge based on electricalProductionLoadDiff and prevBatterySOC (tensorflow)
+- [x] Do tensorflow.js examples:
     * https://github.com/tensorflow/tfjs-examples/tree/master/boston-housing
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
-- [ ] Two approaches:
-    1. Do the Boston Housing project type training, where we use the columns that we would have access to in the "additional appliance" scenario to predict the new battery state of charge
-    2. Figure out the coefficients of a polynomial cureve that would predict the charge rate
-- [ ] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
+- [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
     - totalElectricalProduction (right now it only includes PV Power Output)
     - totalElectricalLoadServed (Total Electrical Load Served)
     - electricalProductionLoadDiff
-
+- [ ] Lay out battery page with
+    - training progress
+    - predicted vs actual values
+    - Sorted Weights
+    - Score
 
 ## TODO:
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
