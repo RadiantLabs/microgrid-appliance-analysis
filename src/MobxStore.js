@@ -1,9 +1,28 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import * as tf from '@tensorflow/tfjs'
-import { fetchFile, getHomerStats, getSummaryStats, calculateNewLoads } from './utils/helpers'
+import {
+  fetchFile,
+  getHomerStats,
+  getSummaryStats,
+  calculateNewLoads,
+  mergeArraysOfObjects,
+} from './utils/helpers'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
+import {
+  // arraysToTensors,
+  // shuffle,
+  // linearRegressionModel,
+  // describeKernelElements,
+  computeBaselineLoss,
+  convertTableToTensors,
+  // computeAveragePrice,
+  // multiLayerPerceptronRegressionModel1Hidden,
+  // multiLayerPerceptronRegressionModel2Hidden,
+  // calculateFinalLoss,
+  // calculateTestSetLoss,
+} from './utils/tensorflowHelpers'
 configure({ enforceActions: 'observed' })
 
 // const initHomerPath = './data/homer/12-50 Baseline.csv'
@@ -14,6 +33,7 @@ class MobxStore {
   constructor() {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
+    // autorun(() => this.trainBatteryModel(this.calculatedColumns))
   }
 
   activeHomer = null
@@ -110,6 +130,8 @@ class MobxStore {
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
+  batteryTargetColumn = 'Battery State of Charge'
+  batteryTrainingColumns = ['hour', 'electricalProductionLoadDiff', 'prevBatterySOC']
   batteryTensors = {}
   batteryNumFeatures = null
   batteryTrainingState = 'None'
@@ -119,17 +141,30 @@ class MobxStore {
   batteryValidationSetLoss = null
   batteryTestSetLoss = null
 
-  // get batteryWeightsListSorted() {
-  //   return this.weightsList.slice().sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
-  // }
+  async trainBatteryModel(calculatedColumns) {
+    if (this.calculatedColumns) {
+      const mergedData = mergeArraysOfObjects(
+        'hour',
+        _.drop(this.activeHomer, 2),
+        _.drop(this.calculatedColumns, 2)
+      )
+      const temp = convertTableToTensors(
+        mergedData,
+        this.batteryTargetColumn,
+        this.batteryTrainingColumns
+      )
+      console.log('temp: ', temp)
+      return temp
+    }
+  }
 
-  // get batteryBaselineLoss() {
-  //   return this.bostonDataIsLoading ? null : computeBaselineLoss(this.tensors)
-  // }
+  get batteryWeightsListSorted() {
+    return this.weightsList.slice().sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
+  }
 
-  // get batteryReadyToModel() {
-  //   return !this.bostonDataIsLoading && Boolean(this.numFeatures)
-  // }
+  get batteryBaselineLoss() {
+    return this.bostonDataIsLoading ? null : computeBaselineLoss(this.tensors)
+  }
 
   // Modify this to work on different datasets instead of regression models
   // async batteryTrainLinearRegressor() {
@@ -229,6 +264,8 @@ decorate(MobxStore, {
   batteryCurrentEpoch: observable,
   batteryBatchSize: observable,
   batteryLearningRate: observable,
+  batteryTargetColumn: observable,
+  batteryTrainingColumns: observable,
   batteryTensors: observable,
   batteryNumFeatures: observable,
   batteryTrainingState: observable,
@@ -237,6 +274,9 @@ decorate(MobxStore, {
   batteryFinalTrainSetLoss: observable,
   batteryValidationSetLoss: observable,
   batteryTestSetLoss: observable,
+  trainBatteryModel: action,
+  batteryWeightsListSorted: computed,
+  batteryBaselineLoss: computed,
 })
 
 export default MobxStore

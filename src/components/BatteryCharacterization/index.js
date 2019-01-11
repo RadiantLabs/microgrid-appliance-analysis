@@ -29,6 +29,7 @@ class BatteryCharacterization extends React.Component {
         <Grid columns={2}>
           <Grid.Column>
             <h3>Training Progress</h3>
+            <code>{/* {_.first(trainBatteryModel)} */}</code>
             <LossChartWrapper />
           </Grid.Column>
           <Grid.Column>Predicted vs. Actual</Grid.Column>

@@ -1,19 +1,29 @@
 ## Battery charging problem
-- [x] Create new page for battery characterization
+- [ ] Pass in battery data and break into. Refer to https://towardsdatascience.com/train-test-split-and-cross-validation-in-python-80b61beca4b6
+    - trainFeaturesArray,
+    - trainTargetArray,
+    - testFeaturesArray,
+    - testTargetArray
+- [ ] Convert to normalized tensors
+
 - [ ] Create model of battery State of Charge based on electricalProductionLoadDiff and prevBatterySOC (tensorflow)
-- [x] Do tensorflow.js examples:
-    * https://github.com/tensorflow/tfjs-examples/tree/master/boston-housing
-    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
-    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
-- [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
     - totalElectricalProduction (right now it only includes PV Power Output)
     - totalElectricalLoadServed (Total Electrical Load Served)
     - electricalProductionLoadDiff
+
 - [ ] Lay out battery page with
     - training progress
     - predicted vs actual values
     - Sorted Weights
     - Score
+- [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
+- [x] Create new page for battery characterization
+- [x] Do tensorflow.js examples:
+    * https://github.com/tensorflow/tfjs-examples/tree/master/boston-housing
+    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
+    * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
+
+
 
 ## TODO:
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
@@ -37,7 +47,7 @@
 - [ ] Load other HOMER and appliance files in the background
 - [ ] Snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
 - [ ] Measure battery capacity in the field and compare with HOMER models. Quantify
-
+- [ ] Dropdown of selects for keeping and removing table colums
 
 ## Done
 - [x] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update

@@ -121,11 +121,10 @@ export const findColMax = (table, key) => {
   return _.max(filterNums(table, key))
 }
 
-// This is lodash approach is ~100x faster than doing a iterating over
+// This lodash approach is ~100x faster than doing a iterating over
 // arrays and merging row objects together with spread operator.
 // This runs ~300ms the first time, ~100ms subsequent times.
 // The other version took ~18 seconds
-// You could rewrite this function to allow passing in more than 2 arrays
 export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
   return _(arr1)
     .concat(...arrays) // Can list multiple arrays to concat here
