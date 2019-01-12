@@ -23,7 +23,12 @@
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
 
-
+- [ ] Add Column Selector to combined table
+- [ ] Filter columns in combined table
+- [ ] Consolidate tables
+    - [ ] Add checkboxes in legend to filter by table type (update store)
+    - [ ] Comment out appliance and HOMER table
+    - [ ] Put battery stats in Battery Energy Contentt tab
 
 ## TODO:
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)

@@ -14,7 +14,7 @@ import {
 
 class BatteryCharacterization extends React.Component {
   render() {
-    const { calculatedColumns, activeHomer } = this.props.store
+    const { calculatedColumns } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }

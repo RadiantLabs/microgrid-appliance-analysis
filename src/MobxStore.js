@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
-import * as tf from '@tensorflow/tfjs'
+// import * as tf from '@tensorflow/tfjs'
 import {
   fetchFile,
   getHomerStats,
@@ -74,6 +74,16 @@ class MobxStore {
     return calculatedNewLoads
   }
 
+  get combinedTable() {
+    return this.calculatedColumns
+      ? mergeArraysOfObjects('hour', _.drop(this.activeHomer, 2), _.drop(this.calculatedColumns, 2))
+      : []
+  }
+
+  get combinedTableHeaders() {
+    return _.keys(_.first(this.combinedTable))
+  }
+
   get homerStats() {
     return _.isEmpty(this.activeHomer) ? null : getHomerStats(this.activeHomer)
   }
@@ -121,6 +131,21 @@ class MobxStore {
   }
 
   /**
+   * Table Column Visibility (checkboxes to turn columnns on or off)
+   * Also includes state for search filtering the list
+   */
+  excludedTableColumns = new Map()
+
+  setExcludedTableColumns(data) {
+    const columnName = data.label.props.children
+    if (this.excludedTableColumns.has(columnName)) {
+      this.excludedTableColumns.delete(columnName)
+    } else {
+      this.excludedTableColumns.set(columnName, true)
+    }
+  }
+
+  /**
    * Battery Characterization Model
    * Trained on HOMER file's battery State of Charge
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
@@ -142,14 +167,9 @@ class MobxStore {
   batteryTestSetLoss = null
 
   async trainBatteryModel(calculatedColumns) {
-    if (this.calculatedColumns) {
-      const mergedData = mergeArraysOfObjects(
-        'hour',
-        _.drop(this.activeHomer, 2),
-        _.drop(this.calculatedColumns, 2)
-      )
+    if (!_.isEmpty(this.combinedTable)) {
       const temp = convertTableToTensors(
-        mergedData,
+        this.combinedTable,
         this.batteryTargetColumn,
         this.batteryTrainingColumns
       )
@@ -253,11 +273,17 @@ decorate(MobxStore, {
   fetchHomer: action,
   fetchAppliance: action,
   calculatedColumns: computed,
+  combinedTable: computed,
+  combinedTableHeaders: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,
   setActiveApplianceFile: action.bound,
   onModelInputChange: action.bound,
+
+  // Table column checkboxes
+  excludedTableColumns: observable,
+  setExcludedTableColumns: action.bound,
 
   // Tensorflow model data:
   batteryEpochCount: observable,
@@ -274,7 +300,7 @@ decorate(MobxStore, {
   batteryFinalTrainSetLoss: observable,
   batteryValidationSetLoss: observable,
   batteryTestSetLoss: observable,
-  trainBatteryModel: action,
+  trainBatteryModel: action.bound,
   batteryWeightsListSorted: computed,
   batteryBaselineLoss: computed,
 })

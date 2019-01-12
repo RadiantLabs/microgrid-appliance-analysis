@@ -7,6 +7,7 @@ import { Loader, Grid } from 'semantic-ui-react'
 import { setHeaderStyles, setLegendStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
+import ColumnSelector from '../Elements/ColumnSelector'
 
 function getCurrentTable(columnIndex, calculatedColumnCount, applianceColumnCount) {
   switch (true) {
@@ -80,7 +81,13 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { calculatedColumns, homerIsLoading, activeHomerFileInfo, activeHomer } = this.props.store
+    const {
+      calculatedColumns,
+      homerIsLoading,
+      activeHomerFileInfo,
+      activeHomer,
+      combinedTableHeaders,
+    } = this.props.store
     if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer)) {
       return <LoaderSpinner />
     }
@@ -96,6 +103,7 @@ class CombinedTable extends React.Component {
               <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
+            <ColumnSelector headers={combinedTableHeaders} />
           </Grid.Column>
 
           <Grid.Column floated="right" width={5} textAlign="right">
