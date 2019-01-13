@@ -8,64 +8,50 @@ import { setHeaderStyles, setLegendStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
 import ColumnSelector from '../Elements/ColumnSelector'
-
-function getCurrentTable(columnIndex, calculatedColumnCount, applianceColumnCount) {
-  switch (true) {
-    // Render the calculatedColumn table as the initial columns
-    case columnIndex < calculatedColumnCount:
-      return 'calculatedColumns'
-
-    // Then render only 1 column from the appliance table (kw_factor)
-    case columnIndex < calculatedColumnCount + applianceColumnCount:
-      return 'appliance'
-
-    // Render everything from HOMER as the last column set
-    default:
-      return 'homer'
-  }
-}
-
-// For now, only render kw_factor
-const applianceColumnCount = 1
+import {
+  columnHeaderByTableType,
+  combinedColumnHeaderUnits,
+  combinedColumnHeaderOrder,
+} from '../../utils/columnHeaders'
 
 class CombinedTable extends React.Component {
-  _cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
-    const { activeHomer, activeAppliance, calculatedColumns } = this.props.store
-    const homerColumnHeaders = _.keys(activeHomer[0])
-    const calculatedColumnHeaders = _.keys(calculatedColumns[0])
-    const calculatedColumnCount = _.size(calculatedColumnHeaders)
-    const currentTable = getCurrentTable(columnIndex, calculatedColumnCount, applianceColumnCount)
+  _cellRenderer = (a, { columnIndex, key, rowIndex, style }) => {
+    const { calculatedColumns, combinedTable } = this.props.store
+    const headerRowCount = 2 // column header name and units
+    const columnHeader = combinedColumnHeaderOrder[columnIndex]
+    const tableType = columnHeaderByTableType[columnHeader]
 
-    if (currentTable === 'calculatedColumns') {
-      if (calculatedColumnHeaders[columnIndex] === 'datetime') {
-        return (
-          <div key={key} style={setHeaderStyles(style, rowIndex, 'calculatedColumns')}>
-            {formatDateForTable(calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]])}
-          </div>
-        )
-      }
+    // Column header name
+    if (rowIndex === 0) {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, 'calculatedColumns')}>
-          {calculatedColumns[rowIndex][calculatedColumnHeaders[columnIndex]]}
+        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+          {columnHeader}
         </div>
       )
     }
 
-    if (currentTable === 'appliance') {
+    // Column header units
+    if (rowIndex === 1) {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, 'appliance')}>
-          {activeAppliance[rowIndex]['kw_factor']}
+        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+          {combinedColumnHeaderUnits[columnHeader] || 'missing'}
         </div>
       )
     }
 
-    if (currentTable === 'homer') {
+    // All other rows
+    if (columnHeader === 'datetime') {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, 'homer')}>
-          {activeHomer[rowIndex][homerColumnHeaders[columnIndex - calculatedColumnCount]]}
+        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+          {formatDateForTable(calculatedColumns[rowIndex - headerRowCount][columnHeader])}
         </div>
       )
     }
+    return (
+      <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+        {combinedTable[rowIndex - headerRowCount][columnHeader]}
+      </div>
+    )
   }
 
   _rowHeight = ({ index }) => {
@@ -92,8 +78,7 @@ class CombinedTable extends React.Component {
       return <LoaderSpinner />
     }
     const rowCount = _.size(calculatedColumns)
-    const columnCount =
-      _.size(_.keys(calculatedColumns[0])) + _.size(_.keys(activeHomer[0])) + applianceColumnCount
+    const columnCount = _.size(combinedColumnHeaderOrder)
     return (
       <div>
         <Grid>
@@ -119,7 +104,7 @@ class CombinedTable extends React.Component {
           {({ height, width }) => (
             <MultiGrid
               ref={c => (this.multigrid = c)}
-              cellRenderer={this._cellRenderer}
+              cellRenderer={this._cellRenderer.bind(null, 10)}
               columnCount={columnCount}
               columnWidth={100}
               fixedColumnCount={2}

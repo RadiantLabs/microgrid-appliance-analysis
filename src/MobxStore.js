@@ -76,12 +76,13 @@ class MobxStore {
 
   get combinedTable() {
     return this.calculatedColumns
-      ? mergeArraysOfObjects('hour', _.drop(this.activeHomer, 2), _.drop(this.calculatedColumns, 2))
+      ? mergeArraysOfObjects(
+          'hour',
+          _.drop(this.activeHomer, 2),
+          _.drop(this.calculatedColumns, 2),
+          _.drop(this.activeAppliance, 2)
+        )
       : []
-  }
-
-  get combinedTableHeaders() {
-    return _.keys(_.first(this.combinedTable))
   }
 
   get homerStats() {

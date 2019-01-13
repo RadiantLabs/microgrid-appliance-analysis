@@ -1,3 +1,14 @@
+## Table fixes
+- [ ] Only add column headers and units when rendering table (don't store those with the data)
+- [ ] Add Column Selector to combined table
+- [ ] Filter columns in combined table
+- [ ] Store column filters in localstorage
+- [ ] Consolidate tables
+    - [ ] Add checkboxes in legend to filter by table type (update store)
+    - [ ] Comment out appliance and HOMER table
+    - [ ] Put battery stats in Battery Energy Contentt tab
+
+
 ## Battery charging problem
 - [ ] Pass in battery data and break into. Refer to https://towardsdatascience.com/train-test-split-and-cross-validation-in-python-80b61beca4b6
     - trainFeaturesArray,
@@ -23,12 +34,6 @@
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression-core
     * https://github.com/tensorflow/tfjs-examples/tree/master/polynomial-regression
 
-- [ ] Add Column Selector to combined table
-- [ ] Filter columns in combined table
-- [ ] Consolidate tables
-    - [ ] Add checkboxes in legend to filter by table type (update store)
-    - [ ] Comment out appliance and HOMER table
-    - [ ] Put battery stats in Battery Energy Contentt tab
 
 ## TODO:
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)

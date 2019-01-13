@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import faker from 'faker'
 import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Segment, Icon } from 'semantic-ui-react'
 

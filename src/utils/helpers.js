@@ -326,6 +326,9 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
   return _.reduce(homer, columnReducer, [])
 }
 
+/**
+ * Process files on import
+ */
 // Return an object with the values the same as the key.
 // This let's React Virtualized Grid component render the top row with the name
 // of the column
