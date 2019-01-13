@@ -125,16 +125,13 @@ export const findColMax = (table, key) => {
 // arrays and merging row objects together with spread operator.
 // This runs ~300ms the first time, ~100ms subsequent times.
 // The other version took ~18 seconds
+// Clone the primary array because somewhere this mutates, which throws errors in Mobx
 export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
-  return _(arr1)
+  return _(_.cloneDeep(arr1))
     .concat(...arrays) // Can list multiple arrays to concat here
     .groupBy(joinKey)
     .map(_.spread(_.merge))
     .value()
-}
-
-export function addColumnTitles(columnInfo) {
-  return _.mapValues(columnInfo, (val, key) => key)
 }
 
 /**
@@ -144,51 +141,18 @@ export function addColumnTitles(columnInfo) {
  */
 export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, constants }) {
   const { effectiveMinBatteryEnergyContent, minbatterySOC } = homerStats
-  const headerRowCount = 2
-
-  const columnInfo = {
-    hour: '-',
-    datetime: '-',
-    hour_of_day: '-',
-    day: '-',
-    day_hour: '-',
-    // kw_factor: 'full cap./kW',
-    totalElectricalProduction: 'kW',
-    electricalProductionLoadDiff: 'kW',
-    prevBatterySOC: '%',
-    prevBatteryEnergyContent: 'kWh',
-    newApplianceLoad: 'kW',
-    availableCapacity: 'kW',
-    availableCapacityAfterNewLoad: 'kW',
-    additionalUnmetLoad: 'kW',
-    newApplianceBatteryConsumption: 'kW',
-    originalBatteryEnergyContentDelta: 'kWh',
-    newApplianceBatteryEnergyContent: 'kWh',
-    originalUnmetLoad: 'kW',
-    newTotalUnmetLoad: 'kW',
-  }
 
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
   const columnReducer = (result, row, rowIndex, rows) => {
-    // Deal with top 2 header rows
-    if (rowIndex === 0) {
-      result.push(addColumnTitles(columnInfo))
-      return result
-    }
-    if (rowIndex === 1) {
-      result.push(columnInfo)
-      return result
-    }
-
     // Get the previous HOMER row (from the original rows, not the new calculated rows)
-    const prevRow = rowIndex <= headerRowCount ? {} : rows[rowIndex - 1]
+    const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
 
     // Get the matching row for the appliance
     const applianceRow = appliance[rowIndex]
 
     // Get the previous row from the calculated results (the reason for the reduce function)
-    const prevResult = rowIndex <= headerRowCount ? {} : result[rowIndex - 1]
+    const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]
 
     // Get existing values from the current row we are iterating over:
     // Excess electrical production:  Original energy production minus original load (not new
@@ -198,12 +162,10 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     const batterySOC = row['Battery State of Charge']
 
     const prevBatteryEnergyContent =
-      rowIndex <= headerRowCount ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
+      rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
 
     const prevBatterySOC =
-      rowIndex <= headerRowCount
-        ? row['Battery State of Charge']
-        : prevRow['Battery State of Charge']
+      rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
 
     // TODO: Eventually add other generation to this value
     const totalElectricalProduction = row['PV Power Output']
@@ -267,9 +229,9 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
 
     // Original Battery Energy Content Delta
     // This is how much the energy content in the battery has increased or decreased in
-    // the last hour. Takes into account the 2 column headers that are text, not real values
+    // the last hour. First row is meaningless when referencing previous row, so set it to zero
     const originalBatteryEnergyContentDelta =
-      rowIndex <= headerRowCount ? 0 : batteryEnergyContent - prevBatteryEnergyContent
+      rowIndex === 0 ? 0 : batteryEnergyContent - prevBatteryEnergyContent
 
     // New Appliance Battery Energy Content:
     // The battery energy content under the scenario of adding a new appliance.
@@ -277,12 +239,12 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     // which means we need to look at the previous row than the one we are iterating over.
     // This is why these values are being calculated in a reducing function instead of a map
     const prevNewApplianceBatteryEnergyContent =
-      rowIndex <= headerRowCount ? 0 : prevResult['newApplianceBatteryEnergyContent']
+      rowIndex === 0 ? 0 : prevResult['newApplianceBatteryEnergyContent']
+
     const newApplianceBatteryEnergyContent =
-      rowIndex <= headerRowCount
-        ? // For the first hour (row 3 if there are 2 header rows):
-          // We just look at the energy content of the battery and
-          // how much a new appliance would use from the battery:
+      rowIndex === 0
+        ? // For the first hour: We just look at the energy content of the battery
+          // and how much a new appliance would use from the battery:
           batteryEnergyContent - newApplianceBatteryConsumption
         : // For hours after that, we need to take the perspective of the battery if a new
           // appliance was added. Take the battery energy content we just calculated from the
@@ -329,26 +291,10 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
 /**
  * Process files on import
  */
-// Return an object with the values the same as the key.
-// This let's React Virtualized Grid component render the top row with the name
-// of the column
-// Can use any row, picking the 3rd in case the second row is units
-export function createHeaderRow(rows) {
-  const thirdRow = rows[2]
-  return _.mapValues(thirdRow, (val, key) => key)
-}
-
-export function addHourIndex(rows, headerColumnCount = 2) {
+// Add a column to table that autoincrements based on row index
+function addHourIndex(rows) {
   return _.map(rows, (row, rowIndex) => {
-    const hour = rowIndex - headerColumnCount
-    switch (hour) {
-      case -2:
-        return { ...row, ...{ hour: 'hour' } }
-      case -1:
-        return { ...row, ...{ hour: '-' } }
-      default:
-        return { ...row, ...{ hour: hour } }
-    }
+    return { ...row, ...{ hour: rowIndex } }
   })
 }
 
@@ -370,20 +316,13 @@ function renameHomerKeys(row, fileInfo) {
   })
 }
 
-// Convert output from raw CSV parse into something that React Virtualized
-// can display
-// Units come in as the first second row, header is the first but
+// Convert output from raw CSV parse into something that React Virtualized can display
+// Drop the first after parsing which is the units row.
 export function processHomerFile(rows, fileInfo) {
-  const renamedRows = _.map(rows, (row, rowIndex) => {
+  const renamedRows = _.map(_.drop(rows, 1), (row, rowIndex) => {
     return renameHomerKeys(row, fileInfo)
   })
-
-  const headerRow = createHeaderRow(renamedRows)
   const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
-    // Pass the first row without modification, which is column's units after Papaparse is done,
-    if (rowIndex === 0) {
-      return row
-    }
     return _.mapValues(row, (val, key) => {
       if (key === 'Time') {
         return DateTime.fromFormat(val, homerParseFormat).toISO()
@@ -391,30 +330,11 @@ export function processHomerFile(rows, fileInfo) {
       return _.round(val, 5)
     })
   })
-  const tableData = [headerRow].concat(modifiedTable)
-  return addHourIndex(tableData)
+  return addHourIndex(modifiedTable)
 }
 
 export function processApplianceFile(rows, fileInfo) {
-  const unitRow = {
-    datetime: '-',
-    hour: '-',
-    day: '-',
-    hour_of_day: '-',
-    day_hour: '-',
-    kw_factor: 'fullcapacity/kW',
-    production_factor: '-',
-  }
-  const keyOrder = _.keys(unitRow)
-  const incomingColumns = _.keys(rows[0])
-  if (!_.isEqual(keyOrder, incomingColumns)) {
-    throw new Error(
-      `Missing a required column in appliance file: Passed in ${JSON.stringify(
-        incomingColumns
-      )}. Required is ${JSON.stringify(keyOrder)}`
-    )
-  }
-  const modifiedTable = _.map(rows, row => {
+  return _.map(rows, row => {
     return {
       ...row,
       ...{
@@ -425,7 +345,6 @@ export function processApplianceFile(rows, fileInfo) {
       },
     }
   })
-  return [createHeaderRow(rows), unitRow].concat(modifiedTable)
 }
 
 export function getHomerStats(homer) {

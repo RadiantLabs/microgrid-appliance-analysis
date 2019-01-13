@@ -10,23 +10,12 @@ import {
 } from './utils/helpers'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
-import {
-  // arraysToTensors,
-  // shuffle,
-  // linearRegressionModel,
-  // describeKernelElements,
-  computeBaselineLoss,
-  convertTableToTensors,
-  // computeAveragePrice,
-  // multiLayerPerceptronRegressionModel1Hidden,
-  // multiLayerPerceptronRegressionModel2Hidden,
-  // calculateFinalLoss,
-  // calculateTestSetLoss,
-} from './utils/tensorflowHelpers'
+import { computeBaselineLoss, convertTableToTensors } from './utils/tensorflowHelpers'
 configure({ enforceActions: 'observed' })
 
 // const initHomerPath = './data/homer/12-50 Baseline.csv'
-const initHomerPath = './data/homer/12-50 Oversize 20.csv'
+// const initHomerPath = './data/homer/12-50 Oversize 20.csv'
+const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
 const initAppliancePath = './data/appliances/rice_mill_usage_profile.csv'
 
 class MobxStore {
@@ -84,12 +73,7 @@ class MobxStore {
     }
     const t0 = performance.now()
     const combinedTable = this.calculatedColumns
-      ? mergeArraysOfObjects(
-          'hour',
-          _.drop(this.activeHomer, 2),
-          _.drop(this.calculatedColumns, 2),
-          _.drop(this.activeAppliance, 2)
-        )
+      ? mergeArraysOfObjects('hour', this.activeHomer, this.calculatedColumns, this.activeAppliance)
       : []
     const t1 = performance.now()
     console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
@@ -280,13 +264,11 @@ decorate(MobxStore, {
   activeApplianceFileInfo: observable,
   homerIsLoading: observable,
   applianceIsLoading: observable,
-  // appCalculating: observable,
   modelInputs: observable,
   fetchHomer: action,
   fetchAppliance: action,
   calculatedColumns: computed,
   combinedTable: computed,
-  // combinedTableHeaders: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,

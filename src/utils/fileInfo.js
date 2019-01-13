@@ -23,6 +23,14 @@ export const homerFiles = [
     battery: 'Generic 1kWh Lead Acid [ASM]',
     pvSystem: 'Generic flat plate',
   },
+  {
+    type: 'homer',
+    label: '12-50 Undersize 20 AS',
+    path: './data/homer/homer_12_50_oversize_20_AS.csv',
+    description: 'Undersized: Fill in HOMER file description.',
+    battery: 'Generic 1kWh Lead Acid [ASM]',
+    pvSystem: 'Generic flat plate',
+  },
 ]
 
 export const applianceFiles = [
