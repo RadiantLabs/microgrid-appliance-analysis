@@ -275,7 +275,6 @@ decorate(MobxStore, {
   fetchAppliance: action,
   calculatedColumns: computed,
   combinedTable: computed,
-  combinedTableHeaders: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,
