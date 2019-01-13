@@ -75,7 +75,15 @@ class MobxStore {
   }
 
   get combinedTable() {
-    return this.calculatedColumns
+    if (
+      _.isEmpty(this.activeHomer) ||
+      _.isEmpty(this.calculatedColumns) ||
+      _.isEmpty(this.activeAppliance)
+    ) {
+      return []
+    }
+    const t0 = performance.now()
+    const combinedTable = this.calculatedColumns
       ? mergeArraysOfObjects(
           'hour',
           _.drop(this.activeHomer, 2),
@@ -83,6 +91,9 @@ class MobxStore {
           _.drop(this.activeAppliance, 2)
         )
       : []
+    const t1 = performance.now()
+    console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
+    return combinedTable
   }
 
   get homerStats() {
@@ -275,6 +286,7 @@ decorate(MobxStore, {
   fetchAppliance: action,
   calculatedColumns: computed,
   combinedTable: computed,
+  // combinedTableHeaders: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,

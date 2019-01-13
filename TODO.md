@@ -3,6 +3,7 @@
 - [ ] Add Column Selector to combined table
 - [ ] Filter columns in combined table
 - [ ] Store column filters in localstorage
+- [ ] Make sure table updates on homer or appliance change
 - [ ] Consolidate tables
     - [ ] Add checkboxes in legend to filter by table type (update store)
     - [ ] Comment out appliance and HOMER table

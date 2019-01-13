@@ -16,7 +16,10 @@ import {
 
 class CombinedTable extends React.Component {
   _cellRenderer = (a, { columnIndex, key, rowIndex, style }) => {
-    const { calculatedColumns, combinedTable } = this.props.store
+    const { combinedTable } = this.props.store
+    if (_.isEmpty(combinedTable)) {
+      return null
+    }
     const headerRowCount = 2 // column header name and units
     const columnHeader = combinedColumnHeaderOrder[columnIndex]
     const tableType = columnHeaderByTableType[columnHeader]
@@ -43,7 +46,7 @@ class CombinedTable extends React.Component {
     if (columnHeader === 'datetime') {
       return (
         <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
-          {formatDateForTable(calculatedColumns[rowIndex - headerRowCount][columnHeader])}
+          {formatDateForTable(combinedTable[rowIndex - headerRowCount][columnHeader])}
         </div>
       )
     }
@@ -67,17 +70,11 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const {
-      calculatedColumns,
-      homerIsLoading,
-      activeHomerFileInfo,
-      activeHomer,
-      combinedTableHeaders,
-    } = this.props.store
-    if (_.isEmpty(calculatedColumns) || _.isEmpty(activeHomer)) {
+    const { combinedTable, homerIsLoading, activeHomerFileInfo } = this.props.store
+    if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
-    const rowCount = _.size(calculatedColumns)
+    const rowCount = _.size(combinedTable)
     const columnCount = _.size(combinedColumnHeaderOrder)
     return (
       <div>
@@ -88,7 +85,7 @@ class CombinedTable extends React.Component {
               <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
-            <ColumnSelector headers={combinedTableHeaders} />
+            {/* <ColumnSelector headers={combinedTableHeaders} /> */}
           </Grid.Column>
 
           <Grid.Column floated="right" width={5} textAlign="right">
