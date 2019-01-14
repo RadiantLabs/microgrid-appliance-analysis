@@ -1,13 +1,8 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 // import * as tf from '@tensorflow/tfjs'
-import {
-  fetchFile,
-  getHomerStats,
-  getSummaryStats,
-  calculateNewLoads,
-  combineTables,
-} from './utils/helpers'
+import { fetchFile, getHomerStats, getSummaryStats, combineTables } from './utils/helpers'
+import { calculateNewLoads } from './utils/calculateNewColumns'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 import { computeBaselineLoss, convertTableToTensors } from './utils/tensorflowHelpers'
@@ -47,20 +42,13 @@ class MobxStore {
   }
 
   get calculatedColumns() {
-    if (_.isEmpty(this.activeHomer) || _.isEmpty(this.activeAppliance)) {
-      return null
-    }
-    const t0 = performance.now()
-    const calculatedNewLoads = calculateNewLoads({
+    return calculateNewLoads({
       homer: this.activeHomer,
       appliance: this.activeAppliance,
       modelInputs: this.modelInputs,
       homerStats: this.homerStats,
       constants: {},
     })
-    const t1 = performance.now()
-    console.log('calculateNewLoads took ' + _.round(t1 - t0) + ' milliseconds.')
-    return calculatedNewLoads
   }
 
   get combinedTable() {
