@@ -6,7 +6,7 @@ import {
   getHomerStats,
   getSummaryStats,
   calculateNewLoads,
-  mergeArraysOfObjects,
+  combineTables,
 } from './utils/helpers'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
@@ -64,20 +64,7 @@ class MobxStore {
   }
 
   get combinedTable() {
-    if (
-      _.isEmpty(this.activeHomer) ||
-      _.isEmpty(this.calculatedColumns) ||
-      _.isEmpty(this.activeAppliance)
-    ) {
-      return []
-    }
-    const t0 = performance.now()
-    const combinedTable = this.calculatedColumns
-      ? mergeArraysOfObjects('hour', this.activeHomer, this.calculatedColumns, this.activeAppliance)
-      : []
-    const t1 = performance.now()
-    console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
-    return combinedTable
+    return combineTables(this.activeHomer, this.calculatedColumns, this.activeAppliance)
   }
 
   get homerStats() {

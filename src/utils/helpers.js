@@ -134,6 +134,19 @@ export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
     .value()
 }
 
+export function combineTables(activeHomer, calculatedColumns, activeAppliance) {
+  if (_.isEmpty(activeHomer) || _.isEmpty(calculatedColumns) || _.isEmpty(activeAppliance)) {
+    return []
+  }
+  const t0 = performance.now()
+  const combinedTable = calculatedColumns
+    ? mergeArraysOfObjects('hour', activeHomer, calculatedColumns, activeAppliance)
+    : []
+  const t1 = performance.now()
+  console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
+  return combinedTable
+}
+
 /**
  * Pass in the merged table that includes Homer and Usage factors
  * Also pass in adjustable fields from store and constants that are required

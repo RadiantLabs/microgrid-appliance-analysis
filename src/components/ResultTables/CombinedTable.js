@@ -16,6 +16,10 @@ import {
 
 class CombinedTable extends React.Component {
   _cellRenderer = (a, { columnIndex, key, rowIndex, style }) => {
+    // TODO: calculate new combinedColumnHeaderOrder as a computed function in store
+    // based on excluded columns. Reference that inside this. That will effectively
+    // ignore the columns in combinedTable and not render them
+    // This will also allow for drag and dropped columns
     const { combinedTable } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return null
