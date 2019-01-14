@@ -6939,6 +6939,13 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
+mobx-localstorage@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mobx-localstorage/-/mobx-localstorage-1.1.0.tgz#e7ec07f8c64be660de1f0734108d1a11f5c0c424"
+  integrity sha512-R/7hN34XC6kCzXFIYM3E+GKJT+2lUIrqK+7tdqjUFoh5asOFd0trJt4TYxdLy+7UG2UlFzTKpYCyUgZNrsTl2g==
+  dependencies:
+    reactive-localstorage "^0.0.2"
+
 mobx-react-devtools@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/mobx-react-devtools/-/mobx-react-devtools-6.0.3.tgz#4d536c8cdd77d9f4b81f5e8415d7bedccc6a2a99"
@@ -8868,6 +8875,11 @@ react@^16.6.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.12.0"
+
+reactive-localstorage@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/reactive-localstorage/-/reactive-localstorage-0.0.2.tgz#4ab8c5736d0ff4013f177dbbfba33742b7f0f34c"
+  integrity sha512-+3oKBiiNxBbLH9mWw6eiBOAbwQSg3xpRIg7ys+E5Zc98DKQ1zyoUcQygWDDwZAn6mka2kWTaZD+ZUSgmV2VzLA==
 
 read-pkg-up@^1.0.1:
   version "1.0.1"

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
+import localStorage from 'mobx-localstorage'
 // import * as tf from '@tensorflow/tfjs'
 import { fetchFile, combineTables } from './utils/helpers'
 import { getHomerStats, getSummaryStats } from './utils/calculateStats'
@@ -20,6 +21,15 @@ class MobxStore {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
     // autorun(() => this.trainBatteryModel(this.calculatedColumns))
+
+    // Saving and loading some items to localstorage
+    // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
+    autorun(() =>
+      localStorage.setItem(
+        'excludedTableColumns',
+        JSON.stringify(Array.from(this.excludedTableColumns.entries()))
+      )
+    )
   }
 
   activeHomer = null
@@ -107,7 +117,7 @@ class MobxStore {
    * Table Column Visibility (checkboxes to turn columnns on or off)
    * Also includes state for search filtering the list
    */
-  excludedTableColumns = new Map()
+  excludedTableColumns = new Map(JSON.parse(localStorage.getItem('excludedTableColumns')))
 
   setExcludedTableColumns(data) {
     const columnName = data.label.props.children

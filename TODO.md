@@ -1,9 +1,9 @@
 ## Table fixes
 - [x] Only add column headers and units when rendering table (don't store those with the data)
-- [ ] Calculate new combinedColumnHeaderOrder as a computed function in store based on excluded columns
-- [ ] Add Column Selector to combined table
-- [ ] Filter columns in combined table
-- [ ] Store column filters in localstorage
+- [x] Calculate new combinedColumnHeaderOrder as a computed function in store based on excluded columns
+- [x] Add Column Selector to combined table
+- [x] Filter columns in combined table
+- [x] Store column filters in localstorage
 - [ ] ***Make sure table updates on homer or appliance change***
 - [ ] Consolidate tables
     - [ ] Add checkboxes in legend to filter by table type (update store)
