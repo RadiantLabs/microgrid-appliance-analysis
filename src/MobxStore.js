@@ -7,11 +7,12 @@ import { calculateNewLoads } from './utils/calculateNewColumns'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 import { computeBaselineLoss, convertTableToTensors } from './utils/tensorflowHelpers'
+import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
 // const initHomerPath = './data/homer/12-50 Baseline.csv'
-// const initHomerPath = './data/homer/12-50 Oversize 20.csv'
-const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'
+const initHomerPath = './data/homer/12-50 Oversize 20.csv'
+// const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'  // debugging
 const initAppliancePath = './data/appliances/rice_mill_usage_profile.csv'
 
 class MobxStore {
@@ -115,6 +116,12 @@ class MobxStore {
     } else {
       this.excludedTableColumns.set(columnName, true)
     }
+  }
+
+  get filteredCombinedTableHeaders() {
+    return _.filter(combinedColumnHeaderOrder, header => {
+      return !this.excludedTableColumns.has(header)
+    })
   }
 
   /**
@@ -245,6 +252,7 @@ decorate(MobxStore, {
   fetchAppliance: action,
   calculatedColumns: computed,
   combinedTable: computed,
+  filteredCombinedTableHeaders: computed,
   homerStats: computed,
   summaryStats: computed,
   setActiveHomerFile: action.bound,

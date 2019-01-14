@@ -15,17 +15,13 @@ import {
 } from '../../utils/columnHeaders'
 
 class CombinedTable extends React.Component {
-  _cellRenderer = (a, { columnIndex, key, rowIndex, style }) => {
-    // TODO: calculate new combinedColumnHeaderOrder as a computed function in store
-    // based on excluded columns. Reference that inside this. That will effectively
-    // ignore the columns in combinedTable and not render them
-    // This will also allow for drag and dropped columns
+  _cellRenderer = (filteredCombinedTableHeaders, { columnIndex, key, rowIndex, style }) => {
     const { combinedTable } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return null
     }
     const headerRowCount = 2 // column header name and units
-    const columnHeader = combinedColumnHeaderOrder[columnIndex]
+    const columnHeader = filteredCombinedTableHeaders[columnIndex]
     const tableType = columnHeaderByTableType[columnHeader]
 
     // Column header name
@@ -74,12 +70,17 @@ class CombinedTable extends React.Component {
   }
 
   render() {
-    const { combinedTable, homerIsLoading, activeHomerFileInfo } = this.props.store
+    const {
+      combinedTable,
+      filteredCombinedTableHeaders,
+      homerIsLoading,
+      activeHomerFileInfo,
+    } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
     const rowCount = _.size(combinedTable)
-    const columnCount = _.size(combinedColumnHeaderOrder)
+    const columnCount = _.size(filteredCombinedTableHeaders)
     return (
       <div>
         <Grid>
@@ -89,7 +90,7 @@ class CombinedTable extends React.Component {
               <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
-            {/* <ColumnSelector headers={combinedTableHeaders} /> */}
+            <ColumnSelector headers={combinedColumnHeaderOrder} />
           </Grid.Column>
 
           <Grid.Column floated="right" width={5} textAlign="right">
@@ -105,12 +106,12 @@ class CombinedTable extends React.Component {
           {({ height, width }) => (
             <MultiGrid
               ref={c => (this.multigrid = c)}
-              cellRenderer={this._cellRenderer.bind(null, 10)}
+              cellRenderer={this._cellRenderer.bind(null, filteredCombinedTableHeaders)}
               columnCount={columnCount}
               columnWidth={100}
               fixedColumnCount={2}
               fixedRowCount={2}
-              height={700}
+              height={1200}
               rowCount={rowCount}
               rowHeight={this._rowHeight}
               estimatedRowSize={26}
