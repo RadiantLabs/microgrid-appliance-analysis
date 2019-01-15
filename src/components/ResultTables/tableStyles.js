@@ -42,8 +42,10 @@ export const setHeaderStyles = (styles, rowIndex, tableName) => {
 export const setLegendStyles = tableName => {
   return {
     paddingRight: '4px',
+    paddingLeft: '4px',
     fontStyle: 'italic',
-    fontSize: '12px',
+    fontSize: '11px',
+    lineHeight: 1.5,
     backgroundColor: tableColorsByKey[tableName],
   }
 }

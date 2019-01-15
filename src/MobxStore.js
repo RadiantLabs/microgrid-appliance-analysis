@@ -20,7 +20,7 @@ class MobxStore {
   constructor() {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
-    // autorun(() => this.trainBatteryModel(this.calculatedColumns))
+    autorun(() => this.trainBatteryModel(this.calculatedColumns))
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
@@ -147,7 +147,6 @@ class MobxStore {
   batteryTargetColumn = 'Battery State of Charge'
   batteryTrainingColumns = ['hour', 'electricalProductionLoadDiff', 'prevBatterySOC']
   batteryTensors = {}
-  batteryNumFeatures = null
   batteryTrainingState = 'None'
   batteryTrainLogs = []
   batteryWeightsList = []
@@ -156,15 +155,21 @@ class MobxStore {
   batteryTestSetLoss = null
 
   async trainBatteryModel(calculatedColumns) {
-    if (!_.isEmpty(this.combinedTable)) {
-      const temp = convertTableToTensors(
+    if (_.isEmpty(this.combinedTable)) {
+      return null
+    }
+    runInAction(() => {
+      this.batteryTensors = convertTableToTensors(
         this.combinedTable,
         this.batteryTargetColumn,
         this.batteryTrainingColumns
       )
-      console.log('temp: ', temp)
-      return temp
-    }
+    })
+  }
+
+  // TODO: What's next? See other repo for creating model and fitting...
+  get batteryNumFeatures() {
+    return _.size(this.batteryTrainingColumns)
   }
 
   get batteryWeightsListSorted() {
@@ -281,7 +286,7 @@ decorate(MobxStore, {
   batteryTargetColumn: observable,
   batteryTrainingColumns: observable,
   batteryTensors: observable,
-  batteryNumFeatures: observable,
+  batteryNumFeatures: computed,
   batteryTrainingState: observable,
   batteryTrainLogs: observable,
   batteryWeightsList: observable,

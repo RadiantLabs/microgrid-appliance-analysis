@@ -82,44 +82,46 @@ class CombinedTable extends React.Component {
     const rowCount = _.size(combinedTable)
     const columnCount = _.size(filteredCombinedTableHeaders)
     return (
-      <div>
-        <Grid>
-          <Grid.Column floated="left" width={11}>
+      <Grid columns="equal">
+        <Grid.Row>
+          <Grid.Column width={6}>
             <h3>
-              {activeHomerFileInfo.label}{' '}
+              {activeHomerFileInfo.label} <br />
               <small style={{ color: greyColors[1] }}>{activeHomerFileInfo.description}</small>{' '}
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
+          </Grid.Column>
+          <Grid.Column width={6}>
             <ColumnSelector headers={combinedColumnHeaderOrder} />
           </Grid.Column>
-
-          <Grid.Column floated="right" width={5} textAlign="right">
+          <Grid.Column width={4}>
             <div style={{ width: 130, marginBottom: '0.4rem', float: 'right' }}>
               <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
-              <div style={setLegendStyles('appliance')}>Appliance Columns</div>
               <div style={setLegendStyles('homer')}>HOMER Columns</div>
+              <div style={setLegendStyles('appliance')}>Appliance Columns</div>
             </div>
           </Grid.Column>
-        </Grid>
-
-        <AutoSizer>
-          {({ height, width }) => (
-            <MultiGrid
-              ref={c => (this.multigrid = c)}
-              cellRenderer={this._cellRenderer.bind(null, filteredCombinedTableHeaders)}
-              columnCount={columnCount}
-              columnWidth={100}
-              fixedColumnCount={2}
-              fixedRowCount={2}
-              height={1200}
-              rowCount={rowCount}
-              rowHeight={this._rowHeight}
-              estimatedRowSize={26}
-              width={width}
-            />
-          )}
-        </AutoSizer>
-      </div>
+        </Grid.Row>
+        <Grid.Row>
+          <AutoSizer>
+            {({ height, width }) => (
+              <MultiGrid
+                ref={c => (this.multigrid = c)}
+                cellRenderer={this._cellRenderer.bind(null, filteredCombinedTableHeaders)}
+                columnCount={columnCount}
+                columnWidth={100}
+                fixedColumnCount={2}
+                fixedRowCount={2}
+                height={1200}
+                rowCount={rowCount}
+                rowHeight={this._rowHeight}
+                estimatedRowSize={26}
+                width={width}
+              />
+            )}
+          </AutoSizer>
+        </Grid.Row>
+      </Grid>
     )
   }
 }

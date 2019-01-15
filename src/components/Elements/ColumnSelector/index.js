@@ -1,7 +1,22 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { List, Checkbox, Input, Popup, Segment, Icon } from 'semantic-ui-react'
+import { List, Checkbox, Input, Popup, Segment, Icon, Button } from 'semantic-ui-react'
+
+const selectorBox = {
+  border: '1px solid rgba(34, 36, 38, 0.15)',
+  cursor: 'pointer',
+}
+
+const OpenListButton = <Button icon="add" />
+
+const ColumnSelectorPopup = ({ columns, ...rest }) => (
+  <div {...rest} style={selectorBox}>
+    <h5 style={{ margin: '10px' }}>
+      Select Columns ({columns}) <small>100% columns showing</small>
+    </h5>
+  </div>
+)
 
 class ColumnSelector extends React.Component {
   state = {
@@ -32,7 +47,7 @@ class ColumnSelector extends React.Component {
     })
     return (
       <Popup
-        trigger={ColumnSelectorPopup}
+        trigger={<ColumnSelectorPopup columns={10} />}
         basic
         flowing
         position="bottom left"
@@ -65,11 +80,3 @@ class ColumnSelector extends React.Component {
 }
 
 export default inject('store')(observer(ColumnSelector))
-
-const ColumnSelectorPopup = (
-  <Segment>
-    <h5>
-      Select Columns <small>100% columns showing</small>
-    </h5>
-  </Segment>
-)

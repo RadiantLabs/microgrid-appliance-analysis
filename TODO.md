@@ -106,3 +106,7 @@ The predictive model may just want to calculate Charge Rate and Discharge Rate (
 
 - Removing
     * Available Capacity: Because it depends on Excess Electrical, SoC and Energy Content for the given row.
+
+-------------------------------------------------------------------
+
+## Ancillary Equipment Notes

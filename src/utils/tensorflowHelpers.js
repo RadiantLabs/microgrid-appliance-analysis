@@ -12,24 +12,27 @@ export function convertTableToTensors(
   trainingColumns,
   trainingSplitPercent = 0.65
 ) {
-  // const shuffledTable = _.shuffle(table)
-  const shuffledTable = table
+  const shuffledTable = _.shuffle(table)
 
-  const targets = _.map(shuffledTable, targetColumn)
+  // Array of target variables. The index of each target should line up with the
+  // index of each feature set in the next dataset (so shuffle them first).
+  // We can have multiple target variables. If only one, return an array with 1 value.
+  // I could potentially target SoC and Energy Content...
+  const targets = _.map(shuffledTable, row => [row[targetColumn]])
 
   // Order of the training features don't matter, as long as they are consistent
-  const features = _.map(shuffledTable, row => {
-    return _.map(trainingColumns, col => row[col])
-  })
+  const features = _.map(shuffledTable, row => _.map(trainingColumns, col => row[col]))
+
 
   // TODO: deploy latest (comment out stuff that will break) so I can compare
   // table values with training & targets
   // Enable toggle-able columns that are stored in localstorage
   const splitCount = _.round(targets.length * 0.65)
-  const [trainingFeatures, testFeatures] = _.chunk(features, splitCount)
+  const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
-  // debugger
-  return null
+
+  // Convert to normalized tensors
+  return arraysToTensors(trainFeatures, trainTarget, testFeatures, testTarget)
 }
 
 /**
@@ -42,13 +45,13 @@ export function arraysToTensors(
   testFeaturesArray,
   testTargetArray
 ) {
-  let rawTrainFeatures = tf.tensor2d(trainFeaturesArray)
-  let trainTarget = tf.tensor2d(trainTargetArray)
-  let rawTestFeatures = tf.tensor2d(testFeaturesArray)
-  let testTarget = tf.tensor2d(testTargetArray)
+  const rawTrainFeatures = tf.tensor2d(trainFeaturesArray)
+  const trainTarget = tf.tensor2d(trainTargetArray)
+  const rawTestFeatures = tf.tensor2d(testFeaturesArray)
+  const testTarget = tf.tensor2d(testTargetArray)
 
   // Normalize mean and standard deviation of data.
-  let { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
+  const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
 
   return {
     trainFeatures: normalizeTensor(rawTrainFeatures, dataMean, dataStd),
