@@ -5,11 +5,21 @@ import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
 import { columnHeaderByTableType } from '../../../utils/columnHeaders'
 import { tableColorsByKey } from '../../../utils/constants'
 
+export const ColumnLegend = () => {
+  return (
+    <div style={{ width: 130, float: 'right' }}>
+      <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
+      <div style={setLegendStyles('homer')}>HOMER Columns</div>
+      <div style={setLegendStyles('appliance')}>Appliance Columns</div>
+    </div>
+  )
+}
+
 const selectorBoxStyles = {
-  // border: '1px solid rgba(34, 36, 38, 0.15)',
   cursor: 'pointer',
   float: 'right',
-  width: '100%',
+  marginRight: '2%',
+  width: 'calc(88% - 130px)',
 }
 
 const SelectedColumnIndicator = ({ column, excludedColumns, columnWidth }) => {
@@ -20,8 +30,6 @@ const SelectedColumnIndicator = ({ column, excludedColumns, columnWidth }) => {
         display: 'inline-block',
         width: columnWidth,
         height: '20px',
-        margin: 0,
-        padding: 0,
         backgroundColor: tableColorsByKey[tableType],
       }}
     />
@@ -111,3 +119,14 @@ class ColumnSelector extends React.Component {
 }
 
 export default inject('store')(observer(ColumnSelector))
+
+const setLegendStyles = tableName => {
+  return {
+    paddingRight: '4px',
+    paddingLeft: '4px',
+    fontStyle: 'italic',
+    fontSize: '11px',
+    lineHeight: 1.5,
+    backgroundColor: tableColorsByKey[tableName],
+  }
+}

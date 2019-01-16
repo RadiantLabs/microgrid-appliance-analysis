@@ -4,10 +4,10 @@ import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Elements/Loader'
 import { Loader, Grid } from 'semantic-ui-react'
-import { setHeaderStyles, setLegendStyles } from './tableStyles'
+import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
-import ColumnSelector from '../Elements/ColumnSelector'
+import ColumnSelector, { ColumnLegend } from '../Elements/ColumnSelector'
 import {
   columnHeaderByTableType,
   combinedColumnHeaderUnits,
@@ -82,7 +82,7 @@ class CombinedTable extends React.Component {
     const rowCount = _.size(combinedTable)
     const columnCount = _.size(filteredCombinedTableHeaders)
     return (
-      <Grid columns="equal">
+      <Grid>
         <Grid.Row>
           <Grid.Column width={6}>
             <h3>
@@ -91,15 +91,9 @@ class CombinedTable extends React.Component {
               {homerIsLoading ? <Loader active inline size="mini" /> : <span />}
             </h3>
           </Grid.Column>
-          <Grid.Column width={6}>
+          <Grid.Column width={10}>
+            <ColumnLegend />
             <ColumnSelector headers={combinedColumnHeaderOrder} />
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <div style={{ width: 130, marginBottom: '0.4rem', float: 'right' }}>
-              <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
-              <div style={setLegendStyles('homer')}>HOMER Columns</div>
-              <div style={setLegendStyles('appliance')}>Appliance Columns</div>
-            </div>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
