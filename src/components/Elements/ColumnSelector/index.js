@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { List, Checkbox, Input, Popup, Segment, Icon, Button } from 'semantic-ui-react'
+import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
 
 const selectorBox = {
   border: '1px solid rgba(34, 36, 38, 0.15)',
   cursor: 'pointer',
 }
-
-const OpenListButton = <Button icon="add" />
 
 const ColumnSelectorPopup = ({ columns, ...rest }) => (
   <div {...rest} style={selectorBox}>

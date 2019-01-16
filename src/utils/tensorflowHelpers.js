@@ -23,7 +23,6 @@ export function convertTableToTensors(
   // Order of the training features don't matter, as long as they are consistent
   const features = _.map(shuffledTable, row => _.map(trainingColumns, col => row[col]))
 
-
   // TODO: deploy latest (comment out stuff that will break) so I can compare
   // table values with training & targets
   // Enable toggle-able columns that are stored in localstorage
@@ -101,27 +100,99 @@ export function normalizeTensor(data, dataMean, dataStd) {
 }
 
 /**
- * Shuffles data and target (maintaining alignment) using Fisher-Yates algorithm
- * Needs tests
- * Pass in array of arrays
+ * Builds and returns Linear Regression Model.
+ *
+ * @returns {tf.Sequential} The linear regression model.
  */
-export function shuffle(dataOrig, targetOrig) {
-  let data = _.cloneDeep(dataOrig)
-  let target = _.cloneDeep(targetOrig)
-  let counter = data.length
-  let temp = 0
-  let index = 0
-  while (counter > 0) {
-    index = (Math.random() * counter) | 0
-    counter--
-    // data:
-    temp = data[counter]
-    data[counter] = data[index]
-    data[index] = temp
-    // target:
-    temp = target[counter]
-    target[counter] = target[index]
-    target[index] = temp
+export function linearRegressionModel(numFeatures) {
+  const model = tf.sequential()
+  model.add(tf.layers.dense({ inputShape: [numFeatures], units: 1 }))
+  model.summary()
+  return model
+}
+
+/**
+ * Builds and returns Multi Layer Perceptron Regression Model
+ * with 1 hidden layers, each with 10 units activated by sigmoid.
+ *
+ * @returns {tf.Sequential} The multi layer perceptron regression model.
+ */
+export function multiLayerPerceptronRegressionModel1Hidden(numFeatures) {
+  const model = tf.sequential()
+  model.add(
+    tf.layers.dense({
+      inputShape: [numFeatures],
+      units: 50,
+      activation: 'sigmoid',
+      kernelInitializer: 'leCunNormal',
+    })
+  )
+  model.add(tf.layers.dense({ units: 1 }))
+  model.summary()
+  return model
+}
+
+/**
+ * Builds and returns Multi Layer Perceptron Regression Model
+ * with 2 hidden layers, each with 10 units activated by sigmoid.
+ *
+ * @returns {tf.Sequential} The multi layer perceptron regression mode  l.
+ */
+export function multiLayerPerceptronRegressionModel2Hidden(numFeatures) {
+  const model = tf.sequential()
+  model.add(
+    tf.layers.dense({
+      inputShape: [numFeatures],
+      units: 50,
+      activation: 'sigmoid',
+      kernelInitializer: 'leCunNormal',
+    })
+  )
+  model.add(
+    tf.layers.dense({
+      units: 50,
+      activation: 'sigmoid',
+      kernelInitializer: 'leCunNormal',
+    })
+  )
+  model.add(tf.layers.dense({ units: 1 }))
+  model.summary()
+  return model
+}
+
+export function calculateTestSetLoss(model, tensors, BATCH_SIZE) {
+  const testSetLoss = model.evaluate(tensors.testFeatures, tensors.testTarget, {
+    batchSize: BATCH_SIZE,
+  })
+  return _.round(testSetLoss.dataSync()[0])
+}
+
+export function calculateFinalLoss(trainLogs, model, BATCH_SIZE) {
+  const finalTrainSetLoss = trainLogs[trainLogs.length - 1].loss
+  const finalValidationSetLoss = trainLogs[trainLogs.length - 1].val_loss
+  return {
+    finalTrainSetLoss: _.round(finalTrainSetLoss, 2),
+    finalValidationSetLoss: _.round(finalValidationSetLoss, 2),
   }
-  return [data, target]
+}
+
+/**
+ * Describe the current linear weights for a human to read.
+ *
+ * @param {Array} kernel Array of floats.  One value per feature.
+ * @returns {List} List of objects, each with a string feature name, and value
+ *     feature weight.
+ */
+export function describeKernelElements(kernel, featureDescriptions) {
+  const kernelSize = featureDescriptions.length
+  tf.util.assert(
+    kernel.length === kernelSize,
+    `kernel must match featureDescriptions, got ${kernelSize}`
+  )
+  return _.map(kernel, (kernalValue, index) => {
+    return {
+      description: featureDescriptions[index],
+      value: _.round(kernalValue, 2),
+    }
+  })
 }

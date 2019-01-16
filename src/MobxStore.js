@@ -1,13 +1,21 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import localStorage from 'mobx-localstorage'
-// import * as tf from '@tensorflow/tfjs'
+import * as tf from '@tensorflow/tfjs'
 import { fetchFile, combineTables } from './utils/helpers'
+
 import { getHomerStats, getSummaryStats } from './utils/calculateStats'
 import { calculateNewLoads } from './utils/calculateNewColumns'
 import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
-import { computeBaselineLoss, convertTableToTensors } from './utils/tensorflowHelpers'
+import {
+  computeBaselineLoss,
+  convertTableToTensors,
+  linearRegressionModel,
+  describeKernelElements,
+  calculateTestSetLoss,
+  calculateFinalLoss,
+} from './utils/tensorflowHelpers'
 import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
@@ -21,6 +29,16 @@ class MobxStore {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
     autorun(() => this.trainBatteryModel(this.calculatedColumns))
+    autorun(() =>
+      this.batteryLinearRegressor(
+        this.batteryNumFeatures,
+        this.batteryTensors,
+        this.batteryLearningRate,
+        this.batteryBatchSize,
+        this.batteryEpochCount,
+        this.batteryTrainingColumns
+      )
+    )
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
@@ -140,7 +158,7 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 50
+  batteryEpochCount = 10
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
@@ -167,7 +185,6 @@ class MobxStore {
     })
   }
 
-  // TODO: What's next? See other repo for creating model and fitting...
   get batteryNumFeatures() {
     return _.size(this.batteryTrainingColumns)
   }
@@ -181,78 +198,87 @@ class MobxStore {
   }
 
   // Modify this to work on different datasets instead of regression models
-  // async batteryTrainLinearRegressor() {
-  //   const model = linearRegressionModel(this.numFeatures)
-  //   await this.run({
-  //     model,
-  //     tensors: this.tensors,
-  //     modelName: 'linear',
-  //     weightsIllustration: true,
-  //     LEARNING_RATE: this.LEARNING_RATE,
-  //     BATCH_SIZE: this.BATCH_SIZE,
-  //     NUM_EPOCHS: this.NUM_EPOCHS,
-  //   })
-  // }
+  async batteryLinearRegressor(
+    numFeatures,
+    tensors,
+    learningRate,
+    batchSize,
+    epochCount,
+    trainingColumns
+  ) {
+    console.log('running: batteryLinearRegressor')
+    await this.batteryModelRun({
+      model: linearRegressionModel(numFeatures),
+      tensors: tensors,
+      weightsIllustration: true,
+      learningRate,
+      batchSize,
+      epochCount,
+      trainingColumns,
+    })
+  }
 
   // The reason this complicated function is in the store is because it wiil
   // update the UI by saving out an obervable as it trains. Since it's in the
-  // store I could just reference all of the store values like BATCH_SIZE intead
+  // store I could just reference all of the store values like batchSize intead
   // of passing them in. I prefer to explicitly pass them in though since it
   // makes a clearer and more testable function. But this function has side effects
   // I could put this in utils and then just pass in this.currentEpoch and trainLogs
-  // async batteryRun({
-  //   model,
-  //   tensors,
-  //   modelName,
-  //   weightsIllustration,
-  //   LEARNING_RATE,
-  //   BATCH_SIZE,
-  //   NUM_EPOCHS,
-  // }) {
-  //   model.compile({
-  //     optimizer: tf.train.sgd(LEARNING_RATE),
-  //     loss: 'meanSquaredError',
-  //   })
-  //   this.trainingState[modelName] = 'Training'
-  //   await model.fit(tensors.trainFeatures, tensors.trainTarget, {
-  //     batchSize: BATCH_SIZE,
-  //     epochs: NUM_EPOCHS,
-  //     validationSplit: 0.2,
-  //     callbacks: {
-  //       onEpochEnd: async (epoch, logs) => {
-  //         runInAction(() => {
-  //           this.currentEpoch[modelName] = epoch
-  //           this.trainLogs[modelName].push({ epoch, ...logs })
-  //         })
-  //         if (weightsIllustration) {
-  //           model.layers[0]
-  //             .getWeights()[0]
-  //             .data()
-  //             .then(kernelAsArr => {
-  //               runInAction(() => {
-  //                 this.weightsList[modelName] = describeKernelElements(
-  //                   kernelAsArr,
-  //                   featureDescriptions
-  //                 )
-  //               })
-  //             })
-  //         }
-  //       },
-  //       onTrainEnd: () => {
-  //         const testSetLoss = calculateTestSetLoss(model, tensors, this.BATCH_SIZE)
-  //         const { finalTrainSetLoss, finalValidationSetLoss } = calculateFinalLoss(
-  //           this.trainLogs[modelName]
-  //         )
-  //         runInAction(() => {
-  //           this.testSetLoss[modelName] = testSetLoss
-  //           this.finalTrainSetLoss[modelName] = finalTrainSetLoss
-  //           this.finalValidationSetLoss[modelName] = finalValidationSetLoss
-  //           this.trainingState[modelName] = 'Trained'
-  //         })
-  //       },
-  //     },
-  //   })
-  // }
+  async batteryModelRun({
+    model,
+    tensors,
+    weightsIllustration,
+    learningRate,
+    batchSize,
+    epochCount,
+    trainingColumns,
+  }) {
+    console.log('running: batteryModelRun before check')
+    if (_.isEmpty(tensors)) {
+      return null
+    }
+    model.compile({
+      optimizer: tf.train.sgd(learningRate),
+      loss: 'meanSquaredError',
+    })
+    this.batteryTrainingState = 'Training'
+    console.log('running: batteryModelRun after check')
+    await model.fit(tensors.trainFeatures, tensors.trainTarget, {
+      batchSize: batchSize,
+      epochs: epochCount,
+      validationSplit: 0.2,
+      callbacks: {
+        onEpochEnd: async (epoch, logs) => {
+          runInAction(() => {
+            this.batteryCurrentEpoch = epoch
+            this.batteryTrainLogs.push({ epoch, ...logs })
+          })
+          if (weightsIllustration) {
+            model.layers[0]
+              .getWeights()[0]
+              .data()
+              .then(kernelAsArr => {
+                runInAction(() => {
+                  this.batteryWeightsList = describeKernelElements(kernelAsArr, trainingColumns)
+                })
+              })
+          }
+        },
+        onTrainEnd: () => {
+          const testSetLoss = calculateTestSetLoss(model, tensors, batchSize)
+          const { finalTrainSetLoss, finalValidationSetLoss } = calculateFinalLoss(
+            this.batteryTrainLogs
+          )
+          runInAction(() => {
+            this.testSetLoss = testSetLoss
+            this.finalTrainSetLoss = finalTrainSetLoss
+            this.finalValidationSetLoss = finalValidationSetLoss
+            this.batteryTrainingState = 'Trained'
+          })
+        },
+      },
+    })
+  }
 }
 
 decorate(MobxStore, {
@@ -293,7 +319,8 @@ decorate(MobxStore, {
   batteryFinalTrainSetLoss: observable,
   batteryValidationSetLoss: observable,
   batteryTestSetLoss: observable,
-  trainBatteryModel: action.bound,
+  batteryModelRun: action.bound,
+  batteryLinearRegressor: action.bound,
   batteryWeightsListSorted: computed,
   batteryBaselineLoss: computed,
 })

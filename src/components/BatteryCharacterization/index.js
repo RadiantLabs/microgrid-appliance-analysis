@@ -43,7 +43,7 @@ export default inject('store')(observer(BatteryCharacterization))
 
 const LossChartWrapper = inject('store')(
   observer(props => {
-    const { store, modelName } = props
+    const { store } = props
     const { batteryEpochCount, batteryCurrentEpoch } = store
     const trainingState = store.batteryTrainingState
     if (trainingState === 'None') {
@@ -51,15 +51,15 @@ const LossChartWrapper = inject('store')(
     }
     return (
       <div style={{ marginBottom: 20 }}>
-        <LossChart modelName="linear" trainLogs={store.trainLogs[modelName]} />
+        <LossChart trainLogs={store.batteryTrainLogs} />
         <h4>
           Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
         </h4>
         <FinalLossTable
           isTrained={trainingState === 'Trained'}
-          finalTrainSetLoss={store.finalTrainSetLoss[modelName]}
-          finalValidationSetLoss={store.finalValidationSetLoss[modelName]}
-          testSetLoss={store.testSetLoss[modelName]}
+          finalTrainSetLoss={store.finalTrainSetLoss}
+          finalValidationSetLoss={store.finalValidationSetLoss}
+          testSetLoss={store.testSetLoss}
         />
       </div>
     )
