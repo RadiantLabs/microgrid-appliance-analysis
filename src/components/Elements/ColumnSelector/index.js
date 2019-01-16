@@ -2,19 +2,55 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
+import { columnHeaderByTableType } from '../../../utils/columnHeaders'
 
 const selectorBox = {
   border: '1px solid rgba(34, 36, 38, 0.15)',
   cursor: 'pointer',
 }
 
-const ColumnSelectorPopup = ({ columns, ...rest }) => (
-  <div {...rest} style={selectorBox}>
-    <h5 style={{ margin: '10px' }}>
-      Select Columns ({columns}) <small>100% columns showing</small>
-    </h5>
-  </div>
-)
+const colorByTableType = {
+  excluded: 'grey',
+  calculatedColumns: 'blue',
+  homer: 'orange',
+  appliance: 'pink',
+}
+
+const SelectedColumnIndicator = ({ column, excludedColumns, columnWidth }) => {
+  const tableType = columnHeaderByTableType[column]
+  // debugger
+  return (
+    <div
+      style={{
+        display: 'inline-block',
+        width: `${columnWidth}%`,
+        height: '10px',
+        backgroundColor: colorByTableType[tableType],
+      }}
+    />
+  )
+}
+
+const ColumnSelectorPopup = ({ columns, excludedColumns, ...rest }) => {
+  const columnWidth = (1 / _.size(columns)) * 100
+  return (
+    <div {...rest} style={selectorBox}>
+      <h5 style={{ margin: '10px' }}>
+        Select Columns <small>100% columns showing</small>
+      </h5>
+      <div>
+        {_.map(columns, column => (
+          <SelectedColumnIndicator
+            column={column}
+            excludedColumns={excludedColumns}
+            columnWidth={columnWidth}
+            key={column}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 class ColumnSelector extends React.Component {
   state = {
@@ -45,7 +81,7 @@ class ColumnSelector extends React.Component {
     })
     return (
       <Popup
-        trigger={<ColumnSelectorPopup columns={10} />}
+        trigger={<ColumnSelectorPopup columns={headers} excludedColumns={excludedTableColumns} />}
         basic
         flowing
         position="bottom left"
