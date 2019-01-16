@@ -3,39 +3,36 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
 import { columnHeaderByTableType } from '../../../utils/columnHeaders'
+import { tableColorsByKey } from '../../../utils/constants'
 
-const selectorBox = {
-  border: '1px solid rgba(34, 36, 38, 0.15)',
+const selectorBoxStyles = {
+  // border: '1px solid rgba(34, 36, 38, 0.15)',
   cursor: 'pointer',
-}
-
-const colorByTableType = {
-  excluded: 'grey',
-  calculatedColumns: 'blue',
-  homer: 'orange',
-  appliance: 'pink',
+  float: 'right',
+  width: '100%',
 }
 
 const SelectedColumnIndicator = ({ column, excludedColumns, columnWidth }) => {
-  const tableType = columnHeaderByTableType[column]
-  // debugger
+  const tableType = excludedColumns.has(column) ? 'excluded' : columnHeaderByTableType[column]
   return (
     <div
       style={{
         display: 'inline-block',
-        width: `${columnWidth}%`,
-        height: '10px',
-        backgroundColor: colorByTableType[tableType],
+        width: columnWidth,
+        height: '20px',
+        margin: 0,
+        padding: 0,
+        backgroundColor: tableColorsByKey[tableType],
       }}
     />
   )
 }
 
 const ColumnSelectorPopup = ({ columns, excludedColumns, ...rest }) => {
-  const columnWidth = (1 / _.size(columns)) * 100
+  const columnWidth = `${(1 / _.size(columns)) * 100}%`
   return (
-    <div {...rest} style={selectorBox}>
-      <h5 style={{ margin: '10px' }}>
+    <div {...rest} style={selectorBoxStyles}>
+      <h5 style={{ margin: '10px 0 0 0' }}>
         Select Columns <small>100% columns showing</small>
       </h5>
       <div>

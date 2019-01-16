@@ -45,6 +45,7 @@ export const tableColorsByKey = {
     .lighten(0.9)
     .hsl()
     .string(),
+  excluded: greyColors[5],
   default: '#f9fafb',
 }
 

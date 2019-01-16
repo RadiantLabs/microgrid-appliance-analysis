@@ -7,9 +7,12 @@
 - [x] Store column filters in localstorage
 - [x] **_Make sure table updates on homer or appliance change_**
 - [ ] Consolidate tables
-  - [ ] Add checkboxes in legend to filter by table type (update store)
   - [ ] Comment out appliance and HOMER table
-  - [ ] Put battery stats in Battery Energy Contentt tab
+  - [ ] Put battery stats in Battery Energy Content tab
+- [ ] Have hover tooltip in column indicator. Click turns it on or off
+- [ ] Turn on or off blocks of columns in with the legend
+- [ ] Clean up styling in column selector indicator
+- [ ] Color code dropdown column selector menu (and decrease line height)
 
 ## Battery charging problem
 
