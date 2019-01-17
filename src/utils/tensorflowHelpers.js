@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import * as tf from '@tensorflow/tfjs'
 
+window.tf = tf
+
 // Return an array of training features for every target value
 // Split them into a training and testing dataset
 // TODO:
@@ -22,11 +24,7 @@ export function convertTableToTensors(
 
   // Order of the training features don't matter, as long as they are consistent
   const features = _.map(shuffledTable, row => _.map(trainingColumns, col => row[col]))
-
-  // TODO: deploy latest (comment out stuff that will break) so I can compare
-  // table values with training & targets
-  // Enable toggle-able columns that are stored in localstorage
-  const splitCount = _.round(targets.length * 0.65)
+  const splitCount = _.round(targets.length * trainingSplitPercent)
   const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
 
@@ -107,7 +105,7 @@ export function normalizeTensor(data, dataMean, dataStd) {
 export function linearRegressionModel(numFeatures) {
   const model = tf.sequential()
   model.add(tf.layers.dense({ inputShape: [numFeatures], units: 1 }))
-  model.summary()
+  model.summary() // Logs out summary of layers and output shapes
   return model
 }
 
@@ -160,14 +158,14 @@ export function multiLayerPerceptronRegressionModel2Hidden(numFeatures) {
   return model
 }
 
-export function calculateTestSetLoss(model, tensors, BATCH_SIZE) {
+export function calculateTestSetLoss(model, tensors, batchSize) {
   const testSetLoss = model.evaluate(tensors.testFeatures, tensors.testTarget, {
-    batchSize: BATCH_SIZE,
+    batchSize: batchSize,
   })
   return _.round(testSetLoss.dataSync()[0])
 }
 
-export function calculateFinalLoss(trainLogs, model, BATCH_SIZE) {
+export function calculateFinalLoss(trainLogs) {
   const finalTrainSetLoss = trainLogs[trainLogs.length - 1].loss
   const finalValidationSetLoss = trainLogs[trainLogs.length - 1].val_loss
   return {

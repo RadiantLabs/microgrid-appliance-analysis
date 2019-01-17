@@ -30,10 +30,13 @@
   - Score
 - [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
 - [x] Create new page for battery characterization
-- [ ] Save trained model to store
+- [x] Save trained model to store
 - [ ] Generate predicted vs actual values
+  - https://stackoverflow.com/questions/50123067/tensorflow-js-model-predict-prints-tensor-nan
+  -
 - [ ] Chart predicted vs actual
 - [ ] Add button that retrains model
+- [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
 
 ## TODO:
 

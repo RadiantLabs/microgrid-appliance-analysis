@@ -158,13 +158,14 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 10
+  batteryEpochCount = 4
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
   batteryTargetColumn = 'Battery State of Charge'
-  batteryTrainingColumns = ['hour', 'electricalProductionLoadDiff', 'prevBatterySOC']
+  batteryTrainingColumns = ['electricalProductionLoadDiff', 'prevBatterySOC']
   batteryTensors = {}
+  batteryModel = null
   batteryTrainingState = 'None'
   batteryTrainLogs = []
   batteryWeightsList = []
@@ -187,6 +188,10 @@ class MobxStore {
 
   get batteryNumFeatures() {
     return _.size(this.batteryTrainingColumns)
+  }
+
+  get batteryInputTensorShape() {
+    return [1, _.size(this.batteryTrainingColumns)]
   }
 
   get batteryWeightsListSorted() {
@@ -233,7 +238,6 @@ class MobxStore {
     epochCount,
     trainingColumns,
   }) {
-    console.log('running: batteryModelRun before check')
     if (_.isEmpty(tensors)) {
       return null
     }
@@ -270,9 +274,10 @@ class MobxStore {
             this.batteryTrainLogs
           )
           runInAction(() => {
-            this.testSetLoss = testSetLoss
-            this.finalTrainSetLoss = finalTrainSetLoss
-            this.finalValidationSetLoss = finalValidationSetLoss
+            this.batteryModel = model
+            this.batteryTestSetLoss = testSetLoss
+            this.batteryFinalTrainSetLoss = finalTrainSetLoss
+            this.batteryValidationSetLoss = finalValidationSetLoss
             this.batteryTrainingState = 'Trained'
           })
         },
@@ -312,7 +317,9 @@ decorate(MobxStore, {
   batteryTargetColumn: observable,
   batteryTrainingColumns: observable,
   batteryTensors: observable,
+  batteryModel: observable,
   batteryNumFeatures: computed,
+  batteryInputTensorShape: computed,
   batteryTrainingState: observable,
   batteryTrainLogs: observable,
   batteryWeightsList: observable,

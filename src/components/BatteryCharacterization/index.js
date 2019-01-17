@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
+import * as tf from '@tensorflow/tfjs'
 import { Grid } from 'semantic-ui-react'
 // import CurveFittingChart from '../Charts/CurveFittingChart'
 import LossChart from '../Charts/LossChart'
@@ -14,10 +15,16 @@ import {
 
 class BatteryCharacterization extends React.Component {
   render() {
-    const { calculatedColumns } = this.props.store
+    const { calculatedColumns, batteryModel, batteryInputTensorShape } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
+    console.log('batteryInputTensorShape: ', batteryInputTensorShape)
+    if (batteryModel) {
+      const abc = batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape))
+      console.log('predicted: ', abc)
+    }
+
     return (
       <div>
         <h2>Battery Charge & Discharge Characterization</h2>
@@ -32,7 +39,15 @@ class BatteryCharacterization extends React.Component {
             <code>{/* {_.first(trainBatteryModel)} */}</code>
             <LossChartWrapper />
           </Grid.Column>
-          <Grid.Column>Predicted vs. Actual</Grid.Column>
+          <Grid.Column>
+            <h3>Predicted vs. Actual</h3>
+            {batteryModel &&
+              batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()}
+            {batteryModel &&
+              batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()}
+            {batteryModel &&
+              batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape)).print()}
+          </Grid.Column>
         </Grid>
       </div>
     )
