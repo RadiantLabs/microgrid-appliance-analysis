@@ -32,18 +32,23 @@ const ColumnLegend = inject('store')(
       <div style={{ width: 130, float: 'right' }}>
         <div
           style={setLegendStyles('calculatedColumns')}
-          onClick={store.setMultipleExcludedTableColumns(calculatedColumnHeaders)}>
-          Calculated Columns <Icon name="circle outline" style={{ float: 'right' }} />
+          // onClick={store.setMultipleExcludedTableColumns(calculatedColumnHeaders)}
+        >
+          Calculated Columns
+          {/*<Icon name="circle outline" style={{ float: 'right' }} />*/}
         </div>
         <div
           style={setLegendStyles('homer')}
-          onClick={store.setMultipleExcludedTableColumns(homerHeaders)}>
-          HOMER Columns <Icon name="circle outline" style={{ float: 'right' }} />
+          // onClick={store.setMultipleExcludedTableColumns(homerHeaders)}
+        >
+          HOMER Columns {/*<Icon name="circle outline" style={{ float: 'right' }} />*/}
         </div>
         <div
           style={setLegendStyles('appliance')}
-          onClick={store.setMultipleExcludedTableColumns(applianceHeaders)}>
-          Appliance Columns <Icon name="check circle outline" style={{ float: 'right' }} />
+          // onClick={store.setMultipleExcludedTableColumns(applianceHeaders)}
+        >
+          Appliance Columns
+          {/*<Icon name="check circle outline" style={{ float: 'right' }} />*/}
         </div>
       </div>
     )

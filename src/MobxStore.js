@@ -145,9 +145,9 @@ class MobxStore {
     }
   }
 
-  setMultipleExcludedTableColumns(columnNames) {
-    _.forEach(columnNames, columnName => this.setExcludedTableColumns(columnName))
-  }
+  // setMultipleExcludedTableColumns(columnNames) {
+  //   _.forEach(columnNames, columnName => this.setExcludedTableColumns(columnName))
+  // }
 
   get filteredCombinedTableHeaders() {
     return _.filter(combinedColumnHeaderOrder, header => {
