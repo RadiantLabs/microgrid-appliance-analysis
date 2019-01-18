@@ -7,7 +7,7 @@ import { Loader, Grid } from 'semantic-ui-react'
 import { setHeaderStyles } from './tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
-import ColumnSelector, { ColumnLegend } from '../Elements/ColumnSelector'
+import ColumnSelector from '../Elements/ColumnSelector'
 import {
   columnHeaderByTableType,
   combinedColumnHeaderUnits,
@@ -92,7 +92,6 @@ class CombinedTable extends React.Component {
             </h3>
           </Grid.Column>
           <Grid.Column width={10}>
-            <ColumnLegend />
             <ColumnSelector headers={combinedColumnHeaderOrder} />
           </Grid.Column>
         </Grid.Row>

@@ -137,8 +137,7 @@ class MobxStore {
    */
   excludedTableColumns = new Map(JSON.parse(localStorage.getItem('excludedTableColumns')))
 
-  setExcludedTableColumns(data) {
-    const columnName = data.label.props.children
+  setExcludedTableColumns(columnName) {
     if (this.excludedTableColumns.has(columnName)) {
       this.excludedTableColumns.delete(columnName)
     } else {
@@ -146,10 +145,20 @@ class MobxStore {
     }
   }
 
+  setMultipleExcludedTableColumns(columnNames) {
+    _.forEach(columnNames, columnName => this.setExcludedTableColumns(columnName))
+  }
+
   get filteredCombinedTableHeaders() {
     return _.filter(combinedColumnHeaderOrder, header => {
       return !this.excludedTableColumns.has(header)
     })
+  }
+
+  get percentTableColumnsShowing() {
+    return _.round(
+      (_.size(this.filteredCombinedTableHeaders) / _.size(combinedColumnHeaderOrder)) * 100
+    )
   }
 
   /**
