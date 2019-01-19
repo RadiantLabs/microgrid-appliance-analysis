@@ -10,11 +10,13 @@ import { homerFiles, applianceFiles } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 import {
   computeBaselineLoss,
-  convertTableToTensors,
+  convertTableToTrainingData,
   linearRegressionModel,
   describeKernelElements,
   calculateTestSetLoss,
   calculateFinalLoss,
+  arraysToTensors,
+  calculatePlottablePredictedVsActualData,
 } from './utils/tensorflowHelpers'
 import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
@@ -167,13 +169,13 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 4
+  batteryEpochCount = 3
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
   batteryTargetColumn = 'Battery State of Charge'
   batteryTrainingColumns = ['electricalProductionLoadDiff', 'prevBatterySOC']
-  batteryTensors = {}
+  batteryTrainingData = {}
   batteryModel = null
   batteryTrainingState = 'None'
   batteryTrainLogs = []
@@ -187,12 +189,20 @@ class MobxStore {
       return null
     }
     runInAction(() => {
-      this.batteryTensors = convertTableToTensors(
+      this.batteryTrainingData = convertTableToTrainingData(
         this.combinedTable,
         this.batteryTargetColumn,
         this.batteryTrainingColumns
       )
     })
+  }
+
+  get batteryTensors() {
+    if (_.isEmpty(this.batteryTrainingData)) {
+      return null
+    }
+    const { trainFeatures, trainTarget, testFeatures, testTarget } = this.batteryTrainingData
+    return arraysToTensors(trainFeatures, trainTarget, testFeatures, testTarget)
   }
 
   get batteryNumFeatures() {
@@ -211,6 +221,17 @@ class MobxStore {
     return this.bostonDataIsLoading ? null : computeBaselineLoss(this.tensors)
   }
 
+  get batteryPlottablePredictionVsActualData() {
+    if (_.isEmpty(this.batteryModel)) {
+      return []
+    }
+    return calculatePlottablePredictedVsActualData(
+      this.batteryTrainingData,
+      this.batteryModel,
+      this.batteryInputTensorShape
+    )
+  }
+
   // Modify this to work on different datasets instead of regression models
   async batteryLinearRegressor(
     numFeatures,
@@ -220,7 +241,6 @@ class MobxStore {
     epochCount,
     trainingColumns
   ) {
-    console.log('running: batteryLinearRegressor')
     await this.batteryModelRun({
       model: linearRegressionModel(numFeatures),
       tensors: tensors,
@@ -255,7 +275,7 @@ class MobxStore {
       loss: 'meanSquaredError',
     })
     this.batteryTrainingState = 'Training'
-    console.log('running: batteryModelRun after check')
+    console.log('running: batteryModelRun')
     await model.fit(tensors.trainFeatures, tensors.trainTarget, {
       batchSize: batchSize,
       epochs: epochCount,
@@ -325,7 +345,8 @@ decorate(MobxStore, {
   batteryLearningRate: observable,
   batteryTargetColumn: observable,
   batteryTrainingColumns: observable,
-  batteryTensors: observable,
+  batteryTrainingData: observable,
+  batteryTensors: computed,
   batteryModel: observable,
   batteryNumFeatures: computed,
   batteryInputTensorShape: computed,
@@ -339,6 +360,7 @@ decorate(MobxStore, {
   batteryLinearRegressor: action.bound,
   batteryWeightsListSorted: computed,
   batteryBaselineLoss: computed,
+  batteryPlottablePredictionVsActualData: computed,
 })
 
 export default MobxStore

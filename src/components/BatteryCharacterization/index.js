@@ -5,6 +5,7 @@ import * as tf from '@tensorflow/tfjs'
 import { Grid } from 'semantic-ui-react'
 // import CurveFittingChart from '../Charts/CurveFittingChart'
 import LossChart from '../Charts/LossChart'
+import ActualVsPredicted from '../Charts/ActualVsPredicted'
 import LoaderSpinner from '../Elements/Loader'
 // import { greyColors } from '../../utils/constants'
 import {
@@ -15,16 +16,26 @@ import {
 
 class BatteryCharacterization extends React.Component {
   render() {
-    const { calculatedColumns, batteryModel, batteryInputTensorShape } = this.props.store
+    const {
+      calculatedColumns,
+      batteryModel,
+      batteryInputTensorShape,
+      batteryPlottablePredictionVsActualData,
+      batteryEpochCount,
+      batteryCurrentEpoch,
+      batteryTrainingState,
+      batteryFinalTrainSetLoss,
+      batteryValidationSetLoss,
+      batteryTestSetLoss,
+    } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
-    console.log('batteryInputTensorShape: ', batteryInputTensorShape)
     if (batteryModel) {
-      const abc = batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape))
-      console.log('predicted: ', abc)
+      batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()
+      batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()
+      batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape)).print()
     }
-
     return (
       <div>
         <h2>Battery Charge & Discharge Characterization</h2>
@@ -34,20 +45,35 @@ class BatteryCharacterization extends React.Component {
           <li>Previous Battery State of Charge</li>
         </ul>
         <Grid columns={2}>
-          <Grid.Column>
-            <h3>Training Progress</h3>
-            <code>{/* {_.first(trainBatteryModel)} */}</code>
-            <LossChartWrapper />
-          </Grid.Column>
-          <Grid.Column>
-            <h3>Predicted vs. Actual</h3>
-            {batteryModel &&
-              batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()}
-            {batteryModel &&
-              batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()}
-            {batteryModel &&
-              batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape)).print()}
-          </Grid.Column>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Training Progress</h3>
+              <code>{/* {_.first(trainBatteryModel)} */}</code>
+              <LossChartWrapper />
+            </Grid.Column>
+            <Grid.Column>
+              <h4>
+                Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
+              </h4>
+              <FinalLossTable
+                isTrained={batteryTrainingState === 'Trained'}
+                finalTrainSetLoss={batteryFinalTrainSetLoss}
+                finalValidationSetLoss={batteryValidationSetLoss}
+                testSetLoss={batteryTestSetLoss}
+              />
+              <h3>Weights by absolute magnitude</h3>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column>
+              <h3>Predicted vs. Actual</h3>
+              <ActualVsPredicted
+                data={batteryPlottablePredictionVsActualData}
+                isTraining={_.isEmpty(batteryPlottablePredictionVsActualData)}
+              />
+              {JSON.stringify(_.take(batteryPlottablePredictionVsActualData, 5))}
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </div>
     )
@@ -57,9 +83,7 @@ class BatteryCharacterization extends React.Component {
 export default inject('store')(observer(BatteryCharacterization))
 
 const LossChartWrapper = inject('store')(
-  observer(props => {
-    const { store } = props
-    const { batteryEpochCount, batteryCurrentEpoch } = store
+  observer(({ store }) => {
     const trainingState = store.batteryTrainingState
     if (trainingState === 'None') {
       return null
@@ -67,15 +91,6 @@ const LossChartWrapper = inject('store')(
     return (
       <div style={{ marginBottom: 20 }}>
         <LossChart trainLogs={store.batteryTrainLogs} />
-        <h4>
-          Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
-        </h4>
-        <FinalLossTable
-          isTrained={trainingState === 'Trained'}
-          finalTrainSetLoss={store.finalTrainSetLoss}
-          finalValidationSetLoss={store.finalValidationSetLoss}
-          testSetLoss={store.testSetLoss}
-        />
       </div>
     )
   })

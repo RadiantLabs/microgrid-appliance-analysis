@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import * as tf from '@tensorflow/tfjs'
-
 window.tf = tf
 
 // Return an array of training features for every target value
@@ -8,7 +7,7 @@ window.tf = tf
 // TODO:
 // * make sure target and training have same length
 // * make sure split count is greater than 50% or else we will have more than 2 chunks
-export function convertTableToTensors(
+export function convertTableToTrainingData(
   table,
   targetColumn,
   trainingColumns,
@@ -27,13 +26,11 @@ export function convertTableToTensors(
   const splitCount = _.round(targets.length * trainingSplitPercent)
   const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
-
-  // Convert to normalized tensors
-  return arraysToTensors(trainFeatures, trainTarget, testFeatures, testTarget)
+  return { trainFeatures, testFeatures, trainTarget, testTarget }
 }
 
 /**
- * Convert loaded data into tensors and creates normalized versions of the features.
+ * Convert loaded data into normalized tensors
  * @param {*} data
  */
 export function arraysToTensors(
@@ -192,5 +189,19 @@ export function describeKernelElements(kernel, featureDescriptions) {
       description: featureDescriptions[index],
       value: _.round(kernalValue, 2),
     }
+  })
+}
+
+/**
+ * Convert training and predicted values into plottable values for the
+ * Actual vs Predicted chart
+ */
+export function calculatePlottablePredictedVsActualData(trainingData, model, inputTensorShape) {
+  const { trainFeatures, testFeatures, trainTarget, testTarget } = trainingData
+  const predictions = _.map(trainFeatures, featuresSet => {
+    return model.predict(tf.tensor(featuresSet, inputTensorShape)).dataSync()[0]
+  })
+  return _.map(trainTarget, (target, targetIndex) => {
+    return { actual: target[0], predicted: predictions[targetIndex] }
   })
 }
