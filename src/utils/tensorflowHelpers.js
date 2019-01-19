@@ -202,6 +202,6 @@ export function calculatePlottablePredictedVsActualData(trainingData, model, inp
     return model.predict(tf.tensor(featuresSet, inputTensorShape)).dataSync()[0]
   })
   return _.map(trainTarget, (target, targetIndex) => {
-    return { actual: target[0], predicted: predictions[targetIndex] }
+    return { actual: target[0], predicted: _.round(predictions[targetIndex]) }
   })
 }

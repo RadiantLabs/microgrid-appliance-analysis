@@ -232,6 +232,19 @@ class MobxStore {
     )
   }
 
+  get batteryPlottableReferenceLine() {
+    if (_.isEmpty(this.batteryPlottablePredictionVsActualData)) {
+      return []
+    }
+    const actualRange = _.range(
+      _.round(_.minBy(this.batteryPlottablePredictionVsActualData, 'actual')['actual']),
+      _.round(_.maxBy(this.batteryPlottablePredictionVsActualData, 'actual')['actual'])
+    )
+    return _.map(actualRange, val => {
+      return { actual: val, predicted: val }
+    })
+  }
+
   // Modify this to work on different datasets instead of regression models
   async batteryLinearRegressor(
     numFeatures,
@@ -361,6 +374,7 @@ decorate(MobxStore, {
   batteryWeightsListSorted: computed,
   batteryBaselineLoss: computed,
   batteryPlottablePredictionVsActualData: computed,
+  batteryPlottableReferenceLine: computed,
 })
 
 export default MobxStore

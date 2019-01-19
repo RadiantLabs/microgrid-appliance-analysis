@@ -27,6 +27,7 @@ class BatteryCharacterization extends React.Component {
       batteryFinalTrainSetLoss,
       batteryValidationSetLoss,
       batteryTestSetLoss,
+      batteryPlottableReferenceLine,
     } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
@@ -69,9 +70,9 @@ class BatteryCharacterization extends React.Component {
               <h3>Predicted vs. Actual</h3>
               <ActualVsPredicted
                 data={batteryPlottablePredictionVsActualData}
+                referenceLineData={batteryPlottableReferenceLine}
                 isTraining={_.isEmpty(batteryPlottablePredictionVsActualData)}
               />
-              {JSON.stringify(_.take(batteryPlottablePredictionVsActualData, 5))}
             </Grid.Column>
           </Grid.Row>
         </Grid>
