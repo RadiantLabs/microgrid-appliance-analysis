@@ -11,12 +11,14 @@ import { fieldDefinitions } from './utils/fieldDefinitions'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
-  linearRegressionModel,
   describeKernelElements,
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
   calculatePlottablePredictedVsActualData,
+  linearRegressionModel,
+  multiLayerPerceptronRegressionModel1Hidden,
+  multiLayerPerceptronRegressionModel2Hidden
 } from './utils/tensorflowHelpers'
 import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
@@ -31,6 +33,8 @@ class MobxStore {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
     autorun(() => this.trainBatteryModel(this.calculatedColumns))
+
+    // Only run 1 of these regression models, comment out the others
     autorun(() =>
       this.batteryLinearRegressor(
         this.batteryNumFeatures,
@@ -41,6 +45,28 @@ class MobxStore {
         this.batteryTrainingColumns
       )
     )
+
+    // autorun(() =>
+    //   this.battery1HiddenRegressor(
+    //     this.batteryNumFeatures,
+    //     this.batteryTensors,
+    //     this.batteryLearningRate,
+    //     this.batteryBatchSize,
+    //     this.batteryEpochCount,
+    //     this.batteryTrainingColumns
+    //   )
+    // )
+
+    // autorun(() =>
+    //   this.battery2HiddenRegressor(
+    //     this.batteryNumFeatures,
+    //     this.batteryTensors,
+    //     this.batteryLearningRate,
+    //     this.batteryBatchSize,
+    //     this.batteryEpochCount,
+    //     this.batteryTrainingColumns
+    //   )
+    // )
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
@@ -257,6 +283,44 @@ class MobxStore {
       model: linearRegressionModel(numFeatures),
       tensors: tensors,
       weightsIllustration: true,
+      learningRate,
+      batchSize,
+      epochCount,
+      trainingColumns,
+    })
+  }
+
+  async battery1HiddenRegressor(
+    numFeatures,
+    tensors,
+    learningRate,
+    batchSize,
+    epochCount,
+    trainingColumns
+  ) {
+    await this.batteryModelRun({
+      model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
+      tensors: tensors,
+      weightsIllustration: false,
+      learningRate,
+      batchSize,
+      epochCount,
+      trainingColumns,
+    })
+  }
+
+  async battery2HiddenRegressor(
+    numFeatures,
+    tensors,
+    learningRate,
+    batchSize,
+    epochCount,
+    trainingColumns
+  ) {
+    await this.batteryModelRun({
+      model: multiLayerPerceptronRegressionModel2Hidden(numFeatures),
+      tensors: tensors,
+      weightsIllustration: false,
       learningRate,
       batchSize,
       epochCount,

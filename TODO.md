@@ -12,12 +12,13 @@
     - > Error: Error when checking : expected dense_Dense1_input to have shape [null,12] but got array with shape [12,1].
   - [x] Make sure training and test data is lined up correctly (features line up with targets)
   - [x] Try LOTS of epochs (50)
-  - [ ] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
-  - [ ] multiLayerPerceptronRegressionModel1Hidden and multiLayerPerceptronRegressionModel2Hidden
+  - [x] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
+  - [x] multiLayerPerceptronRegressionModel1Hidden and multiLayerPerceptronRegressionModel2Hidden
   - [x] Use and optimize linearRegressionModel layers using DSS
   - [x] Understand data normalization better and make sure I'm doing it correctly. XGBoost worked well, but also works well with unnormalized data, which means I may not be normalizing it correctly (gracefully handles un-normalized or missing data, while being accurate and fast to train)
   - [x] Use different splits of the data
   - [x] Check how validation is done in the current script
+  - [ ] Split battery model into it's own store
 
 - [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
 - [ ] Add button that retrains model
