@@ -1,3 +1,26 @@
+# TODO
+
+## Steps In progress
+
+- Is taking the mean of an average ok? Should I try with Energy content (that doesn't solve the probably above with electricalProductionLoadDiff)
+
+## Battery charging problem
+
+- [ ] Fix problems with predictions: test different models:
+
+  - [x] Make sure training and test data is lined up correctly (features line up with targets)
+  - [x] Try LOTS of epochs (50)
+  - [ ] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
+  - [ ] multiLayerPerceptronRegressionModel1Hidden and multiLayerPerceptronRegressionModel2Hidden
+  - [x] Use and optimize linearRegressionModel layers using DSS
+  - [x] Understand data normalization better and make sure I'm doing it correctly. XGBoost worked well, but also works well with unnormalized data, which means I may not be normalizing it correctly (gracefully handles un-normalized or missing data, while being accurate and fast to train)
+  - [x] Use different splits of the data
+  - [x] Check how validation is done in the current script
+
+- [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
+- [ ] Add button that retrains model
+- [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
+
 ## Table fixes
 
 - [x] Only add column headers and units when rendering table (don't store those with the data)
@@ -13,30 +36,7 @@
 - [ ] Turn on or off blocks of columns in with the legend
 - [ ] Clean up styling in column selector indicator
 - [ ] Color code dropdown column selector menu (and decrease line height)
-
-## Battery charging problem
-
-- [x] Pass in battery data and break into training and test data. Refer to https://towardsdatascience.com/train-test-split-and-cross-validation-in-python-80b61beca4b6
-  - trainFeaturesArray,
-  - trainTargetArray,
-  - testFeaturesArray,
-  - testTargetArray
-- [x] Convert to normalized tensors
-- [x] Create model of battery State of Charge based on electricalProductionLoadDiff and prevBatterySOC (tensorflow)
-- [x] Lay out battery page with
-  - training progress
-  - predicted vs actual values
-  - Sorted Weights
-  - Score
-- [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
-- [x] Create new page for battery characterization
-- [x] Save trained model to store
-- [ ] Generate predicted vs actual values
-  - https://stackoverflow.com/questions/50123067/tensorflow-js-model-predict-prints-tensor-nan
-  -
-- [ ] Chart predicted vs actual
-- [ ] Add button that retrains model
-- [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
+- [ ] Add Hover on table
 
 ## TODO:
 
@@ -63,7 +63,7 @@
 - [ ] Measure battery capacity in the field and compare with HOMER models. Quantify
 - [ ] Dropdown of selects for keeping and removing table colums
 
-## Done
+# Done
 
 - [x] Speed up calcs by not merging tables - just keep calculated columns in their own data structure. Pass all of those data structures into React Virtualized to display them but not merge them. That will save ~1second per update
 - [x] Replace combinedTable with calculatedColumns
@@ -93,6 +93,27 @@
 - [x] Write 'renders without crashing' tests for all components
 - [x] Rename battery from 'Generic 1 kWh Lead Acid [ASM]' to Battery through
 
+## Battery Charging Characterization
+
+- [x] Pass in battery data and break into training and test data. Refer to https://towardsdatascience.com/train-test-split-and-cross-validation-in-python-80b61beca4b6
+  - trainFeaturesArray,
+  - trainTargetArray,
+  - testFeaturesArray,
+  - testTargetArray
+- [x] Convert to normalized tensors
+- [x] Create model of battery State of Charge based on electricalProductionLoadDiff and prevBatterySOC (tensorflow)
+- [x] Lay out battery page with
+  - training progress
+  - predicted vs actual values
+  - Sorted Weights
+  - Score
+- [x] Create derived column productionLoadDiff = PV Power Output - Total Electrical Load Served. Instead of pulling from only PV Power Output, it needs to also take into account diesel or other generation. I should probably create an additional variable. So create 2:
+- [x] Create new page for battery characterization
+- [x] Save trained model to store
+- [x] Generate predicted vs actual values
+  - https://stackoverflow.com/questions/50123067/tensorflow-js-model-predict-prints-tensor-nan
+- [x] Chart predicted vs actual
+
 ---
 
 ## Battery charge calculation notes
@@ -112,5 +133,3 @@ The predictive model may just want to calculate Charge Rate and Discharge Rate (
   - Available Capacity: Because it depends on Excess Electrical, SoC and Energy Content for the given row.
 
 ---
-
-## Ancillary Equipment Notes
