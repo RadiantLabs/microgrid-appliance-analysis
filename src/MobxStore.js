@@ -233,14 +233,13 @@ class MobxStore {
   }
 
   get batteryPlottableReferenceLine() {
-    if (_.isEmpty(this.batteryPlottablePredictionVsActualData)) {
+    if (_.isEmpty(this.batteryTrainingData)) {
       return []
     }
-    const actualRange = _.range(
-      _.round(_.minBy(this.batteryPlottablePredictionVsActualData, 'actual')['actual']),
-      _.round(_.maxBy(this.batteryPlottablePredictionVsActualData, 'actual')['actual'])
-    )
-    return _.map(actualRange, val => {
+    const {trainTarget, testTarget} = this.batteryTrainingData
+    const allTargets = _.map(trainTarget.concat(testTarget), target => target[0])
+    const range = _.range( _.round(_.min(allTargets)), _.round(_.max(allTargets)))
+    return _.map(range, val => {
       return { actual: val, predicted: val }
     })
   }

@@ -4,9 +4,6 @@ window.tf = tf
 
 // Return an array of training features for every target value
 // Split them into a training and testing dataset
-// TODO:
-// * make sure target and training have same length
-// * make sure split count is greater than 50% or else we will have more than 2 chunks
 export function convertTableToTrainingData(
   table,
   targetColumn,

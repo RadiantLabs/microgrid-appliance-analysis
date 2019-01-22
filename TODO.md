@@ -8,6 +8,8 @@
 
 - [ ] Fix problems with predictions: test different models:
 
+  - [ ] Check that I have the correct shape. When using this function in the example repo: `[1, _.size(featureDescriptions)]`
+    - > Error: Error when checking : expected dense_Dense1_input to have shape [null,12] but got array with shape [12,1].
   - [x] Make sure training and test data is lined up correctly (features line up with targets)
   - [x] Try LOTS of epochs (50)
   - [ ] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
