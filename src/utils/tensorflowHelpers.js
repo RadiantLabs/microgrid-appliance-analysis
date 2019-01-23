@@ -217,11 +217,12 @@ export function describeKernelElements(kernel, featureDescriptions) {
  * Actual vs Predicted chart
  */
 export function calculatePlottablePredictedVsActualData(trainingData, model, inputTensorShape) {
-  const { trainFeatures, testFeatures, trainTarget, testTarget } = trainingData
-  const predictions = _.map(trainFeatures, featuresSet => {
-    return model.predict(tf.tensor(featuresSet, inputTensorShape)).dataSync()[0]
-  })
+  const { trainFeatures, trainTarget } = trainingData
+  const rawTrainFeatures = tf.tensor2d(trainFeatures)
+  const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
+  const normalized_features = normalizeTensor(rawTrainFeatures, dataMean, dataStd)
+  const normalized_predictions = model.predict(normalized_features).dataSync()
   return _.map(trainTarget, (target, targetIndex) => {
-    return { actual: target[0], predicted: _.round(predictions[targetIndex]) }
+    return { actual: target[0], predicted: _.round(normalized_predictions[targetIndex]) }
   })
 }
