@@ -52,7 +52,7 @@ const ActualVsPredicted = ({
           <Scatter
             name="Reference Line"
             data={referenceLineData}
-            fill="#000"
+            fill="#E20000"
             line={{ strokeDasharray: '5 5' }}
             legendType="line"
             shape={<Dot r={0} />}

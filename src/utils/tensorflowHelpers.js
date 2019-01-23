@@ -223,6 +223,6 @@ export function calculatePlottablePredictedVsActualData(trainingData, model, inp
   const normalized_features = normalizeTensor(rawTrainFeatures, dataMean, dataStd)
   const normalized_predictions = model.predict(normalized_features).dataSync()
   return _.map(trainTarget, (target, targetIndex) => {
-    return { actual: target[0], predicted: _.round(normalized_predictions[targetIndex]) }
+    return { actual: target[0], predicted: normalized_predictions[targetIndex] }
   })
 }
