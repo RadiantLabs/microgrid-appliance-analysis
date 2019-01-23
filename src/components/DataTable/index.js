@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
 import LoaderSpinner from '../Elements/Loader'
 import { Loader, Grid } from 'semantic-ui-react'
-import { setHeaderStyles } from './tableStyles'
+import { setHeaderStyles } from '../../styles/tableStyles'
 import { greyColors } from '../../utils/constants'
 import { formatDateForTable } from '../../utils/helpers'
 import ColumnSelector from '../Elements/ColumnSelector'
@@ -14,7 +14,7 @@ import {
   combinedColumnHeaderOrder,
 } from '../../utils/columnHeaders'
 
-class CombinedTable extends React.Component {
+class DataTable extends React.Component {
   _cellRenderer = (filteredCombinedTableHeaders, { columnIndex, key, rowIndex, style }) => {
     const { combinedTable } = this.props.store
     if (_.isEmpty(combinedTable)) {
@@ -119,4 +119,4 @@ class CombinedTable extends React.Component {
   }
 }
 
-export default inject('store')(observer(CombinedTable))
+export default inject('store')(observer(DataTable))

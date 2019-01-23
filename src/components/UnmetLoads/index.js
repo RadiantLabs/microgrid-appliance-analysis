@@ -7,7 +7,7 @@ import { getChartColors, greyColors } from '../../utils/constants'
 
 // TODO:
 // Summary Stats
-class UnmetLoadsChart extends React.Component {
+class UnmetLoads extends React.Component {
   render() {
     const { summaryStats } = this.props.store
     if (_.isEmpty(summaryStats)) {
@@ -48,4 +48,4 @@ class UnmetLoadsChart extends React.Component {
   }
 }
 
-export default inject('store')(observer(UnmetLoadsChart))
+export default inject('store')(observer(UnmetLoads))

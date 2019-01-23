@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Message } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../Elements/Loader'
 import {
@@ -17,7 +16,8 @@ import { getChartColors, greyColors } from '../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-class BatteryEnergyContentChart extends React.Component {
+// Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
+class LoadsByHour extends React.Component {
   render() {
     const {
       calculatedColumns,
@@ -30,16 +30,12 @@ class BatteryEnergyContentChart extends React.Component {
     return (
       <div>
         <h3>
-          Battery Energy Content by hour of year <small style={{ color: greyColors[1] }}>kWh</small>
+          Loads by hour of year <small style={{ color: greyColors[1] }}>kW for 1 hour</small>
         </h3>
-        <Message warning>
-          This chart isn't useful yet. I need to calculate the charge characteristics of the battery
-          first.
-        </Message>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <LineChart
-            width={1400}
-            height={400}
+            // width={1400}
+            // height={400}
             data={calculatedColumns}
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -48,15 +44,27 @@ class BatteryEnergyContentChart extends React.Component {
             <Tooltip />
             <Line
               type="monotone"
-              dataKey="energyContentAboveMin"
+              dataKey="newApplianceLoad"
               dot={false}
-              stroke={getChartColors('energyContentAboveMin')}
+              stroke={getChartColors('newApplianceLoad')}
             />
             <Line
               type="monotone"
-              dataKey="newApplianceBatteryEnergyContent"
+              dataKey="availableCapacity"
               dot={false}
-              stroke={getChartColors('newApplianceBatteryEnergyContent')}
+              stroke={getChartColors('availableCapacity')}
+            />
+            <Line
+              type="monotone"
+              dataKey="availableCapacityAfterNewLoad"
+              dot={false}
+              stroke={getChartColors('availableCapacityAfterNewLoad')}
+            />
+            <Line
+              type="monotone"
+              dataKey="newApplianceBatteryConsumption"
+              dot={false}
+              stroke={getChartColors('newApplianceBatteryConsumption')}
             />
             <Legend />
             <Brush startIndex={0} endIndex={200} />
@@ -67,4 +75,4 @@ class BatteryEnergyContentChart extends React.Component {
   }
 }
 
-export default inject('store')(observer(BatteryEnergyContentChart))
+export default inject('store')(observer(LoadsByHour))

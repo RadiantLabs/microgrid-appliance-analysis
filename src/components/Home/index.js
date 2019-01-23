@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Grid, Segment } from 'semantic-ui-react'
-import ResultsSection from './ResultsSection'
 import GridOperatorSummary from './GridOperatorSummary'
 import ApplianceOperatorSummary from './ApplianceOperatorSummary'
 import ModelInputs from './ModelInputs'
@@ -34,11 +33,6 @@ class Home extends Component {
                 <h3>Appliance Operator Summary</h3>
                 <ApplianceOperatorSummary />
               </Segment>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <ResultsSection />
             </Grid.Column>
           </Grid.Row>
         </Grid>
