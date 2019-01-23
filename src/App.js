@@ -10,7 +10,7 @@ import { NavItem } from './components/Elements/NavItem'
 // Route Pages
 import Home from './components/Home'
 import About from './components/About'
-import BatteryCharacterization from './components/BatteryCharacterization'
+import BatteryModel from './components/BatteryModel'
 import Profile from './components/Profile'
 import DataTable from './components/DataTable'
 import Loads from './components/Loads'
@@ -49,7 +49,7 @@ const App = () => (
           <Route path="/loads" component={Loads} />
           <Route path="/unmet-loads" component={UnmetLoads} />
           <Route path="/battery-charge" component={BatteryCharge} />
-          <Route path="/battery-model" component={BatteryCharacterization} />
+          <Route path="/battery-model" component={BatteryModel} />
           <Route path="/profile" component={Profile} />
           {/* <Route path="/todo" component={TodoExample} /> */}
         </div>

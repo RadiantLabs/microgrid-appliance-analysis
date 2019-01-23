@@ -14,7 +14,7 @@ import {
   FinalLossTable,
 } from '../Elements/MLResultsTables'
 
-class BatteryCharacterization extends React.Component {
+class BatteryModel extends React.Component {
   render() {
     const {
       calculatedColumns,
@@ -81,7 +81,7 @@ class BatteryCharacterization extends React.Component {
   }
 }
 
-export default inject('store')(observer(BatteryCharacterization))
+export default inject('store')(observer(BatteryModel))
 
 const LossChartWrapper = inject('store')(
   observer(({ store }) => {
