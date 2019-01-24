@@ -55,7 +55,7 @@ export const applianceFiles = [
     path: './data/appliances/rice_mill_usage_profile.csv',
     description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
     attributes: {
-      powerType: 'AC',
+      powerType: 'DC',
       phase: 3,
       hasMotor: true,
       powerFactor: 0.8,
@@ -111,43 +111,49 @@ export const ancillaryEquipment = [
     equipmentType: 'power_converter',
     label: 'Power Converter',
     description:
-      'A power converter is a pluggable piece of equipment that converts AC power to DC power. An example may be converting AC grid electricity to power a fan driven by a DC motor',
+      'A power converter converts AC power to DC power. An example may be converting AC grid electricity to power a fan driven by a DC motor',
   },
   {
     equipmentType: 'inverter',
     label: 'Inverter',
     description:
-      'An inverter is a pluggable piece of equipment that converts DC power to AC power. An example may be converting DC power from a battery to electrify an AC powered printer.',
+      'An inverter converts DC power to AC power. An example may be converting DC power from a battery to electrify an AC powered printer.',
   },
   {
     equipmentType: 'vfd',
-    label: 'VFD',
-    description: 'Variable Frequency Drive',
+    label: 'Variable Frequency Drive',
+    description:
+      'A variable frequency drive provides AC three phase frequency variation for motor speed control, reduction of starting torque, and inrush current relief. An example may be a VFD upstream of an industrial blower to control flow rates depending on operational conditions.',
   },
   {
     equipmentType: 'soft_starter',
     label: 'Soft Starter',
-    description: 'TODO',
+    description:
+      'A softstarter slowly ramps up AC voltage when starting a motor to reduce starting torque and provide inrush current relief. An example may be a softstarter upstream of a pump to limit inrush current and water hammer throughout a system.',
   },
   {
     equipmentType: 'direct_online_starter',
     label: 'Direct On-line Starter',
-    description: 'TODO',
+    description:
+      'A direct on line starter is a power shut off switch upstream of an AC motor that prevents overloading and short circuits.',
   },
   {
     equipmentType: 'star_delta_starter',
     label: 'Star Delta Starter',
-    description: 'TODO',
+    description:
+      'A star delta starter raises AC voltage in fixed increments when starting a motor to reduce starting torque and provide inrush current relief. An example may be a star delta starter upstream of a motor powered mill to reduce inrush current.  Star delta starters need to be assembled from multiple contactors, thermal overload relay, timer, and connection set.',
   },
   {
     equipmentType: 'capacitor_bank',
     label: 'Capacitor Bank',
-    description: 'TODO',
+    description:
+      "A capacitor bank stores energy to support a motor's 'parasitic' power consumption, or reactive power. By reducing the amount of reactive power required from the grid, power factor approaches 1 and fees from a utility can be avoided. An example is a welder with a power factor of 0.6 can be equipped with a capacitor bank to boost power factor to 0.95.",
   },
   {
     equipmentType: 'three_four_point_dc_motor_starter',
     label: 'Three/Four Point DC Motor Starter',
-    description: 'TODO',
+    description:
+      "A three or four point DC motor starter reduces starting current and stabilizes starting motor voltage. An example is a 48V DC shunt motor driven lathe in which a motor starter brings down inrush current and stabilizes voltage to extend the motor's useful life.",
   },
 ]
 

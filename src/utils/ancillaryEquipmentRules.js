@@ -19,13 +19,9 @@ export function getAncillaryEquipmentOptions(homerFileInfo, applianceFileInfo, a
     const { status, message } = rules[item.equipmentType]({ grid, appliance })
     return { ...item, status, message }
   })
-  // TODO: partition based on required, useful or notuseful
-  // debugger
-  return {
-    required: [],
-    useful: [],
-    notuseful: [],
-  }
+  const [required, leftover] = _.partition(equipmentWithStatus, { status: 'required' })
+  const [useful, notuseful] = _.partition(leftover, { status: 'useful' })
+  return { required, useful, notuseful }
 }
 
 /**
@@ -43,7 +39,7 @@ function power_converters({ grid, appliance }) {
 }
 
 function inverter({ grid, appliance }) {
-  const isRequired = appliance.powerType === 'DC' && grid.powerType === 'AC'
+  const isRequired = appliance.powerType === 'AC' && grid.powerType === 'DC'
   const message = isRequired
     ? 'An inverter is required hardware for successful appliance operation.'
     : 'An inverter may not be useful. An inverter may be useful if the supply power is DC and the appliance is designed to receive AC power.'
