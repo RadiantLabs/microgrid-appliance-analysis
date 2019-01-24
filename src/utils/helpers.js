@@ -162,7 +162,7 @@ function addHourIndex(rows) {
 // "Generic 1kWh Lead Acid [ASM] Energy Content" => "Battery Energy Content"
 // "Generic flat plate PV Solar Altitude" => "PV Solar Altitude"
 function renameHomerKeys(row, fileInfo) {
-  const { battery, pvSystem } = fileInfo
+  const { battery, pvSystem } = fileInfo.attributes
   return _.mapKeys(row, (val, key) => {
     switch (true) {
       case _.includes(key, battery):

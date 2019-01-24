@@ -6,7 +6,7 @@ import { fetchFile, combineTables } from './utils/helpers'
 
 import { getHomerStats, getSummaryStats } from './utils/calculateStats'
 import { calculateNewLoads } from './utils/calculateNewColumns'
-import { homerFiles, applianceFiles } from './utils/fileInfo'
+import { homerFiles, applianceFiles, ancillaryEquipment } from './utils/fileInfo'
 import { fieldDefinitions } from './utils/fieldDefinitions'
 import {
   computeBaselineLoss,
@@ -18,8 +18,9 @@ import {
   calculatePlottablePredictedVsActualData,
   linearRegressionModel,
   multiLayerPerceptronRegressionModel1Hidden,
-  multiLayerPerceptronRegressionModel2Hidden
+  multiLayerPerceptronRegressionModel2Hidden,
 } from './utils/tensorflowHelpers'
+import { getAncillaryEquipmentOptions } from './utils/ancillaryEquipmentRules'
 import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
@@ -262,9 +263,9 @@ class MobxStore {
     if (_.isEmpty(this.batteryTrainingData)) {
       return []
     }
-    const {trainTarget, testTarget} = this.batteryTrainingData
+    const { trainTarget, testTarget } = this.batteryTrainingData
     const allTargets = _.map(trainTarget.concat(testTarget), target => target[0])
-    const range = _.range( _.round(_.min(allTargets)), _.round(_.max(allTargets)))
+    const range = _.range(_.round(_.min(allTargets)), _.round(_.max(allTargets)))
     return _.map(range, val => {
       return { actual: val, predicted: val }
     })
@@ -388,6 +389,17 @@ class MobxStore {
         },
       },
     })
+  }
+
+  /*
+   * Ancillary Equipment Options
+   */
+  get ancillaryEquipmentOptions() {
+    return getAncillaryEquipmentOptions(
+      this.activeHomerFileInfo,
+      this.activeApplianceFileInfo,
+      ancillaryEquipment
+    )
   }
 }
 
