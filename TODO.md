@@ -8,7 +8,10 @@
 
 - [ ] Fix problems with predictions: test different models:
 
-  - [ ] Check that I have the correct shape. When using this function in the example repo: `[1, _.size(featureDescriptions)]`
+  - [ ] Output training time in UI
+  - [ ] Allow Epoch selection in UI (???)
+  - [ ] Allow Model type in UI {???}
+  - [x] Check that I have the correct shape. When using this function in the example repo: `[1, _.size(featureDescriptions)]`
     - > Error: Error when checking : expected dense_Dense1_input to have shape [null,12] but got array with shape [12,1].
   - [x] Make sure training and test data is lined up correctly (features line up with targets)
   - [x] Try LOTS of epochs (50)

@@ -22,33 +22,33 @@ export function convertTableToTrainingData(
   // with training targets
   const features = _.map(shuffledTable, row => _.map(trainingColumns, col => row[col]))
 
-  debugTensorMean(features, 'nosplit')
+  // debugTensorMean(features, 'nosplit')
   const splitCount = _.round(targets.length * trainingSplitPercent)
   const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
-  debugTensorMean(trainFeatures, 'split')
+  // debugTensorMean(trainFeatures, 'split')
   return { trainFeatures, testFeatures, trainTarget, testTarget }
 }
 
-function debugTensorMean(features, label) {
-  console.log('__________ mean and st dev debugging ______________')
-  // These are mean and stdev of the training features from the 12-50 Oversize 20.csv HOMER files
-  const feature0ActualMean = 0.77472 // 0: electricalProductionLoadDiff
-  const feature0ActualStdev = 2.93018
-  const feature1ActualMean = 72.79839 // 1: prevBatterySOC
-  const feature1ActualStdev = 15.58218
-
-  const { dataMean, dataStd } = determineMeanAndStddev(tf.tensor2d(features))
-  const feature0MeanCompare = _.round(100 * (1 - feature0ActualMean / dataMean.dataSync()[0]), 2)
-  const feature1MeanCompare = _.round(100 * (1 - feature1ActualMean / dataMean.dataSync()[1]), 2)
-  console.log(`dataMean feature 0 ${label}: `, dataMean.dataSync()[0], `${feature0MeanCompare}%`)
-  console.log(`dataMean feature 1 ${label}: `, dataMean.dataSync()[1], `${feature1MeanCompare}%`)
-
-  const pldStDevCompare = _.round(100 * (1 - feature0ActualStdev / dataStd.dataSync()[0]), 2)
-  const pbsocStDevCompare = _.round(100 * (1 - feature1ActualStdev / dataStd.dataSync()[1]), 2)
-  console.log(`dataStd feature 0 ${label}: `, dataStd.dataSync()[0], `${pldStDevCompare}%`)
-  console.log(`dataStd feature 1 ${label}: `, dataStd.dataSync()[1], `${pbsocStDevCompare}%`)
-}
+// function debugTensorMean(features, label) {
+//   console.log('__________ mean and st dev debugging ______________')
+//   // These are mean and stdev of the training features from the 12-50 Oversize 20.csv HOMER files
+//   const feature0ActualMean = 0.77472 // 0: electricalProductionLoadDiff
+//   const feature0ActualStdev = 2.93018
+//   const feature1ActualMean = 72.79839 // 1: prevBatterySOC
+//   const feature1ActualStdev = 15.58218
+//
+//   const { dataMean, dataStd } = determineMeanAndStddev(tf.tensor2d(features))
+//   const feature0MeanCompare = _.round(100 * (1 - feature0ActualMean / dataMean.dataSync()[0]), 2)
+//   const feature1MeanCompare = _.round(100 * (1 - feature1ActualMean / dataMean.dataSync()[1]), 2)
+//   console.log(`dataMean feature 0 ${label}: `, dataMean.dataSync()[0], `${feature0MeanCompare}%`)
+//   console.log(`dataMean feature 1 ${label}: `, dataMean.dataSync()[1], `${feature1MeanCompare}%`)
+//
+//   const pldStDevCompare = _.round(100 * (1 - feature0ActualStdev / dataStd.dataSync()[0]), 2)
+//   const pbsocStDevCompare = _.round(100 * (1 - feature1ActualStdev / dataStd.dataSync()[1]), 2)
+//   console.log(`dataStd feature 0 ${label}: `, dataStd.dataSync()[0], `${pldStDevCompare}%`)
+//   console.log(`dataStd feature 1 ${label}: `, dataStd.dataSync()[1], `${pbsocStDevCompare}%`)
+// }
 
 /**
  * Convert loaded data into normalized tensors

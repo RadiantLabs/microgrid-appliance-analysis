@@ -19,6 +19,7 @@ class BatteryModel extends React.Component {
     const {
       calculatedColumns,
       batteryModel,
+      batteryModelName,
       batteryInputTensorShape,
       batteryPlottablePredictionVsActualData,
       batteryEpochCount,
@@ -54,7 +55,7 @@ class BatteryModel extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <h4>
-                Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
+                {batteryModelName}: Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
               </h4>
               <FinalLossTable
                 isTrained={batteryTrainingState === 'Trained'}

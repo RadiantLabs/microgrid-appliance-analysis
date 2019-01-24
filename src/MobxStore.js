@@ -36,16 +36,16 @@ class MobxStore {
     autorun(() => this.trainBatteryModel(this.calculatedColumns))
 
     // Only run 1 of these regression models, comment out the others
-    autorun(() =>
-      this.batteryLinearRegressor(
-        this.batteryNumFeatures,
-        this.batteryTensors,
-        this.batteryLearningRate,
-        this.batteryBatchSize,
-        this.batteryEpochCount,
-        this.batteryTrainingColumns
-      )
-    )
+    // autorun(() =>
+    //   this.batteryLinearRegressor(
+    //     this.batteryNumFeatures,
+    //     this.batteryTensors,
+    //     this.batteryLearningRate,
+    //     this.batteryBatchSize,
+    //     this.batteryEpochCount,
+    //     this.batteryTrainingColumns
+    //   )
+    // )
 
     // autorun(() =>
     //   this.battery1HiddenRegressor(
@@ -58,16 +58,16 @@ class MobxStore {
     //   )
     // )
 
-    // autorun(() =>
-    //   this.battery2HiddenRegressor(
-    //     this.batteryNumFeatures,
-    //     this.batteryTensors,
-    //     this.batteryLearningRate,
-    //     this.batteryBatchSize,
-    //     this.batteryEpochCount,
-    //     this.batteryTrainingColumns
-    //   )
-    // )
+    autorun(() =>
+      this.battery2HiddenRegressor(
+        this.batteryNumFeatures,
+        this.batteryTensors,
+        this.batteryLearningRate,
+        this.batteryBatchSize,
+        this.batteryEpochCount,
+        this.batteryTrainingColumns
+      )
+    )
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
@@ -174,10 +174,6 @@ class MobxStore {
     }
   }
 
-  // setMultipleExcludedTableColumns(columnNames) {
-  //   _.forEach(columnNames, columnName => this.setExcludedTableColumns(columnName))
-  // }
-
   get filteredCombinedTableHeaders() {
     return _.filter(combinedColumnHeaderOrder, header => {
       return !this.excludedTableColumns.has(header)
@@ -196,7 +192,7 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 3
+  batteryEpochCount = 10
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
@@ -204,6 +200,7 @@ class MobxStore {
   batteryTrainingColumns = ['electricalProductionLoadDiff', 'prevBatterySOC']
   batteryTrainingData = {}
   batteryModel = null
+  batteryModelName = ''
   batteryTrainingState = 'None'
   batteryTrainLogs = []
   batteryWeightsList = []
@@ -280,6 +277,10 @@ class MobxStore {
     epochCount,
     trainingColumns
   ) {
+    runInAction(() => {
+      this.batteryModelName = 'Linear Regressor'
+    })
+    const t0 = performance.now()
     await this.batteryModelRun({
       model: linearRegressionModel(numFeatures),
       tensors: tensors,
@@ -289,6 +290,12 @@ class MobxStore {
       epochCount,
       trainingColumns,
     })
+    const t1 = performance.now()
+    console.log(
+      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
+      `${this.batteryEpochCount} Epochs, `,
+      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
+    )
   }
 
   async battery1HiddenRegressor(
@@ -299,6 +306,10 @@ class MobxStore {
     epochCount,
     trainingColumns
   ) {
+    runInAction(() => {
+      this.batteryModelName = '1 Hidden NN Regressor'
+    })
+    const t0 = performance.now()
     await this.batteryModelRun({
       model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
       tensors: tensors,
@@ -308,6 +319,12 @@ class MobxStore {
       epochCount,
       trainingColumns,
     })
+    const t1 = performance.now()
+    console.log(
+      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
+      `${this.batteryEpochCount} Epochs, `,
+      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
+    )
   }
 
   async battery2HiddenRegressor(
@@ -318,6 +335,10 @@ class MobxStore {
     epochCount,
     trainingColumns
   ) {
+    runInAction(() => {
+      this.batteryModelName = '2 Hidden NN Regressor'
+    })
+    const t0 = performance.now()
     await this.batteryModelRun({
       model: multiLayerPerceptronRegressionModel2Hidden(numFeatures),
       tensors: tensors,
@@ -327,6 +348,12 @@ class MobxStore {
       epochCount,
       trainingColumns,
     })
+    const t1 = performance.now()
+    console.log(
+      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
+      `${this.batteryEpochCount} Epochs, `,
+      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
+    )
   }
 
   // The reason this complicated function is in the store is because it wiil
