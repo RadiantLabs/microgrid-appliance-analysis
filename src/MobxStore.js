@@ -192,13 +192,14 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 10
+  batteryEpochCount = 3
   batteryCurrentEpoch = 0
   batteryBatchSize = 40
   batteryLearningRate = 0.01
   batteryTargetColumn = 'Battery State of Charge'
   batteryTrainingColumns = ['electricalProductionLoadDiff', 'prevBatterySOC']
   batteryTrainingData = {}
+  batteryTrainingTime = null
   batteryModel = null
   batteryModelName = ''
   batteryTrainingState = 'None'
@@ -268,6 +269,12 @@ class MobxStore {
     })
   }
 
+  get batteryTrainingTimeDisplay() {
+    return `Training Time: ${_.round(this.batteryTrainingTime / 1000)} seconds (~${_.round(
+      this.batteryTrainingTime / 1000 / this.batteryEpochCount
+    )} seconds/epoch)`
+  }
+
   // Modify this to work on different datasets instead of regression models
   async batteryLinearRegressor(
     numFeatures,
@@ -291,11 +298,9 @@ class MobxStore {
       trainingColumns,
     })
     const t1 = performance.now()
-    console.log(
-      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
-      `${this.batteryEpochCount} Epochs, `,
-      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
-    )
+    runInAction(() => {
+      this.batteryTrainingTime = t1 - t0
+    })
   }
 
   async battery1HiddenRegressor(
@@ -320,11 +325,9 @@ class MobxStore {
       trainingColumns,
     })
     const t1 = performance.now()
-    console.log(
-      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
-      `${this.batteryEpochCount} Epochs, `,
-      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
-    )
+    runInAction(() => {
+      this.batteryTrainingTime = t1 - t0
+    })
   }
 
   async battery2HiddenRegressor(
@@ -349,11 +352,9 @@ class MobxStore {
       trainingColumns,
     })
     const t1 = performance.now()
-    console.log(
-      'battery model training (1 hidden): ' + _.round((t1 - t0) / 1000) + ' seconds.',
-      `${this.batteryEpochCount} Epochs, `,
-      `~${_.round((t1 - t0) / 1000 / this.batteryEpochCount)} seconds/epoch`
-    )
+    runInAction(() => {
+      this.batteryTrainingTime = t1 - t0
+    })
   }
 
   // The reason this complicated function is in the store is because it wiil
@@ -461,6 +462,8 @@ decorate(MobxStore, {
   batteryTargetColumn: observable,
   batteryTrainingColumns: observable,
   batteryTrainingData: observable,
+  batteryTrainingTime: observable,
+  batteryTrainingTimeDisplay: computed,
   batteryTensors: computed,
   batteryModel: observable,
   batteryNumFeatures: computed,
