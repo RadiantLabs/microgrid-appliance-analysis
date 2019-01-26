@@ -10,6 +10,7 @@ import { NavItem } from './components/Elements/NavItem'
 // Route Pages
 import Home from './components/Home'
 import About from './components/About'
+import AncillaryEquipment from './components/AncillaryEquipment'
 import BatteryModel from './components/BatteryModel'
 import Profile from './components/Profile'
 import DataTable from './components/DataTable'
@@ -31,6 +32,7 @@ const App = () => (
       <ApolloProvider client={Client}>
         <Menu secondary pointing>
           <Menu.Item as={NavItem} to="/" name="Summary" />
+          <Menu.Item as={NavItem} to="/ancillary-equipment" name="Ancillary Equipment" />
           <Menu.Item as={NavItem} to="/datatable" name="Data" />
           <Menu.Item as={NavItem} to="/loads" name="Loads" />
           <Menu.Item as={NavItem} to="/unmet-loads" name="Unmet Loads" />
@@ -45,6 +47,7 @@ const App = () => (
         <div className="mainContent">
           <Route exact={true} path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/ancillary-equipment" component={AncillaryEquipment} />
           <Route path="/datatable" component={DataTable} />
           <Route path="/loads" component={Loads} />
           <Route path="/unmet-loads" component={UnmetLoads} />

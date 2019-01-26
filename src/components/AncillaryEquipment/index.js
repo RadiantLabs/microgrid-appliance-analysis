@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Label, Checkbox, Table } from 'semantic-ui-react'
+import { Label, Checkbox, Table } from 'semantic-ui-react'
 import { HelperPopup } from '../Elements/HelperPopup'
 
 class AncillaryEquipment extends Component {

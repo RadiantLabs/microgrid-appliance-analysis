@@ -5,7 +5,6 @@ import GridOperatorSummary from './GridOperatorSummary'
 import ApplianceOperatorSummary from './ApplianceOperatorSummary'
 import ModelInputs from './ModelInputs'
 import FileChoosers from './FileChoosers'
-import AncillaryEquipment from './AncillaryEquipment'
 
 class Home extends Component {
   render() {
@@ -34,12 +33,6 @@ class Home extends Component {
                 <h3>Appliance Operator Summary</h3>
                 <ApplianceOperatorSummary />
               </Segment>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-              <h3>Ancillary Equipment Options</h3>
-              <AncillaryEquipment />
             </Grid.Column>
           </Grid.Row>
         </Grid>
