@@ -38,10 +38,8 @@ class Home extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <Segment>
-                <h3>Ancillary Equipment Options</h3>
-                <AncillaryEquipment />
-              </Segment>
+              <h3>Ancillary Equipment Options</h3>
+              <AncillaryEquipment />
             </Grid.Column>
           </Grid.Row>
         </Grid>

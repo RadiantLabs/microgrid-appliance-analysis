@@ -130,6 +130,11 @@ export function linearRegressionModel(numFeatures) {
  * Builds and returns Multi Layer Perceptron Regression Model
  * with 1 hidden layers, each with 10 units activated by sigmoid.
  *
+ * Suggestions on model parameters:
+ * - Layers: We may want to add more layers the more features we have to capture
+ *           more interactions. Right now  we only have 2 features.
+ * - Units:  Nodes in hidden layer. Tensorflow.js had 50 nodes for 12 features.
+ *           We can use that as a guideline, testing loss as we experiment
  * @returns {tf.Sequential} The multi layer perceptron regression model.
  */
 export function multiLayerPerceptronRegressionModel1Hidden(numFeatures) {
