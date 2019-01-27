@@ -26,6 +26,9 @@
 - [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
 - [ ] Add button that retrains model
 - [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
+- [ ] Detect if HOMER file needs to be remodeled. A couple approaches:
+  - convert SoC into a long, concatenated string and compare
+  - sum SoC and hash it, along with other columns used for modeling. Compare speed of approaches
 
 ## Table fixes
 

@@ -1,17 +1,17 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import MobxStore from './MobxStore'
-import { Menu, Header } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
-import FileChooser from 'components/Main/FileChooser'
 
 // Route Pages
 import Main from 'components/Main'
 import About from 'components/About'
 import Profile from 'components/Profile'
+import FourOhFour from 'components/FourOhFour'
 
 // import DevTools from 'mobx-react-devtools'
 // import TodoExample from 'componentsTodo'
@@ -34,10 +34,14 @@ const App = () => (
           </Menu.Menu>
         </Menu>
 
-        <div className="wat">
-          <Route exact={true} path="/" component={Main} />
-          <Route path="/about" component={About} />
-          <Route path="/profile" component={Profile} />
+        <div className="main-wrapper">
+          <Switch>
+            <Route component={Main} />
+            <Route path="/tool" component={Main} />
+            <Route path="/about" component={About} />
+            <Route path="/profile" component={Profile} />
+            <Route component={FourOhFour} />
+          </Switch>
         </div>
 
         {/* <DevTools /> */}
