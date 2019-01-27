@@ -10,11 +10,19 @@ const cardBorderStyles = {
 }
 
 class EquipmentCard extends Component {
+  handleToggleChange = (equipmentType, event, data) => {
+    event.preventDefault()
+    this.props.store.setAncillaryEquipmentEnabledFromCheckbox(equipmentType, data.checked)
+    return null
+  }
+
   render() {
     if (_.isEmpty(this.props.equipmentInfo)) {
       return null
     }
-    const { equipmentType, label, description, message, status, enabled } = this.props.equipmentInfo
+    const { equipmentType, label, description, message, status } = this.props.equipmentInfo
+    const { ancillaryEquipmentEnabledStates } = this.props.store
+    const enabled = ancillaryEquipmentEnabledStates[equipmentType]
     const isRequired = status === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
@@ -25,6 +33,7 @@ class EquipmentCard extends Component {
             label={toggleLabel}
             checked={enabled}
             disabled={isRequired ? true : null}
+            onChange={this.handleToggleChange.bind(null, equipmentType)}
           />
         </div>
         {getEquipmentDiagram(equipmentType)}

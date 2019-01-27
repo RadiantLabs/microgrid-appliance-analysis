@@ -20,7 +20,7 @@ import {
   multiLayerPerceptronRegressionModel1Hidden,
   multiLayerPerceptronRegressionModel2Hidden,
 } from './utils/tensorflowHelpers'
-import { getAncillaryEquipmentOptions } from './utils/ancillaryEquipmentRules'
+import { getAncillaryEquipmentStatus } from './utils/ancillaryEquipmentRules'
 import { combinedColumnHeaderOrder } from './utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
@@ -68,6 +68,9 @@ class MobxStore {
     //     this.batteryTrainingColumns
     //   )
     // )
+
+    // Set Ancillary Equipment enabled/disabled status based on if it is required:
+    autorun(() => this.setAncillaryEquipmentEnabledFromStatus(this.ancillaryEquipmentStatus))
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362
@@ -421,12 +424,42 @@ class MobxStore {
   /*
    * Ancillary Equipment Options
    */
-  get ancillaryEquipmentOptions() {
-    return getAncillaryEquipmentOptions(
+  // Initially set all ancillary equipment to disabled (false)
+  ancillaryEquipmentEnabledStates = _.reduce(
+    ancillaryEquipment,
+    (result, item) => {
+      result[item['equipmentType']] = false
+      return result
+    },
+    {}
+  )
+
+  // Status is whether the equipment is required, usefor or not useful based on rules
+  get ancillaryEquipmentStatus() {
+    return getAncillaryEquipmentStatus(
       this.activeHomerFileInfo,
       this.activeApplianceFileInfo,
       ancillaryEquipment
     )
+  }
+
+  // Set from checkboxes in UI
+  setAncillaryEquipmentEnabledFromCheckbox(equipmentType, enabled) {
+    this.ancillaryEquipmentEnabledStates[equipmentType] = enabled
+  }
+
+  // Required equipment will be auto-enabled
+  // Call from autorun in constructor when ancillaryEquipmentStatus changes
+  setAncillaryEquipmentEnabledFromStatus(ancillaryEquipmentStatus) {
+    console.log('ancillaryEquipmentStatus: ', ancillaryEquipmentStatus)
+    const required = ancillaryEquipmentStatus['required']
+    if (!_.isEmpty(required)) {
+      runInAction(() => {
+        _.forEach(required, equipment => {
+          this.ancillaryEquipmentEnabledStates[equipment['equipmentType']] = true
+        })
+      })
+    }
   }
 }
 
@@ -479,8 +512,10 @@ decorate(MobxStore, {
   batteryPlottableReferenceLine: computed,
 
   // Ancillery Equipment
-  ancillaryEquipmentOptions: computed,
+  ancillaryEquipmentEnabledStates: observable,
+  ancillaryEquipmentStatus: computed,
+  setAncillaryEquipmentEnabledFromCheckbox: action.bound,
+  setAncillaryEquipmentEnabledFromStatus: action.bound,
 })
 
 export default MobxStore
-// export let mobxStore = new MobxStore()

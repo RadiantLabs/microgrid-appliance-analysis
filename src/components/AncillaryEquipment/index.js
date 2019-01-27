@@ -7,7 +7,7 @@ import EquipmentCard from './EquipmentCard'
 class AncillaryEquipment extends Component {
   render() {
     const {
-      ancillaryEquipmentOptions: { required, useful, notuseful },
+      ancillaryEquipmentStatus: { required, useful, notuseful },
     } = this.props.store
     return (
       <div>

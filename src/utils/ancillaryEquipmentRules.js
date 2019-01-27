@@ -26,7 +26,7 @@ const rules = {
   threeFourPointDcMotorStarter,
 }
 
-export function getAncillaryEquipmentOptions(homerFileInfo, applianceFileInfo, ancillaryEquipment) {
+export function getAncillaryEquipmentStatus(homerFileInfo, applianceFileInfo, ancillaryEquipment) {
   checkEquipmentTypeRules(ancillaryEquipment, rules)
   const grid = homerFileInfo.attributes
   const appliance = applianceFileInfo.attributes
@@ -50,7 +50,6 @@ function powerConverter({ grid, appliance }) {
   return {
     message,
     status: isRequired ? 'required' : 'notuseful',
-    enabled: isRequired,
   }
 }
 
@@ -62,7 +61,6 @@ function inverter({ grid, appliance }) {
   return {
     message,
     status: isRequired ? 'required' : 'notuseful',
-    enabled: isRequired,
   }
 }
 
@@ -78,7 +76,6 @@ function vfd({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
@@ -93,7 +90,6 @@ function softStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
@@ -105,7 +101,6 @@ function directOnlineStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
@@ -121,7 +116,6 @@ function starDeltaStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
@@ -136,7 +130,6 @@ function capacitorBank({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
@@ -148,7 +141,6 @@ function threeFourPointDcMotorStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
-    enabled: false,
   }
 }
 
