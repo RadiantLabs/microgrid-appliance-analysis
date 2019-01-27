@@ -24,7 +24,7 @@ export default inject('store')(observer(AncillaryEquipment))
 const EquipmentRowsByStatus = ({ status, header }) => {
   return (
     <div>
-      <Header as="h2" dividing>
+      <Header as="h3" dividing>
         {header}
       </Header>
       <Grid columns="equal">

@@ -110,48 +110,56 @@ export const ancillaryEquipment = [
   {
     equipmentType: 'powerConverter',
     label: 'AC to DC Power Converter',
+    sizeUnits: 'kW',
     description:
       'A power converter converts AC power to DC power. An example may be converting AC grid electricity to power a fan driven by a DC motor',
   },
   {
     equipmentType: 'inverter',
     label: 'DC to AC Inverter',
+    sizeUnits: 'kW',
     description:
       'An inverter converts DC power to AC power. An example may be converting DC power from a battery to electrify an AC powered printer.',
   },
   {
     equipmentType: 'vfd',
     label: 'Variable Frequency Drive',
+    sizeUnits: 'TODO',
     description:
       'A variable frequency drive provides AC three phase frequency variation for motor speed control, reduction of starting torque, and inrush current relief. An example may be a VFD upstream of an industrial blower to control flow rates depending on operational conditions.',
   },
   {
     equipmentType: 'softStarter',
     label: 'Soft Starter',
+    sizeUnits: 'TODO',
     description:
       'A softstarter slowly ramps up AC voltage when starting a motor to reduce starting torque and provide inrush current relief. An example may be a softstarter upstream of a pump to limit inrush current and water hammer throughout a system.',
   },
   {
     equipmentType: 'directOnlineStarter',
     label: 'Direct On-line Starter',
+    sizeUnits: 'TODO',
     description:
       'A direct on line starter is a power shut off switch upstream of an AC motor that prevents overloading and short circuits.',
   },
   {
     equipmentType: 'starDeltaStarter',
     label: 'Star Delta Starter',
+    sizeUnits: 'TODO',
     description:
       'A star delta starter raises AC voltage in fixed increments when starting a motor to reduce starting torque and provide inrush current relief. An example may be a star delta starter upstream of a motor powered mill to reduce inrush current.  Star delta starters need to be assembled from multiple contactors, thermal overload relay, timer, and connection set.',
   },
   {
     equipmentType: 'capacitorBank',
     label: 'Capacitor Bank',
+    sizeUnits: 'TODO',
     description:
       "A capacitor bank stores energy to support a motor's 'parasitic' power consumption, or reactive power. By reducing the amount of reactive power required from the grid, power factor approaches 1 and fees from a utility can be avoided. An example is a welder with a power factor of 0.6 can be equipped with a capacitor bank to boost power factor to 0.95.",
   },
   {
     equipmentType: 'threeFourPointDcMotorStarter',
     label: 'Three/Four Point DC Motor Starter',
+    sizeUnits: 'TODO',
     description:
       "A three or four point DC motor starter reduces starting current and stabilizes starting motor voltage. An example is a 48V DC shunt motor driven lathe in which a motor starter brings down inrush current and stabilizes voltage to extend the motor's useful life.",
   },

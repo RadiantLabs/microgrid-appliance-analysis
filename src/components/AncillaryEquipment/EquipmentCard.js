@@ -5,12 +5,6 @@ import { Label, Card, Form, Input, Checkbox } from 'semantic-ui-react'
 import { HelperPopup } from '../Elements/HelperPopup'
 import { getEquipmentDiagram } from '../../utils/ancillaryEquipmentRules'
 
-// TODO: Make all data camelCase
-const acillaryEquipmentUnits = {
-  powerConverter: { units: 'kW' },
-  inverter: { units: 'kW' },
-}
-
 const cardBorderStyles = {
   border: '1px solid #2185d0',
 }
@@ -20,18 +14,17 @@ class EquipmentCard extends Component {
     if (_.isEmpty(this.props.equipmentInfo)) {
       return null
     }
-    const { equipmentType, label, description, message, status } = this.props.equipmentInfo
+    const { equipmentType, label, description, message, status, enabled } = this.props.equipmentInfo
     const isRequired = status === 'required'
-    const isEnabled = _.sample([true, false])
-    const toggleLabel = isRequired ? 'Required' : isEnabled ? 'Enabled' : 'Enable'
+    const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
-      <Card fluid style={isEnabled ? cardBorderStyles : {}}>
+      <Card fluid style={enabled ? cardBorderStyles : {}}>
         <div style={{ float: 'left', marginLeft: 10, marginTop: 10, width: 250 }}>
           <Checkbox
             toggle
             label={toggleLabel}
-            // checked={isEnabled}
-            // disabled={isRequired ? true : null}
+            checked={enabled}
+            disabled={isRequired ? true : null}
           />
         </div>
         {getEquipmentDiagram(equipmentType)}
@@ -41,24 +34,26 @@ class EquipmentCard extends Component {
           </Card.Header>
           <Card.Description>{message}</Card.Description>
         </Card.Content>
-        <Card.Content extra>
-          <Form>
-            <Form.Field>
-              <Input labelPosition="right" type="text" size="mini" fluid>
-                <Label basic>Cost</Label>
-                <input />
-                <Label>USD</Label>
-              </Input>
-            </Form.Field>
-            <Form.Field>
-              <Input labelPosition="right" type="text" size="mini" fluid>
-                <Label basic>Size</Label>
-                <input />
-                <Label>kW</Label>
-              </Input>
-            </Form.Field>
-          </Form>
-        </Card.Content>
+        {enabled && (
+          <Card.Content extra>
+            <Form>
+              <Form.Field>
+                <Input labelPosition="right" type="text" size="mini" fluid>
+                  <Label basic>Cost</Label>
+                  <input />
+                  <Label>USD</Label>
+                </Input>
+              </Form.Field>
+              <Form.Field>
+                <Input labelPosition="right" type="text" size="mini" fluid>
+                  <Label basic>Size</Label>
+                  <input />
+                  <Label>kW</Label>
+                </Input>
+              </Form.Field>
+            </Form>
+          </Card.Content>
+        )}
       </Card>
     )
   }

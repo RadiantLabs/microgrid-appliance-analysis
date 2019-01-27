@@ -31,8 +31,8 @@ export function getAncillaryEquipmentOptions(homerFileInfo, applianceFileInfo, a
   const grid = homerFileInfo.attributes
   const appliance = applianceFileInfo.attributes
   const equipmentWithStatus = _.map(ancillaryEquipment, item => {
-    const { status, message } = rules[item.equipmentType]({ grid, appliance })
-    return { ...item, status, message }
+    const ruleResults = rules[item.equipmentType]({ grid, appliance })
+    return { ...item, ...ruleResults }
   })
   const [required, leftover] = _.partition(equipmentWithStatus, { status: 'required' })
   const [useful, notuseful] = _.partition(leftover, { status: 'useful' })
@@ -50,6 +50,7 @@ function powerConverter({ grid, appliance }) {
   return {
     message,
     status: isRequired ? 'required' : 'notuseful',
+    enabled: isRequired,
   }
 }
 
@@ -61,6 +62,7 @@ function inverter({ grid, appliance }) {
   return {
     message,
     status: isRequired ? 'required' : 'notuseful',
+    enabled: isRequired,
   }
 }
 
@@ -76,6 +78,7 @@ function vfd({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
@@ -90,6 +93,7 @@ function softStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
@@ -101,6 +105,7 @@ function directOnlineStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
@@ -116,6 +121,7 @@ function starDeltaStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
@@ -130,6 +136,7 @@ function capacitorBank({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
@@ -141,6 +148,7 @@ function threeFourPointDcMotorStarter({ grid, appliance }) {
   return {
     message,
     status: isUseful ? 'useful' : 'notuseful',
+    enabled: false,
   }
 }
 
