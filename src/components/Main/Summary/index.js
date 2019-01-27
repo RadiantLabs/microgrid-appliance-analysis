@@ -4,15 +4,11 @@ import { Grid, Segment } from 'semantic-ui-react'
 import GridOperatorSummary from './GridOperatorSummary'
 import ApplianceOperatorSummary from './ApplianceOperatorSummary'
 import ModelInputs from './ModelInputs'
-import FileChoosers from './FileChoosers'
 
 class Summary extends Component {
   render() {
     return (
       <div>
-        {/* Grid for Selecting HOMER and Appliance usage profiles */}
-        <FileChoosers />
-
         {/* Grid for Inputs, Grid Operator Summary and Appliance Operator Summary */}
         <Grid columns="equal">
           <Grid.Row>

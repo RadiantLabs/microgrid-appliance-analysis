@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Dropdown, Header, Table } from 'semantic-ui-react'
-import { homerFiles, applianceFiles } from '../../utils/fileInfo'
+import { homerFiles, applianceFiles } from 'utils/fileInfo'
 
 class FileChoosers extends Component {
   render() {

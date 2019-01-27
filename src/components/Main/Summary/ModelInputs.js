@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Table } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
-import InputField from '../Elements/InputField'
-import { HelperPopup } from '../Elements/HelperPopup'
-import { fieldDefinitions } from '../../utils/fieldDefinitions'
+import InputField from 'components/Elements/InputField'
+import { HelperPopup } from 'components/Elements/HelperPopup'
+import { fieldDefinitions } from 'utils/fieldDefinitions'
 
 // TODO: Generate these in a loop
 const ModelInputs = ({ store }) => {

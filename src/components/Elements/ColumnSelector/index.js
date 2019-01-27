@@ -7,8 +7,8 @@ import {
   // calculatedColumnHeaders,
   // homerHeaders,
   // applianceHeaders,
-} from '../../../utils/columnHeaders'
-import { tableColorsByKey } from '../../../utils/constants'
+} from 'utils/columnHeaders'
+import { tableColorsByKey } from 'utils/constants'
 import styles from './styles.module.css'
 
 /**

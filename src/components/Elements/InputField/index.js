@@ -3,8 +3,8 @@ import { observer, inject } from 'mobx-react'
 import { Input } from 'semantic-ui-react'
 // import { Slider } from 'react-semantic-ui-range'
 import _ from 'lodash'
-import { isFloat, isInteger } from '../../../utils/helpers'
-import { fieldDefinitions } from '../../../utils/fieldDefinitions'
+import { isFloat, isInteger } from 'utils/helpers'
+import { fieldDefinitions } from 'utils/fieldDefinitions'
 import './InputField.css'
 
 const checkValidity = (value, fieldDef) => {

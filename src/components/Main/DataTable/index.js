@@ -2,17 +2,17 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
-import LoaderSpinner from '../Elements/Loader'
+import LoaderSpinner from 'components/Elements/Loader'
 import { Loader, Grid } from 'semantic-ui-react'
-import { setHeaderStyles } from '../../styles/tableStyles'
-import { greyColors } from '../../utils/constants'
-import { formatDateForTable } from '../../utils/helpers'
-import ColumnSelector from '../Elements/ColumnSelector'
+import { setHeaderStyles } from '../../../styles/tableStyles'
+import { greyColors } from 'utils/constants'
+import { formatDateForTable } from 'utils/helpers'
+import ColumnSelector from 'components/Elements/ColumnSelector'
 import {
   columnHeaderByTableType,
   combinedColumnHeaderUnits,
   combinedColumnHeaderOrder,
-} from '../../utils/columnHeaders'
+} from 'utils/columnHeaders'
 
 class DataTable extends React.Component {
   _cellRenderer = (filteredCombinedTableHeaders, { columnIndex, key, rowIndex, style }) => {

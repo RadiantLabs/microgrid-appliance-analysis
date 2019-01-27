@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import LoaderSpinner from '../Elements/Loader'
+import LoaderSpinner from 'components/Elements/Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { getChartColors, greyColors } from '../../utils/constants'
+import { getChartColors, greyColors } from 'utils/constants'
 
 // TODO:
 // Summary Stats

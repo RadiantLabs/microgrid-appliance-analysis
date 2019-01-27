@@ -3,16 +3,16 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import * as tf from '@tensorflow/tfjs'
 import { Grid } from 'semantic-ui-react'
-// import CurveFittingChart from '../Charts/CurveFittingChart'
-import LossChart from '../Charts/LossChart'
-import ActualVsPredicted from '../Charts/ActualVsPredicted'
-import LoaderSpinner from '../Elements/Loader'
-// import { greyColors } from '../../utils/constants'
+// import CurveFittingChart from 'components/Charts/CurveFittingChart'
+import LossChart from 'components/Charts/LossChart'
+import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
+import LoaderSpinner from 'components/Elements/Loader'
+// import { greyColors } from 'utils/constants'
 import {
   // WeightsMagnitudeTable,
   // ModelParametersTable,
   FinalLossTable,
-} from '../Elements/MLResultsTables'
+} from 'components/Elements/MLResultsTables'
 
 class BatteryModel extends React.Component {
   render() {
