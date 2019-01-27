@@ -49,6 +49,16 @@
 
 ## TODO:
 
+- [ ] Allow loading homer and appliance file from any route (currently only works on home)
+  - `process.env.PUBLIC_URL + path` where path starts with `/data` is suppose to work but it's not.
+  - homerIsLoading also includes loading the data and parsing it. But the filechooser breaks before
+    that because fileInfo hasn't even loaded from that route for some reason.
+  - Some directions:
+    - Guard file chooser
+    - Figure out absolute paths with process.env.PUBLIC_URL
+    - Always redirect to root path with React Router
+    - add PUBLIC_URL=public/ to .env
+    - manually edit window.fetch(path) based on which route I'm currently on
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
 - [ ] Indicator that we are currently calculating
 - [ ] Deploy Sentry to production

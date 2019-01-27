@@ -27,6 +27,9 @@ const rules = {
 }
 
 export function getAncillaryEquipmentStatus(homerFileInfo, applianceFileInfo, ancillaryEquipment) {
+  if (_.isEmpty(homerFileInfo) || _.isEmpty(applianceFileInfo) || _.isEmpty(ancillaryEquipment)) {
+    return {}
+  }
   checkEquipmentTypeRules(ancillaryEquipment, rules)
   const grid = homerFileInfo.attributes
   const appliance = applianceFileInfo.attributes

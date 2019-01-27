@@ -213,7 +213,7 @@ export function processApplianceFile(rows, fileInfo) {
 export async function fetchFile(fileInfo) {
   const { path, type } = fileInfo
   try {
-    const res = await window.fetch(path)
+    const res = await window.fetch(process.env.PUBLIC_URL + path)
     const csv = await res.text()
     const { data, errors } = Papa.parse(csv, csvOptions)
     if (!_.isEmpty(errors)) {
