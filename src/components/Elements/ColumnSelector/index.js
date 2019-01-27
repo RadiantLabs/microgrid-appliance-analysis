@@ -4,9 +4,9 @@ import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
 import {
   columnHeaderByTableType,
-  calculatedColumnHeaders,
-  homerHeaders,
-  applianceHeaders,
+  // calculatedColumnHeaders,
+  // homerHeaders,
+  // applianceHeaders,
 } from '../../../utils/columnHeaders'
 import { tableColorsByKey } from '../../../utils/constants'
 import styles from './styles.module.css'
