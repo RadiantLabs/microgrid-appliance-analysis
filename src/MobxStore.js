@@ -58,16 +58,16 @@ class MobxStore {
     //   )
     // )
 
-    autorun(() =>
-      this.battery2HiddenRegressor(
-        this.batteryNumFeatures,
-        this.batteryTensors,
-        this.batteryLearningRate,
-        this.batteryBatchSize,
-        this.batteryEpochCount,
-        this.batteryTrainingColumns
-      )
-    )
+    // autorun(() =>
+    //   this.battery2HiddenRegressor(
+    //     this.batteryNumFeatures,
+    //     this.batteryTensors,
+    //     this.batteryLearningRate,
+    //     this.batteryBatchSize,
+    //     this.batteryEpochCount,
+    //     this.batteryTrainingColumns
+    //   )
+    // )
 
     // Saving and loading some items to localstorage
     // Round trips to JSON require special handling for ES6 Maps: https://stackoverflow.com/a/28918362

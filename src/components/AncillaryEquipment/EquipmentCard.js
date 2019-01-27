@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Card, Form, Input, Checkbox } from 'semantic-ui-react'
+import { Label, Card, Form, Input, Checkbox } from 'semantic-ui-react'
 import { HelperPopup } from '../Elements/HelperPopup'
 import { getEquipmentDiagram } from '../../utils/ancillaryEquipmentRules'
 
@@ -44,12 +44,18 @@ class EquipmentCard extends Component {
         <Card.Content extra>
           <Form>
             <Form.Field>
-              <label>Cost</label>
-              <Input label={{ basic: true, content: '$' }} labelPosition="right" value={10} />
+              <Input labelPosition="right" type="text" size="mini" fluid>
+                <Label basic>Cost</Label>
+                <input />
+                <Label>USD</Label>
+              </Input>
             </Form.Field>
             <Form.Field>
-              <label>Size</label>
-              <Input label={{ basic: true, content: 'kW' }} labelPosition="right" value={10} />
+              <Input labelPosition="right" type="text" size="mini" fluid>
+                <Label basic>Size</Label>
+                <input />
+                <Label>kW</Label>
+              </Input>
             </Form.Field>
           </Form>
         </Card.Content>
