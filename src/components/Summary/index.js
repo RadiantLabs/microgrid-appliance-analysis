@@ -6,7 +6,7 @@ import ApplianceOperatorSummary from './ApplianceOperatorSummary'
 import ModelInputs from './ModelInputs'
 import FileChoosers from './FileChoosers'
 
-class Home extends Component {
+class Summary extends Component {
   render() {
     return (
       <div>
@@ -41,4 +41,4 @@ class Home extends Component {
   }
 }
 
-export default inject('store')(observer(Home))
+export default inject('store')(observer(Summary))

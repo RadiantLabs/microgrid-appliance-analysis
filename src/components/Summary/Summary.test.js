@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
-import Home from './index'
+import Summary from './index'
 import ApplianceOperatorSummary from './ApplianceOperatorSummary'
 import FileChoosers from './FileChoosers'
 import GridOperatorSummary from './GridOperatorSummary'
@@ -14,7 +14,7 @@ it('renders without crashing', () => {
   const div = document.createElement('div')
   ReactDOM.render(
     <Provider store={mobxStore}>
-      <Home />
+      <Summary />
     </Provider>,
     div
   )

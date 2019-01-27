@@ -8,7 +8,7 @@ import { Menu } from 'semantic-ui-react'
 import { NavItem } from './components/Elements/NavItem'
 
 // Route Pages
-import Home from './components/Home'
+import Summary from './components/Summary'
 import About from './components/About'
 import AncillaryEquipment from './components/AncillaryEquipment'
 import BatteryModel from './components/BatteryModel'
@@ -45,7 +45,7 @@ const App = () => (
         </Menu>
 
         <div className="mainContent">
-          <Route exact={true} path="/" component={Home} />
+          <Route exact={true} path="/" component={Summary} />
           <Route path="/about" component={About} />
           <Route path="/ancillary-equipment" component={AncillaryEquipment} />
           <Route path="/datatable" component={DataTable} />
