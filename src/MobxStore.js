@@ -477,6 +477,9 @@ decorate(MobxStore, {
   batteryBaselineLoss: computed,
   batteryPlottablePredictionVsActualData: computed,
   batteryPlottableReferenceLine: computed,
+
+  // Ancillery Equipment
+  ancillaryEquipmentOptions: computed,
 })
 
 export default MobxStore

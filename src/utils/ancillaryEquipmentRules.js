@@ -1,14 +1,29 @@
+import React from 'react'
 import _ from 'lodash'
+import { ReactComponent as PowerConverterSVG } from '../images/ac_to_dc_power_converter.svg'
+import { ReactComponent as InverterSVG } from '../images/dc_to_ac_inverter.svg'
+import { ReactComponent as PlaceholderSVG } from '../images/placeholder.svg'
+
+export function getEquipmentDiagram(equipmentType) {
+  switch (equipmentType) {
+    case 'powerConverter':
+      return <PowerConverterSVG />
+    case 'inverter':
+      return <InverterSVG />
+    default:
+      return <PlaceholderSVG />
+  }
+}
 
 const rules = {
-  power_converter: power_converters,
-  inverter: inverter,
-  vfd: vfd,
-  soft_starter: soft_starter,
-  direct_online_starter: direct_online_starter,
-  star_delta_starter: star_delta_starter,
-  capacitor_bank: capacitor_bank,
-  three_four_point_dc_motor_starter: three_four_point_dc_motor_starter,
+  powerConverter,
+  inverter,
+  vfd,
+  softStarter,
+  directOnlineStarter,
+  starDeltaStarter,
+  capacitorBank,
+  threeFourPointDcMotorStarter,
 }
 
 export function getAncillaryEquipmentOptions(homerFileInfo, applianceFileInfo, ancillaryEquipment) {
@@ -27,7 +42,7 @@ export function getAncillaryEquipmentOptions(homerFileInfo, applianceFileInfo, a
 /**
  * Functions called based on ancillary equipment we are testing
  */
-function power_converters({ grid, appliance }) {
+function powerConverter({ grid, appliance }) {
   const isRequired = appliance.powerType === 'DC' && grid.powerType === 'AC'
   const message = isRequired
     ? 'A power converter is required hardware for successful appliance operation.'
@@ -64,7 +79,7 @@ function vfd({ grid, appliance }) {
   }
 }
 
-function soft_starter({ grid, appliance }) {
+function softStarter({ grid, appliance }) {
   const isUseful =
     grid.powerType === 'AC' && //
     appliance.powerType === 'AC' && //
@@ -78,15 +93,18 @@ function soft_starter({ grid, appliance }) {
   }
 }
 
-function direct_online_starter({ grid, appliance }) {
+function directOnlineStarter({ grid, appliance }) {
   const isUseful = appliance.hasMotor
+  const message = isUseful
+    ? 'A direct on-line starter may be useful to start a motor and provide overloading and short-circuit protection.'
+    : 'A direct on-line starter may not be useful for appliances without motors.'
   return {
-    message: 'hi',
+    message,
     status: isUseful ? 'useful' : 'notuseful',
   }
 }
 
-function star_delta_starter({ grid, appliance }) {
+function starDeltaStarter({ grid, appliance }) {
   const isUseful =
     grid.powerType === 'AC' && //
     appliance.powerType === 'AC' && //
@@ -101,7 +119,7 @@ function star_delta_starter({ grid, appliance }) {
   }
 }
 
-function capacitor_bank({ grid, appliance }) {
+function capacitorBank({ grid, appliance }) {
   const isUseful =
     grid.powerType === 'AC' && //
     appliance.powerType === 'AC' && //
@@ -115,7 +133,7 @@ function capacitor_bank({ grid, appliance }) {
   }
 }
 
-function three_four_point_dc_motor_starter({ grid, appliance }) {
+function threeFourPointDcMotorStarter({ grid, appliance }) {
   const isUseful = grid.powerType === 'DC' && appliance.powerType === 'DC'
   const message = isUseful
     ? 'A Three or Four Point Motor Starter may reduce starting current and improve power system voltage stability upon starting the appliance.'
