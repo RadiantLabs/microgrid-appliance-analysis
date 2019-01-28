@@ -4,8 +4,8 @@ import './index.css'
 import App from './App'
 import * as Sentry from '@sentry/browser'
 import * as serviceWorker from './serviceWorker'
-import './styles/semantic.css'
-import './styles/index.css'
+import 'styles/semantic.css'
+import 'styles/index.css'
 import 'react-virtualized/styles.css'
 
 if (process.env.NODE_ENV === 'production') {

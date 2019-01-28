@@ -2,12 +2,12 @@ import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import localStorage from 'mobx-localstorage'
 import * as tf from '@tensorflow/tfjs'
-import { fetchFile, combineTables } from './utils/helpers'
+import { fetchFile, combineTables } from 'utils/helpers'
 
-import { getHomerStats, getSummaryStats } from './utils/calculateStats'
-import { calculateNewLoads } from './utils/calculateNewColumns'
-import { homerFiles, applianceFiles, ancillaryEquipment } from './utils/fileInfo'
-import { fieldDefinitions } from './utils/fieldDefinitions'
+import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
+import { calculateNewLoads } from 'utils/calculateNewColumns'
+import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { fieldDefinitions } from 'utils/fieldDefinitions'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -19,9 +19,9 @@ import {
   linearRegressionModel,
   multiLayerPerceptronRegressionModel1Hidden,
   multiLayerPerceptronRegressionModel2Hidden,
-} from './utils/tensorflowHelpers'
-import { getAncillaryEquipmentStatus } from './utils/ancillaryEquipmentRules'
-import { combinedColumnHeaderOrder } from './utils/columnHeaders'
+} from 'utils/tensorflowHelpers'
+import { getAncillaryEquipmentStatus } from 'utils/ancillaryEquipmentRules'
+import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
 // const initHomerPath = './data/homer/12-50 Baseline.csv'
