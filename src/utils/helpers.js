@@ -227,8 +227,8 @@ export async function fetchFile(fileInfo, urlLocation) {
   if (_.isEmpty(fileInfo)) {
     debugger
   }
-  const { path, type } = fileInfo
-  const filePath = filePathLookup(path, type, urlLocation)
+  const { fileName, type } = fileInfo
+  const filePath = filePathLookup(fileName, type, urlLocation)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
