@@ -94,13 +94,13 @@ export default inject('store')(observer(BatteryModel))
 
 const LossChartWrapper = inject('store')(
   observer(({ store }) => {
-    const trainingState = store.batteryTrainingState
-    if (trainingState === 'None') {
+    const { batteryTrainingState } = store
+    if (batteryTrainingState === 'None') {
       return null
     }
     return (
       <div style={{ marginBottom: 20 }}>
-        <LossChart trainLogs={store.batteryTrainLogs} />
+        <LossChart />
       </div>
     )
   })

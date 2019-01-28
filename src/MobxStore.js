@@ -264,7 +264,7 @@ class MobxStore {
     trainingColumns
   ) {
     runInAction(() => {
-      this.batteryModelName = '1 Hidden NN Regressor'
+      this.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
     })
     const t0 = performance.now()
     await this.batteryModelRun({
@@ -296,7 +296,6 @@ class MobxStore {
       loss: 'meanSquaredError',
     })
     this.batteryTrainingState = 'Training'
-    console.log('running: batteryModelRun')
     await model.fit(tensors.trainFeatures, tensors.trainTarget, {
       batchSize: batchSize,
       epochs: epochCount,
