@@ -184,7 +184,6 @@ class MobxStore {
   batteryModelName = ''
   batteryTrainingState = 'None'
   batteryTrainLogs = []
-  batteryWeightsList = []
   batteryFinalTrainSetLoss = null
   batteryValidationSetLoss = null
   batteryTestSetLoss = null
@@ -202,6 +201,20 @@ class MobxStore {
     })
   }
 
+  async retrainBatteryModel() {
+    runInAction(() => {
+      this.batteryCurrentEpoch = 0
+      this.batteryModel = null
+      this.batteryTrainLogs = []
+      this.batteryTrainingTime = null
+      this.batteryFinalTrainSetLoss = null
+      this.batteryValidationSetLoss = null
+      this.batteryTestSetLoss = null
+      this.batteryTrainingState = 'None'
+    })
+    this.trainBatteryModel(this.calculatedColumns)
+  }
+
   get batteryTensors() {
     if (_.isEmpty(this.batteryTrainingData)) {
       return null
@@ -216,10 +229,6 @@ class MobxStore {
 
   get batteryInputTensorShape() {
     return [1, _.size(this.batteryTrainingColumns)]
-  }
-
-  get batteryWeightsListSorted() {
-    return this.weightsList.slice().sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
   }
 
   get batteryBaselineLoss() {
@@ -418,13 +427,11 @@ decorate(MobxStore, {
   batteryInputTensorShape: computed,
   batteryTrainingState: observable,
   batteryTrainLogs: observable,
-  batteryWeightsList: observable,
   batteryFinalTrainSetLoss: observable,
   batteryValidationSetLoss: observable,
   batteryTestSetLoss: observable,
   batteryModelRun: action.bound,
   batteryLinearRegressor: action.bound,
-  batteryWeightsListSorted: computed,
   batteryBaselineLoss: computed,
   batteryPlottablePredictionVsActualData: computed,
   batteryPlottableReferenceLine: computed,

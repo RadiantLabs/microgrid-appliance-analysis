@@ -15,7 +15,7 @@ const LossChart = inject('store')(
   observer(({ store }) => {
     const { batteryTrainLogs } = store
     return (
-      <ResponsiveContainer height={700}>
+      <ResponsiveContainer height={600}>
         <LineChart
           key={Math.random()} // Force rerendering every time the data changes
           data={batteryTrainLogs}

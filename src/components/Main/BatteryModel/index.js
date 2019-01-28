@@ -2,7 +2,7 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import * as tf from '@tensorflow/tfjs'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Button } from 'semantic-ui-react'
 // import CurveFittingChart from 'components/Charts/CurveFittingChart'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
@@ -12,6 +12,11 @@ import { FinalLossTable, EpochProgressTable } from 'components/Elements/MLResult
 const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
 class BatteryModel extends React.Component {
+  retrainModelClick = event => {
+    event.preventDefault()
+    this.props.store.retrainBatteryModel()
+  }
+
   render() {
     const {
       calculatedColumns,
@@ -41,12 +46,21 @@ class BatteryModel extends React.Component {
     }
     return (
       <div>
-        <h2>
-          Battery Charge & Discharge Model{' '}
-          <small style={headerStyle}>
-            Use machine learning to recreate the kinetic battery model based on the HOMER file.
-          </small>
-        </h2>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <h2>Battery Charge & Discharge Model</h2>
+              <small style={headerStyle}>
+                Use machine learning to recreate the kinetic battery model based on the HOMER file.
+              </small>
+            </Grid.Column>
+            <Grid.Column>
+              <Button basic color="blue" floated="right" onClick={this.retrainModelClick}>
+                Re-Train model
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
