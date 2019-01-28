@@ -225,7 +225,7 @@ export function filePathLookup(fileName, fileType, urlLocation) {
  */
 export async function fetchFile(fileInfo, urlLocation) {
   if (_.isEmpty(fileInfo)) {
-    debugger
+    throw new Error(`fileInfo not found in fetchFile`)
   }
   const { fileName, type } = fileInfo
   const filePath = filePathLookup(fileName, type, urlLocation)

@@ -16,9 +16,7 @@ import {
   calculateFinalLoss,
   arraysToTensors,
   calculatePlottablePredictedVsActualData,
-  linearRegressionModel,
   multiLayerPerceptronRegressionModel1Hidden,
-  multiLayerPerceptronRegressionModel2Hidden,
 } from 'utils/tensorflowHelpers'
 import { getAncillaryEquipmentStatus } from 'utils/ancillaryEquipmentRules'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
@@ -34,39 +32,16 @@ class MobxStore {
     //   this.windowPathName = window.location.pathname
     // })
 
-    // Only run 1 of these regression models, comment out the others
-    // autorun(() =>
-    //   this.batteryLinearRegressor(
-    //     this.batteryNumFeatures,
-    //     this.batteryTensors,
-    //     this.batteryLearningRate,
-    //     this.batteryBatchSize,
-    //     this.batteryEpochCount,
-    //     this.batteryTrainingColumns
-    //   )
-    // )
-
-    // autorun(() =>
-    //   this.battery1HiddenRegressor(
-    //     this.batteryNumFeatures,
-    //     this.batteryTensors,
-    //     this.batteryLearningRate,
-    //     this.batteryBatchSize,
-    //     this.batteryEpochCount,
-    //     this.batteryTrainingColumns
-    //   )
-    // )
-
-    // autorun(() =>
-    //   this.battery2HiddenRegressor(
-    //     this.batteryNumFeatures,
-    //     this.batteryTensors,
-    //     this.batteryLearningRate,
-    //     this.batteryBatchSize,
-    //     this.batteryEpochCount,
-    //     this.batteryTrainingColumns
-    //   )
-    // )
+    autorun(() =>
+      this.battery1HiddenRegressor(
+        this.batteryNumFeatures,
+        this.batteryTensors,
+        this.batteryLearningRate,
+        this.batteryBatchSize,
+        this.batteryEpochCount,
+        this.batteryTrainingColumns
+      )
+    )
 
     // Set Ancillary Equipment enabled/disabled status based on if it is required:
     autorun(() => this.setAncillaryEquipmentEnabledFromStatus(this.ancillaryEquipmentStatus))
@@ -199,6 +174,7 @@ class MobxStore {
    */
   batteryEpochCount = 3
   batteryCurrentEpoch = 0
+  batteryModelStopLoss = 0.1
   batteryBatchSize = 40
   batteryLearningRate = 0.01
   batteryTargetColumn = 'Battery State of Charge'
@@ -280,34 +256,6 @@ class MobxStore {
     )} seconds/epoch)`
   }
 
-  // Modify this to work on different datasets instead of regression models
-  async batteryLinearRegressor(
-    numFeatures,
-    tensors,
-    learningRate,
-    batchSize,
-    epochCount,
-    trainingColumns
-  ) {
-    runInAction(() => {
-      this.batteryModelName = 'Linear Regressor'
-    })
-    const t0 = performance.now()
-    await this.batteryModelRun({
-      model: linearRegressionModel(numFeatures),
-      tensors: tensors,
-      weightsIllustration: true,
-      learningRate,
-      batchSize,
-      epochCount,
-      trainingColumns,
-    })
-    const t1 = performance.now()
-    runInAction(() => {
-      this.batteryTrainingTime = t1 - t0
-    })
-  }
-
   async battery1HiddenRegressor(
     numFeatures,
     tensors,
@@ -322,33 +270,6 @@ class MobxStore {
     const t0 = performance.now()
     await this.batteryModelRun({
       model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
-      tensors: tensors,
-      weightsIllustration: false,
-      learningRate,
-      batchSize,
-      epochCount,
-      trainingColumns,
-    })
-    const t1 = performance.now()
-    runInAction(() => {
-      this.batteryTrainingTime = t1 - t0
-    })
-  }
-
-  async battery2HiddenRegressor(
-    numFeatures,
-    tensors,
-    learningRate,
-    batchSize,
-    epochCount,
-    trainingColumns
-  ) {
-    runInAction(() => {
-      this.batteryModelName = '2 Hidden NN Regressor'
-    })
-    const t0 = performance.now()
-    await this.batteryModelRun({
-      model: multiLayerPerceptronRegressionModel2Hidden(numFeatures),
       tensors: tensors,
       weightsIllustration: false,
       learningRate,
@@ -501,6 +422,7 @@ decorate(MobxStore, {
   // Tensorflow model data:
   batteryEpochCount: observable,
   batteryCurrentEpoch: observable,
+  batteryModelStopLoss: observable,
   batteryBatchSize: observable,
   batteryLearningRate: observable,
   batteryTargetColumn: observable,

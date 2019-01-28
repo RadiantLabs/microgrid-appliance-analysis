@@ -115,18 +115,6 @@ export function determineMeanAndStddev(data) {
 }
 
 /**
- * Builds and returns Linear Regression Model.
- *
- * @returns {tf.Sequential} The linear regression model.
- */
-export function linearRegressionModel(numFeatures) {
-  const model = tf.sequential()
-  model.add(tf.layers.dense({ inputShape: [numFeatures], units: 1 }))
-  model.summary() // Logs out summary of layers and output shapes
-  return model
-}
-
-/**
  * Builds and returns Multi Layer Perceptron Regression Model
  * with 1 hidden layers, each with 10 units activated by sigmoid.
  *
@@ -142,35 +130,7 @@ export function multiLayerPerceptronRegressionModel1Hidden(numFeatures) {
   model.add(
     tf.layers.dense({
       inputShape: [numFeatures],
-      units: 50,
-      activation: 'sigmoid',
-      kernelInitializer: 'leCunNormal',
-    })
-  )
-  model.add(tf.layers.dense({ units: 1 }))
-  model.summary()
-  return model
-}
-
-/**
- * Builds and returns Multi Layer Perceptron Regression Model
- * with 2 hidden layers, each with 10 units activated by sigmoid.
- *
- * @returns {tf.Sequential} The multi layer perceptron regression mode  l.
- */
-export function multiLayerPerceptronRegressionModel2Hidden(numFeatures) {
-  const model = tf.sequential()
-  model.add(
-    tf.layers.dense({
-      inputShape: [numFeatures],
-      units: 50,
-      activation: 'sigmoid',
-      kernelInitializer: 'leCunNormal',
-    })
-  )
-  model.add(
-    tf.layers.dense({
-      units: 50,
+      units: 9,
       activation: 'sigmoid',
       kernelInitializer: 'leCunNormal',
     })
@@ -185,6 +145,34 @@ export function calculateTestSetLoss(model, tensors, batchSize) {
     batchSize: batchSize,
   })
   return _.round(testSetLoss.dataSync()[0])
+}
+
+/**
+ * Builds and returns Multi Layer Perceptron Regression Model
+ * with 2 hidden layers, each with 10 units activated by sigmoid.
+ *
+ * @returns {tf.Sequential} The multi layer perceptron regression mode  l.
+ */
+export function multiLayerPerceptronRegressionModel2Hidden(numFeatures) {
+  const model = tf.sequential()
+  model.add(
+    tf.layers.dense({
+      inputShape: [numFeatures],
+      units: 12,
+      activation: 'sigmoid',
+      kernelInitializer: 'leCunNormal',
+    })
+  )
+  model.add(
+    tf.layers.dense({
+      units: 12,
+      activation: 'sigmoid',
+      kernelInitializer: 'leCunNormal',
+    })
+  )
+  model.add(tf.layers.dense({ units: 1 }))
+  model.summary()
+  return model
 }
 
 export function calculateFinalLoss(trainLogs) {
@@ -222,12 +210,13 @@ export function describeKernelElements(kernel, featureDescriptions) {
  * Actual vs Predicted chart
  */
 export function calculatePlottablePredictedVsActualData(trainingData, model, inputTensorShape) {
-  const { trainFeatures, trainTarget } = trainingData
+  const { trainFeatures, testFeatures, testTarget } = trainingData
   const rawTrainFeatures = tf.tensor2d(trainFeatures)
   const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
-  const normalized_features = normalizeTensor(rawTrainFeatures, dataMean, dataStd)
+  const rawTestFeatures = tf.tensor2d(testFeatures)
+  const normalized_features = normalizeTensor(rawTestFeatures, dataMean, dataStd)
   const normalized_predictions = model.predict(normalized_features).dataSync()
-  return _.map(trainTarget, (target, targetIndex) => {
+  return _.map(testTarget, (target, targetIndex) => {
     return { actual: target[0], predicted: normalized_predictions[targetIndex] }
   })
 }
