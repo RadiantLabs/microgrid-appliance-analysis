@@ -206,14 +206,31 @@ export function processApplianceFile(rows, fileInfo) {
   })
 }
 
+export function filePathLookup(fileName, fileType, urlLocation) {
+  const levelsDeep = urlLocation.pathname.split('/').length
+  const relativePathCount = _.repeat('../', levelsDeep - 1)
+  switch (fileType) {
+    case 'homer':
+      return relativePathCount + 'data/homer/' + fileName + '.csv'
+    case 'appliance':
+      return relativePathCount + 'data/appliances/' + fileName + '.csv'
+    default:
+      throw new Error(`Need to pase fileType (homer, appliance) to filePathLookup`)
+  }
+}
+
 /**
  * Fetch Homer or Usage profile files.
  * @param {*} fileInfo
  */
-export async function fetchFile(fileInfo) {
+export async function fetchFile(fileInfo, urlLocation) {
+  if (_.isEmpty(fileInfo)) {
+    debugger
+  }
   const { path, type } = fileInfo
+  const filePath = filePathLookup(path, type, urlLocation)
   try {
-    const res = await window.fetch(process.env.PUBLIC_URL + path)
+    const res = await window.fetch(filePath)
     const csv = await res.text()
     const { data, errors } = Papa.parse(csv, csvOptions)
     if (!_.isEmpty(errors)) {
@@ -229,7 +246,7 @@ export async function fetchFile(fileInfo) {
     }
   } catch (error) {
     console.error(
-      `File load fail for : ${fileInfo.path}. Make sure appliance CSV has all headers.`,
+      `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,
       error
     )
   }

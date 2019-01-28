@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
 import localStorage from 'mobx-localstorage'
 import * as tf from '@tensorflow/tfjs'
-import { fetchFile, combineTables } from 'utils/helpers'
+import { fetchFile, combineTables, filePathLookup } from 'utils/helpers'
 
 import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
@@ -24,16 +24,18 @@ import { getAncillaryEquipmentStatus } from 'utils/ancillaryEquipmentRules'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
-// const initHomerPath = './data/homer/12-50 Baseline.csv'
-const initHomerPath = './data/homer/12-50 Oversize 20.csv'
-// const initHomerPath = './data/homer/homer_12_50_oversize_20_AS.csv'  // debugging
-const initAppliancePath = './data/appliances/rice_mill_usage_profile.csv'
+// const initHomerPath = 'data/homer/12-50 Oversize 20'
+// const initAppliancePath = 'data/appliances/rice_mill_usage_profile'
 
 class MobxStore {
   constructor() {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
     autorun(() => this.trainBatteryModel(this.calculatedColumns))
+    autorun(() => {
+      const path = window.location.pathname
+      console.log('path: ', path)
+    })
 
     // Only run 1 of these regression models, comment out the others
     // autorun(() =>
@@ -82,10 +84,14 @@ class MobxStore {
     )
   }
 
+  initHomerFileName = '12-50 Oversize 20'
+  initApplianceFileName = 'rice_mill_usage_profile'
+  // initHomerPath = filePathLookup(this.initHomerFileName, 'homer', window.location)
+  // initAppliancePath = filePathLookup(this.initApplianceFileName, 'appliance', window.location)
   activeHomer = null
   activeAppliance = null
-  activeHomerFileInfo = _.find(homerFiles, { path: initHomerPath })
-  activeApplianceFileInfo = _.find(applianceFiles, { path: initAppliancePath })
+  activeHomerFileInfo = _.find(homerFiles, { path: this.initHomerFileName })
+  activeApplianceFileInfo = _.find(applianceFiles, { path: this.initApplianceFileName })
   homerIsLoading = false
   applianceIsLoading = false
   appCalculating = false
@@ -129,7 +135,7 @@ class MobxStore {
 
   async fetchHomer(activeHomerFileInfo) {
     this.homerIsLoading = true
-    const homer = await fetchFile(activeHomerFileInfo)
+    const homer = await fetchFile(activeHomerFileInfo, window.location)
     runInAction(() => {
       this.activeHomer = homer
       this.homerIsLoading = false
@@ -138,7 +144,7 @@ class MobxStore {
 
   async fetchAppliance(fileInfo) {
     this.applianceIsLoading = true
-    const appliance = await fetchFile(fileInfo)
+    const appliance = await fetchFile(fileInfo, window.location)
     runInAction(() => {
       this.activeAppliance = appliance
       this.applianceIsLoading = false
