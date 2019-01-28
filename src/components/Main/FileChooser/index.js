@@ -18,11 +18,11 @@ class FileChoosers extends Component {
       },
     } = this.props
     return (
-      <Table basic="very" selectable className="fileChooser">
+      <Table basic="very" className="fileChooser" style={{ padding: 12 }}>
         <Table.Body>
           <Table.Row>
             <Table.Cell collapsing>
-              <Header as="h5">Select Grid Characteristics:</Header>
+              <Header as="h5">Select Grid File:</Header>
             </Table.Cell>
             <Table.Cell>
               {/* TODO: loading */}

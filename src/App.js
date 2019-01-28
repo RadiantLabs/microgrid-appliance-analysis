@@ -4,7 +4,7 @@ import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import MobxStore from './MobxStore'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 
 // Route Pages
@@ -25,10 +25,14 @@ const App = () => (
   <Provider store={mobxStore}>
     <Router>
       <ApolloProvider client={Client}>
-        <Menu secondary>
-          <Menu.Item header>Microgrid Appliance Analysis Tool</Menu.Item>
+        <Menu>
+          <Menu.Item header as={NavItem} to="/">
+            Microgrid Appliance Analysis Tool
+          </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item as={NavItem} to="/" name="Main" />
+            <Menu.Item name="wrench">
+              <Icon name="wrench" />
+            </Menu.Item>
             <Menu.Item as={NavItem} to="/about" name="About" />
             <Menu.Item as={NavItem} to="/profile" name="Logout" />
           </Menu.Menu>
@@ -36,7 +40,7 @@ const App = () => (
 
         <div className="main-wrapper">
           <Switch>
-            <Route component={Main} />
+            <Route path="/" component={Main} />
             <Route path="/tool" component={Main} />
             <Route path="/about" component={About} />
             <Route path="/profile" component={Profile} />
