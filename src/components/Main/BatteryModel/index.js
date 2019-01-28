@@ -29,6 +29,7 @@ class BatteryModel extends React.Component {
       batteryValidationSetLoss,
       batteryTestSetLoss,
       batteryPlottableReferenceLine,
+      batteryTrainingTimeDisplay,
     } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
@@ -57,6 +58,7 @@ class BatteryModel extends React.Component {
               <h4>
                 {batteryModelName}: Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
               </h4>
+              <h5>{batteryTrainingTimeDisplay}</h5>
               <FinalLossTable
                 isTrained={batteryTrainingState === 'Trained'}
                 finalTrainSetLoss={batteryFinalTrainSetLoss}
