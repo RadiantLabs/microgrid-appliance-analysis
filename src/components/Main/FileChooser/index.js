@@ -29,10 +29,10 @@ class FileChoosers extends Component {
                 {_.map(homerFiles, fileInfo => (
                   <Dropdown.Item
                     text={fileInfo.label}
-                    key={fileInfo.path}
+                    key={fileInfo.fileName}
                     description={fileInfo.description}
-                    value={fileInfo.path}
-                    active={fileInfo.path === activeHomerFileInfo.path}
+                    value={fileInfo.fileName}
+                    active={fileInfo.fileName === activeHomerFileInfo.fileName}
                     onClick={setActiveHomerFile}
                     // icon="check" // If currently active (or bold)
                   />
@@ -49,10 +49,10 @@ class FileChoosers extends Component {
                 {_.map(applianceFiles, fileInfo => (
                   <Dropdown.Item
                     text={fileInfo.label}
-                    key={fileInfo.path}
+                    key={fileInfo.fileName}
                     description={fileInfo.description}
-                    value={fileInfo.path}
-                    active={fileInfo.path === activeApplianceFileInfo.path}
+                    value={fileInfo.fileName}
+                    active={fileInfo.fileName === activeApplianceFileInfo.fileName}
                     onClick={setActiveApplianceFile}
                     // icon="check" // If currently active (or bold)
                   />
