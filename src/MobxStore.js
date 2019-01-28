@@ -451,7 +451,6 @@ class MobxStore {
   // Required equipment will be auto-enabled
   // Call from autorun in constructor when ancillaryEquipmentStatus changes
   setAncillaryEquipmentEnabledFromStatus(ancillaryEquipmentStatus) {
-    console.log('ancillaryEquipmentStatus: ', ancillaryEquipmentStatus)
     const required = ancillaryEquipmentStatus['required']
     if (!_.isEmpty(required)) {
       runInAction(() => {
@@ -460,6 +459,15 @@ class MobxStore {
         })
       })
     }
+  }
+
+  // List of selected ancillary equipment by label
+  get enabledAncillaryEquipmentList() {
+    return _(this.ancillaryEquipmentEnabledStates)
+      .pickBy(val => val === true)
+      .keys()
+      .map(equipmentType => _.find(ancillaryEquipment, { equipmentType }).label)
+      .value()
   }
 }
 
@@ -516,6 +524,7 @@ decorate(MobxStore, {
   ancillaryEquipmentStatus: computed,
   setAncillaryEquipmentEnabledFromCheckbox: action.bound,
   setAncillaryEquipmentEnabledFromStatus: action.bound,
+  enabledAncillaryEquipmentList: computed,
 })
 
 export default MobxStore

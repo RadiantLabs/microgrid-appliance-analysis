@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Dropdown, Header, Table, Grid } from 'semantic-ui-react'
-// import LoaderSpinner from 'components/Elements/Loader'
+import { Dropdown, Header, Grid } from 'semantic-ui-react'
 import { homerFiles, applianceFiles } from 'utils/fileInfo'
 
 class FileChoosers extends Component {
@@ -15,13 +14,16 @@ class FileChoosers extends Component {
         activeApplianceFileInfo,
         homerIsLoading,
         applianceIsLoading,
+        enabledAncillaryEquipmentList,
       },
     } = this.props
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
           <Grid.Column>
-            <Header as="h5">Select Grid File:</Header>
+            <Header as="h5" style={{ marginBottom: 4 }}>
+              Select Grid File:
+            </Header>
             <Dropdown text={activeHomerFileInfo.label} loading={homerIsLoading}>
               <Dropdown.Menu>
                 {_.map(homerFiles, fileInfo => (
@@ -39,7 +41,9 @@ class FileChoosers extends Component {
             </Dropdown>
           </Grid.Column>
           <Grid.Column>
-            <Header as="h5">Select Appliance Usage Profile:</Header>
+            <Header as="h5" style={{ marginBottom: 4 }}>
+              Select Appliance Usage Profile:
+            </Header>
             <Dropdown text={activeApplianceFileInfo.label} loading={applianceIsLoading}>
               <Dropdown.Menu>
                 {_.map(applianceFiles, fileInfo => (
@@ -57,7 +61,10 @@ class FileChoosers extends Component {
             </Dropdown>
           </Grid.Column>
           <Grid.Column>
-            <Header as="h5">Ancillary Equipment</Header>
+            <Header as="h5" style={{ marginBottom: 4 }}>
+              Selected Ancillary Equipment
+            </Header>
+            {enabledAncillaryEquipmentList.join(', ')}
           </Grid.Column>
         </Grid.Row>
       </Grid>
