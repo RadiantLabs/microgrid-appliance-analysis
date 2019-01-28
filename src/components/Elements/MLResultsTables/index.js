@@ -101,6 +101,7 @@ export const EpochProgressTable = ({
   batteryTrainingTimeDisplay,
   batteryTargetColumn,
   batteryTrainingColumns,
+  batteryModelStopLoss,
 }) => {
   return (
     <Table compact="very" celled size="small" basic="very">
@@ -124,7 +125,8 @@ export const EpochProgressTable = ({
         <Table.Row>
           <Table.Cell>Epoch</Table.Cell>
           <Table.Cell>
-            {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
+            {batteryCurrentEpoch + 1}: {batteryEpochCount} epoch max or validation loss of{' '}
+            {batteryModelStopLoss}
           </Table.Cell>
         </Table.Row>
         <Table.Row>

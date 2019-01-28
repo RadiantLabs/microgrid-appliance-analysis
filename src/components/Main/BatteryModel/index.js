@@ -29,6 +29,7 @@ class BatteryModel extends React.Component {
       batteryTrainingTimeDisplay,
       batteryTargetColumn,
       batteryTrainingColumns,
+      batteryModelStopLoss,
     } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
@@ -57,6 +58,7 @@ class BatteryModel extends React.Component {
                 batteryTrainingTimeDisplay={batteryTrainingTimeDisplay}
                 batteryTargetColumn={batteryTargetColumn}
                 batteryTrainingColumns={batteryTrainingColumns}
+                batteryModelStopLoss={batteryModelStopLoss}
               />
             </Grid.Column>
             <Grid.Column>

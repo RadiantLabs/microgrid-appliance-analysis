@@ -303,6 +303,9 @@ class MobxStore {
             this.batteryCurrentEpoch = epoch
             this.batteryTrainLogs.push({ epoch, ...logs })
             this.batteryTrainingTime = t1 - t0
+            if (logs.val_loss < this.batteryModelStopLoss) {
+              model.stopTraining = true
+            }
           })
         },
         onTrainEnd: () => {
