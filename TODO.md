@@ -59,6 +59,7 @@
     - Always redirect to root path with React Router
     - add PUBLIC_URL=public/ to .env
     - manually edit window.fetch(path) based on which route I'm currently on
+- [ ] Create universally accessible small grey header. See unmet loads and battery model screens
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
 - [ ] Indicator that we are currently calculating
 - [ ] Deploy Sentry to production

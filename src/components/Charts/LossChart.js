@@ -12,7 +12,7 @@ import {
 
 const LossChart = ({ trainLogs }) => {
   return (
-    <ResponsiveContainer height={300}>
+    <ResponsiveContainer height={700}>
       <LineChart
         key={Math.random()} // Force rerendering every time the data changes
         data={trainLogs}

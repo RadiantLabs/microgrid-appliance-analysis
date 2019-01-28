@@ -92,3 +92,46 @@ export const FinalLossTable = ({
     </Table>
   )
 }
+
+export const EpochProgressTable = ({
+  isTrained,
+  batteryModelName,
+  batteryCurrentEpoch,
+  batteryEpochCount,
+  batteryTrainingTimeDisplay,
+  batteryTargetColumn,
+  batteryTrainingColumns,
+}) => {
+  return (
+    <Table compact="very" celled size="small" basic="very">
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Model Name</Table.Cell>
+          <Table.Cell>{batteryModelName}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Training Target</Table.Cell>
+          <Table.Cell>
+            <em>{batteryTargetColumn}</em>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Training Features</Table.Cell>
+          <Table.Cell>
+            <em>{batteryTrainingColumns.join(', ')}</em>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Epoch</Table.Cell>
+          <Table.Cell>
+            {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Training Time</Table.Cell>
+          <Table.Cell>{batteryTrainingTimeDisplay}</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  )
+}

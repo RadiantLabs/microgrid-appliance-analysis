@@ -11,7 +11,6 @@ import { fieldDefinitions } from 'utils/fieldDefinitions'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
-  describeKernelElements,
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
@@ -172,7 +171,7 @@ class MobxStore {
    * I will likely want to async'ly do this for eveyr loaded HOMER file, so the
    * user can switch back and forth a between HOMER files and not have to retrain each time
    */
-  batteryEpochCount = 3
+  batteryEpochCount = 10
   batteryCurrentEpoch = 0
   batteryModelStopLoss = 0.1
   batteryBatchSize = 40
@@ -251,9 +250,9 @@ class MobxStore {
   }
 
   get batteryTrainingTimeDisplay() {
-    return `Training Time: ${_.round(this.batteryTrainingTime / 1000)} seconds (~${_.round(
+    return `${_.round(this.batteryTrainingTime / 1000)} sec (~${_.round(
       this.batteryTrainingTime / 1000 / this.batteryEpochCount
-    )} seconds/epoch)`
+    )} sec/epoch)`
   }
 
   async battery1HiddenRegressor(
@@ -271,7 +270,6 @@ class MobxStore {
     await this.batteryModelRun({
       model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
       tensors: tensors,
-      weightsIllustration: false,
       learningRate,
       batchSize,
       epochCount,
@@ -289,15 +287,7 @@ class MobxStore {
   // of passing them in. I prefer to explicitly pass them in though since it
   // makes a clearer and more testable function. But this function has side effects
   // I could put this in utils and then just pass in this.currentEpoch and trainLogs
-  async batteryModelRun({
-    model,
-    tensors,
-    weightsIllustration,
-    learningRate,
-    batchSize,
-    epochCount,
-    trainingColumns,
-  }) {
+  async batteryModelRun({ model, tensors, learningRate, batchSize, epochCount, trainingColumns }) {
     if (_.isEmpty(tensors)) {
       return null
     }
@@ -317,16 +307,6 @@ class MobxStore {
             this.batteryCurrentEpoch = epoch
             this.batteryTrainLogs.push({ epoch, ...logs })
           })
-          if (weightsIllustration) {
-            model.layers[0]
-              .getWeights()[0]
-              .data()
-              .then(kernelAsArr => {
-                runInAction(() => {
-                  this.batteryWeightsList = describeKernelElements(kernelAsArr, trainingColumns)
-                })
-              })
-          }
         },
         onTrainEnd: () => {
           const testSetLoss = calculateTestSetLoss(model, tensors, batchSize)

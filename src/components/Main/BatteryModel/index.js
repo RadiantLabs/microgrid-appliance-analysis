@@ -7,12 +7,9 @@ import { Grid } from 'semantic-ui-react'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
 import LoaderSpinner from 'components/Elements/Loader'
-// import { greyColors } from 'utils/constants'
-import {
-  // WeightsMagnitudeTable,
-  // ModelParametersTable,
-  FinalLossTable,
-} from 'components/Elements/MLResultsTables'
+import { greyColors } from 'utils/constants'
+import { FinalLossTable, EpochProgressTable } from 'components/Elements/MLResultsTables'
+const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
 class BatteryModel extends React.Component {
   render() {
@@ -30,6 +27,8 @@ class BatteryModel extends React.Component {
       batteryTestSetLoss,
       batteryPlottableReferenceLine,
       batteryTrainingTimeDisplay,
+      batteryTargetColumn,
+      batteryTrainingColumns,
     } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
@@ -41,34 +40,41 @@ class BatteryModel extends React.Component {
     }
     return (
       <div>
-        <h2>Battery Charge & Discharge Characterization</h2>
-        <p>Use machine learning to create a model of the battery State of Charge based on:</p>
-        <ul>
-          <li>Production Load Difference (Total generated power - Load Served)</li>
-          <li>Previous Battery State of Charge</li>
-        </ul>
+        <h2>
+          Battery Charge & Discharge Model{' '}
+          <small style={headerStyle}>
+            Use machine learning to recreate the kinetic battery model based on the HOMER file.
+          </small>
+        </h2>
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <h3>Training Progress</h3>
-              <code>{/* {_.first(trainBatteryModel)} */}</code>
-              <LossChartWrapper />
+              <EpochProgressTable
+                isTrained={batteryTrainingState === 'Trained'}
+                batteryModelName={batteryModelName}
+                batteryCurrentEpoch={batteryCurrentEpoch}
+                batteryEpochCount={batteryEpochCount}
+                batteryTrainingTimeDisplay={batteryTrainingTimeDisplay}
+                batteryTargetColumn={batteryTargetColumn}
+                batteryTrainingColumns={batteryTrainingColumns}
+              />
             </Grid.Column>
             <Grid.Column>
-              <h4>
-                {batteryModelName}: Epoch {batteryCurrentEpoch + 1} of {batteryEpochCount} completed
-              </h4>
-              <h5>{batteryTrainingTimeDisplay}</h5>
               <FinalLossTable
                 isTrained={batteryTrainingState === 'Trained'}
                 finalTrainSetLoss={batteryFinalTrainSetLoss}
                 finalValidationSetLoss={batteryValidationSetLoss}
                 testSetLoss={batteryTestSetLoss}
               />
-              <h3>Weights by absolute magnitude</h3>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={1}>
+        </Grid>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Training Progress</h3>
+              <LossChartWrapper />
+            </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
               <ActualVsPredicted

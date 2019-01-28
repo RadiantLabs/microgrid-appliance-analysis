@@ -5,8 +5,8 @@ import LoaderSpinner from 'components/Elements/Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { getChartColors, greyColors } from 'utils/constants'
 
-// TODO:
-// Summary Stats
+const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
+
 class UnmetLoads extends React.Component {
   render() {
     const { summaryStats } = this.props.store
@@ -18,7 +18,7 @@ class UnmetLoads extends React.Component {
     return (
       <div>
         <h3>
-          Unmet Loads by Hour of Day <small style={{ color: greyColors[1] }}>kW for 1 hour</small>
+          Unmet Loads by Hour of Day <small style={headerStyle}>kW for 1 hour</small>
         </h3>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart
