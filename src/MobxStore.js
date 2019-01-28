@@ -266,7 +266,6 @@ class MobxStore {
     runInAction(() => {
       this.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
     })
-    const t0 = performance.now()
     await this.batteryModelRun({
       model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
       tensors: tensors,
@@ -274,10 +273,6 @@ class MobxStore {
       batchSize,
       epochCount,
       trainingColumns,
-    })
-    const t1 = performance.now()
-    runInAction(() => {
-      this.batteryTrainingTime = t1 - t0
     })
   }
 
@@ -296,15 +291,18 @@ class MobxStore {
       loss: 'meanSquaredError',
     })
     this.batteryTrainingState = 'Training'
+    const t0 = performance.now()
     await model.fit(tensors.trainFeatures, tensors.trainTarget, {
       batchSize: batchSize,
       epochs: epochCount,
       validationSplit: 0.2,
       callbacks: {
         onEpochEnd: async (epoch, logs) => {
+          const t1 = performance.now()
           runInAction(() => {
             this.batteryCurrentEpoch = epoch
             this.batteryTrainLogs.push({ epoch, ...logs })
+            this.batteryTrainingTime = t1 - t0
           })
         },
         onTrainEnd: () => {
@@ -312,11 +310,13 @@ class MobxStore {
           const { finalTrainSetLoss, finalValidationSetLoss } = calculateFinalLoss(
             this.batteryTrainLogs
           )
+          const t1 = performance.now()
           runInAction(() => {
             this.batteryModel = model
             this.batteryTestSetLoss = testSetLoss
             this.batteryFinalTrainSetLoss = finalTrainSetLoss
             this.batteryValidationSetLoss = finalValidationSetLoss
+            this.batteryTrainingTime = t1 - t0
             this.batteryTrainingState = 'Trained'
           })
         },
