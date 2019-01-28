@@ -2,68 +2,18 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
-import {
-  columnHeaderByTableType,
-  // calculatedColumnHeaders,
-  // homerHeaders,
-  // applianceHeaders,
-} from 'utils/columnHeaders'
+import { columnHeaderByTableType } from 'utils/columnHeaders'
 import { tableColorsByKey } from 'utils/constants'
 import styles from './styles.module.css'
-
-/**
- * Column Header Legend
- */
-const setLegendStyles = tableName => {
-  return {
-    paddingRight: '4px',
-    paddingLeft: '4px',
-    fontStyle: 'italic',
-    fontSize: '11px',
-    lineHeight: 1.8,
-    cursor: 'pointer',
-    backgroundColor: tableColorsByKey[tableName],
-  }
-}
-
-const ColumnLegend = inject('store')(
-  observer(({ store }) => {
-    return (
-      <div style={{ width: 130, float: 'right' }}>
-        <div
-          style={setLegendStyles('calculatedColumns')}
-          // onClick={store.setMultipleExcludedTableColumns(calculatedColumnHeaders)}
-        >
-          Calculated Columns
-          {/*<Icon name="circle outline" style={{ float: 'right' }} />*/}
-        </div>
-        <div
-          style={setLegendStyles('homer')}
-          // onClick={store.setMultipleExcludedTableColumns(homerHeaders)}
-        >
-          HOMER Columns {/*<Icon name="circle outline" style={{ float: 'right' }} />*/}
-        </div>
-        <div
-          style={setLegendStyles('appliance')}
-          // onClick={store.setMultipleExcludedTableColumns(applianceHeaders)}
-        >
-          Appliance Columns
-          {/*<Icon name="check circle outline" style={{ float: 'right' }} />*/}
-        </div>
-      </div>
-    )
-  })
-)
 
 /**
  * Selected Column Indicator
  */
 const selectorBoxStyles = {
   cursor: 'pointer',
-  float: 'right',
   marginRight: '2%',
   marginTop: '4px',
-  width: 'calc(88% - 130px)',
+  width: '100%',
   verticalAlign: 'top',
 }
 
@@ -78,7 +28,7 @@ const SelectedColumnIndicator = inject('store')(
         style={{
           display: 'inline-block',
           width: columnWidth,
-          height: '20px',
+          height: '12px',
           backgroundColor: tableColorsByKey[tableType],
         }}
       />
@@ -118,9 +68,7 @@ const ColumnSelectorHeader = ({ percentTableColumnsShowing, ...rest }) => {
   return (
     <div {...rest} style={selectorBoxStyles}>
       <div>
-        <strong>
-          Select Columns <small>({percentTableColumnsShowing}% columns showing)</small>
-        </strong>{' '}
+        <em>Select Columns ({percentTableColumnsShowing}% columns showing)</em>{' '}
         <Icon name="pencil alternate" />
       </div>
     </div>
@@ -160,7 +108,6 @@ class ColumnSelector extends React.Component {
     })
     return (
       <div>
-        <ColumnLegend />
         <Popup
           trigger={<ColumnSelectorHeader percentTableColumnsShowing={percentTableColumnsShowing} />}
           basic

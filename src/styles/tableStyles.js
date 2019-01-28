@@ -7,8 +7,7 @@ export const setHeaderStyles = (styles, rowIndex, tableName) => {
       ...rowStyles,
       ...{
         fontStyle: 'italic',
-        backgroundColor: tableColorsByKey[tableName],
-        // backgroundColor: '#f9fafb',
+        backgroundColor: '#f9fafb',
       },
     }
   }
@@ -28,7 +27,7 @@ export const setHeaderStyles = (styles, rowIndex, tableName) => {
     rowStyles = {
       ...rowStyles,
       ...{
-        borderBottom: '1px solid rgba(34,36,38,.1)',
+        borderBottom: `4px solid ${tableColorsByKey[tableName]}`,
         borderLeft: '1px solid rgba(34,36,38,.1)',
         paddingLeft: '0.2rem',
         paddingRight: '0.2rem',

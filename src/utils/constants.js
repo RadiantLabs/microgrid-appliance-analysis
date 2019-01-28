@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import Color from 'color'
 
 export const PI = 3.14
 export const HOURS_PER_YEAR = 8760
@@ -33,18 +32,9 @@ export const greyColors = [
 export const chartColorsByIndex = ['#003f5c', '#444e86', '#955196', '#DD5182', '#FF6E54', '#FFA601']
 
 export const tableColorsByKey = {
-  appliance: Color('#DD5182')
-    .lighten(0.5)
-    .hsl()
-    .string(),
-  homer: Color('#FFA601')
-    .lighten(0.5)
-    .hsl()
-    .string(),
-  calculatedColumns: Color('#444e86')
-    .lighten(0.9)
-    .hsl()
-    .string(),
+  appliance: '#DD5182',
+  homer: '#FFA601',
+  calculatedColumns: '#444e86',
   excluded: greyColors[5],
   default: '#f9fafb',
 }
