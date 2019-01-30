@@ -40,7 +40,7 @@ const App = () => (
 
         <div className="main-wrapper">
           <Switch>
-            <Route path="/" component={Main} />
+            <Route path="/" exact component={Main} />
             <Route path="/tool" component={Main} />
             <Route path="/about" component={About} />
             <Route path="/profile" component={Profile} />
