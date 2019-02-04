@@ -4,10 +4,11 @@ import _ from 'lodash'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
-import MobxStore from './MobxStore'
+import { MobxStore, ModelInputs } from './MobxStore'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { fieldDefinitions } from 'utils/fieldDefinitions'
 
 // Route Pages
 import Main from 'components/Main'
@@ -25,17 +26,34 @@ import './App.css'
 // let mobxStore = new MobxStore() // Vanilla Mobx
 const initHomerFileName = '12-50 Oversize 20'
 const initApplianceFileName = 'rice_mill_usage_profile'
+const activeHomerFileInfo = _.find(homerFiles, { fileName: initHomerFileName })
+const activeApplianceFileInfo = _.find(applianceFiles, { fileName: initApplianceFileName })
+
+// Model inputs must have a definition in the fieldDefinitions file
+const initialModelInputs = {
+  kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
+  dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
+  seasonalDerateFactor: null,
+  wholesaleElectricityCost: 5,
+  unmetLoadCostPerKwh: 6,
+  retailElectricityPrice: 8,
+  productionUnitsPerKwh: 5,
+  revenuePerProductionUnits: 2,
+  revenuePerProductionUnitsUnits: '$ / kg',
+}
 
 const initialState = {
   initHomerFileName,
   homerIsLoading: true,
-  activeHomerFileInfo: _.find(homerFiles, { fileName: initHomerFileName }),
+  activeHomerFileInfo,
   activeHomer: [],
 
   initApplianceFileName,
   applianceIsLoading: false,
-  activeApplianceFileInfo: _.find(applianceFiles, { fileName: initApplianceFileName }),
+  activeApplianceFileInfo,
   activeAppliance: [],
+
+  modelInputs: ModelInputs.create(initialModelInputs),
 }
 
 let mobxStore = MobxStore.create(initialState)

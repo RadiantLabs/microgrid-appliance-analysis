@@ -64,7 +64,7 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Selected Ancillary Equipment
             </Header>
-            {enabledAncillaryEquipmentList.join(', ')}
+            {!_.isEmpty(enabledAncillaryEquipmentList) && enabledAncillaryEquipmentList.join(', ')}
           </Grid.Column>
         </Grid.Row>
       </Grid>

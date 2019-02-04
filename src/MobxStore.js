@@ -25,7 +25,27 @@ configure({ enforceActions: 'observed' })
 /**
  * Mobx State Tree Store
  */
-const MobxStore = types
+
+// TODO: rename kwFactorToKw
+export const ModelInputs = types
+  .model({
+    kwFactorToKw: types.maybeNull(types.number),
+    dutyCycleDerateFactor: types.maybeNull(types.number),
+    seasonalDerateFactor: types.maybeNull(types.number),
+    wholesaleElectricityCost: types.maybeNull(types.number),
+    unmetLoadCostPerKwh: types.maybeNull(types.number),
+    retailElectricityPrice: types.maybeNull(types.number),
+    productionUnitsPerKwh: types.maybeNull(types.number),
+    revenuePerProductionUnits: types.maybeNull(types.number),
+    revenuePerProductionUnitsUnits: types.maybeNull(types.string),
+  })
+  .actions(self => ({
+    onModelInputChange(fieldKey, value) {
+      self[fieldKey] = value
+    },
+  }))
+
+export const MobxStore = types
   .model({
     // Homer Data
     initHomerFileName: types.string,
@@ -38,6 +58,8 @@ const MobxStore = types
     applianceIsLoading: types.boolean,
     activeApplianceFileInfo: types.frozen(),
     activeAppliance: types.frozen(),
+
+    modelInputs: ModelInputs,
   })
   .actions(self => ({
     afterCreate() {
@@ -420,62 +442,62 @@ class MobxStoreOriginal {
   }
 }
 
-decorate(MobxStore, {
-  // windowPathName: observable,
-  activeHomer: observable,
-  activeHomerFileInfo: observable,
-  activeAppliance: observable,
-  activeApplianceFileInfo: observable,
-  homerIsLoading: observable,
-  applianceIsLoading: observable,
-  modelInputs: observable,
-  fetchHomer: action,
-  fetchAppliance: action,
-  calculatedColumns: computed,
-  combinedTable: computed,
-  filteredCombinedTableHeaders: computed,
-  homerStats: computed,
-  summaryStats: computed,
-  setActiveHomerFile: action.bound,
-  setActiveApplianceFile: action.bound,
-  onModelInputChange: action.bound,
+// decorate(MobxStore, {
+//   // windowPathName: observable,
+//   activeHomer: observable,
+//   activeHomerFileInfo: observable,
+//   activeAppliance: observable,
+//   activeApplianceFileInfo: observable,
+//   homerIsLoading: observable,
+//   applianceIsLoading: observable,
+//   modelInputs: observable,
+//   fetchHomer: action,
+//   fetchAppliance: action,
+//   calculatedColumns: computed,
+//   combinedTable: computed,
+//   filteredCombinedTableHeaders: computed,
+//   homerStats: computed,
+//   summaryStats: computed,
+//   setActiveHomerFile: action.bound,
+//   setActiveApplianceFile: action.bound,
+//   onModelInputChange: action.bound,
+//
+//   // Table column checkboxes
+//   excludedTableColumns: observable,
+//   setExcludedTableColumns: action.bound,
+//
+//   // Tensorflow model data:
+//   batteryEpochCount: observable,
+//   batteryCurrentEpoch: observable,
+//   batteryModelStopLoss: observable,
+//   batteryBatchSize: observable,
+//   batteryLearningRate: observable,
+//   batteryTargetColumn: observable,
+//   batteryTrainingColumns: observable,
+//   batteryTrainingData: observable,
+//   batteryTrainingTime: observable,
+//   batteryTrainingTimeDisplay: computed,
+//   batteryTensors: computed,
+//   batteryModel: observable,
+//   batteryNumFeatures: computed,
+//   batteryInputTensorShape: computed,
+//   batteryTrainingState: observable,
+//   batteryTrainLogs: observable,
+//   batteryFinalTrainSetLoss: observable,
+//   batteryValidationSetLoss: observable,
+//   batteryTestSetLoss: observable,
+//   batteryModelRun: action.bound,
+//   batteryLinearRegressor: action.bound,
+//   batteryBaselineLoss: computed,
+//   batteryPlottablePredictionVsActualData: computed,
+//   batteryPlottableReferenceLine: computed,
+//
+//   // Ancillery Equipment
+//   ancillaryEquipmentEnabledStates: observable,
+//   ancillaryEquipmentStatus: computed,
+//   setAncillaryEquipmentEnabledFromCheckbox: action.bound,
+//   setAncillaryEquipmentEnabledFromStatus: action.bound,
+//   enabledAncillaryEquipmentList: computed,
+// })
 
-  // Table column checkboxes
-  excludedTableColumns: observable,
-  setExcludedTableColumns: action.bound,
-
-  // Tensorflow model data:
-  batteryEpochCount: observable,
-  batteryCurrentEpoch: observable,
-  batteryModelStopLoss: observable,
-  batteryBatchSize: observable,
-  batteryLearningRate: observable,
-  batteryTargetColumn: observable,
-  batteryTrainingColumns: observable,
-  batteryTrainingData: observable,
-  batteryTrainingTime: observable,
-  batteryTrainingTimeDisplay: computed,
-  batteryTensors: computed,
-  batteryModel: observable,
-  batteryNumFeatures: computed,
-  batteryInputTensorShape: computed,
-  batteryTrainingState: observable,
-  batteryTrainLogs: observable,
-  batteryFinalTrainSetLoss: observable,
-  batteryValidationSetLoss: observable,
-  batteryTestSetLoss: observable,
-  batteryModelRun: action.bound,
-  batteryLinearRegressor: action.bound,
-  batteryBaselineLoss: computed,
-  batteryPlottablePredictionVsActualData: computed,
-  batteryPlottableReferenceLine: computed,
-
-  // Ancillery Equipment
-  ancillaryEquipmentEnabledStates: observable,
-  ancillaryEquipmentStatus: computed,
-  setAncillaryEquipmentEnabledFromCheckbox: action.bound,
-  setAncillaryEquipmentEnabledFromStatus: action.bound,
-  enabledAncillaryEquipmentList: computed,
-})
-
-export default MobxStore
+// export default MobxStore

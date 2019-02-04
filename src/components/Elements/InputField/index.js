@@ -35,7 +35,7 @@ class InputField extends React.Component {
     const { value } = this.state
     const { fieldKey, store } = this.props
     const fieldDef = fieldDefinitions[fieldKey]
-    const { onModelInputChange } = store
+    const { onModelInputChange } = store.modelInputs
     const error = checkValidity(value, fieldDef)
     if (!error) {
       switch (fieldDef.type) {
