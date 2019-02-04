@@ -42,6 +42,17 @@ export function getAncillaryEquipmentStatus(homerFileInfo, applianceFileInfo, an
   return { required, useful, notuseful }
 }
 
+export function disableAllAncillaryEquipment(ancillaryEquipment) {
+  return _.reduce(
+    ancillaryEquipment,
+    (result, item) => {
+      result[item['equipmentType']] = false
+      return result
+    },
+    {}
+  )
+}
+
 /**
  * Functions called based on ancillary equipment we are testing
  */

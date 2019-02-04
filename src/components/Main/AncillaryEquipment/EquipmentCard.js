@@ -21,8 +21,8 @@ class EquipmentCard extends Component {
       return null
     }
     const { equipmentType, label, description, message, status } = this.props.equipmentInfo
-    const { ancillaryEquipmentEnabledStates } = this.props.store
-    const enabled = ancillaryEquipmentEnabledStates[equipmentType]
+    const { enabledStates } = this.props.store.ancillaryEquipment
+    const enabled = enabledStates[equipmentType]
     const isRequired = status === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (

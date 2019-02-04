@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
-import { mobxStore } from './MobxStore'
+import { mainStore } from 'stores/MainStore'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 
@@ -18,7 +18,7 @@ import FourOhFour from 'components/FourOhFour'
 import './App.css'
 
 const App = () => (
-  <Provider store={mobxStore}>
+  <Provider store={mainStore}>
     <Router>
       <ApolloProvider client={Client}>
         <Menu>
