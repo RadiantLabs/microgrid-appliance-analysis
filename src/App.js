@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import _ from 'lodash'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
+import { autorun } from 'mobx'
 import { onSnapshot } from 'mobx-state-tree'
 import { Client } from './Client'
 import { MobxStore, ModelInputs } from './MobxStore'
@@ -87,6 +88,12 @@ onSnapshot(mobxStore, snapshot => {
     JSON.stringify(snapshot.excludedTableColumns)
   )
 })
+
+/**
+ * Run functions whenever arguments change
+ */
+autorun(() => mobxStore.fetchHomer(mobxStore.activeHomerFileInfo))
+autorun(() => mobxStore.fetchAppliance(mobxStore.activeApplianceFileInfo))
 
 const App = () => (
   <Provider store={mobxStore}>

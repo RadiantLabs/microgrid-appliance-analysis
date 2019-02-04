@@ -1,9 +1,13 @@
 ## Convert to Mobx State Tree
 
-- [ ] Save excluded table columns to localstorage (or snapshots)
+- [x] Save excluded table columns to localStorage (or snapshots)
 - [ ] Make sure homer and appliance file chooser switches files
-- [ ] Battery Training
 - [ ] Ancillary Equipment View
+- [ ] Battery Training: Battery Training really goes with the HOMER file upload. So maybe the HOMER file, the trained model, and the HOMER file metadata should be part of different same model. Then use references from the main store? These should be stored separately in localStorage.
+
+  - [ ] Look into model.volatile for storing training logs
+  - [ ] Store trained model in separate store? Do I listen for a patch?
+  - [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
 ## Battery charging problem
 
@@ -31,6 +35,10 @@
 
 ## Table fixes
 
+- [ ] Show within table that file is loading
+- [ ] Color code dropdown column selector menu (and decrease line height)
+- [ ] Add Hover on table
+- [ ] Delete column by clicking on X in column header
 - [x] Only add column headers and units when rendering table (don't store those with the data)
 - [x] Calculate new combinedColumnHeaderOrder as a computed function in store based on excluded columns
 - [x] Add Column Selector to combined table
@@ -41,9 +49,6 @@
 - [ ] Put battery stats in Battery Energy Content tab
 - [x] Have hover tooltip in column indicator. Click turns it on or off
 - [x] Clean up styling in column selector indicator
-- [ ] Color code dropdown column selector menu (and decrease line height)
-- [ ] Add Hover on table
-- [ ] Delete column by clicking on X in column header
 
 ## TODO:
 
