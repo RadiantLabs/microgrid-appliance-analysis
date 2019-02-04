@@ -78,6 +78,39 @@ export const MobxStore = types
       self.activeAppliance = appliance
       self.applianceIsLoading = false
     }),
+    // Choose active HOMER or Appliance file
+    setActiveHomerFile(event, data) {
+      self.activeHomerFileInfo = _.find(homerFiles, {
+        fileName: data.value,
+      })
+    },
+    setActiveApplianceFile(event, data) {
+      self.activeApplianceFileInfo = _.find(applianceFiles, {
+        fileName: data.value,
+      })
+    },
+  }))
+  .views(self => ({
+    get calculatedColumns() {
+      return calculateNewLoads({
+        homer: self.activeHomer,
+        appliance: self.activeAppliance,
+        modelInputs: self.modelInputs,
+        homerStats: self.homerStats,
+        constants: {},
+      })
+    },
+    get combinedTable() {
+      return combineTables(self.activeHomer, self.calculatedColumns, self.activeAppliance)
+    },
+    get homerStats() {
+      return _.isEmpty(self.activeHomer) ? null : getHomerStats(self.activeHomer)
+    },
+    get summaryStats() {
+      return _.isEmpty(self.calculatedColumns)
+        ? null
+        : getSummaryStats(self.calculatedColumns, self.modelInputs)
+    },
   }))
 
 /**
