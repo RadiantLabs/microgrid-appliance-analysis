@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import _ from 'lodash'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
+import { onSnapshot } from 'mobx-state-tree'
 import { Client } from './Client'
 import { MobxStore, ModelInputs } from './MobxStore'
-import mobxLocalStorage from 'mobx-localstorage'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
@@ -43,7 +43,7 @@ const initialModelInputs = {
   revenuePerProductionUnitsUnits: '$ / kg',
 }
 
-const initialState = {
+let initialState = {
   initHomerFileName,
   homerIsLoading: true,
   activeHomerFileInfo,
@@ -60,9 +60,33 @@ const initialState = {
   excludedTableColumns: [],
 }
 
+// Load entire state fromm local storage as long as the model shape are this same
+// This allows the developer to modify the model and get a fresh state
+// if (localStorage.getItem('microgridAppliances')) {
+//   const json = JSON.parse(localStorage.getItem('microgridAppliances'))
+//   if (MobxStore.is(json)) {
+//     initialState = json
+//   }
+// }
+
+// Only load selective pieces of the state for now
+if (localStorage.getItem('microgridAppliances_excludedTableColumns')) {
+  const excludedTableColumns = JSON.parse(
+    localStorage.getItem('microgridAppliances_excludedTableColumns')
+  )
+  initialState = { ...initialState, ...{ excludedTableColumns } }
+}
+
 let mobxStore = MobxStore.create(initialState)
-// This is to be able to inspect the store from the inspector at any time.
-window.mobxStore = mobxStore
+window.mobxStore = mobxStore // inspect the store at any time.
+
+onSnapshot(mobxStore, snapshot => {
+  // localStorage.setItem('microgridAppliances', JSON.stringify(snapshot))
+  localStorage.setItem(
+    'microgridAppliances_excludedTableColumns',
+    JSON.stringify(snapshot.excludedTableColumns)
+  )
+})
 
 const App = () => (
   <Provider store={mobxStore}>
