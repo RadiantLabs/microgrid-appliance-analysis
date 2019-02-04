@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import _ from 'lodash'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import MobxStore from './MobxStore'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
+import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 
 // Route Pages
 import Main from 'components/Main'
@@ -17,8 +19,27 @@ import FourOhFour from 'components/FourOhFour'
 // import TodoExample from 'componentsTodo'
 import './App.css'
 
+/**
+ * Initialize Mobx State Tree Store
+ */
+// let mobxStore = new MobxStore() // Vanilla Mobx
+const initHomerFileName = '12-50 Oversize 20'
+const initApplianceFileName = 'rice_mill_usage_profile'
+
+const initialState = {
+  initHomerFileName,
+  homerIsLoading: true,
+  activeHomerFileInfo: _.find(homerFiles, { fileName: initHomerFileName }),
+  activeHomer: [],
+
+  initApplianceFileName,
+  applianceIsLoading: false,
+  activeApplianceFileInfo: _.find(applianceFiles, { fileName: initApplianceFileName }),
+  activeAppliance: [],
+}
+
+let mobxStore = MobxStore.create(initialState)
 // This is to be able to inspect the store from the inspector at any time.
-let mobxStore = new MobxStore()
 window.mobxStore = mobxStore
 
 const App = () => (

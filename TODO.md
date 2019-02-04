@@ -1,34 +1,28 @@
-# TODO
-
 ## Steps In progress
-
-- Is taking the mean of an average ok? Should I try with Energy content (that doesn't solve the probably above with electricalProductionLoadDiff)
 
 ## Battery charging problem
 
 - [ ] Fix problems with predictions: test different models:
-
-  - [ ] Output training time in UI
-  - [ ] Allow Epoch selection in UI (???)
-  - [ ] Allow Model type in UI {???}
-  - [x] Check that I have the correct shape. When using this function in the example repo: `[1, _.size(featureDescriptions)]`
-    - > Error: Error when checking : expected dense_Dense1_input to have shape [null,12] but got array with shape [12,1].
-  - [x] Make sure training and test data is lined up correctly (features line up with targets)
-  - [x] Try LOTS of epochs (50)
-  - [x] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
-  - [x] multiLayerPerceptronRegressionModel1Hidden and multiLayerPerceptronRegressionModel2Hidden
-  - [x] Use and optimize linearRegressionModel layers using DSS
-  - [x] Understand data normalization better and make sure I'm doing it correctly. XGBoost worked well, but also works well with unnormalized data, which means I may not be normalizing it correctly (gracefully handles un-normalized or missing data, while being accurate and fast to train)
-  - [x] Use different splits of the data
-  - [x] Check how validation is done in the current script
-  - [ ] Split battery model into it's own store
-
 - [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
-- [ ] Add button that retrains model
+- [ ] Split battery model into it's own store (?)
 - [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
 - [ ] Detect if HOMER file needs to be remodeled. A couple approaches:
+
   - convert SoC into a long, concatenated string and compare
   - sum SoC and hash it, along with other columns used for modeling. Compare speed of approaches
+
+- [x] Output training time in UI
+- [x] Check that I have the correct shape. When using this function in the example repo: `[1, _.size(featureDescriptions)]`
+  - > Error: Error when checking : expected dense_Dense1_input to have shape [null,12] but got array with shape [12,1].
+- [x] Make sure training and test data is lined up correctly (features line up with targets)
+- [x] Try LOTS of epochs (50)
+- [x] Plot Predicted vs. Actual in Tensorflow examples to compare with this one
+- [x] multiLayerPerceptronRegressionModel1Hidden and multiLayerPerceptronRegressionModel2Hidden
+- [x] Use and optimize linearRegressionModel layers using DSS
+- [x] Understand data normalization better and make sure I'm doing it correctly. XGBoost worked well, but also works well with unnormalized data, which means I may not be normalizing it correctly (gracefully handles un-normalized or missing data, while being accurate and fast to train)
+- [x] Use different splits of the data
+- [x] Check how validation is done in the current script
+- [x] Add button that retrains model
 
 ## Table fixes
 
@@ -38,27 +32,17 @@
 - [x] Filter columns in combined table
 - [x] Store column filters in localstorage
 - [x] **_Make sure table updates on homer or appliance change_**
-- [ ] Consolidate tables
-  - [ ] Comment out appliance and HOMER table
-  - [ ] Put battery stats in Battery Energy Content tab
-- [ ] Have hover tooltip in column indicator. Click turns it on or off
-- [ ] Turn on or off blocks of columns in with the legend
-- [ ] Clean up styling in column selector indicator
+- [x] Consolidate tables
+- [ ] Put battery stats in Battery Energy Content tab
+- [x] Have hover tooltip in column indicator. Click turns it on or off
+- [x] Clean up styling in column selector indicator
 - [ ] Color code dropdown column selector menu (and decrease line height)
 - [ ] Add Hover on table
+- [ ] Delete column by clicking on X in column header
 
 ## TODO:
 
-- [ ] Allow loading homer and appliance file from any route (currently only works on home)
-  - `process.env.PUBLIC_URL + path` where path starts with `/data` is suppose to work but it's not.
-  - homerIsLoading also includes loading the data and parsing it. But the filechooser breaks before
-    that because fileInfo hasn't even loaded from that route for some reason.
-  - Some directions:
-    - Guard file chooser
-    - Figure out absolute paths with process.env.PUBLIC_URL
-    - Always redirect to root path with React Router
-    - add PUBLIC_URL=public/ to .env
-    - manually edit window.fetch(path) based on which route I'm currently on
+- [x] Allow loading homer and appliance file from any route (currently only works on home)
 - [ ] Create universally accessible small grey header. See unmet loads and battery model screens
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
 - [ ] Indicator that we are currently calculating
@@ -70,18 +54,14 @@
 - [ ] Render appliance summary stats
 - [ ] Min State of chart is fragile. Find a more robust way of finding the floor
 - [ ] Add hour offset input(?)
-- [ ] Parse Table dates
-  - [ ] Show chart by datetime instead of hour of year (toggle between hour and datetime)
-  - [ ] Page through datetime chart by day, week, month
+- [ ] Show Load and Unmet Load chart by datetime instead of hour of year (toggle between hour and datetime)
+- [ ] Page through datetime chart by day, week, month
 - [ ] Show column stats (max, min, avg, std) for HOMER and combined tables
 
 ## TODO: Long term
 
 - [ ] Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 - [ ] Load other HOMER and appliance files in the background
-- [ ] Snake case all header names. I can have a lookup to display them nicely (generic_1_k_wh_lead_acid_asm_energy_content)
-- [ ] Measure battery capacity in the field and compare with HOMER models. Quantify
-- [ ] Dropdown of selects for keeping and removing table colums
 
 # Done
 

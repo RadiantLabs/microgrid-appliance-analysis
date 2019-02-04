@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { configure, observable, decorate, action, runInAction, computed, autorun } from 'mobx'
+import { types, flow, applySnapshot } from 'mobx-state-tree'
 import localStorage from 'mobx-localstorage'
 import * as tf from '@tensorflow/tfjs'
 import { fetchFile, combineTables } from 'utils/helpers'
@@ -21,16 +22,50 @@ import { getAncillaryEquipmentStatus } from 'utils/ancillaryEquipmentRules'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 configure({ enforceActions: 'observed' })
 
-class MobxStore {
+/**
+ * Mobx State Tree Store
+ */
+const MobxStore = types
+  .model({
+    // Homer Data
+    initHomerFileName: types.string,
+    homerIsLoading: types.boolean,
+    activeHomerFileInfo: types.frozen(),
+    activeHomer: types.frozen(),
+
+    // Appliance Info
+    initApplianceFileName: types.string,
+    applianceIsLoading: types.boolean,
+    activeApplianceFileInfo: types.frozen(),
+    activeAppliance: types.frozen(),
+  })
+  .actions(self => ({
+    afterCreate() {
+      self.fetchHomer(self.activeHomerFileInfo)
+      self.fetchAppliance(self.activeApplianceFileInfo)
+    },
+    fetchHomer: flow(function* load(activeHomerFileInfo) {
+      self.homerIsLoading = true
+      const homer = yield fetchFile(activeHomerFileInfo, window.location)
+      self.activeHomer = homer
+      self.homerIsLoading = false
+    }),
+    fetchAppliance: flow(function* load(activeApplianceFileInfo) {
+      self.applianceIsLoading = true
+      const appliance = yield fetchFile(activeApplianceFileInfo, window.location)
+      self.activeAppliance = appliance
+      self.applianceIsLoading = false
+    }),
+  }))
+
+/**
+ * Original Mobx Store
+ */
+class MobxStoreOriginal {
   constructor() {
     autorun(() => this.fetchHomer(this.activeHomerFileInfo))
     autorun(() => this.fetchAppliance(this.activeApplianceFileInfo))
     autorun(() => this.trainBatteryModel(this.calculatedColumns))
-    // Is not observed. We need to run the onChange handler
-    // autorun(() => {
-    //   this.windowPathName = window.location.pathname
-    // })
-
     autorun(() =>
       this.battery1HiddenRegressor(
         this.batteryNumFeatures,
@@ -55,7 +90,6 @@ class MobxStore {
     )
   }
 
-  windowPathName = null
   initHomerFileName = '12-50 Oversize 20'
   initApplianceFileName = 'rice_mill_usage_profile'
   activeHomer = null
