@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import { MobxStore, ModelInputs } from './MobxStore'
+import mobxLocalStorage from 'mobx-localstorage'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
@@ -54,6 +55,9 @@ const initialState = {
   activeAppliance: [],
 
   modelInputs: ModelInputs.create(initialModelInputs),
+
+  excludedTableColumns: new Map(JSON.parse(mobxLocalStorage.getItem('excludedTableColumns'))),
+  // excludedTableColumns: [],
 }
 
 let mobxStore = MobxStore.create(initialState)

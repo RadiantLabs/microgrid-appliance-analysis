@@ -59,7 +59,11 @@ export const MobxStore = types
     activeApplianceFileInfo: types.frozen(),
     activeAppliance: types.frozen(),
 
+    // editable fields - may make this an array of ModelInputs eventually
     modelInputs: ModelInputs,
+
+    excludedTableColumns: types.frozen(),
+    excludedTableColumns: types.frozen(),
   })
   .actions(self => ({
     afterCreate() {
@@ -89,6 +93,15 @@ export const MobxStore = types
         fileName: data.value,
       })
     },
+    setExcludedTableColumns(columnName) {
+      if (self.excludedTableColumns.has(columnName)) {
+        self.excludedTableColumns.delete(columnName)
+        self.excludedTableColumns = self.excludedTableColumns
+      } else {
+        self.excludedTableColumns.set(columnName, true)
+        self.excludedTableColumns = self.excludedTableColumns
+      }
+    },
   }))
   .views(self => ({
     get calculatedColumns() {
@@ -110,6 +123,16 @@ export const MobxStore = types
       return _.isEmpty(self.calculatedColumns)
         ? null
         : getSummaryStats(self.calculatedColumns, self.modelInputs)
+    },
+    get filteredCombinedTableHeaders() {
+      return _.filter(combinedColumnHeaderOrder, header => {
+        return !self.excludedTableColumns.has(header)
+      })
+    },
+    get percentTableColumnsShowing() {
+      return _.round(
+        (_.size(self.filteredCombinedTableHeaders) / _.size(combinedColumnHeaderOrder)) * 100
+      )
     },
   }))
 

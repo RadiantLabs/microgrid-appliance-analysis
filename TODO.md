@@ -1,4 +1,9 @@
-## Steps In progress
+## Convert to Mobx State Tree
+
+- [ ] Save excluded table columns to localstorage (or snapshots)
+- [ ] Make sure homer and appliance file chooser switches files
+- [ ] Battery Training
+- [ ] Ancillary Equipment View
 
 ## Battery charging problem
 
