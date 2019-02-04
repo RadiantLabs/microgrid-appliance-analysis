@@ -62,8 +62,7 @@ export const MobxStore = types
     // editable fields - may make this an array of ModelInputs eventually
     modelInputs: ModelInputs,
 
-    excludedTableColumns: types.frozen(),
-    excludedTableColumns: types.frozen(),
+    excludedTableColumns: types.optional(types.array(types.string), []),
   })
   .actions(self => ({
     afterCreate() {
@@ -94,12 +93,10 @@ export const MobxStore = types
       })
     },
     setExcludedTableColumns(columnName) {
-      if (self.excludedTableColumns.has(columnName)) {
-        self.excludedTableColumns.delete(columnName)
-        self.excludedTableColumns = self.excludedTableColumns
+      if (_.includes(self.excludedTableColumns, columnName)) {
+        self.excludedTableColumns = _.without(self.excludedTableColumns, columnName)
       } else {
-        self.excludedTableColumns.set(columnName, true)
-        self.excludedTableColumns = self.excludedTableColumns
+        self.excludedTableColumns.push(columnName)
       }
     },
   }))
@@ -126,7 +123,7 @@ export const MobxStore = types
     },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {
-        return !self.excludedTableColumns.has(header)
+        return !_.includes(self.excludedTableColumns, header)
       })
     },
     get percentTableColumnsShowing() {

@@ -19,7 +19,9 @@ const selectorBoxStyles = {
 
 const SelectedColumnIndicator = inject('store')(
   observer(({ store, column, excludedColumns, columnWidth, ...rest }) => {
-    const tableType = excludedColumns.has(column) ? 'excluded' : columnHeaderByTableType[column]
+    const tableType = _.includes(excludedColumns, column)
+      ? 'excluded'
+      : columnHeaderByTableType[column]
     return (
       <div
         {...rest}
@@ -130,7 +132,7 @@ class ColumnSelector extends React.Component {
                   <Checkbox
                     label={<label>{header}</label>}
                     onChange={this.handleCheckChange}
-                    checked={!excludedTableColumns.has(header)}
+                    checked={!_.includes(excludedTableColumns, header)}
                   />
                 </List.Item>
               )

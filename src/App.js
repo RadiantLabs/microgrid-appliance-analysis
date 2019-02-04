@@ -56,8 +56,8 @@ const initialState = {
 
   modelInputs: ModelInputs.create(initialModelInputs),
 
-  excludedTableColumns: new Map(JSON.parse(mobxLocalStorage.getItem('excludedTableColumns'))),
-  // excludedTableColumns: [],
+  // excludedTableColumns: new Map(JSON.parse(mobxLocalStorage.getItem('excludedTableColumns'))),
+  excludedTableColumns: [],
 }
 
 let mobxStore = MobxStore.create(initialState)
