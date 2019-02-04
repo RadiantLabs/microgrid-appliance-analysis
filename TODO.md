@@ -1,7 +1,7 @@
 ## Convert to Mobx State Tree
 
 - [x] Save excluded table columns to localStorage (or snapshots)
-- [ ] Make sure homer and appliance file chooser switches files
+- [x] Make sure homer and appliance file chooser switches files
 - [ ] Ancillary Equipment View
 - [ ] Battery Training: Battery Training really goes with the HOMER file upload. So maybe the HOMER file, the trained model, and the HOMER file metadata should be part of different same model. Then use references from the main store? These should be stored separately in localStorage.
 
