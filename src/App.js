@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
-import { mainStore } from 'stores/MainStore'
+import { mainStore, history } from 'stores/MainStore'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
 
@@ -19,7 +19,7 @@ import './App.css'
 
 const App = () => (
   <Provider store={mainStore}>
-    <Router>
+    <Router history={history}>
       <ApolloProvider client={Client}>
         <Menu>
           <Menu.Item header as={NavItem} to="/">

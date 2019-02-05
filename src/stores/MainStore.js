@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import { autorun } from 'mobx'
 import { types, flow, onSnapshot } from 'mobx-state-tree'
+import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
+import createBrowserHistory from 'history/createBrowserHistory'
 
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
@@ -36,6 +38,7 @@ export const MainStore = types
 
     // editable fields - may make this an array of ModelInputsStore eventually
     modelInputs: ModelInputsStore,
+    router: RouterModel,
     ancillaryEquipment: AncillaryEquipmentStore,
     grid: HomerStore,
   })
@@ -134,6 +137,13 @@ const initialAncillaryEquipmentState = {
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
 }
 
+/**
+ * Hook React Router up to Store
+ * Hook up router model to browser history object
+ */
+const routerModel = RouterModel.create()
+const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
+
 let initialMainState = {
   initHomerFileName,
   homerIsLoading: true,
@@ -145,11 +155,15 @@ let initialMainState = {
   activeAppliance: [],
   excludedTableColumns: [],
 
+  router: routerModel,
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
   grid: HomerStore.create(initialHomerState),
 }
 
+/**
+ * State in localStorage
+ */
 // Load entire state fromm local storage as long as the model shape are this same
 // This allows the developer to modify the model and get a fresh state
 // if (localStorage.getItem('microgridAppliances')) {
@@ -171,7 +185,7 @@ if (localStorage.getItem('microgridAppliances_excludedTableColumns')) {
  * Instantiate Primary Store
  */
 let mainStore = MainStore.create(initialMainState)
-window.mainStore = mainStore // inspect the store at any time.
+window.mainStore = mainStore // inspect the store in console for debugging
 
 /**
  * Watch for snapshot changes
@@ -185,7 +199,7 @@ onSnapshot(mainStore, snapshot => {
 })
 
 /**
- * Run functions whenever arguments change
+ * autorun: Run functions whenever arguments change
  */
 autorun(() => mainStore.fetchHomer(mainStore.activeHomerFileInfo))
 autorun(() => mainStore.fetchAppliance(mainStore.activeApplianceFileInfo))
@@ -209,4 +223,4 @@ autorun(() =>
   })
 )
 
-export { mainStore }
+export { mainStore, history }
