@@ -10,6 +10,9 @@ export function convertTableToTrainingData(
   trainingColumns,
   trainingSplitPercent = 0.65
 ) {
+  if (_.isEmpty(table)) {
+    return null
+  }
   const shuffledTable = _.shuffle(table)
 
   // Array of target variables. The index of each target should line up with the

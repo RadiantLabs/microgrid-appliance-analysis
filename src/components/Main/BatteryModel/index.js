@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import * as tf from '@tensorflow/tfjs'
 import { Grid, Button } from 'semantic-ui-react'
-// import CurveFittingChart from 'components/Charts/CurveFittingChart'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
 import LoaderSpinner from 'components/Elements/Loader'
@@ -18,11 +16,9 @@ class BatteryModel extends React.Component {
   }
 
   render() {
+    const { calculatedColumns, grid } = this.props.store
     const {
-      calculatedColumns,
-      batteryModel,
       batteryModelName,
-      batteryInputTensorShape,
       batteryPlottablePredictionVsActualData,
       batteryEpochCount,
       batteryCurrentEpoch,
@@ -35,14 +31,9 @@ class BatteryModel extends React.Component {
       batteryTargetColumn,
       batteryTrainingColumns,
       batteryModelStopLoss,
-    } = this.props.store
+    } = grid
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
-    }
-    if (batteryModel) {
-      batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()
-      batteryModel.predict(tf.tensor([1, 0.7], batteryInputTensorShape)).print()
-      batteryModel.predict(tf.tensor([-0.5576, 96.4657], batteryInputTensorShape)).print()
     }
     return (
       <div>

@@ -1,8 +1,13 @@
 import _ from 'lodash'
 import { autorun } from 'mobx'
 import { types, flow, onSnapshot } from 'mobx-state-tree'
+
+// Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
+import { HomerStore } from './HomerStore'
+
+// Import Helpers and domain data
 import { fetchFile, combineTables } from 'utils/helpers'
 import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
@@ -27,24 +32,25 @@ export const MainStore = types
     applianceIsLoading: types.boolean,
     activeApplianceFileInfo: types.frozen(),
     activeAppliance: types.frozen(),
+    excludedTableColumns: types.optional(types.array(types.string), []),
 
     // editable fields - may make this an array of ModelInputsStore eventually
     modelInputs: ModelInputsStore,
     ancillaryEquipment: AncillaryEquipmentStore,
-    excludedTableColumns: types.optional(types.array(types.string), []),
+    grid: HomerStore,
   })
   .actions(self => ({
     afterCreate() {
       self.fetchHomer(self.activeHomerFileInfo)
       self.fetchAppliance(self.activeApplianceFileInfo)
     },
-    fetchHomer: flow(function* load(activeHomerFileInfo) {
+    fetchHomer: flow(function* fetchHomer(activeHomerFileInfo) {
       self.homerIsLoading = true
       const homer = yield fetchFile(activeHomerFileInfo, window.location)
       self.activeHomer = homer
       self.homerIsLoading = false
     }),
-    fetchAppliance: flow(function* load(activeApplianceFileInfo) {
+    fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
       self.applianceIsLoading = true
       const appliance = yield fetchFile(activeApplianceFileInfo, window.location)
       self.activeAppliance = appliance
@@ -111,7 +117,7 @@ const activeHomerFileInfo = _.find(homerFiles, { fileName: initHomerFileName })
 const activeApplianceFileInfo = _.find(applianceFiles, { fileName: initApplianceFileName })
 
 // Model inputs must have a definition in the fieldDefinitions file
-const initialModelInputs = {
+const initialModelInputsState = {
   kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
   dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
   seasonalDerateFactor: null,
@@ -123,9 +129,28 @@ const initialModelInputs = {
   revenuePerProductionUnitsUnits: '$ / kg',
 }
 
-const initialAncillaryEquipment = {
+const initialAncillaryEquipmentState = {
   // Initially set all ancillary equipment to disabled (false)
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
+}
+
+const initialHomerState = {
+  batteryEpochCount: 10,
+  batteryCurrentEpoch: 0,
+  batteryModelStopLoss: 0.1,
+  batteryBatchSize: 40,
+  batteryLearningRate: 0.01,
+  batteryTargetColumn: 'Battery State of Charge',
+  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
+  batteryTrainingData: {},
+  batteryTrainingTime: null,
+  batteryModel: null,
+  batteryModelName: '',
+  batteryTrainingState: 'None',
+  batteryTrainLogs: [],
+  batteryFinalTrainSetLoss: null,
+  batteryValidationSetLoss: null,
+  batteryTestSetLoss: null,
 }
 
 let initialMainState = {
@@ -133,15 +158,15 @@ let initialMainState = {
   homerIsLoading: true,
   activeHomerFileInfo,
   activeHomer: [],
-
   initApplianceFileName,
   applianceIsLoading: false,
   activeApplianceFileInfo,
   activeAppliance: [],
-
-  modelInputs: ModelInputsStore.create(initialModelInputs),
   excludedTableColumns: [],
-  ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipment),
+
+  modelInputs: ModelInputsStore.create(initialModelInputsState),
+  ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
+  grid: HomerStore.create(initialHomerState),
 }
 
 // Load entire state fromm local storage as long as the model shape are this same
@@ -190,5 +215,18 @@ autorun(() =>
     mainStore.ancillaryEquipment.equipmentStatus
   )
 )
+
+// Run the battery regression model
+// autorun(() => mainStore.homer.trainBatteryModel(mainStore.calculatedColumns))
+// autorun(() =>
+//   mainStore.homer.batteryRegressor({
+//     numFeatures: mainStore.homer.batteryNumFeatures,
+//     tensors: mainStore.homer.batteryTensors,
+//     learningRate: mainStore.homer.batteryLearningRate,
+//     batchSize: mainStore.homer.batteryBatchSize,
+//     epochCount: mainStore.homer.batteryEpochCount,
+//     trainingColumns: mainStore.homer.batteryTrainingColumns,
+//   })
+// )
 
 export { mainStore }
