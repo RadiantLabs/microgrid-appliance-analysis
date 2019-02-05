@@ -119,17 +119,16 @@ export const HomerStore = types
       })
     }),
 
-    // self.batteryCurrentEpoch = 0
-    // self.batteryModel = null
-    // self.batteryTrainLogs = []
-    // self.batteryTrainingTime = null
-    // self.batteryFinalTrainSetLoss = null
-    // self.batteryValidationSetLoss = null
-    // self.batteryTestSetLoss = null
-    // self.batteryTrainingState = 'None'
     retrainBatteryModel() {
       _.forEach(initialBatteryState, (val, key) => (self[key] = val))
-      self.trainBatteryModel(getParent(self).calculatedColumns)
+      self.trainBatteryModel({
+        numFeatures: self.batteryNumFeatures,
+        tensors: self.batteryTensors,
+        learningRate: self.batteryLearningRate,
+        batchSize: self.batteryBatchSize,
+        epochCount: self.batteryEpochCount,
+        trainingColumns: self.batteryTrainingColumns,
+      })
     },
   }))
   .views(self => ({
