@@ -37,18 +37,24 @@ class BatteryModel extends React.Component {
     }
     return (
       <div>
-        <Grid columns={2}>
+        <Grid>
           <Grid.Row>
             <Grid.Column>
-              <h2>Battery Charge & Discharge Model</h2>
-              <small style={headerStyle}>
-                Use machine learning to recreate the kinetic battery model based on the HOMER file.
-              </small>
-            </Grid.Column>
-            <Grid.Column>
-              <Button basic color="blue" floated="right" onClick={this.retrainModelClick}>
+              <h2 style={{ display: 'inline-block', marginBottom: '8px' }}>
+                Battery Charge & Discharge Model
+              </h2>
+              <Button
+                basic
+                compact
+                size="tiny"
+                color="blue"
+                onClick={this.retrainModelClick}
+                style={{ verticalAlign: 'top', marginLeft: '1rem', marginTop: '4px' }}>
                 Re-Train model
               </Button>
+              <p style={headerStyle}>
+                Use machine learning to recreate the kinetic battery model based on the HOMER file.
+              </p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
