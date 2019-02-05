@@ -135,7 +135,7 @@ const initialAncillaryEquipmentState = {
 }
 
 const initialHomerState = {
-  batteryEpochCount: 10,
+  batteryEpochCount: 3,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.1,
   batteryBatchSize: 40,
@@ -217,16 +217,15 @@ autorun(() =>
 )
 
 // Run the battery regression model
-// autorun(() => mainStore.homer.trainBatteryModel(mainStore.calculatedColumns))
-// autorun(() =>
-//   mainStore.homer.batteryRegressor({
-//     numFeatures: mainStore.homer.batteryNumFeatures,
-//     tensors: mainStore.homer.batteryTensors,
-//     learningRate: mainStore.homer.batteryLearningRate,
-//     batchSize: mainStore.homer.batteryBatchSize,
-//     epochCount: mainStore.homer.batteryEpochCount,
-//     trainingColumns: mainStore.homer.batteryTrainingColumns,
-//   })
-// )
+autorun(() =>
+  mainStore.grid.trainBatteryModel({
+    numFeatures: mainStore.grid.batteryNumFeatures,
+    tensors: mainStore.grid.batteryTensors,
+    learningRate: mainStore.grid.batteryLearningRate,
+    batchSize: mainStore.grid.batteryBatchSize,
+    epochCount: mainStore.grid.batteryEpochCount,
+    trainingColumns: mainStore.grid.batteryTrainingColumns,
+  })
+)
 
 export { mainStore }

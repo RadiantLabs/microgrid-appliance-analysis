@@ -36,59 +36,24 @@ export const HomerStore = types
     batteryTrainLogs: types.frozen(),
   })
   // .volatile(self => ({}))
+  // For doing updates from within anonymous functions inside the flow generators
+  // https://github.com/mobxjs/mobx-state-tree/issues/915#issuecomment-404461322
   .actions(self => ({
-    // TODO: Try to convert this to a computed property. Mobx doesn't allow
-    // async computed properties but mobx-state-tree might.
-    // trainBatteryModel(calculatedColumns) {
-    //   const combinedTable = getParent(self.combinedTable)
-    //   if (!_.isEmpty(combinedTable)) {
-    //     self.batteryTrainingData = convertTableToTrainingData(
-    //       combinedTable,
-    //       self.batteryTargetColumn,
-    //       self.batteryTrainingColumns
-    //     )
-    //   }
-    // },
-
-    // retrainBatteryModel() {
-    //   self.batteryCurrentEpoch = 0
-    //   self.batteryModel = null
-    //   self.batteryTrainLogs = []
-    //   self.batteryTrainingTime = null // TODO: make types nullable above
-    //   self.batteryFinalTrainSetLoss = null
-    //   self.batteryValidationSetLoss = null
-    //   self.batteryTestSetLoss = null
-    //   self.batteryTrainingState = 'None'
-    //   self.trainBatteryModel(getParent(self.calculatedColumns))
-    // }),
-
-    batteryRegressor: flow(function* batteryRegressor(
+    runInAction(fn) {
+      return fn()
+    },
+  }))
+  .actions(self => ({
+    trainBatteryModel: flow(function* batteryModelRun({
       numFeatures,
-      tensors,
-      learningRate,
-      batchSize,
-      epochCount,
-      trainingColumns
-    ) {
-      self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
-      yield self.batteryModelRun({
-        model: multiLayerPerceptronRegressionModel1Hidden(numFeatures),
-        tensors: tensors,
-        learningRate,
-        batchSize,
-        epochCount,
-        trainingColumns,
-      })
-    }),
-
-    batteryModelRun: flow(function* batteryModelRun({
-      model,
       tensors,
       learningRate,
       batchSize,
       epochCount,
       trainingColumns,
     }) {
+      let model = multiLayerPerceptronRegressionModel1Hidden(numFeatures)
+      self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
       if (_.isEmpty(tensors)) {
         return null
       }
@@ -105,12 +70,14 @@ export const HomerStore = types
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
             const t1 = performance.now()
-            self.batteryCurrentEpoch = epoch
-            self.batteryTrainLogs.push({ epoch, ...logs })
-            self.batteryTrainingTime = t1 - t0
-            if (logs.val_loss < self.batteryModelStopLoss) {
-              model.stopTraining = true
-            }
+            self.runInAction(() => {
+              self.batteryCurrentEpoch = epoch
+              self.batteryTrainLogs = self.batteryTrainLogs.concat({ epoch, ...logs })
+              self.batteryTrainingTime = t1 - t0
+              if (logs.val_loss < self.batteryModelStopLoss) {
+                model.stopTraining = true
+              }
+            })
           },
           onTrainEnd: () => {
             const testSetLoss = calculateTestSetLoss(model, tensors, batchSize)
@@ -118,16 +85,30 @@ export const HomerStore = types
               self.batteryTrainLogs
             )
             const t1 = performance.now()
-            self.batteryModel = model
-            self.batteryTestSetLoss = testSetLoss
-            self.batteryFinalTrainSetLoss = finalTrainSetLoss
-            self.batteryValidationSetLoss = finalValidationSetLoss
-            self.batteryTrainingTime = t1 - t0
-            self.batteryTrainingState = 'Trained'
+            self.runInAction(() => {
+              self.batteryModel = model
+              self.batteryTestSetLoss = testSetLoss
+              self.batteryFinalTrainSetLoss = finalTrainSetLoss
+              self.batteryValidationSetLoss = finalValidationSetLoss
+              self.batteryTrainingTime = t1 - t0
+              self.batteryTrainingState = 'Trained'
+            })
           },
         },
       })
     }),
+
+    retrainBatteryModel() {
+      self.batteryCurrentEpoch = 0
+      self.batteryModel = null
+      self.batteryTrainLogs = []
+      self.batteryTrainingTime = null
+      self.batteryFinalTrainSetLoss = null
+      self.batteryValidationSetLoss = null
+      self.batteryTestSetLoss = null
+      self.batteryTrainingState = 'None'
+      self.trainBatteryModel(getParent(self).calculatedColumns)
+    },
   }))
   .views(self => ({
     get batteryNumFeatures() {
@@ -145,15 +126,15 @@ export const HomerStore = types
         self.batteryTrainingColumns
       )
     },
+    get batteryBaselineLoss() {
+      return _.isEmpty(self.tensors) ? null : computeBaselineLoss(self.tensors)
+    },
     get batteryTensors() {
       if (_.isEmpty(self.batteryTrainingData)) {
         return null
       }
       const { trainFeatures, trainTarget, testFeatures, testTarget } = self.batteryTrainingData
       return arraysToTensors(trainFeatures, trainTarget, testFeatures, testTarget)
-    },
-    get batteryBaselineLoss() {
-      return self.bostonDataIsLoading ? null : computeBaselineLoss(self.tensors)
     },
     get batteryPlottablePredictionVsActualData() {
       if (_.isEmpty(self.batteryModel)) {

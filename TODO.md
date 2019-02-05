@@ -1,19 +1,24 @@
 ## Convert to Mobx State Tree
 
+- [ ] Get loss chart showing training progress
+- [ ] Fix Re-Train Model button
+- [ ] Use afterCreate instead of autorun?
+- [ ] Break actions, models and views into discrete units for clarity `someModel.actions(self => {`
 - [x] Save excluded table columns to localStorage (or snapshots)
 - [x] Make sure homer and appliance file chooser switches files
-- [ ] Ancillary Equipment View
-- [ ] Battery Training: Battery Training really goes with the HOMER file upload. So maybe the HOMER file, the trained model, and the HOMER file metadata should be part of different same model. Then use references from the main store? These should be stored separately in localStorage.
+- [x] Ancillary Equipment View
+- [x] Battery Training: Battery Training really goes with the HOMER file upload. So maybe the HOMER file, the trained model, and the HOMER file metadata should be part of different same model. Then use references from the main store? These should be stored separately in localStorage.
 
   - [ ] Look into model.volatile for storing training logs
-  - [ ] Store trained model in separate store? Do I listen for a patch?
   - [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
 ## Battery charging problem
 
-- [ ] Fix problems with predictions: test different models:
+- [ ] rename batteryEpochCount to batteryMaxEpochCount
+- [ ] Add batteryBaselineLoss to table
+- [x] Fix problems with predictions: test different models:
 - [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
-- [ ] Split battery model into it's own store (?)
+- [x] Split battery model into it's own store (?)
 - [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
 - [ ] Detect if HOMER file needs to be remodeled. A couple approaches:
 

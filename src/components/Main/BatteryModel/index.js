@@ -12,7 +12,7 @@ const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' 
 class BatteryModel extends React.Component {
   retrainModelClick = event => {
     event.preventDefault()
-    this.props.store.retrainBatteryModel()
+    this.props.store.grid.retrainBatteryModel()
   }
 
   render() {
@@ -101,7 +101,7 @@ export default inject('store')(observer(BatteryModel))
 
 const LossChartWrapper = inject('store')(
   observer(({ store }) => {
-    const { batteryTrainingState } = store
+    const { batteryTrainingState } = store.grid
     if (batteryTrainingState === 'None') {
       return null
     }
