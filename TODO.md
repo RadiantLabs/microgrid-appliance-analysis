@@ -1,7 +1,7 @@
 ## Convert to Mobx State Tree
 
-- [ ] Get loss chart showing training progress
-- [ ] Fix Re-Train Model button
+- [x] Get loss chart showing training progress
+- [x] Fix Re-Train Model button
 - [ ] Use afterCreate instead of autorun?
 - [ ] Break actions, models and views into discrete units for clarity `someModel.actions(self => {`
 - [x] Save excluded table columns to localStorage (or snapshots)
