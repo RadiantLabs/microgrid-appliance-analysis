@@ -13,7 +13,7 @@ import { observer, inject } from 'mobx-react'
 
 const LossChart = inject('store')(
   observer(({ store }) => {
-    const { batteryTrainLogs } = store
+    const { batteryTrainLogs } = store.grid
     return (
       <ResponsiveContainer height={600}>
         <LineChart

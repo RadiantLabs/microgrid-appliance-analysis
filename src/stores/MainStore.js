@@ -5,7 +5,7 @@ import { types, flow, onSnapshot } from 'mobx-state-tree'
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
-import { HomerStore } from './HomerStore'
+import { HomerStore, initialHomerState } from './HomerStore'
 
 // Import Helpers and domain data
 import { fetchFile, combineTables } from 'utils/helpers'
@@ -132,25 +132,6 @@ const initialModelInputsState = {
 const initialAncillaryEquipmentState = {
   // Initially set all ancillary equipment to disabled (false)
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
-}
-
-const initialHomerState = {
-  batteryEpochCount: 3,
-  batteryCurrentEpoch: 0,
-  batteryModelStopLoss: 0.1,
-  batteryBatchSize: 40,
-  batteryLearningRate: 0.01,
-  batteryTargetColumn: 'Battery State of Charge',
-  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
-  batteryTrainingData: {},
-  batteryTrainingTime: null,
-  batteryModel: null,
-  batteryModelName: '',
-  batteryTrainingState: 'None',
-  batteryTrainLogs: [],
-  batteryFinalTrainSetLoss: null,
-  batteryValidationSetLoss: null,
-  batteryTestSetLoss: null,
 }
 
 let initialMainState = {

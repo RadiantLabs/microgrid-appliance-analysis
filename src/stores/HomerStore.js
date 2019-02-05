@@ -11,6 +11,28 @@ import {
   multiLayerPerceptronRegressionModel1Hidden,
 } from 'utils/tensorflowHelpers'
 
+const initialBatteryState = {
+  batteryEpochCount: 3,
+  batteryCurrentEpoch: 0,
+  batteryModelStopLoss: 0.1,
+  batteryBatchSize: 40,
+  batteryLearningRate: 0.01,
+  batteryTargetColumn: 'Battery State of Charge',
+  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
+  batteryTrainingTime: null,
+  batteryModel: null,
+  batteryModelName: '',
+  batteryTrainingState: 'None',
+  batteryTrainLogs: [],
+  batteryFinalTrainSetLoss: null,
+  batteryValidationSetLoss: null,
+  batteryTestSetLoss: null,
+}
+export const initialHomerState = {
+  // I will be adding more HOMER-specific fields soon
+  ...initialBatteryState,
+}
+
 /**
  * Homer + Battery Kinetic Model Store
  */
@@ -22,7 +44,6 @@ export const HomerStore = types
     batteryLearningRate: types.number,
     batteryTargetColumn: types.string,
     batteryTrainingColumns: types.array(types.string),
-    // batteryTrainingData: types.frozen(),
     batteryModel: types.maybeNull(types.frozen()),
     batteryModelName: types.string,
     batteryTrainingState: types.enumeration('trainingState', ['None', 'Training', 'Trained']),
@@ -98,15 +119,16 @@ export const HomerStore = types
       })
     }),
 
+    // self.batteryCurrentEpoch = 0
+    // self.batteryModel = null
+    // self.batteryTrainLogs = []
+    // self.batteryTrainingTime = null
+    // self.batteryFinalTrainSetLoss = null
+    // self.batteryValidationSetLoss = null
+    // self.batteryTestSetLoss = null
+    // self.batteryTrainingState = 'None'
     retrainBatteryModel() {
-      self.batteryCurrentEpoch = 0
-      self.batteryModel = null
-      self.batteryTrainLogs = []
-      self.batteryTrainingTime = null
-      self.batteryFinalTrainSetLoss = null
-      self.batteryValidationSetLoss = null
-      self.batteryTestSetLoss = null
-      self.batteryTrainingState = 'None'
+      _.forEach(initialBatteryState, (val, key) => (self[key] = val))
       self.trainBatteryModel(getParent(self).calculatedColumns)
     },
   }))
