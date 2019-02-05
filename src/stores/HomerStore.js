@@ -10,4 +10,3 @@ import { types, flow, applySnapshot, onSnapshot } from 'mobx-state-tree'
 //   calculatePlottablePredictedVsActualData,
 //   multiLayerPerceptronRegressionModel1Hidden,
 // } from 'utils/tensorflowHelpers'
-// import { getAncillaryEquipmentStatus } from 'utils/ancillaryEquipmentRules'

@@ -7,8 +7,8 @@ import EquipmentCard from './EquipmentCard'
 class AncillaryEquipment extends Component {
   render() {
     const {
-      ancillaryEquipmentStatus: { required, useful, notuseful },
-    } = this.props.store
+      equipmentStatus: { required, useful, notuseful },
+    } = this.props.store.ancillaryEquipment
     return (
       <div>
         <EquipmentRowsByStatus status={required} header="Required Equipment" />

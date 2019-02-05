@@ -14,9 +14,10 @@ class FileChoosers extends Component {
         activeApplianceFileInfo,
         homerIsLoading,
         applianceIsLoading,
-        enabledAncillaryEquipmentList,
+        ancillaryEquipment,
       },
     } = this.props
+    const { enabledEquipmentList } = ancillaryEquipment
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
@@ -64,7 +65,7 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Selected Ancillary Equipment
             </Header>
-            {!_.isEmpty(enabledAncillaryEquipmentList) && enabledAncillaryEquipmentList.join(', ')}
+            {!_.isEmpty(enabledEquipmentList) && enabledEquipmentList.join(', ')}
           </Grid.Column>
         </Grid.Row>
       </Grid>

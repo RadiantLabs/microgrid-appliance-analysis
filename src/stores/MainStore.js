@@ -128,8 +128,6 @@ const initialAncillaryEquipment = {
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
 }
 
-console.log('initialAncillaryEquipment: ', initialAncillaryEquipment)
-
 let initialMainState = {
   initHomerFileName,
   homerIsLoading: true,
@@ -185,5 +183,12 @@ onSnapshot(mainStore, snapshot => {
  */
 autorun(() => mainStore.fetchHomer(mainStore.activeHomerFileInfo))
 autorun(() => mainStore.fetchAppliance(mainStore.activeApplianceFileInfo))
+
+// Set Ancillary Equipment enabled/disabled status based on if it is required:
+autorun(() =>
+  mainStore.ancillaryEquipment.setEquipmentEnabledFromStatus(
+    mainStore.ancillaryEquipment.equipmentStatus
+  )
+)
 
 export { mainStore }

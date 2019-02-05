@@ -53,6 +53,19 @@ export function disableAllAncillaryEquipment(ancillaryEquipment) {
   )
 }
 
+export function setAncillaryEquipmentEnabledFromStatus(equipmentStatus, enabledStates) {
+  const requiredEquipmentTypes = _.map(equipmentStatus['required'], 'equipmentType')
+  const clonedEnabled = _.cloneDeep(enabledStates)
+  return _.reduce(
+    requiredEquipmentTypes,
+    (result, equipmentType) => {
+      result[equipmentType] = true
+      return result
+    },
+    clonedEnabled
+  )
+}
+
 /**
  * Functions called based on ancillary equipment we are testing
  */

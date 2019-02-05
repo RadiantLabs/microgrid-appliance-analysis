@@ -12,7 +12,7 @@ const cardBorderStyles = {
 class EquipmentCard extends Component {
   handleToggleChange = (equipmentType, event, data) => {
     event.preventDefault()
-    this.props.store.setAncillaryEquipmentEnabledFromCheckbox(equipmentType, data.checked)
+    this.props.store.ancillaryEquipment.setEnabledFromCheckbox(equipmentType, data.checked)
     return null
   }
 
