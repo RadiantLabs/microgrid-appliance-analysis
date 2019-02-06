@@ -11,6 +11,7 @@ import { NavItem } from 'components/Elements/NavItem'
 import Main from 'components/Main'
 import About from 'components/About'
 import Profile from 'components/Profile'
+import Snapshots from 'components/Snapshots'
 import FourOhFour from 'components/FourOhFour'
 
 // import DevTools from 'mobx-react-devtools'
@@ -26,11 +27,9 @@ const App = () => (
             Microgrid Appliance Analysis Tool
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item name="wrench">
-              <Icon name="wrench" />
-            </Menu.Item>
+            <Menu.Item as={NavItem} to="/snapshots" icon="photo" />
             <Menu.Item as={NavItem} to="/about" name="About" />
-            <Menu.Item as={NavItem} to="/profile" name="Logout" />
+            {/*<Menu.Item as={NavItem} to="/profile" name="Logout" />*/}
           </Menu.Menu>
         </Menu>
 
@@ -39,7 +38,8 @@ const App = () => (
             <Route path="/" exact component={Main} />
             <Route path="/tool" component={Main} />
             <Route path="/about" component={About} />
-            <Route path="/profile" component={Profile} />
+            <Route path="/snapshots" component={Snapshots} />
+            {/*<Route path="/profile" component={Profile} />*/}
             <Route component={FourOhFour} />
           </Switch>
         </div>

@@ -77,6 +77,7 @@
 
 - [ ] Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 - [ ] Load other HOMER and appliance files in the background
+- [ ] Fonts are loading slowly. How to cache them?
 
 # Done
 
