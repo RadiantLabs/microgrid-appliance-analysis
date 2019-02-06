@@ -5,8 +5,8 @@ import { Grid, Button } from 'semantic-ui-react'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
 import LoaderSpinner from 'components/Elements/Loader'
-import { greyColors } from 'utils/constants'
 import { FinalLossTable, EpochProgressTable } from 'components/Elements/MLResultsTables'
+import { greyColors } from 'utils/constants'
 const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
 class BatteryModel extends React.Component {
