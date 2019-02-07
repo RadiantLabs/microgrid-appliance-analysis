@@ -1,11 +1,12 @@
 import * as React from 'react'
+import { Segment } from 'semantic-ui-react'
 
 const FourOhFour = ({ match }) => {
   console.log('match: ', match)
   return (
-    <div>
-      <h2>404: Page Not Found</h2>
-    </div>
+    <Segment>
+      <h2>Page Not Found</h2>
+    </Segment>
   )
 }
 

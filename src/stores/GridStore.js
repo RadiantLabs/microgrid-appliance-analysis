@@ -108,7 +108,7 @@ export const GridStore = types
             )
             const t1 = performance.now()
             // self.saveModel(model)
-            self.saveModelSync(model)
+            // self.saveModelSync(model)
             self.runInAction(() => {
               self.batteryModel = model
               self.batteryTestSetLoss = testSetLoss

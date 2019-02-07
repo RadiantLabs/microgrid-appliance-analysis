@@ -6,6 +6,7 @@ import { Client } from './Client'
 import { mainStore, history } from 'stores/MainStore'
 import { Menu, Icon } from 'semantic-ui-react'
 import { NavItem } from 'components/Elements/NavItem'
+import shortLogo from 'images/factore-short-logo-20x26.png'
 
 // Route Pages
 import Main from 'components/Main'
@@ -23,11 +24,27 @@ const App = () => (
       <ApolloProvider client={Client}>
         <Menu>
           <Menu.Item header as={NavItem} to="/">
+            <img
+              src={shortLogo}
+              style={{ width: '20px', marginRight: '5px' }}
+              alt="Factor[e] Microgrid Appliance Tool"
+            />
             Microgrid Appliance Analysis Tool
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item as={NavItem} to="/snapshots" icon="photo" />
-            <Menu.Item as={NavItem} to="/about" name="About" />
+            <Menu.Item as={NavItem} to="/snapshots">
+              <Icon name="photo" />
+              Snapshots
+            </Menu.Item>
+            <Menu.Item as={NavItem} to="/files">
+              <Icon name="file" />
+              Files
+            </Menu.Item>
+            <Menu.Item as={NavItem} to="/about">
+              <Icon name="info circle" />
+              About Us
+            </Menu.Item>
+            {/*<Menu.Item as={NavItem} to="/about" name="About" />*/}
             {/*<Menu.Item as={NavItem} to="/profile" name="Logout" />*/}
           </Menu.Menu>
         </Menu>
