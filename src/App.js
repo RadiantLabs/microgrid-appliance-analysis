@@ -10,7 +10,7 @@ import { NavItem } from 'components/Elements/NavItem'
 // Route Pages
 import Main from 'components/Main'
 import About from 'components/About'
-import Profile from 'components/Profile'
+// import Profile from 'components/Profile'
 import FourOhFour from 'components/FourOhFour'
 
 // import DevTools from 'mobx-react-devtools'

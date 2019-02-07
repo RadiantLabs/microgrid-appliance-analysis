@@ -7,7 +7,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
-import { HomerStore, initialHomerState } from './HomerStore'
+import { GridStore, initialHomerState } from './GridStore'
 
 // Import Helpers and domain data
 import { fetchFile, combineTables } from 'utils/helpers'
@@ -40,7 +40,7 @@ export const MainStore = types
     modelInputs: ModelInputsStore,
     router: RouterModel,
     ancillaryEquipment: AncillaryEquipmentStore,
-    grid: HomerStore,
+    grid: GridStore,
   })
   .actions(self => ({
     afterCreate() {
@@ -158,7 +158,7 @@ let initialMainState = {
   router: routerModel,
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
-  grid: HomerStore.create(initialHomerState),
+  grid: GridStore.create(initialHomerState),
 }
 
 /**
