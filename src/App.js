@@ -10,8 +10,7 @@ import { NavItem } from 'components/Elements/NavItem'
 // Route Pages
 import Main from 'components/Main'
 import About from 'components/About'
-import Profile from 'components/Profile'
-import Snapshots from 'components/Snapshots'
+// import Profile from 'components/Profile'
 import FourOhFour from 'components/FourOhFour'
 
 // import DevTools from 'mobx-react-devtools'
@@ -38,7 +37,6 @@ const App = () => (
             <Route path="/" exact component={Main} />
             <Route path="/tool" component={Main} />
             <Route path="/about" component={About} />
-            <Route path="/snapshots" component={Snapshots} />
             {/*<Route path="/profile" component={Profile} />*/}
             <Route component={FourOhFour} />
           </Switch>
