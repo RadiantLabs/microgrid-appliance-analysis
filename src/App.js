@@ -30,7 +30,7 @@ const App = () => (
               <Icon name="wrench" />
             </Menu.Item>
             <Menu.Item as={NavItem} to="/about" name="About" />
-            <Menu.Item as={NavItem} to="/profile" name="Logout" />
+            {/*<Menu.Item as={NavItem} to="/profile" name="Logout" />*/}
           </Menu.Menu>
         </Menu>
 
@@ -39,7 +39,7 @@ const App = () => (
             <Route path="/" exact component={Main} />
             <Route path="/tool" component={Main} />
             <Route path="/about" component={About} />
-            <Route path="/profile" component={Profile} />
+            {/*<Route path="/profile" component={Profile} />*/}
             <Route component={FourOhFour} />
           </Switch>
         </div>

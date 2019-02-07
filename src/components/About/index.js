@@ -1,17 +1,72 @@
 import * as React from 'react'
-import { Container } from 'semantic-ui-react'
+import { Grid, Header, Segment, Image } from 'semantic-ui-react'
+import logo from 'images/factore-logo.png'
 
 const About = () => (
-  <Container>
-    <h2>About Factor[e]</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-  </Container>
+  <Grid padded>
+    <Grid.Row>
+      <Grid.Column width={10}>
+        <Segment>
+          <Image src={logo} size="small" floated="left" />
+          <p>
+            <big>
+              Our mission is to improve lives in the developing world through increased access to
+              sustainable energy and related services. We believe that technology can be a profound
+              driver of positive impact, and we work closely with early stage entrepreneurs to
+              transform their ideas into market-based solutions.
+            </big>
+          </p>
+        </Segment>
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <Segment>
+          <Header as="h3">Contact</Header>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <Image src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg" />
+              </Grid.Column>
+              <Grid.Column width={13}>
+                For general questions and comments about this app, contact{' '}
+                <a href={'#'}>Amanda DelCore</a>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <Image src="https://react.semantic-ui.com/images/avatar/large/justen.jpg" />
+              </Grid.Column>
+              <Grid.Column width={13}>
+                For technical problems with this app, contact <a href={'#'}>Jeff Friesen</a>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
 )
 
 export default About
+
+// <Header as="h2">About Factor[e] Ventures</Header>
+
+// <Image
+//   src={'https://react.semantic-ui.com/images/avatar/large/jenny.jpg'}
+//   size="tiny"
+//   floated="left"
+// />
+// <p>
+//   For general questions and comments about this app, contact{' '}
+//   <a href={'#'}>Amanda DelCore</a>
+// </p>
+// <div>
+//   <Image
+//     src={'https://react.semantic-ui.com/images/avatar/large/justen.jpg'}
+//     size="tiny"
+//     spaced="right"
+//     verticalAlign="top"
+//   />
+//   <p>
+//     For technical problems with this app, contact <a href={'#'}>Jeff Friesen</a>
+//   </p>
+// </div>
