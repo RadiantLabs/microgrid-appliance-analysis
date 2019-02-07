@@ -12,8 +12,28 @@
   - [ ] Look into model.volatile for storing training logs
   - [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
+## Save/Revert to Snapshots
+
+- [ ] Test rehydration of battery model from localforage
+- [ ] Test storage limits for
+  - [ ] indexdb
+  - [ ] localstorage
+  - [ ] websql
+- [ ] Force indexdb for localforage(?)
+- [ ] Detect if we have indexdb and alert if not. Disable snapshots?
+
 ## Battery charging problem
 
+- [ ] PR on tensorflowjs documentation on tf.io.withSaveHandler
+
+  - https://github.com/tensorflow/tfjs-core/blob/master/src/io/passthrough.ts#L86
+  - https://js.tensorflow.org/api/0.14.2/#io.browserDownloads
+  - https://github.com/tensorflow/tfjs/issues/503
+  - https://github.com/tensorflow/tfjs/issues/495
+  - https://js.tensorflow.org/api/0.14.2/#io.browserDownloads
+  - https://js.tensorflow.org/api/0.14.2/#loadModel
+
+- [ ] Training Progress (loss) scale is all weird
 - [ ] rename batteryEpochCount to batteryMaxEpochCount
 - [ ] Add batteryBaselineLoss to table
 - [x] Fix problems with predictions: test different models:

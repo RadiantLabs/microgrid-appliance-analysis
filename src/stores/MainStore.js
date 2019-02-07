@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import { autorun } from 'mobx'
-import { types, flow, onSnapshot } from 'mobx-state-tree'
+import { types, flow, onSnapshot, getSnapshot } from 'mobx-state-tree'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
-
+import localforage from 'localforage'
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
@@ -76,6 +76,18 @@ export const MainStore = types
       } else {
         self.excludedTableColumns.push(columnName)
       }
+    },
+    // TODO:
+    // * may want to use the async version of localforage
+    // * Add metadata to saved snapshot
+    // * Create metadata form
+    saveSnapshot() {
+      const snapshot = _.omit(getSnapshot(self), ['grid'])
+      console.log('snapshot: ', snapshot)
+      // localStorage.setItem('microgridAppliances_testing', JSON.stringify(snapshot))
+      localforage.setItem('microgridAppliances_testing', snapshot).then(() => {
+        console.log('value set')
+      })
     },
   }))
   .views(self => ({
@@ -197,6 +209,10 @@ onSnapshot(mainStore, snapshot => {
     JSON.stringify(snapshot.excludedTableColumns)
   )
 })
+
+// onSnapshot(mainStore, snapshot => {
+//   console.log('snap: ', snapshot)
+// })
 
 /**
  * autorun: Run functions whenever arguments change

@@ -10,6 +10,7 @@ import {
   calculatePlottablePredictedVsActualData,
   multiLayerPerceptronRegressionModel1Hidden,
 } from 'utils/tensorflowHelpers'
+window.tf = tf
 
 const initialBatteryState = {
   batteryEpochCount: 3,
@@ -106,6 +107,8 @@ export const HomerStore = types
               self.batteryTrainLogs
             )
             const t1 = performance.now()
+            // self.saveModel(model)
+            self.saveModelSync(model)
             self.runInAction(() => {
               self.batteryModel = model
               self.batteryTestSetLoss = testSetLoss
@@ -130,6 +133,36 @@ export const HomerStore = types
         trainingColumns: self.batteryTrainingColumns,
       })
     },
+
+    saveModelSync(model) {
+      function handleSave(artifacts) {
+        // ... do something with the artifacts ...
+        console.log('artifacts: ', artifacts)
+        // debugger
+        const { modelTopology, weightSpecs, weightData } = artifacts
+        // TODO:
+        // 1. Save to localforage
+        // 2. Load model from localforage
+        // const model = await tf.loadModel(tf.io.fromMemory(modelTopology, weightSpecs, weightData))
+      }
+      const saveResult = model.save(tf.io.withSaveHandler(handleSave))
+
+      return null
+    },
+
+    saveModel: flow(function* saveModel(model) {
+      const savedModelLocalStorage = yield model.save(
+        'localstorage://microgridAppliances_test_saved_model'
+      )
+      // const savedModelDownload = yield model.save(
+      //   'downloads://microgridAppliances_test_saved_model'
+      // )
+      // console.log('savedModelDownload: ', savedModelDownload)
+
+      // const savedModelQuestion = yield model.save()
+      // console.log('savedModelQuestion: ', savedModelQuestion)
+      // debugger
+    }),
   }))
   .views(self => ({
     get batteryNumFeatures() {
