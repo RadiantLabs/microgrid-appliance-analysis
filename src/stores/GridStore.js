@@ -37,7 +37,7 @@ export const initialHomerState = {
 /**
  * Homer + Battery Kinetic Model Store
  */
-export const HomerStore = types
+export const GridStore = types
   .model({
     batteryEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
@@ -136,9 +136,8 @@ export const HomerStore = types
 
     saveModelSync(model) {
       function handleSave(artifacts) {
-        // ... do something with the artifacts ...
         console.log('artifacts: ', artifacts)
-        // debugger
+        // ... do something with the artifacts ...
         const { modelTopology, weightSpecs, weightData } = artifacts
         // TODO:
         // 1. Save to localforage
