@@ -11,6 +11,8 @@ import shortLogo from 'images/factore-short-logo-20x26.png'
 // Route Pages
 import Main from 'components/Main'
 import About from 'components/About'
+import UploadFiles from 'components/UploadFiles'
+import Snapshots from 'components/Snapshots'
 // import Profile from 'components/Profile'
 import FourOhFour from 'components/FourOhFour'
 
@@ -53,6 +55,8 @@ const App = () => (
           <Switch>
             <Route path="/" exact component={Main} />
             <Route path="/tool" component={Main} />
+            <Route path="/snapshots" component={Snapshots} />
+            <Route path="/files" component={UploadFiles} />
             <Route path="/about" component={About} />
             {/*<Route path="/profile" component={Profile} />*/}
             <Route component={FourOhFour} />

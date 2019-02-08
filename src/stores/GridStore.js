@@ -138,26 +138,25 @@ export const GridStore = types
       function handleSave(artifacts) {
         console.log('artifacts: ', artifacts)
         // ... do something with the artifacts ...
-        const { modelTopology, weightSpecs, weightData } = artifacts
+        // const { modelTopology, weightSpecs, weightData } = artifacts
         // TODO:
         // 1. Save to localforage
         // 2. Load model from localforage
         // const model = await tf.loadModel(tf.io.fromMemory(modelTopology, weightSpecs, weightData))
       }
-      const saveResult = model.save(tf.io.withSaveHandler(handleSave))
-
+      // const saveResult = model.save(tf.io.withSaveHandler(handleSave))
+      handleSave()
       return null
     },
 
     saveModel: flow(function* saveModel(model) {
-      const savedModelLocalStorage = yield model.save(
-        'localstorage://microgridAppliances_test_saved_model'
-      )
+      // const savedModelLocalStorage = yield model.save(
+      //   'localstorage://microgridAppliances_test_saved_model'
+      // )
       // const savedModelDownload = yield model.save(
       //   'downloads://microgridAppliances_test_saved_model'
       // )
       // console.log('savedModelDownload: ', savedModelDownload)
-
       // const savedModelQuestion = yield model.save()
       // console.log('savedModelQuestion: ', savedModelQuestion)
       // debugger

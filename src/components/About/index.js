@@ -28,7 +28,7 @@ const About = () => (
               </Grid.Column>
               <Grid.Column width={13}>
                 For general questions and comments about this app, contact{' '}
-                <a href={'#'}>Amanda DelCore</a>
+                <a href="http://#.com">Amanda DelCore</a>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -36,7 +36,8 @@ const About = () => (
                 <Image src="https://react.semantic-ui.com/images/avatar/large/justen.jpg" />
               </Grid.Column>
               <Grid.Column width={13}>
-                For technical problems with this app, contact <a href={'#'}>Jeff Friesen</a>
+                For technical problems with this app, contact{' '}
+                <a href="http://#.com">Jeff Friesen</a>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -47,26 +48,3 @@ const About = () => (
 )
 
 export default About
-
-// <Header as="h2">About Factor[e] Ventures</Header>
-
-// <Image
-//   src={'https://react.semantic-ui.com/images/avatar/large/jenny.jpg'}
-//   size="tiny"
-//   floated="left"
-// />
-// <p>
-//   For general questions and comments about this app, contact{' '}
-//   <a href={'#'}>Amanda DelCore</a>
-// </p>
-// <div>
-//   <Image
-//     src={'https://react.semantic-ui.com/images/avatar/large/justen.jpg'}
-//     size="tiny"
-//     spaced="right"
-//     verticalAlign="top"
-//   />
-//   <p>
-//     For technical problems with this app, contact <a href={'#'}>Jeff Friesen</a>
-//   </p>
-// </div>
