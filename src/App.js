@@ -44,7 +44,7 @@ const App = () => (
             </Menu.Item>
             <Menu.Item as={NavItem} to="/about">
               <Icon name="info circle" />
-              About Us
+              About
             </Menu.Item>
             {/*<Menu.Item as={NavItem} to="/about" name="About" />*/}
             {/*<Menu.Item as={NavItem} to="/profile" name="Logout" />*/}
