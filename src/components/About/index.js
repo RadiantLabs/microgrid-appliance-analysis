@@ -50,7 +50,7 @@ const About = () => (
     <Grid.Row>
       <Grid.Column>
         <Segment>
-          <Image src={factoreLogo} size="small" floated="left" />
+          <Image src={factoreLogo} size="small" floated="left" href="http://www.factore.com" />
           <p>
             Our mission is to improve lives in the developing world through increased access to
             sustainable energy and related services. We believe that technology can be a profound
@@ -77,14 +77,13 @@ const About = () => (
       <Grid.Column>
         <Header as="h5">In partnership with:</Header>
         <Segment>
-          <Image src={radiantLogo} size="small" floated="left" />
+          <Image src={radiantLogo} size="small" floated="left" href="http://www.radiantlabs.co" />
           <p>
-            <big>
-              Radiant Labs builds tools that drive carbon reduction solutions for cities, states and
-              utilities. We partner with organizations leading the field and driving the coming
-              decades most important innovations.
-            </big>
+            Radiant Labs builds tools that drive carbon reduction solutions for cities, states and
+            utilities. We partner with organizations leading the field and driving the coming
+            decades most important innovations.
           </p>
+          <p />
         </Segment>
       </Grid.Column>
     </Grid.Row>
