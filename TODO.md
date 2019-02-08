@@ -1,3 +1,11 @@
+## Upload HOMER files
+
+- [ ] Provide Sample for download
+- [ ] Move training and trained model into file view
+- [ ] Show stats, such as battery min/max
+- [ ] Add metadata about batter
+- [ ] Attempt to upload all files and check for errors
+
 ## Convert to Mobx State Tree
 
 - [x] Get loss chart showing training progress
