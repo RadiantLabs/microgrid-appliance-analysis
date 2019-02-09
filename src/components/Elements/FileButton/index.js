@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Component } from 'react'
 import { Button } from 'semantic-ui-react'
+import _ from 'lodash'
 import * as uuid from 'uuid'
-import Papa from 'papaparse'
 
 export class FileButton extends Component {
   constructor(props) {
@@ -20,31 +20,13 @@ export class FileButton extends Component {
     )
   }
 
-  // TODO:
-  // * Check that the type is csv
-  // * Check headers
-  // * Limit size
-  // * Capture name
-  // * Call processHomerFile
-  // const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
   onChangeFile() {
     const fileButton = document.getElementById(this.id)
-    const file = fileButton ? fileButton.files[0] : null
-    console.log('file: ', file)
-    Papa.parse(file, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-      complete: (results, a) => {
-        console.log('results: ', results, a)
-      },
-      error: (a, b, c) => {
-        console.log('error: ', a, b, c)
-      },
-    })
-    // debugger
-    if (this.props.onSelect) {
-      this.props.onSelect(file)
+    const rawFile = fileButton.files[0]
+    if (rawFile) {
+      this.props.onSelect(rawFile)
+    } else {
+      console.log('no file found')
     }
   }
 }

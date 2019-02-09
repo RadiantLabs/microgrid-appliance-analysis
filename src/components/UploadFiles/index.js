@@ -9,14 +9,15 @@ const UploadFiles = () => {
   return (
     <Grid padded>
       <Grid.Row>
-        <Grid.Column width={4}>
+        <Grid.Column width={3}>
           <Menu pointing secondary vertical fluid>
             <Menu.Item as={NavItem} to={`/files/homer`} name="HOMER Grid Files" />
             <Menu.Item as={NavItem} to={`/files/appliance-usage`} name="Appliance Usage Files" />
           </Menu>
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column width={13}>
           <div className="mainContent">
+            <Route exact path="/files/" component={HomerFiles} />
             <Route exact path="/files/homer" component={HomerFiles} />
             <Route exact path="/files/appliance-usage" component={ApplianceUsageFiles} />
           </div>

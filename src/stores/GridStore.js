@@ -1,6 +1,9 @@
 import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
+import Papa from 'papaparse'
+import prettyBytes from 'pretty-bytes'
+import { csvOptions, verifyHomerFile } from 'utils/helpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -57,15 +60,41 @@ export const GridStore = types
     batteryTrainingTime: types.maybeNull(types.number),
     batteryTrainLogs: types.frozen(),
   })
-  // .volatile(self => ({}))
-  // For doing updates from within anonymous functions inside the flow generators
-  // https://github.com/mobxjs/mobx-state-tree/issues/915#issuecomment-404461322
+    stagedHomerFile: types.frozen(),
+  }))
   .actions(self => ({
+    // For doing updates from within anonymous functions inside the flow generators
+    // https://github.com/mobxjs/mobx-state-tree/issues/915#issuecomment-404461322
     runInAction(fn) {
       return fn()
     },
   }))
   .actions(self => ({
+    onHomerFileUpload(rawFile) {
+      console.log('parsing rawFile: ', rawFile)
+      Papa.parse(rawFile, {
+        ...csvOptions,
+        complete: parsedFile => {
+          console.log('completed parseFile: ', parsedFile)
+          const {
+            fileName,
+            fileSize,
+            fileIsCsv,
+            fileData,
+            fileErrors,
+            fileWarnings,
+          } = verifyHomerFile(rawFile, parsedFile)
+          // TODO: save in store
+          self.runInAction(() => {
+            self.stagedHomerFile = parsedFile
+          })
+        },
+        error: (a, b, c) => {
+          console.log('error: ', a, b, c)
+        },
+      })
+    },
+
     trainBatteryModel: flow(function* batteryModelRun({
       numFeatures,
       tensors,

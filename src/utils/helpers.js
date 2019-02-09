@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
+import prettyBytes from 'pretty-bytes'
 import {
   HOURS_PER_YEAR,
   homerParseFormat,
@@ -7,7 +8,7 @@ import {
   tableDateFormat,
 } from './constants'
 import Papa from 'papaparse'
-const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
+export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 // window.LuxonDateTime = DateTime    // Used for debugging Luxon tokens
 
 /**
@@ -150,6 +151,32 @@ export function combineTables(activeHomer, calculatedColumns, activeAppliance) {
 /**
  * Process files on import
  */
+function isFileCsv(rawFile) {
+  return rawFile.type === 'text/csv'
+}
+
+export function verifyHomerFile(rawFile, parsedFile) {
+  let errors = []
+  const { size, name } = rawFile
+  const fileIsCsv = isFileCsv(rawFile)
+  if (!fileIsCsv) {
+    errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
+  }
+  // 5MB limit
+  if (size > 1048576 * 5) {
+    errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
+  }
+  const data = parsedFile
+  return {
+    fileName: String(name).split('.')[0],
+    fileSize: size,
+    fileIsCsv: fileIsCsv,
+    fileData: data,
+    fileErrors: errors,
+    fileWarnings: parsedFile.errors,
+  }
+}
+
 // Add a column to table that autoincrements based on row index
 function addHourIndex(rows) {
   return _.map(rows, (row, rowIndex) => {
