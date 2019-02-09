@@ -1,3 +1,28 @@
+// TODO:
+// Need to 'stage' the HOMER file.
+// That form will show all of the fields and battery is modeling
+// Once 'accepted', it will store it as the activeHomerFile
+// A user needs to be able to select between available homer files and select one
+// So that means we need an array of HOMER files
+// In staging I could have a typed object that observes the form being filled out
+
+// I could have a homer model, then have an array of them:
+// availableHomers: types.array(HomerModel)
+// activeHomer: HomerModel,
+// stagedHomer: HomerModel
+// activeHomerId: types.number,
+
+// this is the index of the active homer, then activeHomer is a computed property:
+// activeHomer = self.availableHomers[self.activeHomerId]
+
+// One problem is that we will have all HOMER data loaded, not just metadata
+// I could have a field in the Homer model isActive. Then have a computed property
+// for the data that fetches it from localstorage. Same with the battery tensorflow model
+
+// How to show training logs and predictions in that case?
+// I guess just store them with the model and have another computed property that
+// shows them if isActive or isReviewing
+
 ## Upload HOMER files
 
 - [ ] Import all example files without error

@@ -28,6 +28,7 @@ export const MainStore = types
     homerIsLoading: types.boolean,
     activeHomerFileInfo: types.frozen(),
     activeHomer: types.frozen(),
+    grid: GridStore,
 
     // Appliance Info
     initApplianceFileName: types.string,
@@ -38,9 +39,8 @@ export const MainStore = types
 
     // editable fields - may make this an array of ModelInputsStore eventually
     modelInputs: ModelInputsStore,
-    router: RouterModel,
     ancillaryEquipment: AncillaryEquipmentStore,
-    grid: GridStore,
+    router: RouterModel,
   })
   .actions(self => ({
     afterCreate() {
