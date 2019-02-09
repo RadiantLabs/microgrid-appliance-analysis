@@ -9,7 +9,7 @@ import {
   Input,
   Button,
   Icon,
-  Loader,
+  // Loader,
 } from 'semantic-ui-react'
 import FileButton from 'components/Elements/FileButton'
 import { HelperPopup } from 'components/Elements/HelperPopup'

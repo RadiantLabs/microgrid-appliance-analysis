@@ -154,11 +154,36 @@ export function combineTables(activeHomer, calculatedColumns, activeAppliance) {
 function isFileCsv(rawFile) {
   return rawFile.type === 'text/csv'
 }
+function hasColumnHeaders(headers) {
+  const header4 = parseFloat(headers[3])
+  const header5 = parseFloat(headers[3])
+  return _.isFinite(header4) && _.isFinite(header5)
+}
+function getGridPowerType(headers) {
+  const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
+  const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))
+  if (hasDC && hasAC) {
+    // TODO: log errors for monitoring
+  }
+  return {
+    powerType: hasDC ? 'DC' : 'AC',
+    powerTypeErrors:
+      hasDC && hasAC
+        ? "This grid appears to have both AC and DC power types, which we don't currently support. Please contact support."
+        : null,
+  }
+}
 
 export function verifyHomerFile(rawFile, parsedFile) {
   let errors = []
   const { size, name } = rawFile
   const fileIsCsv = isFileCsv(rawFile)
+  const headers = _.keys(_.first(parsedFile.data))
+  if (!hasColumnHeaders(headers)) {
+    errors.push(
+      `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
+    )
+  }
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
@@ -166,14 +191,17 @@ export function verifyHomerFile(rawFile, parsedFile) {
   if (size > 1048576 * 5) {
     errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
-  const data = parsedFile
+  const { powerType, powerTypeErrors } = getGridPowerType(headers)
+  errors.push(powerTypeErrors)
+  const { data } = parsedFile
   return {
     fileName: String(name).split('.')[0],
     fileSize: size,
     fileIsCsv: fileIsCsv,
     fileData: data,
-    fileErrors: errors,
+    fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
+    filePowertype: powerType,
   }
 }
 

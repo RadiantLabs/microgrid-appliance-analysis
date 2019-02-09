@@ -1,5 +1,6 @@
 ## Upload HOMER files
 
+- [ ] Import all example files without error
 - [ ] Provide Sample for download
 - [ ] Move training and trained model into file view
 - [ ] Show stats, such as battery min/max

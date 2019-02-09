@@ -13,7 +13,6 @@ export class FileButton extends Component {
   }
 
   render() {
-    const { children } = this.props
     return (
       <div>
         <Button {...this.props} as="label" htmlFor={this.id} />
