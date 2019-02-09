@@ -90,8 +90,8 @@ export const GridStore = types
             self.stagedHomerFile = parsedFile
           })
         },
-        error: (a, b, c) => {
-          console.log('error: ', a, b, c)
+        error: error => {
+          console.log('error: ', error)
         },
       })
     },

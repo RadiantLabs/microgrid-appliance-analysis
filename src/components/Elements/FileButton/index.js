@@ -4,6 +4,7 @@ import { Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import * as uuid from 'uuid'
 
+// <Loader active inline />
 export class FileButton extends Component {
   constructor(props) {
     super(props)
@@ -12,6 +13,7 @@ export class FileButton extends Component {
   }
 
   render() {
+    const { children } = this.props
     return (
       <div>
         <Button {...this.props} as="label" htmlFor={this.id} />

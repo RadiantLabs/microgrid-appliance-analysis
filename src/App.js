@@ -38,7 +38,7 @@ const App = () => (
               <Icon name="photo" />
               Snapshots
             </Menu.Item>
-            <Menu.Item as={NavItem} to="/files">
+            <Menu.Item as={NavItem} to="/files/homer">
               <Icon name="file" />
               Files
             </Menu.Item>

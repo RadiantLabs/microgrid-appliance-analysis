@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Input } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import InputField from 'components/Elements/InputField'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
+import borderlessTableStyles from 'styles/borderlessTableStyles.module.css'
 
 // TODO: Generate these in a loop
 const ModelInputs = ({ store }) => {
   return (
-    <Table basic="very" celled collapsing compact>
+    <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
         <Table.Row>
           <Table.Cell>
@@ -30,7 +31,9 @@ const ModelInputs = ({ store }) => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>Usage Factor Seasonal Derate Curve</Table.Cell>
-          <Table.Cell>TBD</Table.Cell>
+          <Table.Cell>
+            <Input value="TBD" disabled />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
