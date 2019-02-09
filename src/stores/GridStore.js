@@ -60,6 +60,7 @@ export const GridStore = types
     batteryTrainingTime: types.maybeNull(types.number),
     batteryTrainLogs: types.frozen(),
   })
+  .volatile(self => ({
     stagedHomerFile: types.frozen(),
   }))
   .actions(self => ({
