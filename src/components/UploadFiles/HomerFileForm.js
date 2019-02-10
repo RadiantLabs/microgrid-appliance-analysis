@@ -32,49 +32,25 @@ const HomerFormFields = inject('store')(
             <Table.Cell>
               Power Type <HelperPopup content={'AC ⚡ DC'} />
             </Table.Cell>
-            <Table.Cell>
-              <Input
-                disabled
-                onChange={store.stagedGrid.onPowerTypeChange}
-                value={store.stagedGrid.powerType}
-              />
-            </Table.Cell>
+            <Table.Cell>{store.stagedGrid.powerType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               Battery Type <HelperPopup content={'TODO'} />
             </Table.Cell>
-            <Table.Cell>
-              <Input
-                disabled
-                onChange={store.stagedGrid.onBatteryTypeChange}
-                value={store.stagedGrid.batteryType}
-              />
-            </Table.Cell>
+            <Table.Cell>{store.stagedGrid.batteryType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               PV Type <HelperPopup content={'TODO'} />
             </Table.Cell>
-            <Table.Cell>
-              <Input
-                disabled
-                onChange={store.stagedGrid.onPvTypeChange}
-                value={store.stagedGrid.pvType}
-              />
-            </Table.Cell>
+            <Table.Cell>{store.stagedGrid.pvType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
               Generator Type <HelperPopup content={'TODO'} />
             </Table.Cell>
-            <Table.Cell>
-              <Input
-                disabled
-                onChange={store.stagedGrid.onGeneratorTypeChange}
-                value={store.stagedGrid.generatorType}
-              />
-            </Table.Cell>
+            <Table.Cell>{store.stagedGrid.generatorType}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
