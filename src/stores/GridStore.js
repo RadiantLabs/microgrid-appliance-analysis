@@ -2,8 +2,7 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import Papa from 'papaparse'
-import prettyBytes from 'pretty-bytes'
-import { csvOptions, verifyHomerFile } from 'utils/helpers'
+import { csvOptions, verifyHomerFile } from 'utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -86,10 +85,10 @@ export const GridStore = types
         ...csvOptions,
         complete: parsedFile => {
           console.log('completed parseFile: ', parsedFile)
-          const { fileName, fileSize, fileData, fileErrors, fileWarnings } = verifyHomerFile(
-            rawFile,
-            parsedFile
-          )
+          // const { fileName, fileSize, fileData, fileErrors, fileWarnings } = verifyHomerFile(
+          //   rawFile,
+          //   parsedFile
+          // )
           // TODO: save in volatile store as 'staged' file
           // Once approved, change as active homer file and save to local storage
           self.runInAction(() => {

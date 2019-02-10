@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Component } from 'react'
 import { Button } from 'semantic-ui-react'
-import _ from 'lodash'
 import * as uuid from 'uuid'
 
 // <Loader active inline />

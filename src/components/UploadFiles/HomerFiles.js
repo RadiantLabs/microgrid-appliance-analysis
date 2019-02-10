@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid, Header, Segment } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import HomerFileForm from './HomerFileForm'
 
 const HomerFiles = () => (

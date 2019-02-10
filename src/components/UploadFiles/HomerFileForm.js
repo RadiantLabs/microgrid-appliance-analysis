@@ -15,7 +15,7 @@ import FileButton from 'components/Elements/FileButton'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import borderlessTableStyles from 'styles/borderlessTableStyles.module.css'
 
-const HomerFormFields = ({}) => {
+const HomerFormFields = () => {
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -69,7 +69,7 @@ const HomerFormFields = ({}) => {
   )
 }
 
-const HomerStatsTable = ({}) => {
+const HomerStatsTable = () => {
   return (
     <Table basic="very" celled>
       <Table.Body>

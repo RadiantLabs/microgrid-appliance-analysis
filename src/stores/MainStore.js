@@ -11,7 +11,8 @@ import { Grid1Store, initialHomerState } from './Grid1Store'
 import { GridStore } from './GridStore'
 
 // Import Helpers and domain data
-import { fetchFile, combineTables } from 'utils/helpers'
+import { combineTables } from 'utils/helpers'
+import { fetchFile } from 'utils/importFileHelpers'
 import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
 import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
