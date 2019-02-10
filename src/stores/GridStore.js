@@ -94,8 +94,16 @@ export const GridStore = types
         ...csvOptions,
         complete: parsedFile => {
           const homerAttributes = verifyHomerFile(rawFile, parsedFile)
+          const fileData = parsedFile.data
           self.runInAction(() => {
-            self = _.merge(self, homerAttributes)
+            self.fileData = fileData
+            self.fileName = homerAttributes.fileName
+            self.fileSize = homerAttributes.fileSize
+            self.fileErrors = homerAttributes.fileErrors
+            self.fileWarnings = homerAttributes.fileWarnings
+            self.powerType = homerAttributes.powerType
+            self.batteryType = homerAttributes.batteryType
+            self.generatorType = homerAttributes.generatorType
           })
         },
         error: error => {

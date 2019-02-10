@@ -42,7 +42,7 @@ function getBatteryType(headers) {
 function getGeneratorType(headers) {
   // TODO
   return {
-    generatorTypse: '',
+    generatorType: '',
     generatorTypeErrors: '',
   }
 }
@@ -74,11 +74,9 @@ export function verifyHomerFile(rawFile, parsedFile) {
   const { generatorType, generatorTypeErrors } = getGeneratorType(headers)
   errors.push(generatorTypeErrors)
 
-  const { data } = parsedFile
   return {
     fileName: String(name).split('.')[0],
     fileSize: size,
-    fileData: data,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
     powerType,
