@@ -40,9 +40,17 @@ export const initialHomerState = {
 /**
  * Homer + Battery Kinetic Model Store
  */
-
-export const Grid1Store = types
+export const GridStore = types
   .model({
+    fileName: types.string,
+    fileSize: types.number,
+    fileData: types.frozen(),
+    fileErrors: types.array(types.string),
+    fileWarnings: types.array(types.string),
+    pvType: types.string,
+    powerType: types.enumeration('powerType', ['AC', 'DC']),
+    batteryType: types.string,
+
     batteryEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
     batteryBatchSize: types.number,
@@ -62,7 +70,7 @@ export const Grid1Store = types
     batteryTrainLogs: types.frozen(),
   })
   .volatile(self => ({
-    stagedHomerFile: types.frozen(),
+    // stagedHomerFile: types.frozen(),
   }))
   .actions(self => ({
     // For doing updates from within anonymous functions inside the flow generators
@@ -72,6 +80,28 @@ export const Grid1Store = types
     },
   }))
   .actions(self => ({
+    onGridFileUpload(rawFile) {
+      console.log('parsing rawFile: ', rawFile)
+      Papa.parse(rawFile, {
+        ...csvOptions,
+        complete: parsedFile => {
+          console.log('completed parseFile: ', parsedFile)
+          const { fileName, fileSize, fileData, fileErrors, fileWarnings } = verifyHomerFile(
+            rawFile,
+            parsedFile
+          )
+          // TODO: save in volatile store as 'staged' file
+          // Once approved, change as active homer file and save to local storage
+          self.runInAction(() => {
+            self.stagedHomerFile = parsedFile
+          })
+        },
+        error: error => {
+          console.log('error: ', error)
+        },
+      })
+    },
+
     trainBatteryModel: flow(function* batteryModelRun({
       numFeatures,
       tensors,

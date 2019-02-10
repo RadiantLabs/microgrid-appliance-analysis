@@ -8,6 +8,7 @@ import localforage from 'localforage'
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { Grid1Store, initialHomerState } from './Grid1Store'
+import { GridStore } from './GridStore'
 
 // Import Helpers and domain data
 import { fetchFile, combineTables } from 'utils/helpers'
@@ -29,6 +30,12 @@ export const MainStore = types
     activeHomerFileInfo: types.frozen(),
     activeHomer: types.frozen(),
     grid: Grid1Store,
+
+    // Temporary names until I get Homer uploads working and switching
+    activeGrid: types.maybeNull(GridStore),
+    activeGridId: types.optional(types.number, 0),
+    stagedGrid: types.maybeNull(GridStore),
+    storedGrids: types.optional(types.array(GridStore), []),
 
     // Appliance Info
     initApplianceFileName: types.string,

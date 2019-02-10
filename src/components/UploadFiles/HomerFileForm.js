@@ -98,7 +98,7 @@ class HomerFileForm extends React.Component {
 
   render() {
     const { fileStaged } = this.state
-    const { onHomerFileUpload } = this.props.store.grid
+    const { onGridFileUpload } = this.props.store.grid
     return (
       <div>
         <Header as="h2" attached="top">
@@ -108,7 +108,7 @@ class HomerFileForm extends React.Component {
             size="small"
             color="blue"
             floated="right"
-            onSelect={onHomerFileUpload}
+            onSelect={onGridFileUpload}
             basic
           />
           <Button floated="right" basic size="small">
