@@ -35,6 +35,7 @@ export const initialGridState = {
   fileName: '',
   fileSize: 0,
   fileData: [],
+  fileDescription: '',
   fileErrors: [],
   fileWarnings: [],
   pvType: '',
@@ -52,6 +53,7 @@ export const GridStore = types
     fileName: types.string,
     fileSize: types.number,
     fileData: types.frozen(),
+    fileDescription: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     pvType: types.string,
@@ -113,20 +115,8 @@ export const GridStore = types
       })
     },
 
-    onNameChange(event, data) {
-      self.fileName = data.value
-    },
-    onPowerTypeChange(event, data) {
-      self.powerType = data.value
-    },
-    onBatteryTypeChange(event, data) {
-      self.batteryType = data.value
-    },
-    onPvTypeChange(event, data) {
-      self.pvType = data.value
-    },
-    onGeneratorTypeChange(event, data) {
-      self.generatorType = data.value
+    onDescriptionChange(event, data) {
+      self.fileDescription = data.value
     },
 
     trainBatteryModel: flow(function* batteryModelRun({

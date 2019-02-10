@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react'
 import {
   Table,
   Grid,
-  Select,
   Header,
   Segment,
   Input,
@@ -26,6 +25,17 @@ const HomerFormFields = inject('store')(
             </Table.Cell>
             <Table.Cell>
               <Input onChange={store.stagedGrid.onNameChange} value={store.stagedGrid.fileName} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              Description <HelperPopup content={'TODO'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Input
+                onChange={store.stagedGrid.onDescriptionChange}
+                value={store.stagedGrid.fileDescription}
+              />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
