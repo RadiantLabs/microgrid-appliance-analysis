@@ -31,8 +31,16 @@ const initialBatteryState = {
   batteryValidationSetLoss: null,
   batteryTestSetLoss: null,
 }
-export const initialHomerState = {
-  // I will be adding more HOMER-specific fields soon
+export const initialGridState = {
+  fileName: '',
+  fileSize: 0,
+  fileData: [],
+  fileErrors: [],
+  fileWarnings: [],
+  pvType: '',
+  powerType: '',
+  batteryType: '',
+  generatorType: '',
   ...initialBatteryState,
 }
 
@@ -47,8 +55,9 @@ export const GridStore = types
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     pvType: types.string,
-    powerType: types.enumeration('powerType', ['AC', 'DC']),
+    powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     batteryType: types.string,
+    generatorType: types.string,
 
     batteryEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
@@ -84,21 +93,31 @@ export const GridStore = types
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          console.log('completed parseFile: ', parsedFile)
-          // const { fileName, fileSize, fileData, fileErrors, fileWarnings } = verifyHomerFile(
-          //   rawFile,
-          //   parsedFile
-          // )
-          // TODO: save in volatile store as 'staged' file
-          // Once approved, change as active homer file and save to local storage
+          const homerAttributes = verifyHomerFile(rawFile, parsedFile)
           self.runInAction(() => {
-            self.stagedHomerFile = parsedFile
+            self = _.merge(self, homerAttributes)
           })
         },
         error: error => {
           console.log('error: ', error)
         },
       })
+    },
+
+    onNameChange(event, data) {
+      self.fileName = data.value
+    },
+    onPowerTypeChange(event, data) {
+      self.powerType = data.value
+    },
+    onBatteryTypeChange(event, data) {
+      self.batteryType = data.value
+    },
+    onPvTypeChange(event, data) {
+      self.pvType = data.value
+    },
+    onGeneratorTypeChange(event, data) {
+      self.generatorType = data.value
     },
 
     trainBatteryModel: flow(function* batteryModelRun({

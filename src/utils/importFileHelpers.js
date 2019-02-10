@@ -31,6 +31,22 @@ function getGridPowerType(headers) {
   }
 }
 
+function getBatteryType(headers) {
+  // TODO
+  return {
+    batteryType: '',
+    batteryTypeErrors: '',
+  }
+}
+
+function getGeneratorType(headers) {
+  // TODO
+  return {
+    generatorTypse: '',
+    generatorTypeErrors: '',
+  }
+}
+
 export function verifyHomerFile(rawFile, parsedFile) {
   let errors = []
   const { size, name } = rawFile
@@ -48,17 +64,26 @@ export function verifyHomerFile(rawFile, parsedFile) {
   if (size > 1048576 * 5) {
     errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
+
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
   errors.push(powerTypeErrors)
+
+  const { batteryType, batteryTypeErrors } = getBatteryType(headers)
+  errors.push(batteryTypeErrors)
+
+  const { generatorType, generatorTypeErrors } = getGeneratorType(headers)
+  errors.push(generatorTypeErrors)
+
   const { data } = parsedFile
   return {
     fileName: String(name).split('.')[0],
     fileSize: size,
-    fileIsCsv: fileIsCsv,
     fileData: data,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
-    filePowertype: powerType,
+    powerType,
+    batteryType,
+    generatorType,
   }
 }
 

@@ -15,59 +15,69 @@ import FileButton from 'components/Elements/FileButton'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import borderlessTableStyles from 'styles/borderlessTableStyles.module.css'
 
-const HomerFormFields = () => {
-  return (
-    <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            File Name <HelperPopup content={'TODO'} />
-          </Table.Cell>
-          <Table.Cell>
-            <Input />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            Power Type <HelperPopup content={'AC ⚡ DC'} />
-          </Table.Cell>
-          <Table.Cell>
-            <Select
-              options={[
-                { key: 'AC', value: 'AC', text: 'AC' },
-                { key: 'DC', value: 'DC', text: 'DC' },
-              ]}
-            />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            Battery Type <HelperPopup content={'TODO'} />
-          </Table.Cell>
-          <Table.Cell>
-            <Input />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            PV Type <HelperPopup content={'TODO'} />
-          </Table.Cell>
-          <Table.Cell>
-            <Input />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            Generator Type <HelperPopup content={'TODO'} />
-          </Table.Cell>
-          <Table.Cell>
-            <Input />
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  )
-}
+const HomerFormFields = inject('store')(
+  observer(({ store }) => {
+    return (
+      <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>
+              File Name <HelperPopup content={'TODO'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Input onChange={store.stagedGrid.onNameChange} value={store.stagedGrid.fileName} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              Power Type <HelperPopup content={'AC ⚡ DC'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Select
+                options={[
+                  { key: 'AC', value: 'AC', text: 'AC' },
+                  { key: 'DC', value: 'DC', text: 'DC' },
+                ]}
+                onChange={store.stagedGrid.onPowerTypeChange}
+                value={store.stagedGrid.powerType}
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              Battery Type <HelperPopup content={'TODO'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Input
+                onChange={store.stagedGrid.onBatteryTypeChange}
+                value={store.stagedGrid.batteryType}
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              PV Type <HelperPopup content={'TODO'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Input onChange={store.stagedGrid.onPvTypeChange} value={store.stagedGrid.pvType} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              Generator Type <HelperPopup content={'TODO'} />
+            </Table.Cell>
+            <Table.Cell>
+              <Input
+                onChange={store.stagedGrid.onGeneratorTypeChange}
+                value={store.stagedGrid.generatorType}
+              />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    )
+  })
+)
 
 const HomerStatsTable = () => {
   return (
@@ -98,7 +108,7 @@ class HomerFileForm extends React.Component {
 
   render() {
     const { fileStaged } = this.state
-    const { onGridFileUpload } = this.props.store.grid
+    const { stagedGrid } = this.props.store
     return (
       <div>
         <Header as="h2" attached="top">
@@ -108,7 +118,7 @@ class HomerFileForm extends React.Component {
             size="small"
             color="blue"
             floated="right"
-            onSelect={onGridFileUpload}
+            onSelect={stagedGrid.onGridFileUpload}
             basic
           />
           <Button floated="right" basic size="small">
@@ -122,10 +132,13 @@ class HomerFileForm extends React.Component {
             <Grid>
               <Grid.Row>
                 <Grid.Column width={8}>
-                  <HomerFormFields />
+                  <HomerFormFields
+                    onNameChange={stagedGrid.onNameChange}
+                    fileName={stagedGrid.fileName}
+                  />
                 </Grid.Column>
                 <Grid.Column width={8}>
-                  <HomerStatsTable />
+                  <HomerStatsTable grid={stagedGrid} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

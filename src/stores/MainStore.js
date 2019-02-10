@@ -8,7 +8,7 @@ import localforage from 'localforage'
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { Grid1Store, initialHomerState } from './Grid1Store'
-import { GridStore } from './GridStore'
+import { GridStore, initialGridState } from './GridStore'
 
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
@@ -174,11 +174,17 @@ let initialMainState = {
   activeApplianceFileInfo,
   activeAppliance: [],
   excludedTableColumns: [],
+  grid: Grid1Store.create(initialHomerState),
+
+  // Temporary store names until I get this straighted out
+  activeGrid: GridStore.create(initialGridState),
+  activeGridId: 0,
+  stagedGrid: GridStore.create(initialGridState),
+  storedGrids: [],
 
   router: routerModel,
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
-  grid: Grid1Store.create(initialHomerState),
 }
 
 /**
