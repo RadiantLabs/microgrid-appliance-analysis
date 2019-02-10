@@ -41,7 +41,7 @@ export const initialHomerState = {
  * Homer + Battery Kinetic Model Store
  */
 
-export const GridStore = types
+export const Grid1Store = types
   .model({
     batteryEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,

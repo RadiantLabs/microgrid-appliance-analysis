@@ -7,7 +7,7 @@ import localforage from 'localforage'
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
-import { GridStore, initialHomerState } from './GridStore'
+import { Grid1Store, initialHomerState } from './Grid1Store'
 
 // Import Helpers and domain data
 import { fetchFile, combineTables } from 'utils/helpers'
@@ -28,7 +28,7 @@ export const MainStore = types
     homerIsLoading: types.boolean,
     activeHomerFileInfo: types.frozen(),
     activeHomer: types.frozen(),
-    grid: GridStore,
+    grid: Grid1Store,
 
     // Appliance Info
     initApplianceFileName: types.string,
@@ -170,7 +170,7 @@ let initialMainState = {
   router: routerModel,
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
-  grid: GridStore.create(initialHomerState),
+  grid: Grid1Store.create(initialHomerState),
 }
 
 /**
@@ -228,15 +228,15 @@ autorun(() =>
 )
 
 // Run the battery regression model
-autorun(() =>
-  mainStore.grid.trainBatteryModel({
-    numFeatures: mainStore.grid.batteryNumFeatures,
-    tensors: mainStore.grid.batteryTensors,
-    learningRate: mainStore.grid.batteryLearningRate,
-    batchSize: mainStore.grid.batteryBatchSize,
-    epochCount: mainStore.grid.batteryEpochCount,
-    trainingColumns: mainStore.grid.batteryTrainingColumns,
-  })
-)
+// autorun(() =>
+//   mainStore.grid.trainBatteryModel({
+//     numFeatures: mainStore.grid.batteryNumFeatures,
+//     tensors: mainStore.grid.batteryTensors,
+//     learningRate: mainStore.grid.batteryLearningRate,
+//     batchSize: mainStore.grid.batteryBatchSize,
+//     epochCount: mainStore.grid.batteryEpochCount,
+//     trainingColumns: mainStore.grid.batteryTrainingColumns,
+//   })
+// )
 
 export { mainStore, history }
