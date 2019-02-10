@@ -16,19 +16,21 @@ export function getHomerStats(homer) {
   const minbatterySOC = findColMin(homer, 'Battery State of Charge')
   const maxbatterySOC = findColMax(homer, 'Battery State of Charge')
 
-  // Effective Minimum Battery Energy Content
-  // When creating a HOMER run, the user determines the minimum (suggested) percent that the
-  // battery discharges. In theory, this determines the minimum energy content (kWh) of the
-  // battery. But apparently there is a non-linear relationship with the charge percent (state
-  // of charge) and the energy content.
-  // HOMER starts out the year with a fully charged battery. It looks like HOMER only allows
-  // the battery to get to the absolute minimum in the last few hours of the year. So the effective
-  // minimum for most of the year is a little higher than that.
+  /**
+   * Effective Minimum Battery Energy Content
+   * When creating a HOMER run, the user determines the minimum (suggested) percent that the
+   * battery discharges. In theory, this determines the minimum energy content (kWh) of the
+   * battery. But apparently there is a non-linear relationship with the charge percent (state
+   * of charge) and the energy content.
+   * HOMER starts out the year with a fully charged battery. It looks like HOMER only allows
+   * the battery to get to the absolute minimum in the last few hours of the year. So the effective
+   * minimum for most of the year is a little higher than that.
 
-  // So to find the effective minimum energy content, first look up the absolute minimum state of
-  // charge (minbatterySOC) and round up to the nearest integer.
-  // Then go down, hour-by-hour, looking for the first hour we get near that point
-  // (within a value of 1, which is 1%).
+   * So to find the effective minimum energy content, first look up the absolute minimum state of
+   * charge (minbatterySOC) and round up to the nearest integer.
+   * Then go down, hour-by-hour, looking for the first hour we get near that point
+   * (within a value of 1, which is 1%).
+   */
   const minbatterySOCRowId = _.findIndex(homer, row => {
     return (
       // Round up to nearest integer (ceil) of absolute min
@@ -37,10 +39,13 @@ export function getHomerStats(homer) {
       _.floor(row['Battery State of Charge'])
     )
   })
-  // If no row meets this condition, just take the absolute min as a fallback.
-  // I'm assuming effective min will be within 1% of absolute min, otherwise take absolute
-  // That may not be an assumption we want to make.
-  // We need to understand HOMER's algorithms better
+
+  /**
+   * If no row meets this condition, just take the absolute min as a fallback.
+   * I'm assuming effective min will be within 1% of absolute min, otherwise take absolute
+   * That may not be an assumption we want to make.
+   * We need to understand HOMER's algorithms better
+   */
   const effectiveMinBatteryEnergyContent =
     minbatterySOCRowId > 0 ? homer[minbatterySOCRowId]['Battery Energy Content'] : minbatterySOC
 

@@ -32,6 +32,7 @@
 - [ ] Show stats, such as battery min/max
 - [ ] Add metadata about batter
 - [ ] Attempt to upload all files and check for errors
+- [ ] Add datetime once staged file is accepted
 
 ## Convert to Mobx State Tree
 

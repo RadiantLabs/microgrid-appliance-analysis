@@ -67,7 +67,55 @@ function getGeneratorType(headers) {
   }
 }
 
-export function verifyHomerFile(rawFile, parsedFile) {
+/**
+ * First detect equipment type based on headers (battery type, pv type, generator type...)
+ * Then rename those header to be consistent so we can use them for calculations
+ */
+function dropUnitsRow(rows) {
+  return _.drop(rows, 1)
+}
+
+function renameHomerKeys2({ row, pvType, batteryType, generatorType }) {
+  return _.mapKeys(row, (val, key) => {
+    switch (true) {
+      // Replace names of all battery columns
+      case _.includes(key, batteryType):
+        return _.replace(key, batteryType, 'Battery')
+
+      // Replace names of all PV columns
+      // TODO: PV Solar Altitude won't necessarily start with PV
+      case _.includes(key, pvType):
+        return _.replace(key, `${pvType} `, 'PV ')
+
+      // Replace names of all generator columns
+      // TODO: get more examples of generators
+      case _.includes(key, generatorType):
+        return _.replace(key, `${generatorType} `, 'Generator')
+      default:
+        return key
+    }
+  })
+}
+
+// TODO
+// Should 'verifyHomerFile' be prepHomerFile? Is there any advantage to splitting these out as separate call?
+// In order to rename column headers, I will always need to detect them first.
+export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }) {
+  const renamedRows = _.map(dropUnitsRow(parsedFile.data), (row, rowIndex) => {
+    return renameHomerKeys2({ row, pvType, batteryType, generatorType })
+  })
+  const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
+    return _.mapValues(row, (val, key) => {
+      if (key === 'Time') {
+        return DateTime.fromFormat(val, homerParseFormat).toISO()
+      }
+      return _.round(val, 5)
+    })
+  })
+  return addHourIndex(modifiedTable)
+}
+
+export function analyzeHomerFile(rawFile, parsedFile) {
   let errors = []
   const { size, name } = rawFile
   const fileIsCsv = isFileCsv(rawFile)
@@ -80,25 +128,23 @@ export function verifyHomerFile(rawFile, parsedFile) {
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
-  // 5MB limit
   if (size > 1048576 * 5) {
+    // 5MB limit
     errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
-
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
   errors.push(powerTypeErrors)
-
   const { pvType, pvTypeErrors } = getPvType(headers)
   errors.push(pvTypeErrors)
-
   const { batteryType, batteryTypeErrors } = getBatteryType(headers)
   errors.push(batteryTypeErrors)
-
   const { generatorType, generatorTypeErrors } = getGeneratorType(headers)
   errors.push(generatorTypeErrors)
 
+  const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
   return {
     fileName: String(name).split('.')[0],
+    fileData,
     fileSize: size,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
@@ -116,6 +162,9 @@ function addHourIndex(rows) {
   })
 }
 
+// _____________________________________________________________________________
+// Legacy functions below this. These will be replaced.
+// _____________________________________________________________________________
 // Rename HOMER column names so we have consistent variables to do calculations with.
 // If HOMER had Litium Ion batteries, all calculations would break. Example of changes:
 // "Generic 1kWh Lead Acid [ASM] Energy Content" => "Battery Energy Content"

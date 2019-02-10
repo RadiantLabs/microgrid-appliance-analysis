@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import Papa from 'papaparse'
-import { csvOptions, verifyHomerFile } from 'utils/importFileHelpers'
+import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -95,18 +95,29 @@ export const GridStore = types
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const homerAttributes = verifyHomerFile(rawFile, parsedFile)
-          const fileData = parsedFile.data
+          const {
+            fileName,
+            fileData,
+            fileSize,
+            fileErrors,
+            fileWarnings,
+            powerType,
+            pvType,
+            batteryType,
+            generatorType,
+          } = analyzeHomerFile(rawFile, parsedFile)
+
+          // const fileData = prepHomerFile({ parsedFile, pvType, batteryType, generatorType })
           self.runInAction(() => {
             self.fileData = fileData
-            self.fileName = homerAttributes.fileName
-            self.fileSize = homerAttributes.fileSize
-            self.fileErrors = homerAttributes.fileErrors
-            self.fileWarnings = homerAttributes.fileWarnings
-            self.powerType = homerAttributes.powerType
-            self.pvType = homerAttributes.pvType
-            self.batteryType = homerAttributes.batteryType
-            self.generatorType = homerAttributes.generatorType
+            self.fileName = fileName
+            self.fileSize = fileSize
+            self.fileErrors = fileErrors
+            self.fileWarnings = fileWarnings
+            self.powerType = powerType
+            self.pvType = pvType
+            self.batteryType = batteryType
+            self.generatorType = generatorType
           })
         },
         error: error => {
