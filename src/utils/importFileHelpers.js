@@ -1,8 +1,9 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
-import { homerParseFormat, applianceParseFormat } from './constants'
 import Papa from 'papaparse'
+import { findColMax, findColMin } from 'utils/helpers'
+import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 
 /**
@@ -128,8 +129,8 @@ export function analyzeHomerFile(rawFile, parsedFile) {
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
+  // 5MB limit
   if (size > 1048576 * 5) {
-    // 5MB limit
     errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
@@ -142,6 +143,7 @@ export function analyzeHomerFile(rawFile, parsedFile) {
   errors.push(generatorTypeErrors)
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
+
   return {
     fileName: String(name).split('.')[0],
     fileData,
@@ -152,6 +154,10 @@ export function analyzeHomerFile(rawFile, parsedFile) {
     pvType,
     batteryType,
     generatorType,
+    batteryMinSoC: findColMin(fileData, 'Battery State of Charge'),
+    batteryMaxSoC: findColMax(fileData, 'Battery State of Charge'),
+    batteryMinEnergyContent: findColMin(fileData, 'Battery Energy Content'),
+    batteryMaxEnergyContent: findColMax(fileData, 'Battery Energy Content'),
   }
 }
 

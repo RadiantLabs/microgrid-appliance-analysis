@@ -11,6 +11,7 @@ import {
   // Loader,
 } from 'semantic-ui-react'
 import FileButton from 'components/Elements/FileButton'
+import BatteryChargeTable from 'components/Elements/BatteryChargeTable'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import borderlessTableStyles from 'styles/borderlessTableStyles.module.css'
 
@@ -68,27 +69,6 @@ const HomerFormFields = inject('store')(
   })
 )
 
-const HomerStatsTable = () => {
-  return (
-    <Table basic="very" celled>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Battery Max Charge</Table.Cell>
-          <Table.Cell>TODO</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Battery Min Charge</Table.Cell>
-          <Table.Cell>TODO</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Battery Min Effective Charge</Table.Cell>
-          <Table.Cell>use existing table</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  )
-}
-
 class HomerFileForm extends React.Component {
   state = {
     fileStaged: true,
@@ -98,6 +78,12 @@ class HomerFileForm extends React.Component {
   render() {
     const { fileStaged } = this.state
     const { stagedGrid } = this.props.store
+    const {
+      batteryMaxSoC,
+      batteryMinSoC,
+      batteryMaxEnergyContent,
+      batteryMinEnergyContent,
+    } = stagedGrid
     return (
       <div>
         <Header as="h2" attached="top">
@@ -127,7 +113,12 @@ class HomerFileForm extends React.Component {
                   />
                 </Grid.Column>
                 <Grid.Column width={8}>
-                  <HomerStatsTable grid={stagedGrid} />
+                  <BatteryChargeTable
+                    batteryMaxSoC={batteryMaxSoC}
+                    batteryMinSoC={batteryMinSoC}
+                    batteryMaxEnergyContent={batteryMaxEnergyContent}
+                    batteryMinEnergyContent={batteryMinEnergyContent}
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

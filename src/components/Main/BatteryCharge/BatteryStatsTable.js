@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 
+// TODO: Remove this in favor of the new one (BatteryChargeTable)
 const BatteryStatsTable = ({ stats }) => {
   const {
     effectiveMinBatteryEnergyContent,

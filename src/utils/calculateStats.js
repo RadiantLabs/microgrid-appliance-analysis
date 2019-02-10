@@ -9,6 +9,8 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
+// TODO: Remove this function, since it's being calculated on import
+// See batteryMaxSoC, batteryMaxEnergyContent, ...
 export function getHomerStats(homer) {
   const minBatteryEnergyContent = findColMin(homer, 'Battery Energy Content')
   const maxBatteryEnergyContent = findColMax(homer, 'Battery Energy Content')

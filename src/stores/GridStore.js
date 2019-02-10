@@ -15,6 +15,11 @@ import {
 window.tf = tf
 
 const initialBatteryState = {
+  batteryMinSoC: null,
+  batteryMaxSoC: null,
+  batteryMinEnergyContent: null,
+  batteryMaxEnergyContent: null,
+
   batteryEpochCount: 3,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.1,
@@ -61,6 +66,12 @@ export const GridStore = types
     batteryType: types.string,
     generatorType: types.string,
 
+    batteryMinSoC: types.maybeNull(types.number),
+    batteryMaxSoC: types.maybeNull(types.number),
+    batteryMinEnergyContent: types.maybeNull(types.number),
+    batteryMaxEnergyContent: types.maybeNull(types.number),
+
+    // Battery trained model
     batteryEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
     batteryBatchSize: types.number,
@@ -95,29 +106,21 @@ export const GridStore = types
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const {
-            fileName,
-            fileData,
-            fileSize,
-            fileErrors,
-            fileWarnings,
-            powerType,
-            pvType,
-            batteryType,
-            generatorType,
-          } = analyzeHomerFile(rawFile, parsedFile)
-
-          // const fileData = prepHomerFile({ parsedFile, pvType, batteryType, generatorType })
+          const homerAttrs = analyzeHomerFile(rawFile, parsedFile)
           self.runInAction(() => {
-            self.fileData = fileData
-            self.fileName = fileName
-            self.fileSize = fileSize
-            self.fileErrors = fileErrors
-            self.fileWarnings = fileWarnings
-            self.powerType = powerType
-            self.pvType = pvType
-            self.batteryType = batteryType
-            self.generatorType = generatorType
+            self.fileData = homerAttrs.fileData
+            self.fileName = homerAttrs.fileName
+            self.fileSize = homerAttrs.fileSize
+            self.fileErrors = homerAttrs.fileErrors
+            self.fileWarnings = homerAttrs.fileWarnings
+            self.powerType = homerAttrs.powerType
+            self.pvType = homerAttrs.pvType
+            self.batteryType = homerAttrs.batteryType
+            self.generatorType = homerAttrs.generatorType
+            self.batteryMinSoC = homerAttrs.batteryMinSoC
+            self.batteryMaxSoC = homerAttrs.batteryMaxSoC
+            self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
+            self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
           })
         },
         error: error => {

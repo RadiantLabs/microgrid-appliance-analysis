@@ -33,6 +33,8 @@
 - [ ] Add metadata about batter
 - [ ] Attempt to upload all files and check for errors
 - [ ] Add datetime once staged file is accepted
+- [ ] Switch min/max battery soc and energy content to homer grid file
+- [ ] Remove effective min state of charge and energy content. The difference is less than 1%
 
 ## Convert to Mobx State Tree
 
