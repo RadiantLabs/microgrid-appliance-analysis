@@ -102,6 +102,7 @@ export const GridStore = types
             self.fileErrors = homerAttributes.fileErrors
             self.fileWarnings = homerAttributes.fileWarnings
             self.powerType = homerAttributes.powerType
+            self.pvType = homerAttributes.pvType
             self.batteryType = homerAttributes.batteryType
             self.generatorType = homerAttributes.generatorType
           })

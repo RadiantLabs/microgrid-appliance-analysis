@@ -11,11 +11,13 @@ export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: t
 function isFileCsv(rawFile) {
   return rawFile.type === 'text/csv'
 }
+
 function hasColumnHeaders(headers) {
   const header4 = parseFloat(headers[3])
   const header5 = parseFloat(headers[3])
   return _.isFinite(header4) && _.isFinite(header5)
 }
+
 function getGridPowerType(headers) {
   const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
   const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))
@@ -31,19 +33,37 @@ function getGridPowerType(headers) {
   }
 }
 
-function getBatteryType(headers) {
-  // TODO
+function getPvType(headers) {
+  const pvColumn = 'Angle of Incidence'
+  const header = _.find(headers, header => _.includes(header, pvColumn))
+  const pvType = _.trim(header.split(pvColumn)[0])
   return {
-    batteryType: '',
-    batteryTypeErrors: '',
+    pvType,
+    pvTypeErrors: _.isString(pvType)
+      ? null
+      : `Cannot determine PV type. Looking for a column called '___ ${pvColumn}'`,
+  }
+}
+
+function getBatteryType(headers) {
+  const batteryColumn = 'State of Charge'
+  const header = _.find(headers, header => _.includes(header, batteryColumn))
+  const batteryType = _.trim(header.split(batteryColumn)[0])
+  return {
+    batteryType,
+    batteryTypeErrors: _.isString(batteryType)
+      ? null
+      : `Cannot determine battery type. Looking for a column called '___ ${batteryColumn}'`,
   }
 }
 
 function getGeneratorType(headers) {
-  // TODO
+  const generatorColumn = 'Genset Power Output'
+  const header = _.find(headers, header => _.includes(header, generatorColumn))
+  const generatorType = header ? _.trim(header.split(generatorColumn)[0]) : 'Not Found'
   return {
-    generatorType: '',
-    generatorTypeErrors: '',
+    generatorType,
+    generatorTypeErrors: null,
   }
 }
 
@@ -68,6 +88,9 @@ export function verifyHomerFile(rawFile, parsedFile) {
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
   errors.push(powerTypeErrors)
 
+  const { pvType, pvTypeErrors } = getPvType(headers)
+  errors.push(pvTypeErrors)
+
   const { batteryType, batteryTypeErrors } = getBatteryType(headers)
   errors.push(batteryTypeErrors)
 
@@ -80,6 +103,7 @@ export function verifyHomerFile(rawFile, parsedFile) {
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
     powerType,
+    pvType,
     batteryType,
     generatorType,
   }
@@ -102,6 +126,7 @@ function renameHomerKeys(row, fileInfo) {
     switch (true) {
       case _.includes(key, battery):
         return _.replace(key, battery, 'Battery')
+      // TODO: PV Solar Altitude won't necessarily start with PV
       case _.includes(key, pvSystem):
         return _.replace(key, `${pvSystem} `, '')
       default:

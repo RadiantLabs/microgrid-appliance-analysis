@@ -33,11 +33,8 @@ const HomerFormFields = inject('store')(
               Power Type <HelperPopup content={'AC ⚡ DC'} />
             </Table.Cell>
             <Table.Cell>
-              <Select
-                options={[
-                  { key: 'AC', value: 'AC', text: 'AC' },
-                  { key: 'DC', value: 'DC', text: 'DC' },
-                ]}
+              <Input
+                disabled
                 onChange={store.stagedGrid.onPowerTypeChange}
                 value={store.stagedGrid.powerType}
               />
@@ -49,6 +46,7 @@ const HomerFormFields = inject('store')(
             </Table.Cell>
             <Table.Cell>
               <Input
+                disabled
                 onChange={store.stagedGrid.onBatteryTypeChange}
                 value={store.stagedGrid.batteryType}
               />
@@ -59,7 +57,11 @@ const HomerFormFields = inject('store')(
               PV Type <HelperPopup content={'TODO'} />
             </Table.Cell>
             <Table.Cell>
-              <Input onChange={store.stagedGrid.onPvTypeChange} value={store.stagedGrid.pvType} />
+              <Input
+                disabled
+                onChange={store.stagedGrid.onPvTypeChange}
+                value={store.stagedGrid.pvType}
+              />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -68,6 +70,7 @@ const HomerFormFields = inject('store')(
             </Table.Cell>
             <Table.Cell>
               <Input
+                disabled
                 onChange={store.stagedGrid.onGeneratorTypeChange}
                 value={store.stagedGrid.generatorType}
               />
