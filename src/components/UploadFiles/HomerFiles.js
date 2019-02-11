@@ -83,15 +83,22 @@ const HomerFiles = () => (
   <Grid padded>
     <Grid.Row>
       <Grid.Column width={4}>
-        <Button basic fluid color="blue">
-          <Icon name="plus" />
-          Add New Homer File
-        </Button>
-
-        <Header as="h5" style={{ marginLeft: '0.7rem', marginTop: '2rem' }}>
-          Previous HOMER Files
-        </Header>
         <Menu vertical fluid>
+          <Menu.Item
+            name="Add New HOMER File"
+            active={activeItem === 'add-file'}
+            onClick={fakeHandleItemClick}>
+            Add New HOMER File
+            <Button
+              icon
+              floated="right"
+              basic
+              compact
+              size="small"
+              style={{ marginTop: '-7px', marginRight: '-9px' }}>
+              <Icon name="plus" color="blue" />
+            </Button>
+          </Menu.Item>
           {_.map(fakeSavedHomerFiles, file => {
             return (
               <Menu.Item
