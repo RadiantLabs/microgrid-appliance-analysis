@@ -5,7 +5,7 @@ import HomerFileForm from './HomerFileForm'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 
 const activeItem = 'coupons'
-const handleItemClick = () => null
+const fakeHandleItemClick = () => null
 const fakeSavedHomerFiles = [
   {
     fileName: '12-50 Oversize 20',
@@ -59,7 +59,7 @@ const FilePopupContent = ({ file }) => {
         <Table.Row>
           <Table.Cell>File Warnings</Table.Cell>
           <Table.Cell>
-            {_.isEmpty(file.fileWarnings) ? 'thumbs up' : file.fileWarnings.join(', ')}
+            {_.isEmpty(file.fileWarnings) ? 'None' : file.fileWarnings.join(', ')}
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -98,7 +98,7 @@ const HomerFiles = () => (
                 key={file.fileName}
                 name={file.fileName}
                 active={activeItem === file.fileName}
-                onClick={handleItemClick}>
+                onClick={fakeHandleItemClick}>
                 <Header sub>{file.fileName}</Header>
                 <HelperPopup
                   content={<FilePopupContent file={file} />}

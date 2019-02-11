@@ -22,44 +22,49 @@ const HomerFormFields = inject('store')(
         <Table.Body>
           <Table.Row>
             <Table.Cell>
-              File Name <HelperPopup content={'TODO'} />
-            </Table.Cell>
-            <Table.Cell>
-              <Input onChange={store.stagedGrid.onNameChange} value={store.stagedGrid.fileName} />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
-              Description <HelperPopup content={'TODO'} />
+              File Name <HelperPopup content={'TODO'} position="right center" />
             </Table.Cell>
             <Table.Cell>
               <Input
-                onChange={store.stagedGrid.onDescriptionChange}
-                value={store.stagedGrid.fileDescription}
+                onChange={store.stagedGrid.onNameChange}
+                value={store.stagedGrid.fileName}
+                size="small"
               />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              Power Type <HelperPopup content={'AC ⚡ DC'} />
+              Description <HelperPopup content={'TODO'} position="right center" />
+            </Table.Cell>
+            <Table.Cell>
+              <Input
+                onChange={store.stagedGrid.onDescriptionChange}
+                value={store.stagedGrid.fileDescription}
+                size="small"
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
             </Table.Cell>
             <Table.Cell>{store.stagedGrid.powerType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              Battery Type <HelperPopup content={'TODO'} />
+              Battery Type <HelperPopup content={'TODO'} position="right center" />
             </Table.Cell>
             <Table.Cell>{store.stagedGrid.batteryType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              PV Type <HelperPopup content={'TODO'} />
+              PV Type <HelperPopup content={'TODO'} position="right center" />
             </Table.Cell>
             <Table.Cell>{store.stagedGrid.pvType}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              Generator Type <HelperPopup content={'TODO'} />
+              Generator Type <HelperPopup content={'TODO'} position="right center" />
             </Table.Cell>
             <Table.Cell>{store.stagedGrid.generatorType}</Table.Cell>
           </Table.Row>
