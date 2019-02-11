@@ -57,16 +57,14 @@ export function convertTableToTrainingData(
  * Convert loaded data into normalized tensors
  * @param {*} data
  */
-export function arraysToTensors(
-  trainFeaturesArray,
-  trainTargetArray,
-  testFeaturesArray,
-  testTargetArray
-) {
-  const rawTrainFeatures = tf.tensor2d(trainFeaturesArray)
-  const trainTarget = tf.tensor2d(trainTargetArray)
-  const rawTestFeatures = tf.tensor2d(testFeaturesArray)
-  const testTarget = tf.tensor2d(testTargetArray)
+export function arraysToTensors(trainingData) {
+  if (_.isEmpty(trainingData)) {
+    return null
+  }
+  const rawTrainFeatures = tf.tensor2d(trainingData.trainFeatures)
+  const trainTarget = tf.tensor2d(trainingData.trainTarget)
+  const rawTestFeatures = tf.tensor2d(trainingData.testFeatures)
+  const testTarget = tf.tensor2d(trainingData.testTarget)
 
   // Normalize mean and standard deviation of data.
   const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
@@ -213,6 +211,9 @@ export function describeKernelElements(kernel, featureDescriptions) {
  * Actual vs Predicted chart
  */
 export function calculatePlottablePredictedVsActualData(trainingData, model, inputTensorShape) {
+  if (_.isEmpty(model)) {
+    return []
+  }
   const { trainFeatures, testFeatures, testTarget } = trainingData
   const rawTrainFeatures = tf.tensor2d(trainFeatures)
   const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
@@ -222,4 +223,22 @@ export function calculatePlottablePredictedVsActualData(trainingData, model, inp
   return _.map(testTarget, (target, targetIndex) => {
     return { actual: target[0], predicted: normalized_predictions[targetIndex] }
   })
+}
+
+export function calculatePlottableReferenceLine(trainingData) {
+  if (_.isEmpty(trainingData)) {
+    return []
+  }
+  const { trainTarget, testTarget } = trainingData
+  const allTargets = _.map(trainTarget.concat(testTarget), target => target[0])
+  const range = _.range(_.round(_.min(allTargets)), _.round(_.max(allTargets)))
+  return _.map(range, val => {
+    return { actual: val, predicted: val }
+  })
+}
+
+export function formatTrainingTimeDisplay(batteryTrainingTime, batteryEpochCount) {
+  return `${_.round(batteryTrainingTime / 1000)} sec (~${_.round(
+    batteryTrainingTime / 1000 / batteryEpochCount
+  )} sec/epoch)`
 }

@@ -10,6 +10,8 @@ import {
   calculateFinalLoss,
   arraysToTensors,
   calculatePlottablePredictedVsActualData,
+  calculatePlottableReferenceLine,
+  formatTrainingTimeDisplay,
   multiLayerPerceptronRegressionModel1Hidden,
 } from 'utils/tensorflowHelpers'
 window.tf = tf
@@ -223,10 +225,6 @@ export const GridStore = types
       // const savedModelDownload = yield model.save(
       //   'downloads://microgridAppliances_test_saved_model'
       // )
-      // console.log('savedModelDownload: ', savedModelDownload)
-      // const savedModelQuestion = yield model.save()
-      // console.log('savedModelQuestion: ', savedModelQuestion)
-      // debugger
     }),
   }))
   .views(self => ({
@@ -234,9 +232,7 @@ export const GridStore = types
       return _.size(self.batteryTrainingColumns)
     },
     get batteryTrainingTimeDisplay() {
-      return `${_.round(self.batteryTrainingTime / 1000)} sec (~${_.round(
-        self.batteryTrainingTime / 1000 / self.batteryEpochCount
-      )} sec/epoch)`
+      return formatTrainingTimeDisplay(self.batteryTrainingTime, self.batteryEpochCount)
     },
     get batteryTrainingData() {
       return convertTableToTrainingData(
@@ -246,19 +242,12 @@ export const GridStore = types
       )
     },
     get batteryBaselineLoss() {
-      return _.isEmpty(self.tensors) ? null : computeBaselineLoss(self.tensors)
+      return computeBaselineLoss(self.tensors)
     },
     get batteryTensors() {
-      if (_.isEmpty(self.batteryTrainingData)) {
-        return null
-      }
-      const { trainFeatures, trainTarget, testFeatures, testTarget } = self.batteryTrainingData
-      return arraysToTensors(trainFeatures, trainTarget, testFeatures, testTarget)
+      return arraysToTensors(self.batteryTrainingData)
     },
     get batteryPlottablePredictionVsActualData() {
-      if (_.isEmpty(self.batteryModel)) {
-        return []
-      }
       return calculatePlottablePredictedVsActualData(
         self.batteryTrainingData,
         self.batteryModel,
@@ -266,14 +255,6 @@ export const GridStore = types
       )
     },
     get batteryPlottableReferenceLine() {
-      if (_.isEmpty(self.batteryTrainingData)) {
-        return []
-      }
-      const { trainTarget, testTarget } = self.batteryTrainingData
-      const allTargets = _.map(trainTarget.concat(testTarget), target => target[0])
-      const range = _.range(_.round(_.min(allTargets)), _.round(_.max(allTargets)))
-      return _.map(range, val => {
-        return { actual: val, predicted: val }
-      })
+      return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
   }))

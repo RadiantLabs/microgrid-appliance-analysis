@@ -1,5 +1,4 @@
 import * as React from 'react'
-import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 
 const BatteryChargeTable = ({
