@@ -1,13 +1,20 @@
 import * as React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
 
-export const HelperPopup = ({ content, position = 'bottom left' }) => {
+const iconStyle = {
+  position: 'relative',
+  zIndex: '1000',
+}
+
+export const HelperPopup = props => {
+  const { content, wide, inverted = true, position = 'bottom left' } = props
   return (
     <Popup
-      trigger={<Icon name="question circle outline" size="small" color="grey" />}
+      trigger={<Icon name="question circle outline" size="small" color="grey" style={iconStyle} />}
       position={position}
-      inverted
-      content={content}
-    />
+      inverted={inverted}
+      wide={wide}>
+      <Popup.Content>{content}</Popup.Content>
+    </Popup>
   )
 }
