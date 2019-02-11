@@ -92,6 +92,9 @@ export function normalizeTensor(data, dataMean, dataStd) {
 }
 
 export function computeBaselineLoss(tensors) {
+  if (_.isEmpty(tensors)) {
+    return null
+  }
   const averageTargetValue = tf.mean(tensors.trainTarget)
   const baseline = tf.mean(tf.pow(tf.sub(tensors.testTarget, averageTargetValue), 2))
   return _.round(baseline.dataSync()[0])
