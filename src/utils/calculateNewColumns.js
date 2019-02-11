@@ -5,6 +5,7 @@ import _ from 'lodash'
  * Also pass in adjustable fields from store and constants that are required
  * to do the calculations
  */
+// TODO: Remove columns that have been calculated when HOMER was imported
 export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, constants }) {
   if (_.isEmpty(homer) || _.isEmpty(appliance)) {
     return null

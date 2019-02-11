@@ -98,9 +98,67 @@ function renameHomerKeys2({ row, pvType, batteryType, generatorType }) {
   })
 }
 
-// TODO
-// Should 'verifyHomerFile' be prepHomerFile? Is there any advantage to splitting these out as separate call?
-// In order to rename column headers, I will always need to detect them first.
+function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyContent }) {
+  return _.map(fileData, (row, rowIndex, rows) => {
+    // Get the previous HOMER row
+    const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
+
+    // Get existing values from the current row we are iterating over:
+    // Excess electrical production:  Original energy production minus original load (not new
+    // appliances) when the battery is charging as fast as possible
+    const excessElecProd = row['Excess Electrical Production']
+    const batteryEnergyContent = row['Battery Energy Content']
+    const batterySOC = row['Battery State of Charge']
+
+    const prevBatteryEnergyContent =
+      rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
+
+    const prevBatterySOC =
+      rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
+
+    // TODO: Eventually add other generation to this value
+    const totalElectricalProduction = row['PV Power Output']
+
+    // electricalProductionLoadDiff defines whether we are producing excess (positive)
+    // or in deficit (negative).
+    // If excess (positive), `Inverter Power Input` kicks in
+    // If deficit (negative), `Rectifier Power Input` kicks in
+    const electricalProductionLoadDiff =
+      totalElectricalProduction - row['Total Electrical Load Served']
+
+    // The energy content above what HOMER (or the user) decides is the Minimum
+    // Energy content the battery should have
+    const energyContentAboveMin = batteryEnergyContent - batteryMinEnergyContent
+
+    // Find available capacity (kW) before the new appliance is added
+    const availableCapacity =
+      excessElecProd + (batterySOC <= batteryMinSoC ? 0 : energyContentAboveMin)
+
+    // Original Battery Energy Content Delta
+    // This is how much the energy content in the battery has increased or decreased in
+    // the last hour. First row is meaningless when referencing previous row, so set it to zero
+    const originalBatteryEnergyContentDelta =
+      rowIndex === 0 ? 0 : batteryEnergyContent - prevBatteryEnergyContent
+
+    const datetime = row['Time']
+    const dateObject = DateTime.fromISO(datetime)
+    return {
+      datetime,
+      hour_of_day: dateObject.hour,
+      // day: applianceRow['day'],
+      // day_hour: applianceRow['day_hour'],
+      totalElectricalProduction: _.round(totalElectricalProduction, 4),
+      electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
+      prevBatterySOC: _.round(prevBatterySOC, 4),
+      prevBatteryEnergyContent: _.round(prevBatteryEnergyContent, 4),
+      energyContentAboveMin: _.round(energyContentAboveMin, 4),
+      availableCapacity: _.round(availableCapacity, 4),
+      originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
+      ...row,
+    }
+  })
+}
+
 export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }) {
   const renamedRows = _.map(dropUnitsRow(parsedFile.data), (row, rowIndex) => {
     return renameHomerKeys2({ row, pvType, batteryType, generatorType })
@@ -143,10 +201,20 @@ export function analyzeHomerFile(rawFile, parsedFile) {
   errors.push(generatorTypeErrors)
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
+  const batteryMaxSoC = findColMax(fileData, 'Battery State of Charge')
+  const batteryMinSoC = findColMin(fileData, 'Battery State of Charge')
+  const batteryMaxEnergyContent = findColMax(fileData, 'Battery Energy Content')
+  const batteryMinEnergyContent = findColMin(fileData, 'Battery Energy Content')
+
+  const withCalculatedColumns = calculateNewHomerColumns({
+    fileData,
+    batteryMinSoC,
+    batteryMinEnergyContent,
+  })
 
   return {
     fileName: String(name).split('.')[0],
-    fileData,
+    fileData: withCalculatedColumns,
     fileSize: size,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
@@ -154,10 +222,10 @@ export function analyzeHomerFile(rawFile, parsedFile) {
     pvType,
     batteryType,
     generatorType,
-    batteryMinSoC: findColMin(fileData, 'Battery State of Charge'),
-    batteryMaxSoC: findColMax(fileData, 'Battery State of Charge'),
-    batteryMinEnergyContent: findColMin(fileData, 'Battery Energy Content'),
-    batteryMaxEnergyContent: findColMax(fileData, 'Battery Energy Content'),
+    batteryMaxSoC,
+    batteryMinSoC,
+    batteryMaxEnergyContent,
+    batteryMinEnergyContent,
   }
 }
 
