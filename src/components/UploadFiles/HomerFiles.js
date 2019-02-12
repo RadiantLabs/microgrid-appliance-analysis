@@ -43,7 +43,7 @@ const fakeSavedHomerFiles = [
   {
     fileName: '12-50 Undersize 10',
     fileDescription: 'This is not useful',
-    fileIsSample: false,
+    fileIsSample: true,
     fileSize: '3.9 MB',
     fileData: [{}, {}, {}],
     fileErrors: [],
@@ -128,9 +128,11 @@ class HomerFiles extends React.Component {
                       wide={true}
                     />
                     <span>{file.fileDescription}</span>
-                    <Label basic attached="top right" size="mini" style={labelStyle}>
-                      Sample
-                    </Label>
+                    {file.fileIsSample && (
+                      <Label basic attached="top right" size="mini" style={labelStyle}>
+                        Sample
+                      </Label>
+                    )}
                   </Menu.Item>
                 )
               })}
