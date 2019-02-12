@@ -1,3 +1,18 @@
+There is a bootstrapping problem I have to solve for when a user first fires up the app:
+
+- Need to load sample HOMER files
+- Need to train the battery model one at a time
+  - Have a bootstrap action in mainStore that loads and models the files sequentially
+- Need to save them to local forage
+  - mainStore action (or autorun) saves them to localstorage
+- Then need to be able to upload a file, using all of the same machinery
+- Need to be able to switch between files, but not store all of the data and model in memory
+  - How to load them quickly, but not load the data or trained model?
+
+First need to move training view into file upload section
+
+---
+
 // TODO:
 // Need to 'stage' the HOMER file.
 // That form will show all of the fields and battery is modeling
@@ -30,6 +45,8 @@
 // Start with loading one, then save it into localforage.
 // It needs to be loaded from the MainStore in afterCreate
 // Then do 2 HOMER files.
+
+---
 
 ## Upload HOMER files
 

@@ -27,7 +27,7 @@ const ActualVsPredicted = ({
         inline="centered"
         style={{ position: 'absolute', top: '40%', left: '50%' }}
       />
-      <ResponsiveContainer height={600}>
+      <ResponsiveContainer height={400}>
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <XAxis
             type="number"

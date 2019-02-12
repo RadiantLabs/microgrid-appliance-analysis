@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Grid, Button } from 'semantic-ui-react'
+import { Grid, Button, Header } from 'semantic-ui-react'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
 import LoaderSpinner from 'components/Elements/Loader'
@@ -40,17 +40,18 @@ class BatteryModel extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column>
-              <h2 style={{ display: 'inline-block', marginBottom: '8px' }}>
+              <Header as="h3" style={{ display: 'inline-block', marginBottom: '8px' }}>
                 Battery Charge & Discharge Model
-              </h2>
+              </Header>
               <Button
                 basic
                 compact
                 size="tiny"
                 color="blue"
                 onClick={this.retrainModelClick}
-                style={{ verticalAlign: 'top', marginLeft: '1rem', marginTop: '4px' }}>
-                Re-Train model
+                style={{ marginTop: '-5px' }}
+                floated="right">
+                Re-Train Battery Model
               </Button>
               <p style={headerStyle}>
                 Use machine learning to recreate the kinetic battery model based on the HOMER file.

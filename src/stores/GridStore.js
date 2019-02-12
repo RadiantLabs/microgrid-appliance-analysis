@@ -39,6 +39,9 @@ const initialBatteryState = {
   batteryTestSetLoss: null,
 }
 export const initialGridState = {
+  fileIsSelected: false,
+  isAnalyzingFile: false,
+  isBatteryModeling: false,
   fileName: '',
   fileSize: 0,
   fileData: [],
@@ -57,6 +60,11 @@ export const initialGridState = {
  */
 export const GridStore = types
   .model({
+    // Temporary UI state variables. May be moved into volatile state
+    fileIsSelected: types.boolean,
+    isAnalyzingFile: types.boolean,
+    isBatteryModeling: types.boolean,
+
     fileName: types.string,
     fileSize: types.number,
     fileData: types.frozen(),
@@ -105,7 +113,9 @@ export const GridStore = types
       // self.fetchHomer(self.activeHomerFileInfo)
       // self.fetchAppliance(self.activeApplianceFileInfo)
     },
-    onGridFileUpload(rawFile) {
+    onGridFileSelect(rawFile) {
+      self.fileIsSelected = true
+      self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)
       Papa.parse(rawFile, {
         ...csvOptions,
@@ -125,6 +135,7 @@ export const GridStore = types
             self.batteryMaxSoC = homerAttrs.batteryMaxSoC
             self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
             self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
+            self.isAnalyzingFile = false
           })
         },
         error: error => {
@@ -204,32 +215,11 @@ export const GridStore = types
         trainingColumns: self.batteryTrainingColumns,
       })
     },
-
-    saveModelSync(model) {
-      function handleSave(artifacts) {
-        console.log('artifacts: ', artifacts)
-        // ... do something with the artifacts ...
-        // const { modelTopology, weightSpecs, weightData } = artifacts
-        // TODO:
-        // 1. Save to localforage
-        // 2. Load model from localforage
-        // const model = await tf.loadModel(tf.io.fromMemory(modelTopology, weightSpecs, weightData))
-      }
-      // const saveResult = model.save(tf.io.withSaveHandler(handleSave))
-      handleSave()
-      return null
-    },
-
-    saveModel: flow(function* saveModel(model) {
-      // const savedModelLocalStorage = yield model.save(
-      //   'localstorage://microgridAppliances_test_saved_model'
-      // )
-      // const savedModelDownload = yield model.save(
-      //   'downloads://microgridAppliances_test_saved_model'
-      // )
-    }),
   }))
   .views(self => ({
+    get showAnalyzedResults() {
+      return self.fileIsSelected && !self.isAnalyzingFile
+    },
     get batteryNumFeatures() {
       return _.size(self.batteryTrainingColumns)
     },
@@ -260,3 +250,27 @@ export const GridStore = types
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
   }))
+
+// saveModelSync(model) {
+//   function handleSave(artifacts) {
+//     console.log('artifacts: ', artifacts)
+//     // ... do something with the artifacts ...
+//     // const { modelTopology, weightSpecs, weightData } = artifacts
+//     // TODO:
+//     // 1. Save to localforage
+//     // 2. Load model from localforage
+//     // const model = await tf.loadModel(tf.io.fromMemory(modelTopology, weightSpecs, weightData))
+//   }
+//   // const saveResult = model.save(tf.io.withSaveHandler(handleSave))
+//   handleSave()
+//   return null
+// },
+//
+// saveModel: flow(function* saveModel(model) {
+//   // const savedModelLocalStorage = yield model.save(
+//   //   'localstorage://microgridAppliances_test_saved_model'
+//   // )
+//   // const savedModelDownload = yield model.save(
+//   //   'downloads://microgridAppliances_test_saved_model'
+//   // )
+// }),

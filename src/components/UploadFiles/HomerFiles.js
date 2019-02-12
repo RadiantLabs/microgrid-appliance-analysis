@@ -59,7 +59,7 @@ const fakeSavedHomerFiles = [
 class HomerFiles extends React.Component {
   state = {
     activeNavId: null,
-    isAddingFile: false,
+    isAddingFile: true,
     isAnalyzing: false,
     isSaving: false,
   }

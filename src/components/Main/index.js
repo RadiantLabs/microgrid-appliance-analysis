@@ -7,7 +7,6 @@ import FileChooser from 'components/Main/FileChooser'
 // Route Pages
 import Summary from './Summary'
 import AncillaryEquipment from './AncillaryEquipment'
-import BatteryModel from './BatteryModel'
 import DataTable from './DataTable'
 import Loads from './Loads'
 import UnmetLoads from './UnmetLoads'
@@ -25,7 +24,6 @@ const Main = ({ match }) => {
         <Menu.Item as={NavItem} to={`/tool/loads`} name="Loads" />
         <Menu.Item as={NavItem} to={`/tool/unmet-loads`} name="Unmet Loads" />
         <Menu.Item as={NavItem} to={`/tool/battery-charge`} name="Battery Charge" />
-        <Menu.Item as={NavItem} to={`/tool/battery-model`} name="Battery Model" />
       </Menu>
 
       <div className="mainContent">
@@ -37,7 +35,6 @@ const Main = ({ match }) => {
         <Route path={`/tool/loads`} component={Loads} />
         <Route path={`/tool/unmet-loads`} component={UnmetLoads} />
         <Route path={`/tool/battery-charge`} component={BatteryCharge} />
-        <Route path={`/tool/battery-model`} component={BatteryModel} />
       </div>
     </div>
   )
