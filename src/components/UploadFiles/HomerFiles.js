@@ -1,11 +1,18 @@
 import * as React from 'react'
+import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Grid, Table, Header, Menu, Button, Icon } from 'semantic-ui-react'
+import { Grid, Table, Header, Menu, Button, Icon, Label } from 'semantic-ui-react'
 import HomerFileForm from './HomerFileForm'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 
-const activeItem = 'coupons'
-const fakeHandleItemClick = () => null
+const labelStyle = {
+  background: 'none #fff',
+  border: '1px solid rgba(34,36,38,.15)',
+  color: 'rgba(0,0,0,.87)',
+  boxShadow: 'none',
+  marginTop: '1px',
+}
+
 const fakeSavedHomerFiles = [
   {
     fileName: '12-50 Oversize 20',
@@ -79,50 +86,63 @@ const FilePopupContent = ({ file }) => {
   )
 }
 
-const HomerFiles = () => (
-  <Grid padded>
-    <Grid.Row>
-      <Grid.Column width={4}>
-        <Menu vertical fluid>
-          <Menu.Item
-            name="Add New HOMER File"
-            active={activeItem === 'add-file'}
-            onClick={fakeHandleItemClick}>
-            Add New HOMER File
-            <Button
-              icon
-              floated="right"
-              basic
-              compact
-              size="small"
-              style={{ marginTop: '-7px', marginRight: '-9px' }}>
-              <Icon name="plus" color="blue" />
-            </Button>
-          </Menu.Item>
-          {_.map(fakeSavedHomerFiles, file => {
-            return (
+class HomerFiles extends React.Component {
+  render() {
+    const {
+      isUploadingNewGridFile,
+      setIsUploadingNewGridFile,
+      gridFileNavActiveId,
+      setGridFileNavActiveId,
+    } = this.props.store
+    return (
+      <Grid padded>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            <Menu vertical fluid>
               <Menu.Item
-                key={file.fileName}
-                name={file.fileName}
-                active={activeItem === file.fileName}
-                onClick={fakeHandleItemClick}>
-                <Header sub>{file.fileName}</Header>
-                <HelperPopup
-                  content={<FilePopupContent file={file} />}
-                  position="right center"
-                  wide={true}
-                />
-                <span>{file.fileDescription}</span>
+                name="Add New HOMER File"
+                active={isUploadingNewGridFile === true}
+                onClick={setIsUploadingNewGridFile}>
+                Add New HOMER File
+                <Button
+                  icon
+                  floated="right"
+                  basic
+                  compact
+                  size="small"
+                  style={{ marginTop: '-7px', marginRight: '-9px' }}>
+                  <Icon name="plus" color="blue" />
+                </Button>
               </Menu.Item>
-            )
-          })}
-        </Menu>
-      </Grid.Column>
-      <Grid.Column width={12}>
-        <HomerFileForm />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-)
+              {_.map(fakeSavedHomerFiles, (file, fileIndex) => {
+                return (
+                  <Menu.Item
+                    key={file.fileName}
+                    name={file.fileName}
+                    active={gridFileNavActiveId === fileIndex}
+                    onClick={setGridFileNavActiveId.bind(null, fileIndex)}>
+                    <Header sub>{file.fileName}</Header>
+                    <HelperPopup
+                      content={<FilePopupContent file={file} />}
+                      position="right center"
+                      wide={true}
+                    />
+                    <span>{file.fileDescription}</span>
+                    <Label basic attached="top right" size="mini" style={labelStyle}>
+                      Sample
+                    </Label>
+                  </Menu.Item>
+                )
+              })}
+            </Menu>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <HomerFileForm />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    )
+  }
+}
 
-export default HomerFiles
+export default inject('store')(observer(HomerFiles))

@@ -38,6 +38,16 @@ export const MainStore = types
     stagedGrid: types.maybeNull(GridStore),
     storedGrids: types.optional(types.array(GridStore), []),
 
+    // UI state
+    // TODO: Create array of sample files (marked as sample). When adding new
+    // files, push onto the front of the stack (so samples go down).
+    // 1. How do I populate that list of grids? I can do it in fileInfo.js
+    // Start with loading one, then save it into localforage.
+    // It needs to be loaded from the MainStore in afterCreate
+    // Then do 2 HOMER files.
+    gridFileNavActiveId: types.maybeNull(types.number),
+    isUploadingNewGridFile: types.boolean,
+
     // Appliance Info
     initApplianceFileName: types.string,
     applianceIsLoading: types.boolean,
@@ -85,6 +95,16 @@ export const MainStore = types
         self.excludedTableColumns.push(columnName)
       }
     },
+    setGridFileNavActiveId(fileId, event) {
+      event.preventDefault()
+      self.gridFileNavActiveId = fileId
+    },
+    setIsUploadingNewGridFile(event, uploadingState) {
+      event.preventDefault()
+      self.gridFileNavActiveId = null
+      self.isUploadingNewGridFile = uploadingState
+    },
+
     // TODO:
     // * may want to use the async version of localforage
     // * Add metadata to saved snapshot
@@ -174,6 +194,9 @@ let initialMainState = {
   activeApplianceFileInfo,
   activeAppliance: [],
   excludedTableColumns: [],
+
+  gridFileNavActiveId: 0,
+  isUploadingNewGridFile: false,
   grid: Grid1Store.create(initialHomerState),
 
   // Temporary store names until I get this straighted out
