@@ -2,7 +2,7 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react'
-import HomerFileForm from './HomerFileForm'
+import HomerFile from './HomerFile'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import FileInfoPopupContent from './FileInfoPopupContent'
 
@@ -76,7 +76,6 @@ class HomerFiles extends React.Component {
 
   render() {
     const { activeNavId, isAddingFile, isAnalyzing, isSaving } = this.state
-    // const { } = this.props.store
     const useBlankState = !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving])
     return (
       <Grid padded>
@@ -123,7 +122,7 @@ class HomerFiles extends React.Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={12}>
-            {useBlankState ? <HomerFileBlankState /> : <HomerFileForm />}
+            {useBlankState ? <HomerFileBlankState /> : <HomerFile />}
           </Grid.Column>
         </Grid.Row>
       </Grid>

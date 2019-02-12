@@ -101,8 +101,10 @@ export const GridStore = types
     runInAction(fn) {
       return fn()
     },
-  }))
-  .actions(self => ({
+    afterCreate() {
+      // self.fetchHomer(self.activeHomerFileInfo)
+      // self.fetchAppliance(self.activeApplianceFileInfo)
+    },
     onGridFileUpload(rawFile) {
       console.log('parsing rawFile: ', rawFile)
       Papa.parse(rawFile, {
