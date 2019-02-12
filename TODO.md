@@ -23,6 +23,14 @@
 // I guess just store them with the model and have another computed property that
 // shows them if isActive or isReviewing
 
+// UI state
+// TODO: Create array of sample files (marked as sample). When adding new
+// files, push onto the front of the stack (so samples go down).
+// 1. How do I populate that list of grids? I can do it in fileInfo.js
+// Start with loading one, then save it into localforage.
+// It needs to be loaded from the MainStore in afterCreate
+// Then do 2 HOMER files.
+
 ## Upload HOMER files
 
 - [ ] Import all example files without error

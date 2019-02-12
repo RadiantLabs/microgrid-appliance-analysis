@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Grid, Table, Header, Menu, Button, Icon, Label } from 'semantic-ui-react'
+import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react'
 import HomerFileForm from './HomerFileForm'
 import { HelperPopup } from 'components/Elements/HelperPopup'
 import FileInfoPopupContent from './FileInfoPopupContent'
@@ -57,13 +57,27 @@ const fakeSavedHomerFiles = [
 ]
 
 class HomerFiles extends React.Component {
+  state = {
+    activeNavId: null,
+    isAddingFile: false,
+    isAnalyzing: false,
+    isSaving: false,
+  }
+
+  handleAddFileClick = (event, data) => {
+    event.preventDefault()
+    this.setState({ isAddingFile: true, activeNavId: null })
+  }
+
+  handleFileNavClick = (fileIndex, event, data) => {
+    event.preventDefault()
+    this.setState({ isAddingFile: false, activeNavId: fileIndex })
+  }
+
   render() {
-    const {
-      isUploadingNewGridFile,
-      setIsUploadingNewGridFile,
-      gridFileNavActiveId,
-      setGridFileNavActiveId,
-    } = this.props.store
+    const { activeNavId, isAddingFile, isAnalyzing, isSaving } = this.state
+    // const { } = this.props.store
+    const useBlankState = !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving])
     return (
       <Grid padded>
         <Grid.Row>
@@ -71,8 +85,8 @@ class HomerFiles extends React.Component {
             <Menu vertical fluid>
               <Menu.Item
                 name="Add New HOMER File"
-                active={isUploadingNewGridFile === true}
-                onClick={setIsUploadingNewGridFile}>
+                active={isAddingFile}
+                onClick={this.handleAddFileClick}>
                 Add New HOMER File
                 <Button
                   icon
@@ -89,8 +103,8 @@ class HomerFiles extends React.Component {
                   <Menu.Item
                     key={file.fileName}
                     name={file.fileName}
-                    active={gridFileNavActiveId === fileIndex}
-                    onClick={setGridFileNavActiveId.bind(null, fileIndex)}>
+                    active={activeNavId === fileIndex}
+                    onClick={this.handleFileNavClick.bind(null, fileIndex)}>
                     <Header sub>{file.fileName}</Header>
                     <HelperPopup
                       content={<FileInfoPopupContent file={file} />}
@@ -109,7 +123,7 @@ class HomerFiles extends React.Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={12}>
-            <HomerFileForm />
+            {useBlankState ? <HomerFileBlankState /> : <HomerFileForm />}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -118,3 +132,16 @@ class HomerFiles extends React.Component {
 }
 
 export default inject('store')(observer(HomerFiles))
+
+const HomerFileBlankState = () => {
+  return (
+    <div>
+      <Header as="h3">HOMER File Management</Header>
+      <List size="large" bulleted>
+        <List.Item>Add a new HOMER file</List.Item>
+        <List.Item>View, edit or delete your existing HOMER files</List.Item>
+      </List>
+      <p>Click on the menu on the left to do any of these tasks</p>
+    </div>
+  )
+}
