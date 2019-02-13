@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getParent } from 'mobx-state-tree'
+import { types, flow } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
@@ -157,16 +157,15 @@ export const GridStore = types
       batteryMaxEpochCount,
       batteryTrainingColumns,
     }) {
-      if (
-        checkBatteryModelInputs(
-          batteryFeatureCount,
-          batteryTensors,
-          batteryLearningRate,
-          batteryBatchSize,
-          batteryMaxEpochCount,
-          batteryTrainingColumns
-        )
-      ) {
+      const doNotModel = hasEmptyArguments(
+        batteryFeatureCount,
+        batteryTensors,
+        batteryLearningRate,
+        batteryBatchSize,
+        batteryMaxEpochCount,
+        batteryTrainingColumns
+      )
+      if (doNotModel) {
         return null
       }
       let model = multiLayerPerceptronRegressionModel1Hidden(batteryFeatureCount)
@@ -184,6 +183,7 @@ export const GridStore = types
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
             const t1 = performance.now()
+            console.log('epoch: ', epoch)
             self.runInAction(() => {
               self.batteryCurrentEpoch = epoch
               self.batteryTrainLogs = self.batteryTrainLogs.concat({ epoch, ...logs })
@@ -238,10 +238,13 @@ export const GridStore = types
     },
     get batteryTrainingData() {
       return convertTableToTrainingData(
-        getParent(self).combinedTable, // TODO: We don't need combinedTable anymore to calculate the tensors
+        self.fileData,
         self.batteryTargetColumn,
         self.batteryTrainingColumns
       )
+    },
+    get batteryIsTrained() {
+      return self.batteryTrainingState === 'Trained'
     },
     get batteryBaselineLoss() {
       return computeBaselineLoss(self.tensors)
@@ -261,7 +264,7 @@ export const GridStore = types
     },
   }))
 
-function checkBatteryModelInputs(
+function hasEmptyArguments(
   batteryFeatureCount,
   batteryTensors,
   batteryLearningRate,
@@ -269,7 +272,7 @@ function checkBatteryModelInputs(
   batteryMaxEpochCount,
   batteryTrainingColumns
 ) {
-  return _.every([
+  return !_.every([
     _.isFinite(batteryFeatureCount),
     !_.isEmpty(batteryTensors),
     batteryLearningRate,

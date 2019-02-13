@@ -17,21 +17,7 @@ class BatteryModel extends React.Component {
 
   render() {
     const { calculatedColumns, grid } = this.props.store
-    const {
-      batteryModelName,
-      batteryPlottablePredictionVsActualData,
-      batteryMaxEpochCount,
-      batteryCurrentEpoch,
-      batteryTrainingState,
-      batteryFinalTrainSetLoss,
-      batteryValidationSetLoss,
-      batteryTestSetLoss,
-      batteryPlottableReferenceLine,
-      batteryTrainingTimeDisplay,
-      batteryTargetColumn,
-      batteryTrainingColumns,
-      batteryModelStopLoss,
-    } = grid
+    const { batteryPlottablePredictionVsActualData, batteryPlottableReferenceLine } = grid
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
@@ -62,24 +48,10 @@ class BatteryModel extends React.Component {
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <EpochProgressTable
-                isTrained={batteryTrainingState === 'Trained'}
-                batteryModelName={batteryModelName}
-                batteryCurrentEpoch={batteryCurrentEpoch}
-                batteryMaxEpochCount={batteryMaxEpochCount}
-                batteryTrainingTimeDisplay={batteryTrainingTimeDisplay}
-                batteryTargetColumn={batteryTargetColumn}
-                batteryTrainingColumns={batteryTrainingColumns}
-                batteryModelStopLoss={batteryModelStopLoss}
-              />
+              <EpochProgressTable gridName="stagedGrid" />
             </Grid.Column>
             <Grid.Column>
-              <FinalLossTable
-                isTrained={batteryTrainingState === 'Trained'}
-                finalTrainSetLoss={batteryFinalTrainSetLoss}
-                finalValidationSetLoss={batteryValidationSetLoss}
-                testSetLoss={batteryTestSetLoss}
-              />
+              <FinalLossTable gridName="stagedGrid" />
             </Grid.Column>
           </Grid.Row>
         </Grid>
