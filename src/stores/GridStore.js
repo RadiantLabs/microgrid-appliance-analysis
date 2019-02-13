@@ -116,7 +116,7 @@ export const GridStore = types
       // self.fetchHomer(self.activeHomerFileInfo)
       // self.fetchAppliance(self.activeApplianceFileInfo)
     },
-    onGridFileSelect(rawFile) {
+    handleGridFileSelect(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)
@@ -218,6 +218,13 @@ export const GridStore = types
         epochCount: self.batteryMaxEpochCount,
         trainingColumns: self.batteryTrainingColumns,
       })
+    },
+
+    handleCancelUpload() {
+      console.log('TODO: handleCancelUpload')
+    },
+    handleFileSave() {
+      console.log('TODO: handleFileSave')
     },
   }))
   .views(self => ({

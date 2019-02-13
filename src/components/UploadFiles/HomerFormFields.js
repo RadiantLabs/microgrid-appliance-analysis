@@ -20,7 +20,7 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>
             <Input
-              onChange={store.stagedGrid.onNameChange}
+              onChange={store.stagedGrid.handleNameChange}
               value={store.stagedGrid.fileName}
               size="small"
             />
