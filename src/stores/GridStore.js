@@ -22,7 +22,7 @@ const initialBatteryState = {
   batteryMinEnergyContent: null,
   batteryMaxEnergyContent: null,
 
-  batteryEpochCount: 3,
+  batteryMaxEpochCount: 3,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.1,
   batteryBatchSize: 40,
@@ -82,7 +82,7 @@ export const GridStore = types
     batteryMaxEnergyContent: types.maybeNull(types.number),
 
     // Battery trained model
-    batteryEpochCount: types.number, // Change to batteryMaxEpochCount
+    batteryMaxEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
     batteryBatchSize: types.number,
     batteryLearningRate: types.number,
@@ -136,6 +136,7 @@ export const GridStore = types
             self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
             self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
             self.isAnalyzingFile = false
+            // self.batteryReadyToModel = true
           })
         },
         error: error => {
@@ -149,27 +150,36 @@ export const GridStore = types
     },
 
     trainBatteryModel: flow(function* batteryModelRun({
-      numFeatures,
-      tensors,
-      learningRate,
-      batchSize,
-      epochCount,
-      trainingColumns,
+      batteryFeatureCount,
+      batteryTensors,
+      batteryLearningRate,
+      batteryBatchSize,
+      batteryMaxEpochCount,
+      batteryTrainingColumns,
     }) {
-      let model = multiLayerPerceptronRegressionModel1Hidden(numFeatures)
-      self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
-      if (_.isEmpty(tensors)) {
+      if (
+        checkBatteryModelInputs(
+          batteryFeatureCount,
+          batteryTensors,
+          batteryLearningRate,
+          batteryBatchSize,
+          batteryMaxEpochCount,
+          batteryTrainingColumns
+        )
+      ) {
         return null
       }
+      let model = multiLayerPerceptronRegressionModel1Hidden(batteryFeatureCount)
+      self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
       model.compile({
-        optimizer: tf.train.sgd(learningRate),
+        optimizer: tf.train.sgd(batteryLearningRate),
         loss: 'meanSquaredError',
       })
       self.batteryTrainingState = 'Training'
       const t0 = performance.now()
-      yield model.fit(tensors.trainFeatures, tensors.trainTarget, {
-        batchSize: batchSize,
-        epochs: epochCount,
+      yield model.fit(batteryTensors.trainFeatures, batteryTensors.trainTarget, {
+        batchSize: batteryBatchSize,
+        epochs: batteryMaxEpochCount,
         validationSplit: 0.2,
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
@@ -184,7 +194,7 @@ export const GridStore = types
             })
           },
           onTrainEnd: () => {
-            const testSetLoss = calculateTestSetLoss(model, tensors, batchSize)
+            const testSetLoss = calculateTestSetLoss(model, batteryTensors, batteryBatchSize)
             const { finalTrainSetLoss, finalValidationSetLoss } = calculateFinalLoss(
               self.batteryTrainLogs
             )
@@ -207,11 +217,11 @@ export const GridStore = types
     retrainBatteryModel() {
       _.forEach(initialBatteryState, (val, key) => (self[key] = val))
       self.trainBatteryModel({
-        numFeatures: self.batteryNumFeatures,
+        numFeatures: self.batteryFeatureCount,
         tensors: self.batteryTensors,
         learningRate: self.batteryLearningRate,
         batchSize: self.batteryBatchSize,
-        epochCount: self.batteryEpochCount,
+        epochCount: self.batteryMaxEpochCount,
         trainingColumns: self.batteryTrainingColumns,
       })
     },
@@ -220,15 +230,15 @@ export const GridStore = types
     get showAnalyzedResults() {
       return self.fileIsSelected && !self.isAnalyzingFile
     },
-    get batteryNumFeatures() {
+    get batteryFeatureCount() {
       return _.size(self.batteryTrainingColumns)
     },
     get batteryTrainingTimeDisplay() {
-      return formatTrainingTimeDisplay(self.batteryTrainingTime, self.batteryEpochCount)
+      return formatTrainingTimeDisplay(self.batteryTrainingTime, self.batteryMaxEpochCount)
     },
     get batteryTrainingData() {
       return convertTableToTrainingData(
-        getParent(self).combinedTable,
+        getParent(self).combinedTable, // TODO: We don't need combinedTable anymore to calculate the tensors
         self.batteryTargetColumn,
         self.batteryTrainingColumns
       )
@@ -250,6 +260,24 @@ export const GridStore = types
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
   }))
+
+function checkBatteryModelInputs(
+  batteryFeatureCount,
+  batteryTensors,
+  batteryLearningRate,
+  batteryBatchSize,
+  batteryMaxEpochCount,
+  batteryTrainingColumns
+) {
+  return _.every([
+    _.isFinite(batteryFeatureCount),
+    !_.isEmpty(batteryTensors),
+    batteryLearningRate,
+    batteryBatchSize,
+    batteryMaxEpochCount,
+    !_.isEmpty(batteryTrainingColumns),
+  ])
+}
 
 // saveModelSync(model) {
 //   function handleSave(artifacts) {

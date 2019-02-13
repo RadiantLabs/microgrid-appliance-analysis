@@ -244,15 +244,23 @@ autorun(() =>
 )
 
 // Run the battery regression model
-// autorun(() =>
-//   mainStore.grid.trainBatteryModel({
-//     numFeatures: mainStore.grid.batteryNumFeatures,
-//     tensors: mainStore.grid.batteryTensors,
-//     learningRate: mainStore.grid.batteryLearningRate,
-//     batchSize: mainStore.grid.batteryBatchSize,
-//     epochCount: mainStore.grid.batteryEpochCount,
-//     trainingColumns: mainStore.grid.batteryTrainingColumns,
-//   })
-// )
+autorun(() => {
+  const {
+    batteryFeatureCount,
+    batteryTensors,
+    batteryLearningRate,
+    batteryBatchSize,
+    batteryMaxEpochCount,
+    batteryTrainingColumns,
+  } = mainStore.stagedGrid
+  mainStore.stagedGrid.trainBatteryModel({
+    batteryFeatureCount,
+    batteryTensors,
+    batteryLearningRate,
+    batteryBatchSize,
+    batteryMaxEpochCount,
+    batteryTrainingColumns,
+  })
+})
 
 export { mainStore, history }

@@ -13,7 +13,7 @@ import {
 window.tf = tf
 
 const initialBatteryState = {
-  batteryEpochCount: 3,
+  batteryMaxEpochCount: 3,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.1,
   batteryBatchSize: 40,
@@ -40,7 +40,7 @@ export const initialHomerState = {
 
 export const Grid1Store = types
   .model({
-    batteryEpochCount: types.number, // Change to batteryMaxEpochCount
+    batteryMaxEpochCount: types.number, // Change to batteryMaxEpochCount
     batteryModelStopLoss: types.number,
     batteryBatchSize: types.number,
     batteryLearningRate: types.number,
@@ -132,7 +132,7 @@ export const Grid1Store = types
         tensors: self.batteryTensors,
         learningRate: self.batteryLearningRate,
         batchSize: self.batteryBatchSize,
-        epochCount: self.batteryEpochCount,
+        epochCount: self.batteryMaxEpochCount,
         trainingColumns: self.batteryTrainingColumns,
       })
     },
@@ -171,7 +171,7 @@ export const Grid1Store = types
     },
     get batteryTrainingTimeDisplay() {
       return `${_.round(self.batteryTrainingTime / 1000)} sec (~${_.round(
-        self.batteryTrainingTime / 1000 / self.batteryEpochCount
+        self.batteryTrainingTime / 1000 / self.batteryMaxEpochCount
       )} sec/epoch)`
     },
     get batteryTrainingData() {

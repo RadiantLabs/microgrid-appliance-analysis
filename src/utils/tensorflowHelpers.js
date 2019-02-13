@@ -240,8 +240,8 @@ export function calculatePlottableReferenceLine(trainingData) {
   })
 }
 
-export function formatTrainingTimeDisplay(batteryTrainingTime, batteryEpochCount) {
+export function formatTrainingTimeDisplay(batteryTrainingTime, batteryMaxEpochCount) {
   return `${_.round(batteryTrainingTime / 1000)} sec (~${_.round(
-    batteryTrainingTime / 1000 / batteryEpochCount
+    batteryTrainingTime / 1000 / batteryMaxEpochCount
   )} sec/epoch)`
 }

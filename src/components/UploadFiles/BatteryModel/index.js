@@ -20,7 +20,7 @@ class BatteryModel extends React.Component {
     const {
       batteryModelName,
       batteryPlottablePredictionVsActualData,
-      batteryEpochCount,
+      batteryMaxEpochCount,
       batteryCurrentEpoch,
       batteryTrainingState,
       batteryFinalTrainSetLoss,
@@ -66,7 +66,7 @@ class BatteryModel extends React.Component {
                 isTrained={batteryTrainingState === 'Trained'}
                 batteryModelName={batteryModelName}
                 batteryCurrentEpoch={batteryCurrentEpoch}
-                batteryEpochCount={batteryEpochCount}
+                batteryMaxEpochCount={batteryMaxEpochCount}
                 batteryTrainingTimeDisplay={batteryTrainingTimeDisplay}
                 batteryTargetColumn={batteryTargetColumn}
                 batteryTrainingColumns={batteryTrainingColumns}
