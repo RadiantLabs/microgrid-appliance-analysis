@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { observer, inject } from 'mobx-react'
 import { Loader } from 'semantic-ui-react'
 import {
   CartesianGrid,
@@ -12,18 +13,18 @@ import {
   Dot,
 } from 'recharts'
 
-const ActualVsPredicted = ({
-  data,
-  referenceLineData,
-  xAccessor = 'actual',
-  yAccessor = 'predicted',
-  isTraining,
-  predictionLegend,
-}) => {
+const ActualVsPredicted = ({ store, gridName }) => {
+  const {
+    batteryIsTraining,
+    batteryPlottablePredictionVsActualData,
+    referenceLineData,
+    xAccessor = 'actual',
+    yAccessor = 'predicted',
+  } = store[gridName]
   return (
     <div>
       <Loader
-        active={isTraining}
+        active={batteryIsTraining}
         inline="centered"
         style={{ position: 'absolute', top: '40%', left: '50%' }}
       />
@@ -48,7 +49,12 @@ const ActualVsPredicted = ({
           <CartesianGrid />
           <Tooltip cursor={{ strokeDasharray: '3 3' }} />
           <Legend verticalAlign="top" align="right" />
-          <Scatter name="Training data" data={data} fill="#83A1C3" shape={<Dot r={1} />} />
+          <Scatter
+            name="Training data"
+            data={batteryPlottablePredictionVsActualData}
+            fill="#83A1C3"
+            shape={<Dot r={1} />}
+          />
           <Scatter
             name="Reference Line"
             data={referenceLineData}
@@ -63,4 +69,4 @@ const ActualVsPredicted = ({
   )
 }
 
-export default ActualVsPredicted
+export default inject('store')(observer(ActualVsPredicted))

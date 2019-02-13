@@ -59,15 +59,11 @@ class BatteryModel extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <h3>Training Progress</h3>
-              <LossChartWrapper />
+              <LossChart gridName="stagedGrid" />
             </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
-              <ActualVsPredicted
-                data={batteryPlottablePredictionVsActualData}
-                referenceLineData={batteryPlottableReferenceLine}
-                isTraining={_.isEmpty(batteryPlottablePredictionVsActualData)}
-              />
+              <ActualVsPredicted gridName="stagedGrid" />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -77,17 +73,3 @@ class BatteryModel extends React.Component {
 }
 
 export default inject('store')(observer(BatteryModel))
-
-const LossChartWrapper = inject('store')(
-  observer(({ store }) => {
-    const { batteryTrainingState } = store.grid
-    if (batteryTrainingState === 'None') {
-      return null
-    }
-    return (
-      <div style={{ marginBottom: 20 }}>
-        <LossChart />
-      </div>
-    )
-  })
-)

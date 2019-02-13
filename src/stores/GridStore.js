@@ -136,7 +136,6 @@ export const GridStore = types
             self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
             self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
             self.isAnalyzingFile = false
-            // self.batteryReadyToModel = true
           })
         },
         error: error => {
@@ -245,6 +244,9 @@ export const GridStore = types
     },
     get batteryIsTrained() {
       return self.batteryTrainingState === 'Trained'
+    },
+    get batteryIsTraining() {
+      return self.batteryTrainingState === 'Training'
     },
     get batteryBaselineLoss() {
       return computeBaselineLoss(self.tensors)

@@ -49,7 +49,7 @@ First need to move training view into file upload section
 ---
 
 ## Upload HOMER files
-
+- [ ] set gridName when init'ing the grid model (gridName='stagedGrid')
 - [ ] Import all example files without error
   - [ ] Generator file fails on parsing
 - [ ] Provide Sample for download
