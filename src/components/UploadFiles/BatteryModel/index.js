@@ -12,17 +12,18 @@ const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' 
 class BatteryModel extends React.Component {
   retrainModelClick = event => {
     event.preventDefault()
-    this.props.store.grid.retrainBatteryModel()
+    console.log('TODO')
+    // this.props.store.grid.retrainBatteryModel()
   }
 
   render() {
-    const { calculatedColumns, grid } = this.props.store
-    const { batteryPlottablePredictionVsActualData, batteryPlottableReferenceLine } = grid
-    if (_.isEmpty(calculatedColumns)) {
+    const { batteryReadyToTrain, gridName } = this.props.store
+    console.log('TODO: set gridName dynamically: ', gridName)
+    if (batteryReadyToTrain) {
       return <LoaderSpinner />
     }
     return (
-      <div>
+      <div style={{ marginTop: '2rem' }}>
         <Grid>
           <Grid.Row>
             <Grid.Column>

@@ -179,9 +179,9 @@ let initialMainState = {
   grid: Grid1Store.create(initialHomerState),
 
   // Temporary store names until I get this straighted out
-  activeGrid: GridStore.create(initialGridState),
+  activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
   activeGridId: 0,
-  stagedGrid: GridStore.create(initialGridState),
+  stagedGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'stagedGrid' } }),
   storedGrids: [],
 
   router: routerModel,

@@ -60,6 +60,9 @@ export const initialGridState = {
  */
 export const GridStore = types
   .model({
+    // There are multiple grid stores. gridName identifies them to different views
+    gridName: types.string,
+
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
@@ -156,15 +159,7 @@ export const GridStore = types
       batteryMaxEpochCount,
       batteryTrainingColumns,
     }) {
-      const doNotModel = hasEmptyArguments(
-        batteryFeatureCount,
-        batteryTensors,
-        batteryLearningRate,
-        batteryBatchSize,
-        batteryMaxEpochCount,
-        batteryTrainingColumns
-      )
-      if (doNotModel) {
+      if (!self.batteryReadyToTrain) {
         return null
       }
       let model = multiLayerPerceptronRegressionModel1Hidden(batteryFeatureCount)
@@ -242,6 +237,16 @@ export const GridStore = types
         self.batteryTrainingColumns
       )
     },
+    get batteryReadyToTrain() {
+      return _.every([
+        _.isFinite(self.batteryFeatureCount),
+        !_.isEmpty(self.batteryTensors),
+        self.batteryLearningRate,
+        self.batteryBatchSize,
+        self.batteryMaxEpochCount,
+        !_.isEmpty(self.batteryTrainingColumns),
+      ])
+    },
     get batteryIsTrained() {
       return self.batteryTrainingState === 'Trained'
     },
@@ -265,24 +270,6 @@ export const GridStore = types
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
   }))
-
-function hasEmptyArguments(
-  batteryFeatureCount,
-  batteryTensors,
-  batteryLearningRate,
-  batteryBatchSize,
-  batteryMaxEpochCount,
-  batteryTrainingColumns
-) {
-  return !_.every([
-    _.isFinite(batteryFeatureCount),
-    !_.isEmpty(batteryTensors),
-    batteryLearningRate,
-    batteryBatchSize,
-    batteryMaxEpochCount,
-    !_.isEmpty(batteryTrainingColumns),
-  ])
-}
 
 // saveModelSync(model) {
 //   function handleSave(artifacts) {
