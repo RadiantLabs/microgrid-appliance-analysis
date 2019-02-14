@@ -1,6 +1,7 @@
 import _ from 'lodash'
-import { types, flow } from 'mobx-state-tree'
+import { types, flow, getSnapshot } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
+import localforage from 'localforage'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
 import {
@@ -42,6 +43,8 @@ export const initialGridState = {
   fileIsSelected: false,
   isAnalyzingFile: false,
   isBatteryModeling: false,
+  gridSaved: false,
+  batteryModelSaved: false,
   fileName: '',
   fileSize: 0,
   fileData: [],
@@ -67,6 +70,8 @@ export const GridStore = types
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
     isBatteryModeling: types.boolean,
+    gridSaved: types.boolean,
+    batteryModelSaved: types.boolean,
 
     fileName: types.string,
     fileSize: types.number,
@@ -147,7 +152,11 @@ export const GridStore = types
       })
     },
 
-    onDescriptionChange(event, data) {
+    handleNameChange(event, data) {
+      self.fileName = data.value
+    },
+
+    handleDescriptionChange(event, data) {
       self.fileDescription = data.value
     },
 
@@ -157,7 +166,6 @@ export const GridStore = types
       batteryLearningRate,
       batteryBatchSize,
       batteryMaxEpochCount,
-      batteryTrainingColumns,
     }) {
       if (!self.batteryReadyToTrain) {
         return null
@@ -177,7 +185,6 @@ export const GridStore = types
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
             const t1 = performance.now()
-            console.log('epoch: ', epoch)
             self.runInAction(() => {
               self.batteryCurrentEpoch = epoch
               self.batteryTrainLogs = self.batteryTrainLogs.concat({ epoch, ...logs })
@@ -193,8 +200,6 @@ export const GridStore = types
               self.batteryTrainLogs
             )
             const t1 = performance.now()
-            // self.saveModel(model)
-            // self.saveModelSync(model)
             self.runInAction(() => {
               self.batteryModel = model
               self.batteryTestSetLoss = testSetLoss
@@ -211,12 +216,11 @@ export const GridStore = types
     retrainBatteryModel() {
       _.forEach(initialBatteryState, (val, key) => (self[key] = val))
       self.trainBatteryModel({
-        numFeatures: self.batteryFeatureCount,
-        tensors: self.batteryTensors,
-        learningRate: self.batteryLearningRate,
-        batchSize: self.batteryBatchSize,
-        epochCount: self.batteryMaxEpochCount,
-        trainingColumns: self.batteryTrainingColumns,
+        batteryFeatureCount: self.batteryFeatureCount,
+        batteryTensors: self.batteryTensors,
+        batteryLearningRate: self.batteryLearningRate,
+        batteryBatchSize: self.batteryBatchSize,
+        batteryMaxEpochCount: self.batteryMaxEpochCount,
       })
     },
 
@@ -224,8 +228,26 @@ export const GridStore = types
       console.log('TODO: handleCancelUpload')
     },
     handleFileSave() {
-      console.log('TODO: handleFileSave')
+      self.saveGridSnapshot()
     },
+
+    saveGridSnapshot: flow(function* saveGridSnapshot() {
+      function handleSave(artifacts) {
+        localforage.setItem('microgridAppliances.batteryModel', artifacts).then(() => {
+          self.runInAction(() => {
+            self.batteryModelSaved = true
+          })
+        })
+      }
+      const batteryModelSaveReport = yield self.batteryModel.save(tf.io.withSaveHandler(handleSave))
+      console.log('batteryModelSaveReport: ', batteryModelSaveReport)
+      const gridSnapshot = _.omit(getSnapshot(self), ['batteryModel'])
+      localforage.setItem('microgridAppliances.stagedGrid', gridSnapshot).then(() => {
+        self.runInAction(() => {
+          self.gridSaved = true
+        })
+      })
+    }),
   }))
   .views(self => ({
     get showAnalyzedResults() {
@@ -288,11 +310,11 @@ export const GridStore = types
 //     // 2. Load model from localforage
 //     // const model = await tf.loadModel(tf.io.fromMemory(modelTopology, weightSpecs, weightData))
 //   }
-//   // const saveResult = model.save(tf.io.withSaveHandler(handleSave))
-//   handleSave()
+//   const saveResult = model.save(tf.io.withSaveHandler(handleSave))
+//   // handleSave()
 //   return null
 // },
-//
+
 // saveModel: flow(function* saveModel(model) {
 //   // const savedModelLocalStorage = yield model.save(
 //   //   'localstorage://microgridAppliances_test_saved_model'

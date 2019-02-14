@@ -9,7 +9,6 @@ import BatteryModel from './BatteryModel'
 class HomerFile extends React.Component {
   render() {
     const {
-      fileName,
       fileIsSelected,
       isAnalyzingFile,
       batteryIsTrained,
@@ -21,7 +20,6 @@ class HomerFile extends React.Component {
       handleCancelUpload,
       handleFileSave,
       handleGridFileSelect,
-      handleNameChange,
     } = this.props.store.stagedGrid
     return (
       <div>
@@ -67,7 +65,7 @@ class HomerFile extends React.Component {
             <Grid>
               <Grid.Row>
                 <Grid.Column width={8}>
-                  <HomerFormFields handleNameChange={handleNameChange} fileName={fileName} />
+                  <HomerFormFields />
                 </Grid.Column>
                 <Grid.Column width={8}>
                   <BatteryChargeTable

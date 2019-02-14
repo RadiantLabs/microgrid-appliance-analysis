@@ -36,7 +36,7 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>
             <Input
-              onChange={store.stagedGrid.onDescriptionChange}
+              onChange={store.stagedGrid.handleDescriptionChange}
               value={store.stagedGrid.fileDescription}
               size="small"
             />
