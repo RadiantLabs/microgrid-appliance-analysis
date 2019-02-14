@@ -15,8 +15,8 @@ function isFileCsv(rawFile) {
 
 function hasColumnHeaders(headers) {
   const header4 = parseFloat(headers[3])
-  const header5 = parseFloat(headers[3])
-  return _.isFinite(header4) && _.isFinite(header5)
+  const header5 = parseFloat(headers[4])
+  return !_.isFinite(header4) && !_.isFinite(header5)
 }
 
 function getGridPowerType(headers) {

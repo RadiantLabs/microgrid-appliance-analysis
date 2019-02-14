@@ -268,6 +268,7 @@ export const GridStore = types
     },
     get batteryReadyToTrain() {
       return _.every([
+        _.isEmpty(self.fileErrors),
         _.isFinite(self.batteryFeatureCount),
         !_.isEmpty(self.batteryTensors),
         self.batteryLearningRate,

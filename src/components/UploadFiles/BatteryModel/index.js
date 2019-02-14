@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
+import _ from 'lodash'
 import { Grid, Button, Header } from 'semantic-ui-react'
 import LossChart from 'components/Charts/LossChart'
 import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
@@ -16,10 +17,10 @@ class BatteryModel extends React.Component {
   }
 
   render() {
-    const { batteryReadyToTrain, gridName } = this.props.store
+    const { fileErrors, gridName } = this.props.store
     console.log('TODO: set gridName dynamically: ', gridName)
-    if (batteryReadyToTrain) {
-      return <LoaderSpinner />
+    if (!_.isEmpty(fileErrors)) {
+      return null
     }
     return (
       <div style={{ marginTop: '2rem' }}>

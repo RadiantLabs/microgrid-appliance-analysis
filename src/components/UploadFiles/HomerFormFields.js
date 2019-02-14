@@ -52,10 +52,10 @@ const HomerFormFields = ({ store }) => {
           <Table.Cell>
             Battery Type{' '}
             <HelperPopup
+              position="right center"
               content={
                 'This is determined by reading the headers of the HOMER file. This is the battery you chose when you created the HOMER file.'
               }
-              position="right center"
             />
           </Table.Cell>
           <Table.Cell>{store.stagedGrid.batteryType}</Table.Cell>
@@ -64,10 +64,10 @@ const HomerFormFields = ({ store }) => {
           <Table.Cell>
             PV Type{' '}
             <HelperPopup
+              position="right center"
               content={
                 'This is determined by reading the headers of the HOMER file. This is the PV system you chose when you created the HOMER file.'
               }
-              position="right center"
             />
           </Table.Cell>
           <Table.Cell>{store.stagedGrid.pvType}</Table.Cell>
@@ -76,10 +76,10 @@ const HomerFormFields = ({ store }) => {
           <Table.Cell>
             Generator Type{' '}
             <HelperPopup
+              position="right center"
               content={
                 'This is determined by reading the headers of the HOMER file. This is the generator you chose when you created the HOMER file.'
               }
-              position="right center"
             />
           </Table.Cell>
           <Table.Cell>{store.stagedGrid.generatorType}</Table.Cell>

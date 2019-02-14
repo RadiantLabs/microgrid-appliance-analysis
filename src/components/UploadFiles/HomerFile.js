@@ -1,10 +1,24 @@
 import * as React from 'react'
+import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader } from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Label } from 'semantic-ui-react'
 import FileButton from 'components/Elements/FileButton'
 import BatteryChargeTable from 'components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
+
+const FileUploadErrors = ({ fileErrors }) => {
+  if (_.isEmpty(fileErrors)) {
+    return 'None Found'
+  }
+  return (
+    <div>
+      {_.map(fileErrors, error => {
+        return <div key={error}>{error}</div>
+      })}
+    </div>
+  )
+}
 
 class HomerFile extends React.Component {
   render() {
@@ -13,6 +27,8 @@ class HomerFile extends React.Component {
       isAnalyzingFile,
       batteryIsTrained,
       showAnalyzedResults,
+      fileErrors,
+      fileWarnings,
       batteryMaxSoC,
       batteryMinSoC,
       batteryMaxEnergyContent,
@@ -74,6 +90,26 @@ class HomerFile extends React.Component {
                     batteryMaxEnergyContent={batteryMaxEnergyContent}
                     batteryMinEnergyContent={batteryMinEnergyContent}
                   />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={4}>
+                  <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
+                    File Upload Errors
+                  </Label>
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <FileUploadErrors fileErrors={fileErrors} />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={4}>
+                  <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
+                    File Upload Warnings
+                  </Label>
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <FileUploadErrors fileErrors={fileWarnings} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
