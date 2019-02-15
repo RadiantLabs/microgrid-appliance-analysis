@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
+import path from 'path-browserify'
 import { findColMax, findColMin } from 'utils/helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
@@ -163,6 +164,7 @@ export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }
   const renamedRows = _.map(dropUnitsRow(parsedFile.data), (row, rowIndex) => {
     return renameHomerKeys2({ row, pvType, batteryType, generatorType })
   })
+
   const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
     return _.mapValues(row, (val, key) => {
       if (key === 'Time') {
@@ -220,7 +222,7 @@ export function analyzeHomerFile({
     batteryMinEnergyContent,
   })
   return {
-    fileName: _.initial(String(fileName).split('.'))[0],
+    fileName: path.parse(fileName).name,
     fileData: withCalculatedColumns,
     fileSize,
     fileErrors: _.compact(errors),

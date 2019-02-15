@@ -48,6 +48,15 @@ export const MainStore = types
   })
   .actions(self => ({
     fetchActiveGrid: flow(function* fetchActiveGrid(activeGridInfo) {
+      // TODO: fix infinite loop
+      // Right now this probably should not be saving to self.activeGrid.
+      // activeGrid expects and instance of the GridStore
+      // maybe do something like:
+      // self.activeGrid = new GridStore(yield fetchFile(activeGridInfo, window.location))
+
+      // or...
+      // self.activeGrid.loadGrid(activeGridInfo) and move the loading into the store itself
+      debugger
       self.activeGridIsLoading = true
       self.activeGrid = yield fetchFile(activeGridInfo, window.location)
       self.activeGridIsLoading = false
