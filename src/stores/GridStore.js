@@ -17,6 +17,10 @@ import {
 } from 'utils/tensorflowHelpers'
 window.tf = tf
 
+//
+// -----------------------------------------------------------------------------
+// Initial Grid State
+// -----------------------------------------------------------------------------
 const initialBatteryState = {
   batteryMinSoC: null,
   batteryMaxSoC: null,
@@ -58,9 +62,10 @@ export const initialGridState = {
   ...initialBatteryState,
 }
 
-/**
- * Homer + Battery Kinetic Model Store
- */
+//
+// -----------------------------------------------------------------------------
+// Homer + Battery Kinetic Model Store
+// -----------------------------------------------------------------------------
 export const GridStore = types
   .model({
     // There are multiple grid stores. gridName identifies them to different views

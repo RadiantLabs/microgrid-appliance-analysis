@@ -21,9 +21,10 @@ import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 
-/**
- * Primary Store
- */
+//
+// -----------------------------------------------------------------------------
+// Primary Store
+// -----------------------------------------------------------------------------
 export const MainStore = types
   .model({
     // Homer Data
@@ -127,9 +128,11 @@ export const MainStore = types
     },
   }))
 
-/**
- * Initialize Mobx State Tree Store
- */
+//
+// -----------------------------------------------------------------------------
+// Initialize Mobx State Tree Store
+// -----------------------------------------------------------------------------
+
 // TODO: initHomerFileName needs to be pulled from localforage or
 // default to soemthing
 const initHomerFileName = '12-50 Oversize 20'
@@ -150,16 +153,14 @@ const initialModelInputsState = {
   revenuePerProductionUnitsUnits: '$ / kg',
 }
 
+// Initially set all ancillary equipment to disabled
 const initialAncillaryEquipmentState = {
-  // Initially set all ancillary equipment to disabled (false)
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
 }
 
-/**
- * Hook React Router up to Store
- * Hook up router model to browser history object
- */
+//Hook React Router up to Store
 const routerModel = RouterModel.create()
+//Hook up router model to browser history object
 const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
 let initialMainState = {
@@ -186,9 +187,11 @@ let initialMainState = {
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
 }
 
-/**
- * State in localStorage
- */
+//
+// -----------------------------------------------------------------------------
+// Store state snapshots in localForage
+// -----------------------------------------------------------------------------
+
 // Load entire state fromm local storage as long as the model shape are this same
 // This allows the developer to modify the model and get a fresh state
 // if (localStorage.getItem('microgridAppliances')) {
@@ -223,13 +226,10 @@ onSnapshot(mainStore, snapshot => {
   )
 })
 
-// onSnapshot(mainStore, snapshot => {
-//   console.log('snap: ', snapshot)
-// })
-
-/**
- * autorun: Run functions whenever arguments change
- */
+//
+// -----------------------------------------------------------------------------
+// Autorun: Run functions whenever arguments change
+// -----------------------------------------------------------------------------
 autorun(() => mainStore.fetchHomer(mainStore.activeHomerFileInfo))
 autorun(() => mainStore.fetchAppliance(mainStore.activeApplianceFileInfo))
 
