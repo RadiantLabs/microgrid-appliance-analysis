@@ -22,11 +22,6 @@ window.tf = tf
 // Initial Grid State
 // -----------------------------------------------------------------------------
 const initialBatteryState = {
-  batteryMinSoC: null,
-  batteryMaxSoC: null,
-  batteryMinEnergyContent: null,
-  batteryMaxEnergyContent: null,
-
   batteryMaxEpochCount: 3,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.1,
@@ -43,7 +38,9 @@ const initialBatteryState = {
   batteryValidationSetLoss: null,
   batteryTestSetLoss: null,
 }
+
 export const initialGridState = {
+  gridName: '',
   fileIsSelected: false,
   isAnalyzingFile: false,
   isBatteryModeling: false,
@@ -59,6 +56,10 @@ export const initialGridState = {
   powerType: '',
   batteryType: '',
   generatorType: '',
+  batteryMinSoC: null,
+  batteryMaxSoC: null,
+  batteryMinEnergyContent: null,
+  batteryMaxEnergyContent: null,
   ...initialBatteryState,
 }
 
@@ -107,11 +108,11 @@ export const GridStore = types
     batteryFinalTrainSetLoss: types.maybeNull(types.number),
     batteryValidationSetLoss: types.maybeNull(types.number),
     batteryTestSetLoss: types.maybeNull(types.number),
+    batteryTrainLogs: types.frozen(),
 
     // Below are volatile properties. Switch them after I get it working
     batteryCurrentEpoch: types.maybeNull(types.number),
     batteryTrainingTime: types.maybeNull(types.number),
-    batteryTrainLogs: types.frozen(),
   })
   .volatile(self => ({
     // stagedHomerFile: types.frozen(),
@@ -123,7 +124,9 @@ export const GridStore = types
       return fn()
     },
     afterCreate() {
-      // self.fetchHomer(self.activeHomerFileInfo)
+      // If a file is loaded but fileData is null, go fetch it.
+      // This will run in parallel as all of these are loaded, which may not be ideal
+      // self.fetchHomer(self.activeGridInfo)
       // self.fetchAppliance(self.activeApplianceFileInfo)
     },
     handleGridFileSelect(rawFile) {

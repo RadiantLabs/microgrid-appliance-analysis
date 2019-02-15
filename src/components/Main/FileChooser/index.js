@@ -10,7 +10,7 @@ class FileChoosers extends Component {
       store: {
         setActiveHomerFile,
         setActiveApplianceFile,
-        activeHomerFileInfo,
+        activeGridInfo,
         activeApplianceFileInfo,
         homerIsLoading,
         applianceIsLoading,
@@ -25,7 +25,7 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Grid File:
             </Header>
-            <Dropdown text={activeHomerFileInfo.label} loading={homerIsLoading}>
+            <Dropdown text={activeGridInfo.label} loading={homerIsLoading}>
               <Dropdown.Menu>
                 {_.map(homerFiles, fileInfo => (
                   <Dropdown.Item
@@ -33,7 +33,7 @@ class FileChoosers extends Component {
                     key={fileInfo.fileName}
                     description={fileInfo.description}
                     value={fileInfo.fileName}
-                    active={fileInfo.fileName === activeHomerFileInfo.fileName}
+                    active={fileInfo.fileName === activeGridInfo.fileName}
                     onClick={setActiveHomerFile}
                     // icon="check" // If currently active (or bold)
                   />

@@ -1,13 +1,48 @@
+Next steps:
+- [ ] Load activeGrid and make sure all views and computed functions pull from
+activeGrid, not from homerFileInfo or activeGridInfo
+- [ ] sequentially load rest of availableGrids
+
+--------------------------------------------------------------------------------
+Option 1: <- let's do this one
+I could populate the availableGrids with initial state that contains
+what I was going to put in GridNameStore and defaults for everything else.
+One of those will be marked active and start loading into activeGrid
+But then
+a) That will use a lot of memory
+b) activeGrid and availableGrids will have a duplicate, unless I manage that
+c) load availableGrids sequentially using https://pouchdb.com/2015/03/05/taming-the-async-beast-with-es7.html
+
+Option 2
+If I make availableGrids as only the metadata (fileName, description, path, isActive)
+then it's less memory.
+The flipside is that I have to update 2 stores at a time, such as when
+editing name or description.
+Unless... when the user picks a new grid as activeGrid, I remove it from
+the availableGrids array. If I edit name of existing activeGrid, fine.
+When I switch active grids, then I save to localforage and push only metadata
+into availableGrids
+
+[grid1, grid2, grid3]  // grid4 is active
+[grid4, grid2, grid3]  // grid1 is active
+
+TODO: construct initialMainStore that:
+1. sets activeGrid based on default sample or what's last active in localstorage
+2. sets availableGrids based on either what was in localForage or what is
+in samples that isn't default
+
+
+
 There is a bootstrapping problem I have to solve for when a user first fires up the app:
 - [ ] Make sure I can parse every HOMER file without errors
 - [x] Switch from `processHomerFile` run through `analyzeHomerFile`
 - [ ] Put all sample files as CSVs in data and import and parse them sequentially
 
 In localforage:
-- mg.stagedGrid
 - mg.activeGrid
+- mg.stagedGrid
 - mg.availableGrids (saved with battery model artifacts)
-- mg.availableGridNames
+- mg.availableGridNames  // I don't think I need this as a model, I just need to save it
   - {fileName: 'xyz', fileDescription: 'abc', isSample: false, defaultOnLoad: true}
 
 How does mg.availableGrids in localforage compare with availableGrids in memory?

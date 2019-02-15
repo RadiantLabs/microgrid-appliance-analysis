@@ -64,6 +64,7 @@ class HomerFiles extends React.Component {
     isSaving: false,
   }
 
+  // TODO: create stagedGrid instance when clicking this
   handleAddFileClick = (event, data) => {
     event.preventDefault()
     this.setState({ isAddingFile: true, activeNavId: null })
@@ -76,7 +77,10 @@ class HomerFiles extends React.Component {
 
   render() {
     const { activeNavId, isAddingFile, isAnalyzing, isSaving } = this.state
-    const useBlankState = !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving])
+    const { stagedGrid } = this.props.store
+    const useBlankState =
+      !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving]) &&
+      !_.isEmpty(stagedGrid)
     return (
       <Grid padded>
         <Grid.Row>

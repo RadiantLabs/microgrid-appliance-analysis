@@ -26,13 +26,11 @@ const rules = {
   threeFourPointDcMotorStarter,
 }
 
-export function getAncillaryEquipmentStatus(homerFileInfo, applianceFileInfo, ancillaryEquipment) {
-  if (_.isEmpty(homerFileInfo) || _.isEmpty(applianceFileInfo) || _.isEmpty(ancillaryEquipment)) {
+export function getAncillaryEquipmentStatus(grid, appliance, ancillaryEquipment) {
+  if (_.isEmpty(grid) || _.isEmpty(appliance) || _.isEmpty(ancillaryEquipment)) {
     return {}
   }
   checkEquipmentTypeRules(ancillaryEquipment, rules)
-  const grid = homerFileInfo.attributes
-  const appliance = applianceFileInfo.attributes
   const equipmentWithStatus = _.map(ancillaryEquipment, item => {
     const ruleResults = rules[item.equipmentType]({ grid, appliance })
     return { ...item, ...ruleResults }

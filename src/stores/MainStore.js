@@ -8,7 +8,6 @@ import localforage from 'localforage'
 // Import Other Stores:
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
-import { Grid1Store, initialHomerState } from './Grid1Store'
 import { GridStore, initialGridState } from './GridStore'
 
 // Import Helpers and domain data
@@ -16,7 +15,7 @@ import { combineTables } from 'utils/helpers'
 import { fetchFile } from 'utils/importFileHelpers'
 import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
-import { homerFiles, sampleHomerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { sampleHomerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
@@ -28,23 +27,18 @@ import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 export const MainStore = types
   .model({
     // Homer Data
-    initHomerFileName: types.string,
-    homerIsLoading: types.boolean,
-    activeHomerFileInfo: types.frozen(),
-    activeHomer: types.frozen(),
-    grid: Grid1Store,
-
-    // Temporary names until I get Homer uploads working and switching
+    activeGridInfo: types.frozen(),
     activeGrid: types.maybeNull(GridStore),
-    activeGridId: types.optional(types.number, 0),
+    activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
-    storedGrids: types.optional(types.array(GridStore), []),
+    availableGrids: types.optional(types.array(GridStore), []), // Option 1
 
     // Appliance Info
     initApplianceFileName: types.string,
     applianceIsLoading: types.boolean,
     activeApplianceFileInfo: types.frozen(),
     activeAppliance: types.frozen(),
+
     excludedTableColumns: types.optional(types.array(types.string), []),
 
     // editable fields - may make this an array of ModelInputsStore eventually
@@ -53,14 +47,10 @@ export const MainStore = types
     router: RouterModel,
   })
   .actions(self => ({
-    afterCreate() {
-      self.fetchHomer(self.activeHomerFileInfo)
-      self.fetchAppliance(self.activeApplianceFileInfo)
-    },
-    fetchHomer: flow(function* fetchHomer(activeHomerFileInfo) {
-      self.homerIsLoading = true
-      self.activeHomer = yield fetchFile(activeHomerFileInfo, window.location)
-      self.homerIsLoading = false
+    fetchActiveGrid: flow(function* fetchActiveGrid(activeGridInfo) {
+      self.activeGridIsLoading = true
+      self.activeHomer = yield fetchFile(activeGridInfo, window.location)
+      self.activeGridIsLoading = false
     }),
     fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
       self.applianceIsLoading = true
@@ -69,7 +59,7 @@ export const MainStore = types
     }),
     // Choose active HOMER or Appliance file
     setActiveHomerFile(event, data) {
-      self.activeHomerFileInfo = _.find(homerFiles, {
+      self.activeGridInfo = _.find(sampleHomerFiles, {
         fileName: data.value,
       })
     },
@@ -132,12 +122,7 @@ export const MainStore = types
 // -----------------------------------------------------------------------------
 // Initialize Mobx State Tree Store
 // -----------------------------------------------------------------------------
-
-// TODO: initHomerFileName needs to be pulled from localforage or
-// default to soemthing
-const initHomerFileName = '12-50 Oversize 20'
 const initApplianceFileName = 'rice_mill_usage_profile'
-const activeHomerFileInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
 const activeApplianceFileInfo = _.find(applianceFiles, { fileName: initApplianceFileName })
 
 // Model inputs must have a definition in the fieldDefinitions file
@@ -163,28 +148,27 @@ const routerModel = RouterModel.create()
 //Hook up router model to browser history object
 const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
+const initHomerFileName = '12-50 Oversize 20' // TODO: Check localforage
+const activeGridInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
+// debugger
+
 let initialMainState = {
-  initHomerFileName,
-  homerIsLoading: true,
-  activeHomerFileInfo,
-  activeHomer: [],
+  activeGridInfo,
+  activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
+  activeGridIsLoading: true,
+  stagedGrid: null,
+  availableGrids: [], // TOOD: load availableGrids from sample files and localForage
+
   initApplianceFileName,
   applianceIsLoading: false,
   activeApplianceFileInfo,
   activeAppliance: [],
+
   excludedTableColumns: [],
 
-  grid: Grid1Store.create(initialHomerState),
-
-  // Temporary store names until I get this straighted out
-  activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
-  activeGridId: 0,
-  stagedGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'stagedGrid' } }),
-  storedGrids: [],
-
-  router: routerModel,
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
+  router: routerModel,
 }
 
 //
@@ -230,7 +214,7 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-autorun(() => mainStore.fetchHomer(mainStore.activeHomerFileInfo))
+autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridInfo))
 autorun(() => mainStore.fetchAppliance(mainStore.activeApplianceFileInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
@@ -242,6 +226,9 @@ autorun(() =>
 
 // Run the battery regression model
 autorun(() => {
+  if (_.isEmpty(mainStore.stagedGrid)) {
+    return null
+  }
   const {
     batteryFeatureCount,
     batteryTensors,

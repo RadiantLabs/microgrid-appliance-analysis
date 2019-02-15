@@ -22,6 +22,10 @@ const FileUploadErrors = ({ fileErrors }) => {
 
 class HomerFile extends React.Component {
   render() {
+    const { stagedGrid } = this.props.store
+    if (_.isEmpty(stagedGrid)) {
+      return null
+    }
     const {
       fileIsSelected,
       isAnalyzingFile,
@@ -36,7 +40,7 @@ class HomerFile extends React.Component {
       handleCancelUpload,
       handleFileSave,
       handleGridFileSelect,
-    } = this.props.store.stagedGrid
+    } = stagedGrid
     return (
       <div>
         <Header as="h2" attached="top">

@@ -13,7 +13,7 @@ class BatteryModel extends React.Component {
   retrainModelClick = event => {
     event.preventDefault()
     console.log('TODO')
-    // this.props.store.grid.retrainBatteryModel()
+    // this.props.store.activeGrid.retrainBatteryModel()
   }
 
   render() {
