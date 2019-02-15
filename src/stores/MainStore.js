@@ -49,7 +49,7 @@ export const MainStore = types
   .actions(self => ({
     fetchActiveGrid: flow(function* fetchActiveGrid(activeGridInfo) {
       self.activeGridIsLoading = true
-      self.activeHomer = yield fetchFile(activeGridInfo, window.location)
+      self.activeGrid = yield fetchFile(activeGridInfo, window.location)
       self.activeGridIsLoading = false
     }),
     fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
