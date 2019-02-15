@@ -1,4 +1,26 @@
 There is a bootstrapping problem I have to solve for when a user first fires up the app:
+- [ ] Make sure I can parse every HOMER file without errors
+- [x] Switch from `processHomerFile` run through `analyzeHomerFile`
+- [ ] Put all sample files as CSVs in data and import and parse them sequentially
+
+In localforage:
+- mg.stagedGrid
+- mg.activeGrid
+- mg.availableGrids (saved with battery model artifacts)
+- mg.availableGridNames
+  - {fileName: 'xyz', fileDescription: 'abc', isSample: false, defaultOnLoad: true}
+
+How does mg.availableGrids in localforage compare with availableGrids in memory?
+  - does one have artifacts and the other rehydrated models?
+  - are we storing all availableGrids in memory?
+
+How to bootstrap stored vs. sample files?
+  - sample files load from data folder vs localforage for user files
+  - load defaultOnLoad first and rehydrate
+  - do I even keep sampels in availableGridNames? If I don't, how would I know what's defaultOnLoad?
+
+
+
 
 - Need to load sample HOMER files
 - Need to train the battery model one at a time

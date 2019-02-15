@@ -125,10 +125,17 @@ export const GridStore = types
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)
+      const { name, size, type } = rawFile
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const homerAttrs = analyzeHomerFile(rawFile, parsedFile)
+          const homerAttrs = analyzeHomerFile({
+            parsedFile,
+            fileName: name,
+            fileSize: size,
+            fileType: type,
+            isSamplefile: false,
+          })
           self.runInAction(() => {
             self.fileData = homerAttrs.fileData
             self.fileName = homerAttrs.fileName

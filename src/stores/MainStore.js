@@ -16,7 +16,7 @@ import { combineTables } from 'utils/helpers'
 import { fetchFile } from 'utils/importFileHelpers'
 import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
-import { homerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { homerFiles, sampleHomerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
@@ -58,14 +58,12 @@ export const MainStore = types
     },
     fetchHomer: flow(function* fetchHomer(activeHomerFileInfo) {
       self.homerIsLoading = true
-      const homer = yield fetchFile(activeHomerFileInfo, window.location)
-      self.activeHomer = homer
+      self.activeHomer = yield fetchFile(activeHomerFileInfo, window.location)
       self.homerIsLoading = false
     }),
     fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
       self.applianceIsLoading = true
-      const appliance = yield fetchFile(activeApplianceFileInfo, window.location)
-      self.activeAppliance = appliance
+      self.activeAppliance = yield fetchFile(activeApplianceFileInfo, window.location)
       self.applianceIsLoading = false
     }),
     // Choose active HOMER or Appliance file
@@ -132,9 +130,11 @@ export const MainStore = types
 /**
  * Initialize Mobx State Tree Store
  */
+// TODO: initHomerFileName needs to be pulled from localforage or
+// default to soemthing
 const initHomerFileName = '12-50 Oversize 20'
 const initApplianceFileName = 'rice_mill_usage_profile'
-const activeHomerFileInfo = _.find(homerFiles, { fileName: initHomerFileName })
+const activeHomerFileInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
 const activeApplianceFileInfo = _.find(applianceFiles, { fileName: initApplianceFileName })
 
 // Model inputs must have a definition in the fieldDefinitions file

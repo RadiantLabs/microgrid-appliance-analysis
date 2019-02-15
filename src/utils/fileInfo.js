@@ -1,4 +1,5 @@
 // HOMER Files
+// homerFiles will be removed and be replaced with  sampleHomerFiles
 export const homerFiles = [
   {
     type: 'homer',
@@ -38,6 +39,42 @@ export const homerFiles = [
     label: '12-50 Undersize 20 AS',
     fileName: 'homer_12_50_oversize_20_AS',
     description: 'Undersized: Fill in HOMER file description.',
+    attributes: {
+      battery: 'Generic 1kWh Lead Acid [ASM]',
+      pvSystem: 'Generic flat plate',
+      powerType: 'AC',
+    },
+  },
+]
+
+export const sampleHomerFiles = [
+  {
+    type: 'homer',
+    fileName: '12-50 Baseline',
+    fileDescription: 'Baseline: Fill in HOMER file description.',
+    fileSize: 2097646,
+    attributes: {
+      battery: 'Generic 1kWh Lead Acid [ASM]',
+      pvSystem: 'Generic flat plate',
+      powerType: 'AC',
+    },
+  },
+  {
+    type: 'homer',
+    fileName: '12-50 Oversize 20',
+    fileDescription: 'Oversized: Fill in HOMER file description.',
+    fileSize: 2084662,
+    attributes: {
+      battery: 'Generic 1kWh Lead Acid [ASM]',
+      pvSystem: 'Generic flat plate',
+      powerType: 'AC',
+    },
+  },
+  {
+    type: 'homer',
+    fileName: '12-50 Undersize 20',
+    fileDescription: 'Undersized: Fill in HOMER file description.',
+    fileSize: 2108574,
     attributes: {
       battery: 'Generic 1kWh Lead Acid [ASM]',
       pvSystem: 'Generic flat plate',

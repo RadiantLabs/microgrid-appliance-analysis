@@ -9,8 +9,8 @@ export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: t
 /**
  * Process files on import
  */
-function isFileCsv(rawFile) {
-  return rawFile.type === 'text/csv'
+function isFileCsv(fileType) {
+  return fileType === 'text/csv'
 }
 
 function hasColumnHeaders(headers) {
@@ -174,10 +174,17 @@ export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }
   return addHourIndex(modifiedTable)
 }
 
-export function analyzeHomerFile(rawFile, parsedFile) {
+export function analyzeHomerFile({
+  parsedFile,
+  fileName,
+  fileSize,
+  fileType,
+  fileDescription = '',
+  isSamplefile,
+}) {
+  console.log('analyzeHomerFile: ', parsedFile, fileName, fileSize, fileType, fileDescription)
   let errors = []
-  const { size, name } = rawFile
-  const fileIsCsv = isFileCsv(rawFile)
+  const fileIsCsv = isSamplefile ? true : isFileCsv(fileType)
   const headers = _.keys(_.first(parsedFile.data))
   if (!hasColumnHeaders(headers)) {
     errors.push(
@@ -188,9 +195,10 @@ export function analyzeHomerFile(rawFile, parsedFile) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
   // 5MB limit
-  if (size > 1048576 * 5) {
-    errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
+  if (fileSize > 1048576 * 5) {
+    errors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
   }
+
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
   errors.push(powerTypeErrors)
   const { pvType, pvTypeErrors } = getPvType(headers)
@@ -211,11 +219,10 @@ export function analyzeHomerFile(rawFile, parsedFile) {
     batteryMinSoC,
     batteryMinEnergyContent,
   })
-
   return {
-    fileName: String(name).split('.')[0],
+    fileName: _.initial(String(fileName).split('.'))[0],
     fileData: withCalculatedColumns,
-    fileSize: size,
+    fileSize,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
     powerType,
@@ -310,18 +317,25 @@ export async function fetchFile(fileInfo, urlLocation) {
   if (_.isEmpty(fileInfo)) {
     throw new Error(`fileInfo not found in fetchFile`)
   }
-  const { fileName, type } = fileInfo
+  const { type, fileName, fileSize, fileDescription } = fileInfo
   const filePath = filePathLookup(fileName, type, urlLocation)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
-    const { data, errors } = Papa.parse(csv, csvOptions)
+    const parsedFile = Papa.parse(csv, csvOptions)
+    const { data, errors } = parsedFile
     if (!_.isEmpty(errors)) {
       throw new Error(`Problem parsing CSV: ${JSON.stringify(errors)}`)
     }
     switch (type) {
       case 'homer':
-        return processHomerFile(data, fileInfo)
+        return analyzeHomerFile({
+          parsedFile,
+          fileName,
+          fileSize,
+          fileDescription,
+          isSamplefile: true,
+        })
       case 'appliance':
         return processApplianceFile(data, fileInfo)
       default:
