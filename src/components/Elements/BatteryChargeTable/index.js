@@ -1,12 +1,11 @@
 import * as React from 'react'
+import { observer, inject } from 'mobx-react'
 import { Table } from 'semantic-ui-react'
 
-const BatteryChargeTable = ({
-  batteryMaxSoC,
-  batteryMinSoC,
-  batteryMaxEnergyContent,
-  batteryMinEnergyContent,
-}) => {
+const BatteryChargeTable = ({ store, gridStatus }) => {
+  const { batteryMaxSoC, batteryMinSoC, batteryMaxEnergyContent, batteryMinEnergyContent } = store[
+    gridStatus
+  ]
   return (
     <Table basic="very" celled>
       <Table.Body>
@@ -43,4 +42,4 @@ const BatteryChargeTable = ({
   )
 }
 
-export default BatteryChargeTable
+export default inject('store')(observer(BatteryChargeTable))

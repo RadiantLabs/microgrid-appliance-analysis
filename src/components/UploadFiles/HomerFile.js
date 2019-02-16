@@ -26,6 +26,7 @@ class HomerFile extends React.Component {
     if (_.isEmpty(stagedGrid)) {
       return null
     }
+    // TODO: gridStatus="stagedGrid" should be dynamically set
     const {
       fileIsSelected,
       isAnalyzingFile,
@@ -33,10 +34,6 @@ class HomerFile extends React.Component {
       showAnalyzedResults,
       fileErrors,
       fileWarnings,
-      batteryMaxSoC,
-      batteryMinSoC,
-      batteryMaxEnergyContent,
-      batteryMinEnergyContent,
       handleCancelUpload,
       handleFileSave,
       handleGridFileSelect,
@@ -88,12 +85,7 @@ class HomerFile extends React.Component {
                   <HomerFormFields />
                 </Grid.Column>
                 <Grid.Column width={8}>
-                  <BatteryChargeTable
-                    batteryMaxSoC={batteryMaxSoC}
-                    batteryMinSoC={batteryMinSoC}
-                    batteryMaxEnergyContent={batteryMaxEnergyContent}
-                    batteryMinEnergyContent={batteryMinEnergyContent}
-                  />
+                  <BatteryChargeTable gridStatus="stagedGrid" />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
