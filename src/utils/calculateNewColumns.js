@@ -6,13 +6,11 @@ import _ from 'lodash'
  * to do the calculations
  */
 // TODO: Remove columns that have been calculated when HOMER was imported
-export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, constants }) {
-  if (_.isEmpty(homer) || _.isEmpty(appliance)) {
+export function calculateNewLoads({ grid, appliance, modelInputs, constants }) {
+  if (_.isEmpty(grid) || _.isEmpty(appliance)) {
     return null
   }
   const t0 = performance.now()
-
-  const { effectiveMinBatteryEnergyContent, minbatterySOC } = homerStats
 
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
@@ -32,6 +30,8 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Battery Energy Content']
     const batterySOC = row['Battery State of Charge']
+    const batteryMinSoC = row['batteryMinSoC']
+    const batteryMinEnergyContent = row['batteryMinEnergyContent']
 
     const prevBatteryEnergyContent =
       rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
@@ -71,11 +71,11 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
      */
     // The energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
-    const energyContentAboveMin = batteryEnergyContent - effectiveMinBatteryEnergyContent
+    const energyContentAboveMin = batteryEnergyContent - batteryMinEnergyContent
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
-      excessElecProd + (batterySOC <= minbatterySOC ? 0 : energyContentAboveMin)
+      excessElecProd + (batterySOC <= batteryMinSoC ? 0 : energyContentAboveMin)
 
     // Find available capacity after the new appliance is added
     const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
@@ -157,7 +157,7 @@ export function calculateNewLoads({ homer, appliance, modelInputs, homerStats, c
   }
 
   // Iterate over homer data, pushing each new row into an array
-  const calculatedColumns = _.reduce(homer, columnReducer, [])
+  const calculatedColumns = _.reduce(grid, columnReducer, [])
   const t1 = performance.now()
   console.log('calculateNewLoads took ' + _.round(t1 - t0) + ' milliseconds.')
   return calculatedColumns

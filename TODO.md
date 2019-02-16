@@ -1,8 +1,10 @@
 Next steps:
 - [ ] Load activeGrid and make sure all views and computed functions pull from
+- [ ] gridName -> gridStatus
 activeGrid, not from homerFileInfo or activeGridInfo
 - [ ] sequentially load rest of availableGrids
   - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
+- [ ] This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
 
 --------------------------------------------------------------------------------
 Option 1: <- let's do this one

@@ -13,7 +13,7 @@ import { GridStore, initialGridState } from './GridStore'
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
 import { fetchFile } from 'utils/importFileHelpers'
-import { getHomerStats, getSummaryStats } from 'utils/calculateStats'
+import { getSummaryStats } from 'utils/calculateStats'
 import { calculateNewLoads } from 'utils/calculateNewColumns'
 import { sampleHomerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
@@ -95,7 +95,7 @@ export const MainStore = types
   .views(self => ({
     get calculatedColumns() {
       return calculateNewLoads({
-        homer: self.activeHomer,
+        grid: self.activeGrid.fileData,
         appliance: self.activeAppliance,
         modelInputs: self.modelInputs,
         homerStats: self.homerStats,
@@ -103,10 +103,7 @@ export const MainStore = types
       })
     },
     get combinedTable() {
-      return combineTables(self.activeHomer, self.calculatedColumns, self.activeAppliance)
-    },
-    get homerStats() {
-      return _.isEmpty(self.activeHomer) ? null : getHomerStats(self.activeHomer)
+      return combineTables(self.activeGrid, self.calculatedColumns, self.activeAppliance)
     },
     get summaryStats() {
       return _.isEmpty(self.calculatedColumns)
