@@ -72,13 +72,15 @@ export const sampleHomerFiles = [
 ]
 
 // Primary appliances
-export const applianceFiles = [
+export const sampleApplianceFiles = [
   {
     fileType: 'appliance',
     applianceType: 'rice_mill',
     label: 'Rice Mill (Tanzania)',
     fileName: 'rice_mill_usage_profile',
     fileDescription: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
+    fileSize: 465709,
+    isSamplefile: true,
     attributes: {
       powerType: 'DC',
       phase: 3,
@@ -92,6 +94,8 @@ export const applianceFiles = [
     label: 'Maize Mill (Tanzania)',
     fileName: 'maize_mill_usage_profile_1',
     fileDescription: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
+    fileSize: 438101,
+    isSamplefile: true,
     attributes: {
       powerType: 'AC',
       phase: 3,
@@ -105,6 +109,8 @@ export const applianceFiles = [
     label: 'Maize Mill (Tanzania)',
     fileName: 'maize_mill_usage_profile_2',
     fileDescription: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
+    fileSize: 465121,
+    isSamplefile: true,
     attributes: {
       powerType: 'AC',
       phase: 3,
@@ -118,6 +124,8 @@ export const applianceFiles = [
     label: 'Welder (Tanzania)',
     fileName: 'welder_usage_profile',
     fileDescription: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
+    fileSize: 429487,
+    isSamplefile: true,
     defaults: {
       dutyCycleDerateFactor: 0.2,
     },

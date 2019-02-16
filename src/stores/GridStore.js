@@ -96,7 +96,7 @@ export const GridStore = types
     batteryMaxEnergyContent: types.maybeNull(types.number),
 
     // Battery trained model
-    batteryMaxEpochCount: types.number, // Change to batteryMaxEpochCount
+    batteryMaxEpochCount: types.number,
     batteryModelStopLoss: types.number,
     batteryBatchSize: types.number,
     batteryLearningRate: types.number,
@@ -130,15 +130,15 @@ export const GridStore = types
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const homerAttrs = analyzeHomerFile({
+          const gridAttrs = analyzeHomerFile({
             parsedFile,
             fileName,
             fileSize,
-            fileType: 'homer', // TODO: make this dynamic once we import appliance files
+            fileType: 'homer',
             fileMimeType,
             isSamplefile: false,
           })
-          self.updateGrid(homerAttrs)
+          self.updateGrid(gridAttrs)
         },
         error: error => {
           console.log('error: ', error)
@@ -151,33 +151,33 @@ export const GridStore = types
       self.isAnalyzingFile = true
       const parsedFile = yield fetchFile(gridInfo, window.location)
       const { fileName, fileSize, fileType, isSamplefile } = gridInfo
-      const homerAttrs = analyzeHomerFile({
+      const gridAttrs = analyzeHomerFile({
         parsedFile,
         fileName,
         fileSize,
         fileType,
         isSamplefile,
       })
-      self.updateGrid(homerAttrs)
+      self.updateGrid(gridAttrs)
       self.isAnalyzingFile = false
       return true
     }),
 
-    updateGrid(homerAttrs) {
+    updateGrid(gridAttrs) {
       self.runInAction(() => {
-        self.fileData = homerAttrs.fileData
-        self.fileName = homerAttrs.fileName
-        self.fileSize = homerAttrs.fileSize
-        self.fileErrors = homerAttrs.fileErrors
-        self.fileWarnings = homerAttrs.fileWarnings
-        self.powerType = homerAttrs.powerType
-        self.pvType = homerAttrs.pvType
-        self.batteryType = homerAttrs.batteryType
-        self.generatorType = homerAttrs.generatorType
-        self.batteryMinSoC = homerAttrs.batteryMinSoC
-        self.batteryMaxSoC = homerAttrs.batteryMaxSoC
-        self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
-        self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
+        self.fileData = gridAttrs.fileData
+        self.fileName = gridAttrs.fileName
+        self.fileSize = gridAttrs.fileSize
+        self.fileErrors = gridAttrs.fileErrors
+        self.fileWarnings = gridAttrs.fileWarnings
+        self.powerType = gridAttrs.powerType
+        self.pvType = gridAttrs.pvType
+        self.batteryType = gridAttrs.batteryType
+        self.generatorType = gridAttrs.generatorType
+        self.batteryMinSoC = gridAttrs.batteryMinSoC
+        self.batteryMaxSoC = gridAttrs.batteryMaxSoC
+        self.batteryMinEnergyContent = gridAttrs.batteryMinEnergyContent
+        self.batteryMaxEnergyContent = gridAttrs.batteryMaxEnergyContent
         self.isAnalyzingFile = false
       })
     },

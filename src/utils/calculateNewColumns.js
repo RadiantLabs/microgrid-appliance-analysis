@@ -9,9 +9,10 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
   if (_.isEmpty(grid) || _.isEmpty(appliance)) {
     return null
   }
-  if (_.isEmpty(grid.fileData)) {
+  if (_.isEmpty(grid.fileData) || _.isEmpty(appliance.fileData)) {
     return null
   }
+  const applianceData = appliance.fileData
   const t0 = performance.now()
 
   const { batteryMinEnergyContent, batteryMinSoC } = grid
@@ -22,7 +23,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
     const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
 
     // Get the matching row for the appliance
-    const applianceRow = appliance[rowIndex]
+    const applianceRow = applianceData[rowIndex]
 
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]

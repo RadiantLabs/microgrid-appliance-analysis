@@ -174,6 +174,13 @@ export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }
   return addHourIndex(modifiedTable)
 }
 
+// Add a column to table that autoincrements based on row index
+function addHourIndex(rows) {
+  return _.map(rows, (row, rowIndex) => {
+    return { ...row, ...{ hour: rowIndex } }
+  })
+}
+
 export function analyzeHomerFile({
   parsedFile,
   fileName,
@@ -190,6 +197,9 @@ export function analyzeHomerFile({
     errors.push(
       `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
     )
+  }
+  if (fileType !== 'homer') {
+    errors.push(`File is not homer file. Current fileType: ${fileType}`)
   }
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
@@ -236,11 +246,33 @@ export function analyzeHomerFile({
   }
 }
 
-// Add a column to table that autoincrements based on row index
-function addHourIndex(rows) {
-  return _.map(rows, (row, rowIndex) => {
-    return { ...row, ...{ hour: rowIndex } }
-  })
+export function analyzeApplianceFile({
+  parsedFile,
+  fileName,
+  fileSize,
+  fileType,
+  fileMimeType,
+  isSamplefile,
+}) {
+  let errors = []
+  const fileIsCsv = isSamplefile ? true : isFileCsv(fileMimeType)
+  if (fileType !== 'appliance') {
+    errors.push(`File is not applliance file. Current fileType: ${fileType}`)
+  }
+  if (!fileIsCsv) {
+    errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
+  }
+  const headers = _.keys(_.first(parsedFile.data))
+  if (!hasColumnHeaders(headers)) {
+    errors.push(
+      `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
+    )
+  }
+  // 5MB limit
+  if (fileSize > 1048576 * 5) {
+    errors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
+  }
+  return { fileData: parsedFile, fileName, fileSize, fileType, fileMimeType, isSamplefile }
 }
 
 // _____________________________________________________________________________

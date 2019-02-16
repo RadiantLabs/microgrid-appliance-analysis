@@ -9,13 +9,14 @@ import localforage from 'localforage'
 import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { GridStore, initialGridState } from './GridStore'
+import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
 import { fetchFile } from 'utils/importFileHelpers'
 import { getSummaryStats } from 'utils/calculateStats'
 import { calculateNewColumns } from 'utils/calculateNewColumns'
-import { sampleHomerFiles, applianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { sampleHomerFiles, sampleApplianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
@@ -34,10 +35,10 @@ export const MainStore = types
     availableGrids: types.optional(types.array(GridStore), []), // Option 1
 
     // Appliance Info
-    initApplianceFileName: types.string,
-    applianceIsLoading: types.boolean,
-    activeApplianceFileInfo: types.frozen(),
-    activeAppliance: types.frozen(),
+    activeApplianceInfo: types.frozen(),
+    activeAppliance: types.maybeNull(ApplianceStore),
+    activeApplianceIsLoading: types.boolean,
+    availableAppliances: types.optional(types.array(ApplianceStore), []),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
 
@@ -52,10 +53,10 @@ export const MainStore = types
       yield self.activeGrid.loadGridFile(activeGridInfo)
       self.activeGridIsLoading = false
     }),
-    fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
-      self.applianceIsLoading = true
-      self.activeAppliance = yield fetchFile(activeApplianceFileInfo, window.location)
-      self.applianceIsLoading = false
+    fetchActiveAppliance: flow(function* fetchActiveAppliance(activeApplianceInfo) {
+      self.activeApplianceIsLoading = true
+      yield self.activeAppliance.loadApplianceFile(activeApplianceInfo)
+      self.activeApplianceIsLoading = false
     }),
     // loadAvailableGrids: flow(function* loadAvailableGrids() {
     // // All of these availableGrids will be instantiated GridStores with barely any data
@@ -71,7 +72,7 @@ export const MainStore = types
       })
     },
     setActiveApplianceFile(event, data) {
-      self.activeApplianceFileInfo = _.find(applianceFiles, {
+      self.activeApplianceInfo = _.find(sampleApplianceFiles, {
         fileName: data.value,
       })
     },
@@ -124,13 +125,23 @@ export const MainStore = types
 // -----------------------------------------------------------------------------
 // Initialize Mobx State Tree Store
 // -----------------------------------------------------------------------------
-const initApplianceFileName = 'rice_mill_usage_profile'
-const activeApplianceFileInfo = _.find(applianceFiles, { fileName: initApplianceFileName })
+//Hook React Router up to Store
+const routerModel = RouterModel.create()
+//Hook up router model to browser history object
+const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
+
+const initHomerFileName = '12-50 Oversize 20' // TODO: Check localforage
+const activeGridInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
+const availableGrids = sampleHomerFiles // TODO: concat in files fromm localForage
+
+const initApplianceFileName = 'rice_mill_usage_profile' // TODO: Check localforage
+const activeApplianceInfo = _.find(sampleApplianceFiles, { fileName: initApplianceFileName })
+const availableAppliances = sampleApplianceFiles // TODO: concat in files fromm localForage
 
 // Model inputs must have a definition in the fieldDefinitions file
 const initialModelInputsState = {
   kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
-  dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
+  dutyCycleDerateFactor: _.get(activeApplianceInfo, 'defaults.dutyCycleDerateFactor', 1),
   seasonalDerateFactor: null,
   wholesaleElectricityCost: 5,
   unmetLoadCostPerKwh: 6,
@@ -145,35 +156,32 @@ const initialAncillaryEquipmentState = {
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
 }
 
-//Hook React Router up to Store
-const routerModel = RouterModel.create()
-//Hook up router model to browser history object
-const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
-
-const initHomerFileName = '12-50 Oversize 20' // TODO: Check localforage
-const activeGridInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
-const availableGrids = sampleHomerFiles // TODO: concat in files fromm localForage
-
 let initialMainState = {
   activeGridInfo,
   activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
   activeGridIsLoading: true,
   stagedGrid: null,
-  // TOOD: load availableGrids from sample files and localForage
-  // TODO: gridName should be gridStatus
   availableGrids: _.map(availableGrids, grid => {
-    return GridStore.create({ ...initialGridState, ...grid, ...{ gridName: 'activeGrid' } })
+    return GridStore.create({ ...initialGridState, ...grid, ...{ gridName: '' } })
   }),
 
-  initApplianceFileName,
-  applianceIsLoading: false,
-  activeApplianceFileInfo,
-  activeAppliance: [],
-
-  excludedTableColumns: [],
+  activeApplianceInfo,
+  activeAppliance: ApplianceStore.create({
+    ...initialApplianceState,
+    ...{ applianceStoreName: 'activeAppliance' },
+  }),
+  activeApplianceIsLoading: true,
+  availableAppliances: _.map(availableAppliances, appliance => {
+    return ApplianceStore.create({
+      ...initialApplianceState,
+      ...appliance,
+      ...{ applianceStoreName: '' },
+    })
+  }),
 
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
+  excludedTableColumns: [],
   router: routerModel,
 }
 
@@ -221,7 +229,7 @@ onSnapshot(mainStore, snapshot => {
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
 autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridInfo))
-autorun(() => mainStore.fetchAppliance(mainStore.activeApplianceFileInfo))
+autorun(() => mainStore.fetchActiveAppliance(mainStore.activeApplianceInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>

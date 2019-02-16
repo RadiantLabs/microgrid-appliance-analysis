@@ -1,8 +1,20 @@
 Next steps:
 - [x] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo
-- [ ] Fix required ancillaryEquipment that automatically sets it
-- [ ] sequentially load rest of availableGrids
+- [ ] gridName -> gridStoreName
+- [ ] remove activeGrid from availableGrids
+- [ ] Fill out Grid FileChooser with activeGrid
+
+- [ ] Make activeAppliance follow a similar approach as activeGrid
+  - [x] fetchAppliance -> fetchActiveAppliance
+  - [x] activeApplianceStore.fileData
+  - [ ] availableAppliances
+  - [ ] FileChooser should pull from availableAppliances in store
+  - [ ] remove activeAppliance from availableAppliances
+  - [ ] Require appliance file to have certain columns
+
+- [ ] Fix required ancillaryEquipment that automatically sets as required
+- [ ] Sequentially load rest of availableGrids
   - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
 - [ ] This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
 

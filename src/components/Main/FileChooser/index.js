@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Dropdown, Header, Grid } from 'semantic-ui-react'
-import { homerFiles, applianceFiles } from 'utils/fileInfo'
+import { homerFiles, sampleApplianceFiles } from 'utils/fileInfo'
 
 class FileChoosers extends Component {
   render() {
@@ -11,9 +11,9 @@ class FileChoosers extends Component {
         setActiveHomerFile,
         setActiveApplianceFile,
         activeGridInfo,
-        activeApplianceFileInfo,
+        activeApplianceInfo,
         homerIsLoading,
-        applianceIsLoading,
+        activeApplianceIsLoading,
         ancillaryEquipment,
       },
     } = this.props
@@ -45,15 +45,15 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Appliance Usage Profile:
             </Header>
-            <Dropdown text={activeApplianceFileInfo.label} loading={applianceIsLoading}>
+            <Dropdown text={activeApplianceInfo.label} loading={activeApplianceIsLoading}>
               <Dropdown.Menu>
-                {_.map(applianceFiles, fileInfo => (
+                {_.map(sampleApplianceFiles, fileInfo => (
                   <Dropdown.Item
                     text={fileInfo.label}
                     key={fileInfo.fileName}
                     description={fileInfo.description}
                     value={fileInfo.fileName}
-                    active={fileInfo.fileName === activeApplianceFileInfo.fileName}
+                    active={fileInfo.fileName === activeApplianceInfo.fileName}
                     onClick={setActiveApplianceFile}
                     // icon="check" // If currently active (or bold)
                   />
