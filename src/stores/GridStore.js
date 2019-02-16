@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
+import { fetchFile } from 'utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -15,7 +16,6 @@ import {
   formatTrainingTimeDisplay,
   multiLayerPerceptronRegressionModel1Hidden,
 } from 'utils/tensorflowHelpers'
-window.tf = tf
 
 //
 // -----------------------------------------------------------------------------
@@ -118,52 +118,67 @@ export const GridStore = types
     // stagedHomerFile: types.frozen(),
   }))
   .actions(self => ({
-    // For doing updates from within anonymous functions inside the flow generators
-    // https://github.com/mobxjs/mobx-state-tree/issues/915#issuecomment-404461322
     runInAction(fn) {
       return fn()
     },
-    afterCreate() {
-      // If a file is loaded but fileData is null, go fetch it.
-      // This will run in parallel as all of these are loaded, which may not be ideal
-      // self.fetchHomer(self.activeGridInfo)
-      // self.fetchAppliance(self.activeApplianceFileInfo)
-    },
+    // These files come in through the file upload button
     handleGridFileSelect(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)
-      const { name, size, type } = rawFile
+      const { name: fileName, size: fileSize, type: fileMimeType } = rawFile
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
           const homerAttrs = analyzeHomerFile({
             parsedFile,
-            fileName: name,
-            fileSize: size,
-            fileType: type,
+            fileName,
+            fileSize,
+            fileType: 'homer', // TODO: make this dynamic once we import appliance files
+            fileMimeType,
             isSamplefile: false,
           })
-          self.runInAction(() => {
-            self.fileData = homerAttrs.fileData
-            self.fileName = homerAttrs.fileName
-            self.fileSize = homerAttrs.fileSize
-            self.fileErrors = homerAttrs.fileErrors
-            self.fileWarnings = homerAttrs.fileWarnings
-            self.powerType = homerAttrs.powerType
-            self.pvType = homerAttrs.pvType
-            self.batteryType = homerAttrs.batteryType
-            self.generatorType = homerAttrs.generatorType
-            self.batteryMinSoC = homerAttrs.batteryMinSoC
-            self.batteryMaxSoC = homerAttrs.batteryMaxSoC
-            self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
-            self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
-            self.isAnalyzingFile = false
-          })
+          self.updateGrid(homerAttrs)
         },
         error: error => {
           console.log('error: ', error)
         },
+      })
+    },
+
+    // These files come in from either samples or previously uploaded user files
+    loadGridFile: flow(function* loadGridFile(gridInfo) {
+      self.isAnalyzingFile = true
+      const parsedFile = yield fetchFile(gridInfo, window.location)
+      const { fileName, fileSize, fileType, isSamplefile } = gridInfo
+      const homerAttrs = analyzeHomerFile({
+        parsedFile,
+        fileName,
+        fileSize,
+        fileType,
+        isSamplefile,
+      })
+      self.updateGrid(homerAttrs)
+      self.isAnalyzingFile = false
+      return true
+    }),
+
+    updateGrid(homerAttrs) {
+      self.runInAction(() => {
+        self.fileData = homerAttrs.fileData
+        self.fileName = homerAttrs.fileName
+        self.fileSize = homerAttrs.fileSize
+        self.fileErrors = homerAttrs.fileErrors
+        self.fileWarnings = homerAttrs.fileWarnings
+        self.powerType = homerAttrs.powerType
+        self.pvType = homerAttrs.pvType
+        self.batteryType = homerAttrs.batteryType
+        self.generatorType = homerAttrs.generatorType
+        self.batteryMinSoC = homerAttrs.batteryMinSoC
+        self.batteryMaxSoC = homerAttrs.batteryMaxSoC
+        self.batteryMinEnergyContent = homerAttrs.batteryMinEnergyContent
+        self.batteryMaxEnergyContent = homerAttrs.batteryMaxEnergyContent
+        self.isAnalyzingFile = false
       })
     },
 
@@ -183,6 +198,9 @@ export const GridStore = types
       batteryMaxEpochCount,
     }) {
       if (!self.batteryReadyToTrain) {
+        return null
+      }
+      if (self.batteryModel) {
         return null
       }
       let model = multiLayerPerceptronRegressionModel1Hidden(batteryFeatureCount)

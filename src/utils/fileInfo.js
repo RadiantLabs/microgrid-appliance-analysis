@@ -49,33 +49,36 @@ export const homerFiles = [
 
 export const sampleHomerFiles = [
   {
-    type: 'homer',
+    fileType: 'homer',
     fileName: '12-50 Baseline',
     fileDescription: 'Baseline: Fill in HOMER file description.',
     fileSize: 2097646,
+    isSamplefile: true,
   },
   {
-    type: 'homer',
+    fileType: 'homer',
     fileName: '12-50 Oversize 20',
     fileDescription: 'Oversized: Fill in HOMER file description.',
     fileSize: 2084662,
+    isSamplefile: true,
   },
   {
-    type: 'homer',
+    fileType: 'homer',
     fileName: '12-50 Undersize 20',
     fileDescription: 'Undersized: Fill in HOMER file description.',
     fileSize: 2108574,
+    isSamplefile: true,
   },
 ]
 
 // Primary appliances
 export const applianceFiles = [
   {
-    type: 'appliance',
+    fileType: 'appliance',
     applianceType: 'rice_mill',
     label: 'Rice Mill (Tanzania)',
     fileName: 'rice_mill_usage_profile',
-    description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
+    fileDescription: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
     attributes: {
       powerType: 'DC',
       phase: 3,
@@ -84,11 +87,11 @@ export const applianceFiles = [
     },
   },
   {
-    type: 'appliance',
+    fileType: 'appliance',
     applianceType: 'maize_mill',
     label: 'Maize Mill (Tanzania)',
     fileName: 'maize_mill_usage_profile_1',
-    description: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
+    fileDescription: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
     attributes: {
       powerType: 'AC',
       phase: 3,
@@ -97,11 +100,11 @@ export const applianceFiles = [
     },
   },
   {
-    type: 'appliance',
+    fileType: 'appliance',
     applianceType: 'maize_mill',
     label: 'Maize Mill (Tanzania)',
     fileName: 'maize_mill_usage_profile_2',
-    description: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
+    fileDescription: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
     attributes: {
       powerType: 'AC',
       phase: 3,
@@ -110,11 +113,11 @@ export const applianceFiles = [
     },
   },
   {
-    type: 'appliance',
+    fileType: 'appliance',
     applianceType: 'welder',
     label: 'Welder (Tanzania)',
     fileName: 'welder_usage_profile',
-    description: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
+    fileDescription: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
     defaults: {
       dutyCycleDerateFactor: 0.2,
     },

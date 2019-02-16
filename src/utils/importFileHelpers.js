@@ -77,7 +77,7 @@ function dropUnitsRow(rows) {
   return _.drop(rows, 1)
 }
 
-function renameHomerKeys2({ row, pvType, batteryType, generatorType }) {
+function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
   return _.mapKeys(row, (val, key) => {
     switch (true) {
       // Replace names of all battery columns
@@ -162,7 +162,7 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
 
 export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }) {
   const renamedRows = _.map(dropUnitsRow(parsedFile.data), (row, rowIndex) => {
-    return renameHomerKeys2({ row, pvType, batteryType, generatorType })
+    return renameHomerKeys({ row, pvType, batteryType, generatorType })
   })
 
   const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
@@ -181,12 +181,12 @@ export function analyzeHomerFile({
   fileName,
   fileSize,
   fileType,
+  fileMimeType,
   fileDescription = '',
   isSamplefile,
 }) {
-  console.log('analyzeHomerFile: ', parsedFile, fileName, fileSize, fileType, fileDescription)
   let errors = []
-  const fileIsCsv = isSamplefile ? true : isFileCsv(fileType)
+  const fileIsCsv = isSamplefile ? true : isFileCsv(fileMimeType)
   const headers = _.keys(_.first(parsedFile.data))
   if (!hasColumnHeaders(headers)) {
     errors.push(
@@ -248,41 +248,6 @@ function addHourIndex(rows) {
 // _____________________________________________________________________________
 // Legacy functions below this. These will be replaced.
 // _____________________________________________________________________________
-// Rename HOMER column names so we have consistent variables to do calculations with.
-// If HOMER had Litium Ion batteries, all calculations would break. Example of changes:
-// "Generic 1kWh Lead Acid [ASM] Energy Content" => "Battery Energy Content"
-// "Generic flat plate PV Solar Altitude" => "PV Solar Altitude"
-function renameHomerKeys(row, fileInfo) {
-  const { battery, pvSystem } = fileInfo.attributes
-  return _.mapKeys(row, (val, key) => {
-    switch (true) {
-      case _.includes(key, battery):
-        return _.replace(key, battery, 'Battery')
-      // TODO: PV Solar Altitude won't necessarily start with PV
-      case _.includes(key, pvSystem):
-        return _.replace(key, `${pvSystem} `, '')
-      default:
-        return key
-    }
-  })
-}
-
-// Convert output from raw CSV parse into something that React Virtualized can display
-// Drop the first after parsing which is the units row.
-export function processHomerFile(rows, fileInfo) {
-  const renamedRows = _.map(_.drop(rows, 1), (row, rowIndex) => {
-    return renameHomerKeys(row, fileInfo)
-  })
-  const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
-    return _.mapValues(row, (val, key) => {
-      if (key === 'Time') {
-        return DateTime.fromFormat(val, homerParseFormat).toISO()
-      }
-      return _.round(val, 5)
-    })
-  })
-  return addHourIndex(modifiedTable)
-}
 
 export function processApplianceFile(rows, fileInfo) {
   return _.map(rows, row => {
@@ -307,7 +272,7 @@ export function filePathLookup(fileName, fileType, urlLocation) {
     case 'appliance':
       return relativePathCount + 'data/appliances/' + fileName + '.csv'
     default:
-      throw new Error(`Need to pase fileType (homer, appliance) to filePathLookup`)
+      throw new Error(`Need to pass fileType (homer, appliance) to filePathLookup`)
   }
 }
 
@@ -319,8 +284,8 @@ export async function fetchFile(fileInfo, urlLocation) {
   if (_.isEmpty(fileInfo)) {
     throw new Error(`fileInfo not found in fetchFile`)
   }
-  const { type, fileName, fileSize, fileDescription } = fileInfo
-  const filePath = filePathLookup(fileName, type, urlLocation)
+  const { fileName, fileType } = fileInfo
+  const filePath = filePathLookup(fileName, fileType, urlLocation)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
@@ -329,15 +294,9 @@ export async function fetchFile(fileInfo, urlLocation) {
     if (!_.isEmpty(errors)) {
       throw new Error(`Problem parsing CSV: ${JSON.stringify(errors)}`)
     }
-    switch (type) {
+    switch (fileType) {
       case 'homer':
-        return analyzeHomerFile({
-          parsedFile,
-          fileName,
-          fileSize,
-          fileDescription,
-          isSamplefile: true,
-        })
+        return parsedFile
       case 'appliance':
         return processApplianceFile(data, fileInfo)
       default:

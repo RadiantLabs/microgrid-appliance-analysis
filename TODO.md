@@ -2,6 +2,7 @@ Next steps:
 - [ ] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo
 - [ ] sequentially load rest of availableGrids
+  - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
 
 --------------------------------------------------------------------------------
 Option 1: <- let's do this one

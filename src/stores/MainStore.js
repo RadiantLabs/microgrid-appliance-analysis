@@ -48,17 +48,8 @@ export const MainStore = types
   })
   .actions(self => ({
     fetchActiveGrid: flow(function* fetchActiveGrid(activeGridInfo) {
-      // TODO: fix infinite loop
-      // Right now this probably should not be saving to self.activeGrid.
-      // activeGrid expects and instance of the GridStore
-      // maybe do something like:
-      // self.activeGrid = new GridStore(yield fetchFile(activeGridInfo, window.location))
-
-      // or...
-      // self.activeGrid.loadGrid(activeGridInfo) and move the loading into the store itself
-      debugger
       self.activeGridIsLoading = true
-      self.activeGrid = yield fetchFile(activeGridInfo, window.location)
+      yield self.activeGrid.loadGridFile(activeGridInfo)
       self.activeGridIsLoading = false
     }),
     fetchAppliance: flow(function* fetchAppliance(activeApplianceFileInfo) {
@@ -66,6 +57,13 @@ export const MainStore = types
       self.activeAppliance = yield fetchFile(activeApplianceFileInfo, window.location)
       self.applianceIsLoading = false
     }),
+    // loadAvailableGrids: flow(function* loadAvailableGrids() {
+    // // All of these availableGrids will be instantiated GridStores with barely any data
+    // for (let grid of self.availableGrids) {
+    //  await grid.loadGridFile();
+    // }
+    // }),
+
     // Choose active HOMER or Appliance file
     setActiveHomerFile(event, data) {
       self.activeGridInfo = _.find(sampleHomerFiles, {
@@ -159,14 +157,18 @@ const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
 const initHomerFileName = '12-50 Oversize 20' // TODO: Check localforage
 const activeGridInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
-// debugger
+const availableGrids = sampleHomerFiles // TODO: concat in files fromm localForage
 
 let initialMainState = {
   activeGridInfo,
   activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
   activeGridIsLoading: true,
   stagedGrid: null,
-  availableGrids: [], // TOOD: load availableGrids from sample files and localForage
+  // TOOD: load availableGrids from sample files and localForage
+  // TODO: gridName should be gridStatus
+  availableGrids: _.map(availableGrids, grid => {
+    return GridStore.create({ ...initialGridState, ...grid, ...{ gridName: 'activeGrid' } })
+  }),
 
   initApplianceFileName,
   applianceIsLoading: false,
@@ -234,6 +236,26 @@ autorun(() =>
 )
 
 // Run the battery regression model
+autorun(() => {
+  if (_.isEmpty(mainStore.activeGrid)) {
+    return null
+  }
+  const {
+    batteryFeatureCount,
+    batteryTensors,
+    batteryLearningRate,
+    batteryBatchSize,
+    batteryMaxEpochCount,
+  } = mainStore.activeGrid
+  mainStore.activeGrid.trainBatteryModel({
+    batteryFeatureCount,
+    batteryTensors,
+    batteryLearningRate,
+    batteryBatchSize,
+    batteryMaxEpochCount,
+  })
+})
+
 autorun(() => {
   if (_.isEmpty(mainStore.stagedGrid)) {
     return null
