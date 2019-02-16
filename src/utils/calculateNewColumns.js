@@ -9,8 +9,12 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
   if (_.isEmpty(grid) || _.isEmpty(appliance)) {
     return null
   }
+  if (_.isEmpty(grid.fileData)) {
+    return null
+  }
   const t0 = performance.now()
 
+  const { batteryMinEnergyContent, batteryMinSoC } = grid
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
   const columnReducer = (result, row, rowIndex, rows) => {
@@ -29,8 +33,6 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Battery Energy Content']
     const batterySOC = row['Battery State of Charge']
-    const batteryMinSoC = row['batteryMinSoC']
-    const batteryMinEnergyContent = row['batteryMinEnergyContent']
 
     const prevBatteryEnergyContent =
       rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
@@ -135,7 +137,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
   }
 
   // Iterate over homer data, pushing each new row into an array
-  const calculatedColumns = _.reduce(grid, columnReducer, [])
+  const calculatedColumns = _.reduce(grid.fileData, columnReducer, [])
   const t1 = performance.now()
   console.log('calculateNewColumns took ' + _.round(t1 - t0) + ' milliseconds.')
   return calculatedColumns

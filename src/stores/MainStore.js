@@ -95,7 +95,7 @@ export const MainStore = types
   .views(self => ({
     get calculatedColumns() {
       return calculateNewColumns({
-        grid: self.activeGrid.fileData,
+        grid: self.activeGrid,
         appliance: self.activeAppliance,
         modelInputs: self.modelInputs,
       })
