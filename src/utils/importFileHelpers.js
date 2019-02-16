@@ -146,8 +146,6 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
     return {
       datetime,
       hour_of_day: dateObject.hour,
-      // day: applianceRow['day'],
-      // day_hour: applianceRow['day_hour'],
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
       prevBatterySOC: _.round(prevBatterySOC, 4),

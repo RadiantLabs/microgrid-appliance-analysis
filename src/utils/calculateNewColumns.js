@@ -1,12 +1,11 @@
 import _ from 'lodash'
 
 /**
- * Pass in the merged table that includes Homer and Usage factors
- * Also pass in adjustable fields from store and constants that are required
+ * Pass in the merged table that includes Homer and Appliance Usage factors
+ * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-// TODO: Remove columns that have been calculated when HOMER was imported
-export function calculateNewLoads({ grid, appliance, modelInputs, constants }) {
+export function calculateNewColumns({ grid, appliance, modelInputs }) {
   if (_.isEmpty(grid) || _.isEmpty(appliance)) {
     return null
   }
@@ -35,19 +34,6 @@ export function calculateNewLoads({ grid, appliance, modelInputs, constants }) {
 
     const prevBatteryEnergyContent =
       rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
-
-    const prevBatterySOC =
-      rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
-
-    // TODO: Eventually add other generation to this value
-    const totalElectricalProduction = row['PV Power Output']
-
-    // electricalProductionLoadDiff defines whether we are producing excess (positive)
-    // or in deficit (negative).
-    // If excess (positive), `Inverter Power Input` kicks in
-    // If deficit (negative), `Rectifier Power Input` kicks in
-    const electricalProductionLoadDiff =
-      totalElectricalProduction - row['Total Electrical Load Served']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
@@ -127,30 +113,22 @@ export function calculateNewLoads({ grid, appliance, modelInputs, constants }) {
           // Now subtract out any battery consumption the new appliance would use
           newApplianceBatteryConsumption
 
+    // Unmet load counts are very sensitive to how many decimals you round to
+    // Rounding to 3 decimals filters out loads less than 1 watthour
+    // Rounding to 0 decimals filters out loads less than 1 kWh
+    // Amanda decided to filter out anything less than 100 watthours (1 decimal)
     result.push({
       hour: row['hour'],
       datetime: row['Time'],
       hour_of_day: applianceRow['hour_of_day'],
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
-      // kw_factor: applianceRow['kw_factor'],
-      totalElectricalProduction: _.round(totalElectricalProduction, 4),
-      electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
-      prevBatterySOC: _.round(prevBatterySOC, 4),
-      prevBatteryEnergyContent: _.round(prevBatteryEnergyContent, 4),
       newApplianceLoad: _.round(newApplianceLoad, 4),
-      energyContentAboveMin: _.round(energyContentAboveMin, 4),
-      availableCapacity: _.round(availableCapacity, 4),
       availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
-      // Unmet load counts are very sensitive to how many decimals you round to
-      // Rounding to 3 decimals filters out loads less than 1 watthour
-      // Rounding to 0 decimals filters out loads less than 1 kWh
-      // Amanda decided to filter out anything less than 100 watthours (1 decimal)
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
       additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
       newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
       newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
-      originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
       newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
     })
     return result
@@ -159,6 +137,6 @@ export function calculateNewLoads({ grid, appliance, modelInputs, constants }) {
   // Iterate over homer data, pushing each new row into an array
   const calculatedColumns = _.reduce(grid, columnReducer, [])
   const t1 = performance.now()
-  console.log('calculateNewLoads took ' + _.round(t1 - t0) + ' milliseconds.')
+  console.log('calculateNewColumns took ' + _.round(t1 - t0) + ' milliseconds.')
   return calculatedColumns
 }

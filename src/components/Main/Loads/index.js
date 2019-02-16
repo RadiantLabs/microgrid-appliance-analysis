@@ -19,11 +19,7 @@ import { getChartColors, greyColors } from 'utils/constants'
 // Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
 class LoadsByHour extends React.Component {
   render() {
-    const {
-      calculatedColumns,
-      // summaryStats,
-      // homerStats
-    } = this.props.store
+    const { calculatedColumns } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
