@@ -4,7 +4,8 @@ import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
-import { fetchFile } from 'utils/importFileHelpers'
+import { fetchSampleGridFile, fetchSnapshotGridFile } from 'utils/importFileHelpers'
+import { FileInfoStore } from 'stores/FileInfoStore'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -46,11 +47,13 @@ export const initialGridState = {
   isBatteryModeling: false,
   gridSaved: false,
   batteryModelSaved: false,
-  fileName: '',
-  fileLabel: '',
-  fileSize: 0,
+  // fileId: '',
+  // fileTimestamp: '',
+  // fileName: '',
+  // fileLabel: '',
+  // fileSize: 0,
+  // fileDescription: '',
   fileData: [],
-  fileDescription: '',
   fileErrors: [],
   fileWarnings: [],
   pvType: '',
@@ -71,7 +74,11 @@ export const initialGridState = {
 export const GridStore = types
   .model({
     // There are multiple grid stores. gridStoreName identifies them to different views
-    gridStoreName: types.enumeration('gridStoreName', ['activeGrid', 'stagedGrid', '']),
+    gridStoreName: types.enumeration('gridStoreName', [
+      'activeGrid',
+      'stagedGrid',
+      'availableGrid',
+    ]),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
@@ -80,11 +87,8 @@ export const GridStore = types
     gridSaved: types.boolean,
     batteryModelSaved: types.boolean,
 
-    fileName: types.string,
-    fileLabel: types.string, // Must be unique across all availableGrids
-    fileSize: types.number,
+    fileInfo: FileInfoStore,
     fileData: types.frozen(),
-    fileDescription: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     pvType: types.string,
@@ -149,16 +153,21 @@ export const GridStore = types
     },
 
     // These files come in from either samples or previously uploaded user files
-    loadGridFile: flow(function* loadGridFile(gridInfo) {
+    loadGridFile: flow(function* loadGridFile(gridId) {
       self.isAnalyzingFile = true
-      const parsedFile = yield fetchFile(gridInfo, window.location)
-      const { fileName, fileSize, fileType, isSamplefile } = gridInfo
+
+      // TODO: fetching and returning only the fileData isn't right here
+      // For a snapshot, I don't want to analyzeHomerFile
+      // For a sample file, I should call analyzeHomerFile from the fetch function
+      const parsedFile = self.isSampleFile
+        ? yield fetchSampleGridFile(self.fileName, window.location)
+        : yield fetchSnapshotGridFile(self.fileId)
       const gridAttrs = analyzeHomerFile({
         parsedFile,
-        fileName,
-        fileSize,
-        fileType,
-        isSamplefile,
+        fileName: self.fileName,
+        fileSize: self.fileSize,
+        fileType: self.fileType,
+        isSampleFile: self.isSamplefile,
       })
       self.updateGrid(gridAttrs)
       self.isAnalyzingFile = false
@@ -167,8 +176,11 @@ export const GridStore = types
 
     updateGrid(gridAttrs) {
       self.runInAction(() => {
+        self.fileId = gridAttrs.fileId
         self.fileData = gridAttrs.fileData
         self.fileName = gridAttrs.fileName
+        self.fileLabel = gridAttrs.fileLabel
+        self.fileTimestamp = gridAttrs.fileTimestamp
         self.fileSize = gridAttrs.fileSize
         self.fileErrors = gridAttrs.fileErrors
         self.fileWarnings = gridAttrs.fileWarnings
@@ -184,8 +196,8 @@ export const GridStore = types
       })
     },
 
-    handleNameChange(event, data) {
-      self.fileName = data.value
+    handleLabelChange(event, data) {
+      self.fileLabel = data.value
     },
 
     handleDescriptionChange(event, data) {

@@ -1,14 +1,18 @@
 TODO: am I really setting activeGridInfo and activeApplianceInfo?
-* If so, I can autorun something to update activeGrid and activeAppliance
-* Also - I should reconsider whether I even need activeGridInfo and activeApplianceInfo
-* I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
+* Get rid of activeGridInfo and activeApplianceInfo
+* Possible ways to load a file:
+1. Load sample file (need fileInfo to retrieve and rehydrate the data)
+2. Restore from snapshot (either in localforage or firebase)
+3. Uploaded file (which will be saved as a snapshot)
 
 
 Next steps:
 - [x] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo
-- [ ] gridName -> gridStoreName
-- [ ] remove activeGrid from availableGrids
+- [x] gridName -> gridStoreName
+- [ ] activeAppliance -> active
+- [ ] Get FileChooser hooked up again with HOMER files
+- [ ] remove activeGrid from availableGrids array
 - [ ] Fill out Grid FileChooser with activeGrid
 - [ ] reconsider whether I even need activeGridInfo and activeApplianceInfo
   - I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
@@ -16,8 +20,8 @@ activeGrid, not from homerFileInfo or activeGridInfo
 - [ ] Make activeAppliance follow a similar approach as activeGrid
   - [x] fetchAppliance -> fetchActiveAppliance
   - [x] activeApplianceStore.fileData
-  - [ ] processApplianceFile -> analyzeApplianceFile for sample files
-  - [ ] availableAppliances
+  - [x] processApplianceFile -> analyzeApplianceFile for sample files
+  - [x] availableAppliances
   - [ ] FileChooser should pull from availableAppliances in store
   - [ ] remove activeAppliance from availableAppliances
   - [ ] Require appliance file to have certain columns

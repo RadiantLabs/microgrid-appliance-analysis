@@ -10,12 +10,13 @@ import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
+import { FileInfoStore, initialFileInfoState } from './FileInfoStore'
 
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
 import { getSummaryStats } from 'utils/calculateStats'
 import { calculateNewColumns } from 'utils/calculateNewColumns'
-import { sampleHomerFiles, sampleApplianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { sampleGridFileInfos, sampleApplianceFiles, ancillaryEquipment } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
@@ -27,7 +28,7 @@ import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 export const MainStore = types
   .model({
     // Homer Data
-    activeGridInfo: types.frozen(),
+    // activeGridFileInfo: types.frozen(),
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
@@ -47,9 +48,9 @@ export const MainStore = types
     router: RouterModel,
   })
   .actions(self => ({
-    fetchActiveGrid: flow(function* fetchActiveGrid(activeGridInfo) {
+    fetchActiveGrid: flow(function* fetchActiveGrid(activeGridId) {
       self.activeGridIsLoading = true
-      yield self.activeGrid.loadGridFile(activeGridInfo)
+      yield self.activeGrid.loadGridFile(activeGridId)
       self.activeGridIsLoading = false
     }),
     fetchActiveAppliance: flow(function* fetchActiveAppliance(activeApplianceInfo) {
@@ -63,15 +64,9 @@ export const MainStore = types
     //  await grid.loadGridFile();
     // }
     // }),
-
-    // Choose active HOMER or Appliance file
-    // TODO: am I really setting activeGridInfo and activeApplianceInfo?
-    // If so, I can autorun something to update activeGrid and activeAppliance
-    // Also - I should reconsider whether I even need activeGridInfo and activeApplianceInfo
-    // I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
     setActiveGridFile(event, data) {
-      self.activeGridInfo = _.find(availableGrids, {
-        fileLabel: data.value,
+      self.activeGridId = _.find(self.availableGrids, {
+        id: data.value,
       })
     },
     setActiveApplianceFile(event, data) {
@@ -86,7 +81,6 @@ export const MainStore = types
         self.excludedTableColumns.push(columnName)
       }
     },
-
     saveSnapshot() {
       const snapshot = _.omit(getSnapshot(self), ['grid'])
       console.log('snapshot: ', snapshot)
@@ -133,12 +127,13 @@ const routerModel = RouterModel.create()
 //Hook up router model to browser history object
 const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
-const initHomerFileName = '12-50 Oversize 20' // TODO: Check localforage
-const activeGridInfo = _.find(sampleHomerFiles, { fileName: initHomerFileName })
-const availableGrids = sampleHomerFiles // TODO: concat in files fromm localForage
+const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO: Check localforage
+const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
+const activeGridFileInfo = FileInfoStore.create(_.find(allGridFileInfos, { id: initGridFileId }))
+const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
 
-const initApplianceFileName = 'rice_mill_usage_profile' // TODO: Check localforage
-const activeApplianceInfo = _.find(sampleApplianceFiles, { fileName: initApplianceFileName })
+const initApplianceFileId = 'rice_mill_usage_profile' // TODO: Check localforage
+const activeApplianceInfo = _.find(sampleApplianceFiles, { fileName: initApplianceFileId })
 const availableAppliances = sampleApplianceFiles // TODO: concat in files fromm localForage
 
 // Model inputs must have a definition in the fieldDefinitions file
@@ -160,12 +155,20 @@ const initialAncillaryEquipmentState = {
 }
 
 let initialMainState = {
-  activeGridInfo,
-  activeGrid: GridStore.create({ ...initialGridState, ...{ gridStoreName: 'activeGrid' } }),
+  // activeGridFileInfo,
+  activeGrid: GridStore.create({
+    ...initialGridState,
+    ...{ fileInfo: activeGridFileInfo },
+    ...{ gridStoreName: 'activeGrid' },
+  }),
   activeGridIsLoading: true,
   stagedGrid: null,
-  availableGrids: _.map(availableGrids, grid => {
-    return GridStore.create({ ...initialGridState, ...grid, ...{ gridStoreName: '' } })
+  availableGrids: _.map(availableGridFileInfos, gridInfo => {
+    return GridStore.create({
+      ...initialGridState,
+      ...{ fileInfo: gridInfo },
+      ...{ gridStoreName: 'availableGrid' },
+    })
   }),
 
   activeApplianceInfo,
@@ -178,7 +181,7 @@ let initialMainState = {
     return ApplianceStore.create({
       ...initialApplianceState,
       ...appliance,
-      ...{ applianceStoreName: '' },
+      ...{ applianceStoreName: 'availableAppliance' },
     })
   }),
 
@@ -188,6 +191,7 @@ let initialMainState = {
   router: routerModel,
 }
 
+debugger
 //
 // -----------------------------------------------------------------------------
 // Store state snapshots in localForage
@@ -231,7 +235,7 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridInfo))
+autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridId))
 autorun(() => mainStore.fetchActiveAppliance(mainStore.activeApplianceInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:

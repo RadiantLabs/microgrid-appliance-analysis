@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import { HOURS_PER_YEAR, tableDateFormat } from './constants'
-
-// window.LuxonDateTime = DateTime    // Used for debugging Luxon tokens
+window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
 /**
  * These are more general purpose utility functions, not directly related to the store
@@ -17,6 +16,10 @@ export const checkKey = (table, key) => {
   if (!_.has(_.first(table), key)) {
     throw new Error(`Can't find key: ${key}: Check calling function`)
   }
+}
+
+export const getIsoTimestamp = () => {
+  return DateTime.local().toISO()
 }
 
 // Check for a valid float, can pass in a string or number

@@ -9,10 +9,8 @@ import { fetchFile, analyzeApplianceFile, csvOptions } from 'utils/importFileHel
 // Initial Appliance State
 // -----------------------------------------------------------------------------
 export const initialApplianceState = {
-  applianceStoreName: '',
-  fileIsSelected: false,
-  isAnalyzingFile: false,
-  applianceSaved: false,
+  fileId: '',
+  fileTimestamp: '',
   fileName: '',
   fileLabel: '',
   fileSize: 0,
@@ -21,6 +19,10 @@ export const initialApplianceState = {
   fileErrors: [],
   fileWarnings: [],
   applianceType: '',
+  applianceStoreName: '',
+  fileIsSelected: false,
+  isAnalyzingFile: false,
+  applianceSaved: false,
 }
 
 //
@@ -33,14 +35,18 @@ export const ApplianceStore = types
     applianceStoreName: types.enumeration('applianceStoreName', [
       'activeAppliance',
       'stagedAppliance',
-      '',
+      'availableAppliance',
     ]),
 
-    // Temporary UI state variables. May be moved into volatile state
-    fileIsSelected: types.boolean,
-    isAnalyzingFile: types.boolean,
-    applianceSaved: types.boolean,
-
+    fileId: types.string,
+    fileTimestamp: types.string,
+    fileName: types.string,
+    fileLabel: types.string,
+    fileSize: types.number,
+    fileData: types.frozen(),
+    fileDescription: types.string,
+    fileErrors: types.array(types.string),
+    fileWarnings: types.array(types.string),
     applianceType: types.enumeration('applianceType', [
       'rice_mill',
       'maize_mill',
@@ -49,13 +55,11 @@ export const ApplianceStore = types
       'other',
       '',
     ]),
-    fileName: types.string,
-    fileLabel: types.string,
-    fileSize: types.number,
-    fileData: types.frozen(),
-    fileDescription: types.string,
-    fileErrors: types.array(types.string),
-    fileWarnings: types.array(types.string),
+
+    // Temporary UI state variables. May be moved into volatile state
+    fileIsSelected: types.boolean,
+    isAnalyzingFile: types.boolean,
+    applianceSaved: types.boolean,
   })
   .actions(self => ({
     runInAction(fn) {

@@ -2,8 +2,8 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import path from 'path-browserify'
-import { findColMax, findColMin } from 'utils/helpers'
+// import path from 'path-browserify'
+import { findColMax, findColMin, getIsoTimestamp } from 'utils/helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 
@@ -230,7 +230,8 @@ export function analyzeHomerFile({
     batteryMinEnergyContent,
   })
   return {
-    fileName: path.parse(fileName).name,
+    // fileId: `${fileName}_${getIsoTimestamp()}`,
+    fileName,
     fileData: withCalculatedColumns,
     fileSize,
     fileErrors: _.compact(errors),
@@ -316,12 +317,49 @@ export function filePathLookup(fileName, fileType, urlLocation) {
 }
 
 /**
- * Fetch Homer or Usage profile files.
+ * Fetch Homer or Usage profile files from samples.
+ * @param {*} fileId
+ */
+export async function fetchSnapshotGridFile(fileId) {
+  return []
+}
+
+/**
+ * Fetch Homer or Usage profile files from samples.
+ * @param {*} fileId
+ */
+export async function fetchSampleGridFile(fileName, urlLocation) {
+  const fileType = 'homer'
+  const filePath = filePathLookup(fileName, fileType, urlLocation)
+  try {
+    const res = await window.fetch(filePath)
+    const csv = await res.text()
+    const parsedFile = Papa.parse(csv, csvOptions)
+    if (!_.isEmpty(parsedFile.errors)) {
+      throw new Error(`Problem parsing grid CSV: ${JSON.stringify(parsedFile.errors)}`)
+    }
+    return analyzeHomerFile({
+      parsedFile,
+      fileName,
+      // fileSize,
+      fileType,
+      isSampleFile: true,
+    })
+  } catch (error) {
+    console.error(
+      `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,
+      error
+    )
+  }
+}
+
+/**
+ * Fetch Homer or Usage profile files from samples.
  * @param {*} fileInfo
  */
 export async function fetchFile(fileInfo, urlLocation) {
   if (_.isEmpty(fileInfo)) {
-    throw new Error(`fileInfo not found in fetchFile`)
+    throw new Error(`fileInfo not found in fetchSampleFile`)
   }
   const { fileName, fileType } = fileInfo
   const filePath = filePathLookup(fileName, fileType, urlLocation)
