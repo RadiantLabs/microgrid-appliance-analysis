@@ -26,7 +26,7 @@ class HomerFile extends React.Component {
     if (_.isEmpty(stagedGrid)) {
       return null
     }
-    // TODO: gridName="stagedGrid" should be dynamically set
+    // TODO: gridStoreName="stagedGrid" should be dynamically set
     const {
       fileIsSelected,
       isAnalyzingFile,
@@ -85,7 +85,7 @@ class HomerFile extends React.Component {
                   <HomerFormFields />
                 </Grid.Column>
                 <Grid.Column width={8}>
-                  <BatteryChargeTable gridName="stagedGrid" />
+                  <BatteryChargeTable gridStoreName="stagedGrid" />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

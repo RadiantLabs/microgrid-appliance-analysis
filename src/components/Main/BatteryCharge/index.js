@@ -33,7 +33,7 @@ class BatteryCharge extends React.Component {
           This chart isn't useful yet. I need to calculate the charge characteristics of the battery
           first.
         </Message>
-        <BatteryChargeTable gridName="activeGrid" />
+        <BatteryChargeTable gridStoreName="activeGrid" />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <LineChart
             width={1400}

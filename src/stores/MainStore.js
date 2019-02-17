@@ -161,11 +161,11 @@ const initialAncillaryEquipmentState = {
 
 let initialMainState = {
   activeGridInfo,
-  activeGrid: GridStore.create({ ...initialGridState, ...{ gridName: 'activeGrid' } }),
+  activeGrid: GridStore.create({ ...initialGridState, ...{ gridStoreName: 'activeGrid' } }),
   activeGridIsLoading: true,
   stagedGrid: null,
   availableGrids: _.map(availableGrids, grid => {
-    return GridStore.create({ ...initialGridState, ...grid, ...{ gridName: '' } })
+    return GridStore.create({ ...initialGridState, ...grid, ...{ gridStoreName: '' } })
   }),
 
   activeApplianceInfo,

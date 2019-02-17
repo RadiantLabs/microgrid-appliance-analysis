@@ -11,8 +11,8 @@ import {
 } from 'recharts'
 import { observer, inject } from 'mobx-react'
 
-const LossChart = ({ store, gridName }) => {
-  const { batteryTrainLogs } = store[gridName]
+const LossChart = ({ store, gridStoreName }) => {
+  const { batteryTrainLogs } = store[gridStoreName]
   return (
     <ResponsiveContainer height={400}>
       <LineChart

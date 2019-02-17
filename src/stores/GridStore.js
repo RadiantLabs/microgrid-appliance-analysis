@@ -40,7 +40,7 @@ const initialBatteryState = {
 }
 
 export const initialGridState = {
-  gridName: '',
+  gridStoreName: '',
   fileIsSelected: false,
   isAnalyzingFile: false,
   isBatteryModeling: false,
@@ -70,8 +70,8 @@ export const initialGridState = {
 // -----------------------------------------------------------------------------
 export const GridStore = types
   .model({
-    // There are multiple grid stores. gridName identifies them to different views
-    gridName: types.enumeration('gridName', ['activeGrid', 'stagedGrid', '']),
+    // There are multiple grid stores. gridStoreName identifies them to different views
+    gridStoreName: types.enumeration('gridStoreName', ['activeGrid', 'stagedGrid', '']),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,

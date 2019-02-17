@@ -17,8 +17,8 @@ class BatteryModel extends React.Component {
   }
 
   render() {
-    const { fileErrors, gridName } = this.props.store
-    console.log('TODO: set gridName dynamically: ', gridName)
+    const { fileErrors, gridStoreName } = this.props.store
+    console.log('TODO: set gridStoreName dynamically: ', gridStoreName)
     if (!_.isEmpty(fileErrors)) {
       return null
     }
@@ -49,10 +49,10 @@ class BatteryModel extends React.Component {
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <EpochProgressTable gridName="stagedGrid" />
+              <EpochProgressTable gridStoreName="stagedGrid" />
             </Grid.Column>
             <Grid.Column>
-              <FinalLossTable gridName="stagedGrid" />
+              <FinalLossTable gridStoreName="stagedGrid" />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -60,11 +60,11 @@ class BatteryModel extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <h3>Training Progress</h3>
-              <LossChart gridName="stagedGrid" />
+              <LossChart gridStoreName="stagedGrid" />
             </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
-              <ActualVsPredicted gridName="stagedGrid" />
+              <ActualVsPredicted gridStoreName="stagedGrid" />
             </Grid.Column>
           </Grid.Row>
         </Grid>

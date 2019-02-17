@@ -2,9 +2,9 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Table } from 'semantic-ui-react'
 
-const BatteryChargeTable = ({ store, gridName }) => {
+const BatteryChargeTable = ({ store, gridStoreName }) => {
   const { batteryMaxSoC, batteryMinSoC, batteryMaxEnergyContent, batteryMinEnergyContent } = store[
-    gridName
+    gridStoreName
   ]
   return (
     <Table basic="very" celled>
