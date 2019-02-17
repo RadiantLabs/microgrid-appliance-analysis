@@ -1,4 +1,4 @@
-// import _ from 'lodash'
+import _ from 'lodash'
 import { types, flow } from 'mobx-state-tree'
 // import localforage from 'localforage'
 import Papa from 'papaparse'
@@ -14,6 +14,7 @@ export const initialApplianceState = {
   isAnalyzingFile: false,
   applianceSaved: false,
   fileName: '',
+  fileLabel: '',
   fileSize: 0,
   fileData: [],
   fileDescription: '',
@@ -49,6 +50,7 @@ export const ApplianceStore = types
       '',
     ]),
     fileName: types.string,
+    fileLabel: types.string,
     fileSize: types.number,
     fileData: types.frozen(),
     fileDescription: types.string,
@@ -59,8 +61,11 @@ export const ApplianceStore = types
     runInAction(fn) {
       return fn()
     },
+
     // These files come in through the file upload button
-    handleApplianceFileSelect(rawFile) {
+    // File form fields are updated in handlers below (handleFileLabelChange,
+    // handleFileDescriptionChange)
+    handleApplianceFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing appliance rawFile: ', rawFile)
@@ -97,8 +102,6 @@ export const ApplianceStore = types
         isSamplefile,
       })
       self.updateAppliance(applianceAttrs)
-      self.isAnalyzingFile = false
-      return true
     }),
 
     updateAppliance(applianceAttrs) {
@@ -112,11 +115,11 @@ export const ApplianceStore = types
       })
     },
 
-    handleNameChange(event, data) {
-      self.fileName = data.value
+    handleFileLabelChange(event, data) {
+      self.fileLabel = data.value
     },
 
-    handleDescriptionChange(event, data) {
+    handleFileDescriptionChange(event, data) {
       self.fileDescription = data.value
     },
 
@@ -130,5 +133,8 @@ export const ApplianceStore = types
   .views(self => ({
     get showAnalyzedResults() {
       return self.fileIsSelected && !self.isAnalyzingFile
+    },
+    get fileLabels() {
+      return _.map(self.availableAppliances, appliance => appliance.label)
     },
   }))

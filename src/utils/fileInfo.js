@@ -51,6 +51,7 @@ export const sampleHomerFiles = [
   {
     fileType: 'homer',
     fileName: '12-50 Baseline',
+    fileLabel: '12-50 Baseline',
     fileDescription: 'Baseline: Fill in HOMER file description.',
     fileSize: 2097646,
     isSamplefile: true,
@@ -58,6 +59,7 @@ export const sampleHomerFiles = [
   {
     fileType: 'homer',
     fileName: '12-50 Oversize 20',
+    fileLabel: '12-50 Oversize 20',
     fileDescription: 'Oversized: Fill in HOMER file description.',
     fileSize: 2084662,
     isSamplefile: true,
@@ -65,6 +67,7 @@ export const sampleHomerFiles = [
   {
     fileType: 'homer',
     fileName: '12-50 Undersize 20',
+    fileLabel: '12-50 Undersize 20',
     fileDescription: 'Undersized: Fill in HOMER file description.',
     fileSize: 2108574,
     isSamplefile: true,
@@ -76,7 +79,7 @@ export const sampleApplianceFiles = [
   {
     fileType: 'appliance',
     applianceType: 'rice_mill',
-    label: 'Rice Mill (Tanzania)',
+    fileLabel: 'Rice Mill (Tanzania)',
     fileName: 'rice_mill_usage_profile',
     fileDescription: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
     fileSize: 465709,
@@ -91,7 +94,7 @@ export const sampleApplianceFiles = [
   {
     fileType: 'appliance',
     applianceType: 'maize_mill',
-    label: 'Maize Mill (Tanzania)',
+    fileLabel: 'Maize Mill 1 (Tanzania)',
     fileName: 'maize_mill_usage_profile_1',
     fileDescription: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
     fileSize: 438101,
@@ -106,7 +109,7 @@ export const sampleApplianceFiles = [
   {
     fileType: 'appliance',
     applianceType: 'maize_mill',
-    label: 'Maize Mill (Tanzania)',
+    fileLabel: 'Maize Mill 2 (Tanzania)',
     fileName: 'maize_mill_usage_profile_2',
     fileDescription: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
     fileSize: 465121,
@@ -121,7 +124,7 @@ export const sampleApplianceFiles = [
   {
     fileType: 'appliance',
     applianceType: 'welder',
-    label: 'Welder (Tanzania)',
+    fileLabel: 'Welder (Tanzania)',
     fileName: 'welder_usage_profile',
     fileDescription: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
     fileSize: 429487,

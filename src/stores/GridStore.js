@@ -47,6 +47,7 @@ export const initialGridState = {
   gridSaved: false,
   batteryModelSaved: false,
   fileName: '',
+  fileLabel: '',
   fileSize: 0,
   fileData: [],
   fileDescription: '',
@@ -80,6 +81,7 @@ export const GridStore = types
     batteryModelSaved: types.boolean,
 
     fileName: types.string,
+    fileLabel: types.string, // Must be unique across all availableGrids
     fileSize: types.number,
     fileData: types.frozen(),
     fileDescription: types.string,
@@ -122,7 +124,7 @@ export const GridStore = types
       return fn()
     },
     // These files come in through the file upload button
-    handleGridFileSelect(rawFile) {
+    handleGridFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)

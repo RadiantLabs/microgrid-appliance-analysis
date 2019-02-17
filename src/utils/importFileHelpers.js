@@ -254,31 +254,40 @@ export function analyzeApplianceFile({
   fileMimeType,
   isSamplefile,
 }) {
-  let errors = []
+  let fileErrors = []
+  let fileWarnings = []
   const fileIsCsv = isSamplefile ? true : isFileCsv(fileMimeType)
   if (fileType !== 'appliance') {
-    errors.push(`File is not applliance file. Current fileType: ${fileType}`)
+    fileErrors.push(`File is not applliance file. Current fileType: ${fileType}`)
   }
   if (!fileIsCsv) {
-    errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
+    fileErrors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
   const headers = _.keys(_.first(parsedFile.data))
   if (!hasColumnHeaders(headers)) {
-    errors.push(
+    fileErrors.push(
       `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
     )
   }
   // 5MB limit
   if (fileSize > 1048576 * 5) {
-    errors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
+    fileErrors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
   }
-  return { fileData: parsedFile, fileName, fileSize, fileType, fileMimeType, isSamplefile }
+  return {
+    fileData: parsedFile,
+    fileName,
+    fileSize,
+    fileErrors,
+    fileWarnings,
+    fileType,
+    fileMimeType,
+    isSamplefile,
+  }
 }
 
 // _____________________________________________________________________________
 // Legacy functions below this. These will be replaced.
 // _____________________________________________________________________________
-
 export function processApplianceFile(rows, fileInfo) {
   return _.map(rows, row => {
     return {

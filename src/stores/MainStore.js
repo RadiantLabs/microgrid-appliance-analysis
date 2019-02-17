@@ -13,7 +13,6 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
-import { fetchFile } from 'utils/importFileHelpers'
 import { getSummaryStats } from 'utils/calculateStats'
 import { calculateNewColumns } from 'utils/calculateNewColumns'
 import { sampleHomerFiles, sampleApplianceFiles, ancillaryEquipment } from 'utils/fileInfo'
@@ -66,14 +65,18 @@ export const MainStore = types
     // }),
 
     // Choose active HOMER or Appliance file
-    setActiveHomerFile(event, data) {
-      self.activeGridInfo = _.find(sampleHomerFiles, {
-        fileName: data.value,
+    // TODO: am I really setting activeGridInfo and activeApplianceInfo?
+    // If so, I can autorun something to update activeGrid and activeAppliance
+    // Also - I should reconsider whether I even need activeGridInfo and activeApplianceInfo
+    // I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
+    setActiveGridFile(event, data) {
+      self.activeGridInfo = _.find(availableGrids, {
+        fileLabel: data.value,
       })
     },
     setActiveApplianceFile(event, data) {
       self.activeApplianceInfo = _.find(sampleApplianceFiles, {
-        fileName: data.value,
+        fileLabel: data.value,
       })
     },
     setExcludedTableColumns(columnName) {

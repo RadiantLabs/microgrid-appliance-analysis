@@ -1,13 +1,22 @@
+TODO: am I really setting activeGridInfo and activeApplianceInfo?
+* If so, I can autorun something to update activeGrid and activeAppliance
+* Also - I should reconsider whether I even need activeGridInfo and activeApplianceInfo
+* I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
+
+
 Next steps:
 - [x] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo
 - [ ] gridName -> gridStoreName
 - [ ] remove activeGrid from availableGrids
 - [ ] Fill out Grid FileChooser with activeGrid
+- [ ] reconsider whether I even need activeGridInfo and activeApplianceInfo
+  - I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
 
 - [ ] Make activeAppliance follow a similar approach as activeGrid
   - [x] fetchAppliance -> fetchActiveAppliance
   - [x] activeApplianceStore.fileData
+  - [ ] processApplianceFile -> analyzeApplianceFile for sample files
   - [ ] availableAppliances
   - [ ] FileChooser should pull from availableAppliances in store
   - [ ] remove activeAppliance from availableAppliances

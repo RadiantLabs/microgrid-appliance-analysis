@@ -2,21 +2,20 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Dropdown, Header, Grid } from 'semantic-ui-react'
-import { homerFiles, sampleApplianceFiles } from 'utils/fileInfo'
 
 class FileChoosers extends Component {
   render() {
     const {
-      store: {
-        setActiveHomerFile,
-        setActiveApplianceFile,
-        activeGridInfo,
-        activeApplianceInfo,
-        homerIsLoading,
-        activeApplianceIsLoading,
-        ancillaryEquipment,
-      },
-    } = this.props
+      activeGrid,
+      availableGrids,
+      activeGridIsLoading,
+      setActiveGridFile,
+      activeAppliance,
+      availableAppliances,
+      activeApplianceIsLoading,
+      setActiveApplianceFile,
+      ancillaryEquipment,
+    } = this.props.store
     const { enabledEquipmentList } = ancillaryEquipment
     return (
       <Grid columns="equal" padded>
@@ -25,16 +24,16 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Grid File:
             </Header>
-            <Dropdown text={activeGridInfo.label} loading={homerIsLoading}>
+            <Dropdown text={activeGrid.fileLabel} loading={activeGridIsLoading}>
               <Dropdown.Menu>
-                {_.map(homerFiles, fileInfo => (
+                {_.map(availableGrids, file => (
                   <Dropdown.Item
-                    text={fileInfo.label}
-                    key={fileInfo.fileName}
-                    description={fileInfo.description}
-                    value={fileInfo.fileName}
-                    active={fileInfo.fileName === activeGridInfo.fileName}
-                    onClick={setActiveHomerFile}
+                    text={file.fileLabel}
+                    key={file.fileLabel}
+                    description={file.fileDescription}
+                    value={file.fileLabel}
+                    active={file.fileLabel === activeGrid.fileLabel}
+                    onClick={setActiveGridFile}
                     // icon="check" // If currently active (or bold)
                   />
                 ))}
@@ -45,15 +44,15 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Appliance Usage Profile:
             </Header>
-            <Dropdown text={activeApplianceInfo.label} loading={activeApplianceIsLoading}>
+            <Dropdown text={activeAppliance.fileLabel} loading={activeApplianceIsLoading}>
               <Dropdown.Menu>
-                {_.map(sampleApplianceFiles, fileInfo => (
+                {_.map(availableAppliances, file => (
                   <Dropdown.Item
-                    text={fileInfo.label}
-                    key={fileInfo.fileName}
-                    description={fileInfo.description}
-                    value={fileInfo.fileName}
-                    active={fileInfo.fileName === activeApplianceInfo.fileName}
+                    text={file.fileLabel}
+                    key={file.fileLabel}
+                    description={file.fileDescription}
+                    value={file.fileLabel}
+                    active={file.fileLabel === activeAppliance.fileLabel}
                     onClick={setActiveApplianceFile}
                     // icon="check" // If currently active (or bold)
                   />
