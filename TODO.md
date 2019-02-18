@@ -1,9 +1,19 @@
-TODO: am I really setting activeGridInfo and activeApplianceInfo?
-* Get rid of activeGridInfo and activeApplianceInfo
-* Possible ways to load a file:
-1. Load sample file (need fileInfo to retrieve and rehydrate the data)
-2. Restore from snapshot (either in localforage or firebase)
-3. Uploaded file (which will be saved as a snapshot)
+
+
+TODO: Map out the paths of file upload or restore
+1. Load sample file: Uses fileInfo to retrieve, analyze and rehydrate the store
+2. Restore from snapshot: No need to analyze file - all state is in snapshot. These can come from either localforage or firebase.
+3. Uploaded file: Need to analyze file. This will eventually be saved as a snapshot
+
+    // Can I have activeGridFileInfo as a plain object and reassign the whole thing
+    // if it changes? It would include immutable values:
+    // id, timestamp, type, name, size, isSample
+    // mutable values (label, description) would be tracked within the Grid Store
+    // Then we can fetchActiveGrid when activeGridFileInfo is reassigned.
+
+    // activeGridFileInfo contains everything needed to load the data from
+    // either remote or localForage
+
 
 
 Next steps:

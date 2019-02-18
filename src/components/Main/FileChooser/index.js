@@ -26,13 +26,13 @@ class FileChoosers extends Component {
             </Header>
             <Dropdown text={activeGrid.fileLabel} loading={activeGridIsLoading}>
               <Dropdown.Menu>
-                {_.map(availableGrids, file => (
+                {_.map(availableGrids, grid => (
                   <Dropdown.Item
-                    text={file.fileLabel}
-                    key={file.fileLabel}
-                    description={file.fileDescription}
-                    value={file.fileLabel}
-                    active={file.fileLabel === activeGrid.fileLabel}
+                    text={grid.fileLabel}
+                    key={grid.fileInfo.id}
+                    description={grid.fileDescription}
+                    value={grid.fileInfo.id}
+                    active={grid.fileInfo.id === activeGrid.fileInfo.id}
                     onClick={setActiveGridFile}
                     // icon="check" // If currently active (or bold)
                   />

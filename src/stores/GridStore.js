@@ -5,7 +5,6 @@ import localforage from 'localforage'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
 import { fetchSampleGridFile, fetchSnapshotGridFile } from 'utils/importFileHelpers'
-import { FileInfoStore } from 'stores/FileInfoStore'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -47,12 +46,8 @@ export const initialGridState = {
   isBatteryModeling: false,
   gridSaved: false,
   batteryModelSaved: false,
-  // fileId: '',
-  // fileTimestamp: '',
-  // fileName: '',
-  // fileLabel: '',
-  // fileSize: 0,
-  // fileDescription: '',
+  fileLabel: '',
+  fileDescription: '',
   fileData: [],
   fileErrors: [],
   fileWarnings: [],
@@ -87,8 +82,10 @@ export const GridStore = types
     gridSaved: types.boolean,
     batteryModelSaved: types.boolean,
 
-    fileInfo: FileInfoStore,
+    fileInfo: types.frozen(),
     fileData: types.frozen(),
+    fileLabel: types.string,
+    fileDescription: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     pvType: types.string,
@@ -153,45 +150,30 @@ export const GridStore = types
     },
 
     // These files come in from either samples or previously uploaded user files
-    loadGridFile: flow(function* loadGridFile(gridId) {
+    loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
-
-      // TODO: fetching and returning only the fileData isn't right here
-      // For a snapshot, I don't want to analyzeHomerFile
-      // For a sample file, I should call analyzeHomerFile from the fetch function
-      const parsedFile = self.isSampleFile
-        ? yield fetchSampleGridFile(self.fileName, window.location)
-        : yield fetchSnapshotGridFile(self.fileId)
-      const gridAttrs = analyzeHomerFile({
-        parsedFile,
-        fileName: self.fileName,
-        fileSize: self.fileSize,
-        fileType: self.fileType,
-        isSampleFile: self.isSamplefile,
-      })
-      self.updateGrid(gridAttrs)
+      const analyzedFile = self.fileInfo.isSample
+        ? yield fetchSampleGridFile(fileInfo, window.location)
+        : yield fetchSnapshotGridFile(fileInfo)
+      self.updateGrid(analyzedFile) // TODO
       self.isAnalyzingFile = false
       return true
     }),
 
-    updateGrid(gridAttrs) {
+    updateGrid(analyzedFile) {
       self.runInAction(() => {
-        self.fileId = gridAttrs.fileId
-        self.fileData = gridAttrs.fileData
-        self.fileName = gridAttrs.fileName
-        self.fileLabel = gridAttrs.fileLabel
-        self.fileTimestamp = gridAttrs.fileTimestamp
-        self.fileSize = gridAttrs.fileSize
-        self.fileErrors = gridAttrs.fileErrors
-        self.fileWarnings = gridAttrs.fileWarnings
-        self.powerType = gridAttrs.powerType
-        self.pvType = gridAttrs.pvType
-        self.batteryType = gridAttrs.batteryType
-        self.generatorType = gridAttrs.generatorType
-        self.batteryMinSoC = gridAttrs.batteryMinSoC
-        self.batteryMaxSoC = gridAttrs.batteryMaxSoC
-        self.batteryMinEnergyContent = gridAttrs.batteryMinEnergyContent
-        self.batteryMaxEnergyContent = gridAttrs.batteryMaxEnergyContent
+        self.fileInfo = analyzedFile.fileInfo
+        self.fileData = analyzedFile.fileData
+        self.fileErrors = analyzedFile.fileErrors
+        self.fileWarnings = analyzedFile.fileWarnings
+        self.powerType = analyzedFile.powerType
+        self.pvType = analyzedFile.pvType
+        self.batteryType = analyzedFile.batteryType
+        self.generatorType = analyzedFile.generatorType
+        self.batteryMinSoC = analyzedFile.batteryMinSoC
+        self.batteryMaxSoC = analyzedFile.batteryMaxSoC
+        self.batteryMinEnergyContent = analyzedFile.batteryMinEnergyContent
+        self.batteryMaxEnergyContent = analyzedFile.batteryMaxEnergyContent
         self.isAnalyzingFile = false
       })
     },

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { autorun } from 'mobx'
+import { autorun, runInAction } from 'mobx'
 import { types, flow, onSnapshot, getSnapshot } from 'mobx-state-tree'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -10,7 +10,6 @@ import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
-import { FileInfoStore, initialFileInfoState } from './FileInfoStore'
 
 // Import Helpers and domain data
 import { combineTables } from 'utils/helpers'
@@ -28,7 +27,7 @@ import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 export const MainStore = types
   .model({
     // Homer Data
-    // activeGridFileInfo: types.frozen(),
+    activeGridFileInfo: types.frozen(),
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
@@ -41,16 +40,14 @@ export const MainStore = types
     availableAppliances: types.optional(types.array(ApplianceStore), []),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
-
-    // editable fields - may make this an array of ModelInputsStore eventually
     modelInputs: ModelInputsStore,
     ancillaryEquipment: AncillaryEquipmentStore,
     router: RouterModel,
   })
   .actions(self => ({
-    fetchActiveGrid: flow(function* fetchActiveGrid(activeGridId) {
+    fetchActiveGrid: flow(function* fetchActiveGrid(fileInfo) {
       self.activeGridIsLoading = true
-      yield self.activeGrid.loadGridFile(activeGridId)
+      yield self.activeGrid.loadFile(fileInfo)
       self.activeGridIsLoading = false
     }),
     fetchActiveAppliance: flow(function* fetchActiveAppliance(activeApplianceInfo) {
@@ -65,8 +62,19 @@ export const MainStore = types
     // }
     // }),
     setActiveGridFile(event, data) {
-      self.activeGridId = _.find(self.availableGrids, {
-        id: data.value,
+      const selectedGrid = _.find(self.availableGrids, grid => {
+        return grid.fileInfo.id === data.value
+      })
+      runInAction(() => {
+        // Cannot have the same instance of a grid assigned to two places at cone
+        // temporarily store activeGrid
+        const tempActiveGrid = self.activeGrid
+        // Removed selected grid from availableGrids
+        _.remove(self.availableGrids, grid => grid.fileInfo.id === data.value)
+        // Assign selected grid to active grid
+        self.activeGrid = GridStore.create(selectedGrid)
+        // Push old active grid to available grids
+        self.availableGrids.push(GridStore.create(tempActiveGrid))
       })
     },
     setActiveApplianceFile(event, data) {
@@ -129,7 +137,7 @@ const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
 const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO: Check localforage
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
-const activeGridFileInfo = FileInfoStore.create(_.find(allGridFileInfos, { id: initGridFileId }))
+const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
 const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
 
 const initApplianceFileId = 'rice_mill_usage_profile' // TODO: Check localforage
@@ -155,10 +163,11 @@ const initialAncillaryEquipmentState = {
 }
 
 let initialMainState = {
-  // activeGridFileInfo,
+  activeGridFileInfo, // Do I keep fileInfo in both the mainStore and the gridStore? For now, yes
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{ fileInfo: activeGridFileInfo },
+    ...{ fileLabel: activeGridFileInfo.label, fileDescription: activeGridFileInfo.description },
     ...{ gridStoreName: 'activeGrid' },
   }),
   activeGridIsLoading: true,
@@ -167,6 +176,7 @@ let initialMainState = {
     return GridStore.create({
       ...initialGridState,
       ...{ fileInfo: gridInfo },
+      ...{ fileLabel: gridInfo.label, fileDescription: gridInfo.description },
       ...{ gridStoreName: 'availableGrid' },
     })
   }),
@@ -191,7 +201,6 @@ let initialMainState = {
   router: routerModel,
 }
 
-debugger
 //
 // -----------------------------------------------------------------------------
 // Store state snapshots in localForage
@@ -235,7 +244,7 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridId))
+autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridFileInfo))
 autorun(() => mainStore.fetchActiveAppliance(mainStore.activeApplianceInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:

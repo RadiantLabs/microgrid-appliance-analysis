@@ -181,32 +181,26 @@ function addHourIndex(rows) {
   })
 }
 
-export function analyzeHomerFile({
-  parsedFile,
-  fileName,
-  fileSize,
-  fileType,
-  fileMimeType,
-  fileDescription = '',
-  isSamplefile,
-}) {
+export function analyzeHomerFile(parsedFile, fileInfo) {
+  const mimeType = 'TODO'
+  const { isSample, type, size } = fileInfo
   let errors = []
-  const fileIsCsv = isSamplefile ? true : isFileCsv(fileMimeType)
+  const fileIsCsv = isSample ? true : isFileCsv(mimeType)
   const headers = _.keys(_.first(parsedFile.data))
   if (!hasColumnHeaders(headers)) {
     errors.push(
       `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
     )
   }
-  if (fileType !== 'homer') {
-    errors.push(`File is not homer file. Current fileType: ${fileType}`)
+  if (type !== 'homer') {
+    errors.push(`File is not homer file. Current fileType: ${type}`)
   }
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
   // 5MB limit
-  if (fileSize > 1048576 * 5) {
-    errors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
+  if (size > 1048576 * 5) {
+    errors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
 
   const { powerType, powerTypeErrors } = getGridPowerType(headers)
@@ -230,10 +224,9 @@ export function analyzeHomerFile({
     batteryMinEnergyContent,
   })
   return {
-    // fileId: `${fileName}_${getIsoTimestamp()}`,
-    fileName,
+    // TODO NEXT: See where this file returns to and integrate it into the gridmodel
+    fileInfo,
     fileData: withCalculatedColumns,
-    fileSize,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
     powerType,
@@ -320,7 +313,8 @@ export function filePathLookup(fileName, fileType, urlLocation) {
  * Fetch Homer or Usage profile files from samples.
  * @param {*} fileId
  */
-export async function fetchSnapshotGridFile(fileId) {
+export async function fetchSnapshotGridFile(fileInfo) {
+  console.log('fetchSnapshotGridFile: ', fileInfo)
   return []
 }
 
@@ -328,9 +322,10 @@ export async function fetchSnapshotGridFile(fileId) {
  * Fetch Homer or Usage profile files from samples.
  * @param {*} fileId
  */
-export async function fetchSampleGridFile(fileName, urlLocation) {
+export async function fetchSampleGridFile(fileInfo, urlLocation) {
+  console.log('fetchSampleGridFile: ', fileInfo)
   const fileType = 'homer'
-  const filePath = filePathLookup(fileName, fileType, urlLocation)
+  const filePath = filePathLookup(fileInfo.name, fileType, urlLocation)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
@@ -338,13 +333,7 @@ export async function fetchSampleGridFile(fileName, urlLocation) {
     if (!_.isEmpty(parsedFile.errors)) {
       throw new Error(`Problem parsing grid CSV: ${JSON.stringify(parsedFile.errors)}`)
     }
-    return analyzeHomerFile({
-      parsedFile,
-      fileName,
-      // fileSize,
-      fileType,
-      isSampleFile: true,
-    })
+    return analyzeHomerFile(parsedFile, fileInfo)
   } catch (error) {
     console.error(
       `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,
