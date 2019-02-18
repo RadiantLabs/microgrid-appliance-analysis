@@ -45,23 +45,32 @@ export const MainStore = types
     router: RouterModel,
   })
   .actions(self => ({
+    afterCreate() {
+      // load data and run battery model of all grids (sample and user)
+      // This may be hard on user's memory. We can turn this off if it's a problem
+      self.loadAvailableGrids()
+    },
+
     fetchActiveGrid: flow(function* fetchActiveGrid(fileInfo) {
       console.log('running fetchActiveGrid')
       self.activeGridIsLoading = true
       yield self.activeGrid.loadFile(fileInfo)
       self.activeGridIsLoading = false
     }),
+
     fetchActiveAppliance: flow(function* fetchActiveAppliance(activeApplianceInfo) {
       self.activeApplianceIsLoading = true
       yield self.activeAppliance.loadApplianceFile(activeApplianceInfo)
       self.activeApplianceIsLoading = false
     }),
-    // loadAvailableGrids: flow(function* loadAvailableGrids() {
-    // // All of these availableGrids will be instantiated GridStores with barely any data
-    // for (let grid of self.availableGrids) {
-    //  await grid.loadGridFile();
-    // }
-    // }),
+
+    // All of these availableGrids will be instantiated GridStores with barely any data
+    loadAvailableGrids: flow(function* loadAvailableGrids() {
+      for (let grid of self.availableGrids) {
+        yield grid.loadFile(grid.fileInfo)
+      }
+    }),
+
     setActiveGridFile(event, data) {
       const selectedGridIndex = _.findIndex(self.availableGrids, grid => {
         return grid.fileInfo.id === data.value
@@ -76,11 +85,13 @@ export const MainStore = types
         applySnapshot(self.activeGrid, selectedGridSnapshot)
       })
     },
+
     setActiveApplianceFile(event, data) {
       self.activeApplianceInfo = _.find(sampleApplianceFiles, {
         fileLabel: data.value,
       })
     },
+
     setExcludedTableColumns(columnName) {
       if (_.includes(self.excludedTableColumns, columnName)) {
         self.excludedTableColumns = _.without(self.excludedTableColumns, columnName)
@@ -88,6 +99,7 @@ export const MainStore = types
         self.excludedTableColumns.push(columnName)
       }
     },
+
     saveSnapshot() {
       const snapshot = _.omit(getSnapshot(self), ['grid'])
       console.log('snapshot: ', snapshot)

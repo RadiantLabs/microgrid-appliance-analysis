@@ -17,6 +17,9 @@ TODO: Map out the paths of file upload or restore
 
 
 Next steps:
+- [ ] Seriously question if I need a `gridStoreName` at all in the grid instance
+  - I'm afraid this will be too hard to keep track of
+  - It can be specified in the view, but doesn't need to be kept track of in the store
 - [x] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo
 - [x] gridName -> gridStoreName
