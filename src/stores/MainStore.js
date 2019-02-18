@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { autorun, runInAction } from 'mobx'
-import { types, flow, onSnapshot, getSnapshot } from 'mobx-state-tree'
+import { types, flow, onSnapshot, getSnapshot, applySnapshot } from 'mobx-state-tree'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import localforage from 'localforage'
@@ -27,7 +27,7 @@ import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 export const MainStore = types
   .model({
     // Homer Data
-    activeGridFileInfo: types.frozen(),
+    // activeGridFileInfo: types.frozen(),
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
@@ -46,6 +46,7 @@ export const MainStore = types
   })
   .actions(self => ({
     fetchActiveGrid: flow(function* fetchActiveGrid(fileInfo) {
+      console.log('running fetchActiveGrid')
       self.activeGridIsLoading = true
       yield self.activeGrid.loadFile(fileInfo)
       self.activeGridIsLoading = false
@@ -62,19 +63,17 @@ export const MainStore = types
     // }
     // }),
     setActiveGridFile(event, data) {
-      const selectedGrid = _.find(self.availableGrids, grid => {
+      const selectedGridIndex = _.findIndex(self.availableGrids, grid => {
         return grid.fileInfo.id === data.value
       })
+      // Cannot have the same instance of a grid assigned to two places at once
+      // runInAction keeps actions within a transaction
+      // TODO Next: run models sequentially: grid.loadGridFile();
       runInAction(() => {
-        // Cannot have the same instance of a grid assigned to two places at cone
-        // temporarily store activeGrid
-        const tempActiveGrid = self.activeGrid
-        // Removed selected grid from availableGrids
-        _.remove(self.availableGrids, grid => grid.fileInfo.id === data.value)
-        // Assign selected grid to active grid
-        self.activeGrid = GridStore.create(selectedGrid)
-        // Push old active grid to available grids
-        self.availableGrids.push(GridStore.create(tempActiveGrid))
+        const activeGridSnapshot = getSnapshot(self.activeGrid)
+        const selectedGridSnapshot = getSnapshot(self.availableGrids[selectedGridIndex])
+        applySnapshot(self.availableGrids[selectedGridIndex], activeGridSnapshot)
+        applySnapshot(self.activeGrid, selectedGridSnapshot)
       })
     },
     setActiveApplianceFile(event, data) {
@@ -163,7 +162,7 @@ const initialAncillaryEquipmentState = {
 }
 
 let initialMainState = {
-  activeGridFileInfo, // Do I keep fileInfo in both the mainStore and the gridStore? For now, yes
+  // activeGridFileInfo, // Do I keep fileInfo in both the mainStore and the gridStore? For now, yes
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{ fileInfo: activeGridFileInfo },
@@ -244,7 +243,7 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-autorun(() => mainStore.fetchActiveGrid(mainStore.activeGridFileInfo))
+autorun(() => mainStore.fetchActiveGrid(mainStore.activeGrid.fileInfo))
 autorun(() => mainStore.fetchActiveAppliance(mainStore.activeApplianceInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
