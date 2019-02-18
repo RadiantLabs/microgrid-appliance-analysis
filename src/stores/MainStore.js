@@ -27,7 +27,6 @@ import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
 export const MainStore = types
   .model({
     // Homer Data
-    // activeGridFileInfo: types.frozen(),
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
@@ -174,7 +173,6 @@ const initialAncillaryEquipmentState = {
 }
 
 let initialMainState = {
-  // activeGridFileInfo, // Do I keep fileInfo in both the mainStore and the gridStore? For now, yes
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{ fileInfo: activeGridFileInfo },
