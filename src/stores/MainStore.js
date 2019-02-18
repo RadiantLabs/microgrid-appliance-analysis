@@ -31,6 +31,7 @@ export const MainStore = types
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
     availableGrids: types.optional(types.array(GridStore), []), // Option 1
+    stagedGrid: types.maybeNull(GridStore),
 
     // Appliance Info
     activeApplianceInfo: types.frozen(),
@@ -177,7 +178,6 @@ let initialMainState = {
     ...initialGridState,
     ...{ fileInfo: activeGridFileInfo },
     ...{ fileLabel: activeGridFileInfo.label, fileDescription: activeGridFileInfo.description },
-    ...{ gridStoreName: 'activeGrid' },
   }),
   activeGridIsLoading: true,
   stagedGrid: null,
@@ -186,7 +186,6 @@ let initialMainState = {
       ...initialGridState,
       ...{ fileInfo: gridInfo },
       ...{ fileLabel: gridInfo.label, fileDescription: gridInfo.description },
-      ...{ gridStoreName: 'availableGrid' },
     })
   }),
 
