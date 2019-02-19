@@ -10,7 +10,7 @@ import InputField from './index'
 //   ReactDOM.render(
 //     <Provider store={mainStore}>
 //       <div>
-//         <InputField fieldKey="kwFactorToKw" />
+//         <InputField fieldKey="applianceNominalPower" />
 //         <InputField fieldKey="dutyCycleDerateFactor" />
 //         <InputField fieldKey="wholesaleElectricityCost" />
 //         <InputField fieldKey="unmetLoadCostPerKwh" />

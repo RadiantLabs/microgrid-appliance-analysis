@@ -13,11 +13,11 @@ const ModelInputs = ({ store }) => {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            {fieldDefinitions['kwFactorToKw'].title}{' '}
-            <HelperPopup content={fieldDefinitions['kwFactorToKw'].description} />
+            {fieldDefinitions['applianceNominalPower'].title}{' '}
+            <HelperPopup content={fieldDefinitions['applianceNominalPower'].description} />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="kwFactorToKw" />
+            <InputField fieldKey="applianceNominalPower" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

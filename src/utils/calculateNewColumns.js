@@ -43,7 +43,9 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
 
     // Calculate load profile from usage profile
     const newApplianceLoad =
-      applianceRow['kw_factor'] * modelInputs['kwFactorToKw'] * modelInputs['dutyCycleDerateFactor']
+      applianceRow['kw_factor'] *
+      modelInputs['applianceNominalPower'] *
+      modelInputs['dutyCycleDerateFactor']
 
     if (!_.isFinite(newApplianceLoad)) {
       throw new Error(

@@ -184,7 +184,7 @@ const availableApplianceFileInfos = _.filter(
 
 // Model inputs must have a definition in the fieldDefinitions file
 const initialModelInputsState = {
-  kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
+  applianceNominalPower: fieldDefinitions['applianceNominalPower'].defaultValue,
   dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
   seasonalDerateFactor: null,
   wholesaleElectricityCost: 5,

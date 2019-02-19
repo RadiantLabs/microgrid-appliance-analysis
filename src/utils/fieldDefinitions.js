@@ -7,9 +7,9 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 // https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 export const fieldDefinitions = {
-  kwFactorToKw: {
+  applianceNominalPower: {
     $schema: jsonSchemaStandard,
-    title: 'Full Capacity Usage Factor to kW',
+    title: 'Appliance Nominal Power',
     description:
       'Apply the appliance nominal power (in kW) to determine the load profile for this appliance',
     type: 'float',

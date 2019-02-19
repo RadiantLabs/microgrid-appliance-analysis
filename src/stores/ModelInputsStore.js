@@ -5,8 +5,8 @@ import { types } from 'mobx-state-tree'
  */
 export const ModelInputsStore = types
   .model({
-    // TODO: rename kwFactorToKw
-    kwFactorToKw: types.maybeNull(types.number),
+    // TODO: rename applianceNominalPower
+    applianceNominalPower: types.maybeNull(types.number),
     dutyCycleDerateFactor: types.maybeNull(types.number),
     seasonalDerateFactor: types.maybeNull(types.number),
     wholesaleElectricityCost: types.maybeNull(types.number),

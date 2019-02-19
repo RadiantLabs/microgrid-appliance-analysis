@@ -14,7 +14,7 @@ class Summary extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <h3>Model Inputs</h3>
+                <h3>Technical Inputs</h3>
                 <ModelInputs />
               </Segment>
             </Grid.Column>
