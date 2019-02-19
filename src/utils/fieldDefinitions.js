@@ -33,7 +33,7 @@ export const fieldDefinitions = {
   },
   wholesaleElectricityCost: {
     $schema: jsonSchemaStandard,
-    title: 'Wholesale Electricity Cost',
+    title: 'Wholesale Electricity Cost (if grid-tied)',
     description:
       'Cost to produce or purchase electricity for the grid operator, not including unmet load costs.',
     type: 'float',
