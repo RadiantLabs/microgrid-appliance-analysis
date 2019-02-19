@@ -103,7 +103,7 @@ export const MainStore = types
           self.availableAppliances[selectedApplianceIndex]
         )
         applySnapshot(self.availableAppliances[selectedApplianceIndex], activeApplianceSnapshot)
-        applySnapshot(self.activeGrid, selectedApplianceSnapshot)
+        applySnapshot(self.activeAppliance, selectedApplianceSnapshot)
       })
     },
 

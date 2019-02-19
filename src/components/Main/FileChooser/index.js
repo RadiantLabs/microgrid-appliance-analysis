@@ -46,13 +46,13 @@ class FileChoosers extends Component {
             </Header>
             <Dropdown text={activeAppliance.fileLabel} loading={activeApplianceIsLoading}>
               <Dropdown.Menu>
-                {_.map(availableAppliances, file => (
+                {_.map(availableAppliances, appliance => (
                   <Dropdown.Item
-                    text={file.fileLabel}
-                    key={file.fileLabel}
-                    description={file.fileDescription}
-                    value={file.fileLabel}
-                    active={file.fileLabel === activeAppliance.fileLabel}
+                    text={appliance.fileLabel}
+                    key={appliance.fileInfo.id}
+                    description={appliance.fileDescription}
+                    value={appliance.fileInfo.id}
+                    active={appliance.fileInfo.id === activeAppliance.fileInfo.id}
                     onClick={setActiveApplianceFile}
                     // icon="check" // If currently active (or bold)
                   />
