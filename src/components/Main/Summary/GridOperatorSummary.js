@@ -35,16 +35,24 @@ const GridOperatorSummary = ({ store }) => {
       <Table basic="very" celled collapsing compact>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Yearly new appliance kWh</Table.Cell>
+            <Table.Cell>Appliance Energy Consumption</Table.Cell>
             <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Yearly new appliance revenue</Table.Cell>
+            <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
             <Table.Cell>${newApplianceElectricityRevenue}</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Yearly new appliance electricity cost</Table.Cell>
+            <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>
             <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>ROI</Table.Cell>
+            <Table.Cell>TODO</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Simple Payback</Table.Cell>
+            <Table.Cell>TODO</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>New appliance unmet load cost</Table.Cell>

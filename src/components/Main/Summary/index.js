@@ -20,7 +20,7 @@ class Summary extends Component {
             </Grid.Column>
             <Grid.Column>
               <Segment>
-                <h3>Grid Operator Summary</h3>
+                <h3>Grid Operator Annual Summary</h3>
                 <GridOperatorSummary />
               </Segment>
             </Grid.Column>
@@ -30,6 +30,15 @@ class Summary extends Component {
                 <ApplianceOperatorSummary />
               </Segment>
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Segment>
+                <h3>Economic Inputs</h3>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column />
+            <Grid.Column />
           </Grid.Row>
         </Grid>
       </div>
