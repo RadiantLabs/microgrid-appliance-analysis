@@ -2,19 +2,21 @@ import _ from 'lodash'
 import { types, flow } from 'mobx-state-tree'
 // import localforage from 'localforage'
 import Papa from 'papaparse'
-import { fetchFile, analyzeApplianceFile, csvOptions } from 'utils/importFileHelpers'
+import {
+  fetchSampleFile,
+  fetchSnapshotApplianceFile,
+  analyzeApplianceFile,
+  csvOptions,
+} from 'utils/importFileHelpers'
 
 //
 // -----------------------------------------------------------------------------
 // Initial Appliance State
 // -----------------------------------------------------------------------------
 export const initialApplianceState = {
-  fileId: '',
-  fileTimestamp: '',
-  fileName: '',
-  fileLabel: '',
-  fileSize: 0,
+  fileInfo: {},
   fileData: [],
+  fileLabel: '',
   fileDescription: '',
   fileErrors: [],
   fileWarnings: [],
@@ -31,19 +33,9 @@ export const initialApplianceState = {
 // -----------------------------------------------------------------------------
 export const ApplianceStore = types
   .model({
-    // There are multiple appliance stores. applianceStoreName identifies them to different views
-    applianceStoreName: types.enumeration('applianceStoreName', [
-      'activeAppliance',
-      'stagedAppliance',
-      'availableAppliance',
-    ]),
-
-    fileId: types.string,
-    fileTimestamp: types.string,
-    fileName: types.string,
-    fileLabel: types.string,
-    fileSize: types.number,
+    fileInfo: types.frozen(),
     fileData: types.frozen(),
+    fileLabel: types.string,
     fileDescription: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
@@ -67,8 +59,6 @@ export const ApplianceStore = types
     },
 
     // These files come in through the file upload button
-    // File form fields are updated in handlers below (handleFileLabelChange,
-    // handleFileDescriptionChange)
     handleApplianceFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
@@ -94,36 +84,30 @@ export const ApplianceStore = types
     },
 
     // These files come in from either samples or previously uploaded user files
-    loadApplianceFile: flow(function* loadApplianceFile(applianceInfo) {
+    loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
-      const parsedFile = yield fetchFile(applianceInfo, window.location)
-      const { fileName, fileSize, fileType, isSamplefile } = applianceInfo
-      const applianceAttrs = analyzeApplianceFile({
-        parsedFile,
-        fileName,
-        fileSize,
-        fileType,
-        isSamplefile,
-      })
-      self.updateAppliance(applianceAttrs)
+      const analyzedFile = self.fileInfo.isSample
+        ? yield fetchSampleFile(fileInfo, window.location)
+        : yield fetchSnapshotApplianceFile(fileInfo)
+      self.updateModel(analyzedFile)
+      self.isAnalyzingFile = false
     }),
 
-    updateAppliance(applianceAttrs) {
+    updateModel(analyzedFile) {
       self.runInAction(() => {
-        self.fileData = applianceAttrs.fileData
-        self.fileName = applianceAttrs.fileName
-        self.fileSize = applianceAttrs.fileSize
-        self.fileErrors = applianceAttrs.fileErrors
-        self.fileWarnings = applianceAttrs.fileWarnings
+        self.fileInfo = analyzedFile.fileInfo
+        self.fileData = analyzedFile.fileData
+        self.fileErrors = analyzedFile.fileErrors
+        self.fileWarnings = analyzedFile.fileWarnings
         self.isAnalyzingFile = false
       })
     },
 
-    handleFileLabelChange(event, data) {
+    handleLabelChange(event, data) {
       self.fileLabel = data.value
     },
 
-    handleFileDescriptionChange(event, data) {
+    handleDescriptionChange(event, data) {
       self.fileDescription = data.value
     },
 

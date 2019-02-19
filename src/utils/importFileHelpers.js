@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 // import path from 'path-browserify'
-import { findColMax, findColMin, getIsoTimestamp } from 'utils/helpers'
+import { findColMax, findColMin } from 'utils/helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 
@@ -240,17 +240,12 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   }
 }
 
-export function analyzeApplianceFile({
-  parsedFile,
-  fileName,
-  fileSize,
-  fileType,
-  fileMimeType,
-  isSamplefile,
-}) {
+export function analyzeApplianceFile(parsedFile, fileInfo) {
+  const { isSample, fileType, size } = fileInfo
+  const mimeType = 'TODO'
   let fileErrors = []
   let fileWarnings = []
-  const fileIsCsv = isSamplefile ? true : isFileCsv(fileMimeType)
+  const fileIsCsv = isSample ? true : isFileCsv(mimeType)
   if (fileType !== 'appliance') {
     fileErrors.push(`File is not applliance file. Current fileType: ${fileType}`)
   }
@@ -264,18 +259,15 @@ export function analyzeApplianceFile({
     )
   }
   // 5MB limit
-  if (fileSize > 1048576 * 5) {
-    fileErrors.push(`Filesize too big. Your file is ${prettyBytes(fileSize)}`)
+  if (size > 1048576 * 5) {
+    fileErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
   return {
-    fileData: parsedFile,
-    fileName,
-    fileSize,
+    fileInfo,
+    fileData: parsedFile.data,
     fileErrors,
     fileWarnings,
     fileType,
-    fileMimeType,
-    isSamplefile,
   }
 }
 
@@ -314,7 +306,12 @@ export function filePathLookup(fileName, fileType, urlLocation) {
  * @param {*} fileId
  */
 export async function fetchSnapshotGridFile(fileInfo) {
-  console.log('fetchSnapshotGridFile: ', fileInfo)
+  // console.log('fetchSnapshotGridFile: ', fileInfo)
+  return []
+}
+
+export async function fetchSnapshotApplianceFile(fileInfo) {
+  // console.log('fetchSnapshotGridFile: ', fileInfo)
   return []
 }
 
@@ -322,10 +319,9 @@ export async function fetchSnapshotGridFile(fileInfo) {
  * Fetch Homer or Usage profile files from samples.
  * @param {*} fileId
  */
-export async function fetchSampleGridFile(fileInfo, urlLocation) {
-  console.log('fetchSampleGridFile: ', fileInfo)
-  const fileType = 'homer'
-  const filePath = filePathLookup(fileInfo.name, fileType, urlLocation)
+export async function fetchSampleFile(fileInfo, urlLocation) {
+  const filePath = filePathLookup(fileInfo.name, fileInfo.fileType, urlLocation)
+  console.log('filePath: ', filePath)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
@@ -333,7 +329,18 @@ export async function fetchSampleGridFile(fileInfo, urlLocation) {
     if (!_.isEmpty(parsedFile.errors)) {
       throw new Error(`Problem parsing grid CSV: ${JSON.stringify(parsedFile.errors)}`)
     }
-    return analyzeHomerFile(parsedFile, fileInfo)
+    switch (fileInfo.fileType) {
+      case 'homer':
+        return analyzeHomerFile(parsedFile, fileInfo)
+      case 'appliance':
+        return analyzeApplianceFile(parsedFile, fileInfo)
+      default:
+        throw new Error(
+          `Expected either a 'homer' for 'appliance' file in fetchSampleFile. Got ${
+            fileInfo.fileType
+          }`
+        )
+    }
   } catch (error) {
     console.error(
       `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,

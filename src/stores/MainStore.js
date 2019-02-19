@@ -30,13 +30,12 @@ export const MainStore = types
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
     stagedGrid: types.maybeNull(GridStore),
-    availableGrids: types.optional(types.array(GridStore), []), // Option 1
-    stagedGrid: types.maybeNull(GridStore),
+    availableGrids: types.optional(types.array(GridStore), []),
 
     // Appliance Info
-    activeApplianceInfo: types.frozen(),
     activeAppliance: types.maybeNull(ApplianceStore),
     activeApplianceIsLoading: types.boolean,
+    stagedAppliance: types.maybeNull(ApplianceStore),
     availableAppliances: types.optional(types.array(ApplianceStore), []),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
@@ -49,6 +48,7 @@ export const MainStore = types
       // load data and run battery model of all grids (sample and user)
       // This may be hard on user's memory. We can turn this off if it's a problem
       self.loadAvailableGrids()
+      self.loadAvailableAppliances()
     },
 
     fetchActiveGrid: flow(function* fetchActiveGrid(fileInfo) {
@@ -58,9 +58,9 @@ export const MainStore = types
       self.activeGridIsLoading = false
     }),
 
-    fetchActiveAppliance: flow(function* fetchActiveAppliance(activeApplianceInfo) {
+    fetchActiveAppliance: flow(function* fetchActiveAppliance(fileInfo) {
       self.activeApplianceIsLoading = true
-      yield self.activeAppliance.loadApplianceFile(activeApplianceInfo)
+      yield self.activeAppliance.loadFile(fileInfo)
       self.activeApplianceIsLoading = false
     }),
 
@@ -68,6 +68,13 @@ export const MainStore = types
     loadAvailableGrids: flow(function* loadAvailableGrids() {
       for (let grid of self.availableGrids) {
         yield grid.loadFile(grid.fileInfo)
+      }
+    }),
+
+    // All of these availableGrids will be instantiated GridStores with barely any data
+    loadAvailableAppliances: flow(function* loadAvailableAppliances() {
+      for (let appliance of self.availableAppliances) {
+        yield appliance.loadFile(appliance.fileInfo)
       }
     }),
 
@@ -87,8 +94,16 @@ export const MainStore = types
     },
 
     setActiveApplianceFile(event, data) {
-      self.activeApplianceInfo = _.find(sampleApplianceFiles, {
-        fileLabel: data.value,
+      const selectedApplianceIndex = _.findIndex(self.availableAppliances, appliance => {
+        return appliance.fileInfo.id === data.value
+      })
+      runInAction(() => {
+        const activeApplianceSnapshot = getSnapshot(self.activeAppliance)
+        const selectedApplianceSnapshot = getSnapshot(
+          self.availableAppliances[selectedApplianceIndex]
+        )
+        applySnapshot(self.availableAppliances[selectedApplianceIndex], activeApplianceSnapshot)
+        applySnapshot(self.activeGrid, selectedApplianceSnapshot)
       })
     },
 
@@ -151,14 +166,22 @@ const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfo
 const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
 const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
 
-const initApplianceFileId = 'rice_mill_usage_profile' // TODO: Check localforage
-const activeApplianceInfo = _.find(sampleApplianceFiles, { fileName: initApplianceFileId })
-const availableAppliances = sampleApplianceFiles // TODO: concat in files fromm localForage
+// TODO: pull out label and description from sample fileInfo. Set it here:
+// const activeApplianceLabel = _.get(activeApplianceFileInfo, 'fileLabel', '')
+// _.remove(activeApplianceFileInfo, 'fileLabel')
+// Or keep label and description in a separate object
+const initApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
+const allApplianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
+const activeApplianceFileInfo = _.find(allApplianceFileInfos, { id: initApplianceFileId })
+const availableApplianceFileInfos = _.filter(
+  allApplianceFileInfos,
+  info => info.id !== activeApplianceFileInfo.id
+)
 
 // Model inputs must have a definition in the fieldDefinitions file
 const initialModelInputsState = {
   kwFactorToKw: fieldDefinitions['kwFactorToKw'].defaultValue,
-  dutyCycleDerateFactor: _.get(activeApplianceInfo, 'defaults.dutyCycleDerateFactor', 1),
+  dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
   seasonalDerateFactor: null,
   wholesaleElectricityCost: 5,
   unmetLoadCostPerKwh: 6,
@@ -189,17 +212,22 @@ let initialMainState = {
     })
   }),
 
-  activeApplianceInfo,
+  // TODO: remove label and description from activeApplianceFileInfo so it isn't
+  // stale data.
   activeAppliance: ApplianceStore.create({
     ...initialApplianceState,
-    ...{ applianceStoreName: 'activeAppliance' },
+    ...{ fileInfo: activeApplianceFileInfo },
+    ...{
+      fileLabel: activeApplianceFileInfo.label,
+      fileDescription: activeApplianceFileInfo.description,
+    },
   }),
   activeApplianceIsLoading: true,
-  availableAppliances: _.map(availableAppliances, appliance => {
+  availableAppliances: _.map(availableApplianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
       ...initialApplianceState,
-      ...appliance,
-      ...{ applianceStoreName: 'availableAppliance' },
+      ...{ fileInfo: applianceInfo },
+      ...{ fileLabel: applianceInfo.label, fileDescription: applianceInfo.description },
     })
   }),
 
@@ -253,7 +281,7 @@ onSnapshot(mainStore, snapshot => {
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
 autorun(() => mainStore.fetchActiveGrid(mainStore.activeGrid.fileInfo))
-autorun(() => mainStore.fetchActiveAppliance(mainStore.activeApplianceInfo))
+autorun(() => mainStore.fetchActiveAppliance(mainStore.activeAppliance.fileInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>

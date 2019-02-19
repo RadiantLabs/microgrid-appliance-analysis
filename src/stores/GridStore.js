@@ -4,7 +4,7 @@ import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
-import { fetchSampleGridFile, fetchSnapshotGridFile } from 'utils/importFileHelpers'
+import { fetchSampleFile, fetchSnapshotGridFile } from 'utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -40,14 +40,10 @@ const initialBatteryState = {
 }
 
 export const initialGridState = {
-  fileIsSelected: false,
-  isAnalyzingFile: false,
-  isBatteryModeling: false,
-  gridSaved: false,
-  batteryModelSaved: false,
+  fileInfo: {},
+  fileData: [],
   fileLabel: '',
   fileDescription: '',
-  fileData: [],
   fileErrors: [],
   fileWarnings: [],
   pvType: '',
@@ -58,6 +54,11 @@ export const initialGridState = {
   batteryMaxSoC: null,
   batteryMinEnergyContent: null,
   batteryMaxEnergyContent: null,
+  batteryModelSaved: false,
+  fileIsSelected: false,
+  isAnalyzingFile: false,
+  isBatteryModeling: false,
+  gridSaved: false,
   ...initialBatteryState,
 }
 
@@ -67,13 +68,6 @@ export const initialGridState = {
 // -----------------------------------------------------------------------------
 export const GridStore = types
   .model({
-    // Temporary UI state variables. May be moved into volatile state
-    fileIsSelected: types.boolean,
-    isAnalyzingFile: types.boolean,
-    isBatteryModeling: types.boolean,
-    gridSaved: types.boolean,
-    batteryModelSaved: types.boolean,
-
     fileInfo: types.frozen(),
     fileData: types.frozen(),
     fileLabel: types.string,
@@ -108,6 +102,13 @@ export const GridStore = types
     // Below are volatile properties. Switch them after I get it working
     batteryCurrentEpoch: types.maybeNull(types.number),
     batteryTrainingTime: types.maybeNull(types.number),
+
+    // Temporary UI state variables. May be moved into volatile state
+    fileIsSelected: types.boolean,
+    isAnalyzingFile: types.boolean,
+    isBatteryModeling: types.boolean,
+    gridSaved: types.boolean,
+    batteryModelSaved: types.boolean,
   })
   .volatile(self => ({
     // stagedHomerFile: types.frozen(),
@@ -145,14 +146,13 @@ export const GridStore = types
     loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
       const analyzedFile = self.fileInfo.isSample
-        ? yield fetchSampleGridFile(fileInfo, window.location)
+        ? yield fetchSampleFile(fileInfo, window.location)
         : yield fetchSnapshotGridFile(fileInfo)
-      self.updateGrid(analyzedFile) // TODO
+      self.updateModel(analyzedFile) // TODO
       self.isAnalyzingFile = false
-      return true
     }),
 
-    updateGrid(analyzedFile) {
+    updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
