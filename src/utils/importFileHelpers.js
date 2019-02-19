@@ -262,9 +262,12 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   if (size > 1048576 * 5) {
     fileErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
+  const processedData = _.map(parsedFile.data, row => {
+    return { ...row, ...{ kw_factor: _.round(row['kw_factor'], 5) } }
+  })
   return {
     fileInfo,
-    fileData: parsedFile.data,
+    fileData: processedData,
     fileErrors,
     fileWarnings,
     fileType,

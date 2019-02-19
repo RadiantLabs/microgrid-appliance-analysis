@@ -133,7 +133,11 @@ export const MainStore = types
       })
     },
     get combinedTable() {
-      return combineTables(self.activeGrid.fileData, self.calculatedColumns, self.activeAppliance)
+      return combineTables(
+        self.activeGrid.fileData,
+        self.calculatedColumns,
+        self.activeAppliance.fileData
+      )
     },
     get summaryStats() {
       return _.isEmpty(self.calculatedColumns)
