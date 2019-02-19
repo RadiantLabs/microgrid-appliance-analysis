@@ -19,24 +19,34 @@ const ApplianceOperatorSummary = ({ store }) => {
     <Table basic="very" celled collapsing compact>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>Yearly kWh from new appliance</Table.Cell>
+          <Table.Cell>Appliance Electricity Consumption</Table.Cell>
           <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Yearly Appliance Electricity Cost</Table.Cell>
+          <Table.Cell>Appliance Electricity Cost</Table.Cell>
           <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Yearly Units Produced</Table.Cell>
+          <Table.Cell>Units of Productivity</Table.Cell>
           <Table.Cell>{yearlyProductionUnits} units</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Yearly Production Units Revenue</Table.Cell>
+          <Table.Cell>Appliance-Related Revenue</Table.Cell>
           <Table.Cell>${yearlyProductionUnitsRevenue}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Net Revenue</Table.Cell>
           <Table.Cell>${netApplianceOwnerRevenue}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Appliance RIO</Table.Cell>
+          <Table.Cell>TODO</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Appliance Simple Payback</Table.Cell>
+          <Table.Cell>
+            TODO <small>Take into account cost of appliance if owner is buying it</small>
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

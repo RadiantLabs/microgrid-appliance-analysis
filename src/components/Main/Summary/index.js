@@ -26,7 +26,7 @@ class Summary extends Component {
             </Grid.Column>
             <Grid.Column>
               <Segment>
-                <h3>Appliance Operator Summary</h3>
+                <h3>Appliance Operator Annual Summary</h3>
                 <ApplianceOperatorSummary />
               </Segment>
             </Grid.Column>
