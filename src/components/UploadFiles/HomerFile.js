@@ -36,7 +36,7 @@ class HomerFile extends React.Component {
       fileWarnings,
       handleCancelUpload,
       handleFileSave,
-      handleGridFileSelect,
+      handleGridFileUpload,
     } = stagedGrid
     return (
       <div>
@@ -48,7 +48,7 @@ class HomerFile extends React.Component {
               size="small"
               color="blue"
               floated="right"
-              onSelect={handleGridFileSelect}
+              onSelect={handleGridFileUpload}
               basic
             />
           )}

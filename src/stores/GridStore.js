@@ -3,8 +3,13 @@ import { types, flow, getSnapshot } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
-import { csvOptions, analyzeHomerFile } from 'utils/importFileHelpers'
-import { fetchSampleFile, fetchSnapshotGridFile } from 'utils/importFileHelpers'
+import { getIsoTimestamp } from 'utils/helpers'
+import {
+  csvOptions,
+  analyzeHomerFile,
+  fetchSampleFile,
+  fetchSnapshotGridFile,
+} from 'utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -122,19 +127,22 @@ export const GridStore = types
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       console.log('parsing rawFile: ', rawFile)
-      const { name: fileName, size: fileSize, type: fileMimeType } = rawFile
+      const { name, size, type: mimeType } = rawFile
+      const timeStamp = getIsoTimestamp()
+      const fileInfo = {
+        id: `${name}_${getIsoTimestamp()}`,
+        timeStamp,
+        fileType: 'homer',
+        name,
+        size,
+        isSample: false,
+        mimeType,
+      }
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const gridAttrs = analyzeHomerFile({
-            parsedFile,
-            fileName,
-            fileSize,
-            fileType: 'homer',
-            fileMimeType,
-            isSamplefile: false,
-          })
-          self.updateGrid(gridAttrs)
+          const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
+          self.updateModel(gridAttrs)
         },
         error: error => {
           console.log('error: ', error)

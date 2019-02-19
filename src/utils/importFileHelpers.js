@@ -182,8 +182,7 @@ function addHourIndex(rows) {
 }
 
 export function analyzeHomerFile(parsedFile, fileInfo) {
-  const mimeType = 'TODO'
-  const { isSample, type, size } = fileInfo
+  const { isSample, fileType, size, mimeType } = fileInfo
   let errors = []
   const fileIsCsv = isSample ? true : isFileCsv(mimeType)
   const headers = _.keys(_.first(parsedFile.data))
@@ -192,8 +191,8 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
       `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
     )
   }
-  if (type !== 'homer') {
-    errors.push(`File is not homer file. Current fileType: ${type}`)
+  if (fileType !== 'homer') {
+    errors.push(`File is not homer file. Current fileType: ${fileType}`)
   }
   if (!fileIsCsv) {
     errors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)

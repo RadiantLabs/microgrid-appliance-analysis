@@ -207,7 +207,7 @@ let initialMainState = {
     ...{ fileLabel: activeGridFileInfo.label, fileDescription: activeGridFileInfo.description },
   }),
   activeGridIsLoading: true,
-  stagedGrid: null,
+  stagedGrid: GridStore.create(initialGridState),
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
