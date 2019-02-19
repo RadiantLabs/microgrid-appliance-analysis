@@ -224,6 +224,10 @@ let initialMainState = {
     ...{
       fileLabel: activeApplianceFileInfo.label,
       fileDescription: activeApplianceFileInfo.description,
+      powerType: activeApplianceFileInfo.attributes.powerType,
+      phase: activeApplianceFileInfo.attributes.phase,
+      hasMotor: activeApplianceFileInfo.attributes.hasMotor,
+      powerFactor: activeApplianceFileInfo.attributes.powerFactor,
     },
   }),
   activeApplianceIsLoading: true,
@@ -231,7 +235,14 @@ let initialMainState = {
     return ApplianceStore.create({
       ...initialApplianceState,
       ...{ fileInfo: applianceInfo },
-      ...{ fileLabel: applianceInfo.label, fileDescription: applianceInfo.description },
+      ...{
+        fileLabel: applianceInfo.label,
+        fileDescription: applianceInfo.description,
+        powerType: applianceInfo.attributes.powerType,
+        phase: applianceInfo.attributes.phase,
+        hasMotor: applianceInfo.attributes.hasMotor,
+        powerFactor: applianceInfo.attributes.powerFactor,
+      },
     })
   }),
 

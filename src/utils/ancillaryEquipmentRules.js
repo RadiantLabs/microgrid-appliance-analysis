@@ -26,13 +26,13 @@ const rules = {
   threeFourPointDcMotorStarter,
 }
 
-export function getAncillaryEquipmentStatus(gridData, applianceData, ancillaryEquipment) {
-  if (_.isEmpty(gridData) || _.isEmpty(applianceData) || _.isEmpty(ancillaryEquipment)) {
+export function getAncillaryEquipmentStatus(grid, appliance, ancillaryEquipmentList) {
+  if (_.isEmpty(grid) || _.isEmpty(appliance) || _.isEmpty(ancillaryEquipmentList)) {
     return {}
   }
-  checkEquipmentTypeRules(ancillaryEquipment, rules)
-  const equipmentWithStatus = _.map(ancillaryEquipment, item => {
-    const ruleResults = rules[item.equipmentType]({ gridData, applianceData })
+  checkEquipmentTypeRules(ancillaryEquipmentList, rules)
+  const equipmentWithStatus = _.map(ancillaryEquipmentList, item => {
+    const ruleResults = rules[item.equipmentType]({ grid, appliance })
     return { ...item, ...ruleResults }
   })
   const [required, leftover] = _.partition(equipmentWithStatus, { status: 'required' })

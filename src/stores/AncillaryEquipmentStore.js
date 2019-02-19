@@ -37,8 +37,8 @@ export const AncillaryEquipmentStore = types
     // Status is whether the equipment is required, usefor or not useful based on rules
     get equipmentStatus() {
       return getAncillaryEquipmentStatus(
-        getParent(self).activeGrid.fileData,
-        getParent(self).activeAppliance.fileData,
+        getParent(self).activeGrid,
+        getParent(self).activeAppliance,
         ancillaryEquipmentList
       )
     },

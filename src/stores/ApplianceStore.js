@@ -47,6 +47,10 @@ export const ApplianceStore = types
       'other',
       '',
     ]),
+    powerType: types.enumeration('powerType', ['AC', 'DC', '']),
+    phase: types.maybeNull(types.number),
+    hasMotor: types.maybeNull(types.boolean),
+    powerFactor: types.maybeNull(types.number),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
