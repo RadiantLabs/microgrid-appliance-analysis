@@ -4,7 +4,7 @@ import {
   getAncillaryEquipmentStatus,
   setAncillaryEquipmentEnabledFromStatus,
 } from 'utils/ancillaryEquipmentRules'
-import { ancillaryEquipment } from 'utils/fileInfo'
+import { ancillaryEquipmentList } from 'utils/fileInfo'
 
 /**
  * Ancillary Equipment Store
@@ -37,9 +37,9 @@ export const AncillaryEquipmentStore = types
     // Status is whether the equipment is required, usefor or not useful based on rules
     get equipmentStatus() {
       return getAncillaryEquipmentStatus(
-        getParent(self).activeGrid,
-        getParent(self).activeAppliance,
-        ancillaryEquipment
+        getParent(self).activeGrid.fileData,
+        getParent(self).activeAppliance.fileData,
+        ancillaryEquipmentList
       )
     },
 
@@ -48,7 +48,7 @@ export const AncillaryEquipmentStore = types
       return _(self.enabledStates)
         .pickBy(val => val === true)
         .keys()
-        .map(equipmentType => _.find(ancillaryEquipment, { equipmentType }).label)
+        .map(equipmentType => _.find(ancillaryEquipmentList, { equipmentType }).label)
         .value()
     },
   }))

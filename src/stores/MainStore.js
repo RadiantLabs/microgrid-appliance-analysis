@@ -15,7 +15,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { combineTables } from 'utils/helpers'
 import { getSummaryStats } from 'utils/calculateStats'
 import { calculateNewColumns } from 'utils/calculateNewColumns'
-import { sampleGridFileInfos, sampleApplianceFiles, ancillaryEquipment } from 'utils/fileInfo'
+import { sampleGridFileInfos, sampleApplianceFiles, ancillaryEquipmentList } from 'utils/fileInfo'
 import { fieldDefinitions } from 'utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'utils/ancillaryEquipmentRules'
@@ -197,7 +197,7 @@ const initialModelInputsState = {
 
 // Initially set all ancillary equipment to disabled
 const initialAncillaryEquipmentState = {
-  enabledStates: disableAllAncillaryEquipment(ancillaryEquipment),
+  enabledStates: disableAllAncillaryEquipment(ancillaryEquipmentList),
 }
 
 let initialMainState = {

@@ -39,6 +39,7 @@ activeGrid, not from homerFileInfo or activeGridInfo
   - [ ] remove activeAppliance from availableAppliances
   - [ ] Require appliance file to have certain columns
 
+- [ ] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
 - [ ] Fix required ancillaryEquipment that automatically sets as required
 - [ ] Sequentially load rest of availableGrids
   - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?

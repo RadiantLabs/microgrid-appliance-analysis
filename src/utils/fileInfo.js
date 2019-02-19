@@ -152,7 +152,7 @@ export const sampleApplianceFiles = [
 ]
 
 // Ancillary Equipment
-export const ancillaryEquipment = [
+export const ancillaryEquipmentList = [
   {
     equipmentType: 'powerConverter',
     label: 'AC to DC Power Converter',
