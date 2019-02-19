@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
+import path from 'path-browserify'
 import { HOURS_PER_YEAR, tableDateFormat } from './constants'
 window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
@@ -20,6 +21,10 @@ export const checkKey = (table, key) => {
 
 export const getIsoTimestamp = () => {
   return DateTime.local().toISO()
+}
+
+export const removeFileExtension = fileName => {
+  return path.parse(fileName).name
 }
 
 // Check for a valid float, can pass in a string or number

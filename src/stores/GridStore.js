@@ -3,7 +3,7 @@ import { types, flow, getSnapshot } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
-import { getIsoTimestamp } from 'utils/helpers'
+import { getIsoTimestamp, removeFileExtension } from 'utils/helpers'
 import {
   csvOptions,
   analyzeHomerFile,
@@ -142,7 +142,7 @@ export const GridStore = types
         ...csvOptions,
         complete: parsedFile => {
           const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
-          self.updateModel(gridAttrs)
+          self.updateModel({ ...gridAttrs, ...{ fileLabel: removeFileExtension(name) } })
         },
         error: error => {
           console.log('error: ', error)
@@ -163,6 +163,7 @@ export const GridStore = types
     updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
+        self.fileLabel = analyzedFile.fileLabel || ''
         self.fileData = analyzedFile.fileData
         self.fileErrors = analyzedFile.fileErrors
         self.fileWarnings = analyzedFile.fileWarnings

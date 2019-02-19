@@ -10,18 +10,18 @@ const HomerFormFields = ({ store }) => {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            File Name{' '}
+            File Label{' '}
             <HelperPopup
               content={
-                'By default, this is the name of the uploaded file, but you can name it whatever you want. It has to be unique compared to other HOMER files uploaded.'
+                'By default, this is the name of the uploaded file, but you can name it whatever you want.'
               }
               position="right center"
             />
           </Table.Cell>
           <Table.Cell>
             <Input
-              onChange={store.stagedGrid.handleNameChange}
-              value={store.stagedGrid.fileName}
+              onChange={store.stagedGrid.handleLabelChange}
+              value={store.stagedGrid.fileLabel}
               size="small"
             />
           </Table.Cell>
