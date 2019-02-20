@@ -126,7 +126,6 @@ export const GridStore = types
     handleGridFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
-      console.log('parsing rawFile: ', rawFile)
       const { name, size, type: mimeType } = rawFile
       const timeStamp = getIsoTimestamp()
       const fileInfo = {
@@ -142,7 +141,10 @@ export const GridStore = types
         ...csvOptions,
         complete: parsedFile => {
           const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
-          self.updateModel({ ...gridAttrs, ...{ fileLabel: removeFileExtension(name) } })
+          self.runInAction(() => {
+            self.fileLabel = removeFileExtension(name)
+            self.updateModel({ ...gridAttrs })
+          })
         },
         error: error => {
           console.log('error: ', error)
@@ -156,14 +158,13 @@ export const GridStore = types
       const analyzedFile = self.fileInfo.isSample
         ? yield fetchSampleFile(fileInfo, window.location)
         : yield fetchSnapshotGridFile(fileInfo)
-      self.updateModel(analyzedFile) // TODO
+      self.updateModel(analyzedFile)
       self.isAnalyzingFile = false
     }),
 
     updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
-        self.fileLabel = analyzedFile.fileLabel || ''
         self.fileData = analyzedFile.fileData
         self.fileErrors = analyzedFile.fileErrors
         self.fileWarnings = analyzedFile.fileWarnings

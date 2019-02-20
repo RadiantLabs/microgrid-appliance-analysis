@@ -17,6 +17,7 @@ class FileChoosers extends Component {
       ancillaryEquipment,
     } = this.props.store
     const { enabledEquipmentList } = ancillaryEquipment
+    console.log('activeGrid.fileLabel: ', activeGrid.fileLabel)
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
