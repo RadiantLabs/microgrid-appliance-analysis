@@ -15,7 +15,6 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@sentry/browser": "^4.3.2",
     "@tensorflow/tfjs": "^0.14.1",
     "apollo-boost": "^0.1.20",
     "apollo-client-preset": "^1.0.8",
