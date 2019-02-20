@@ -13,6 +13,7 @@ yarn eject    // Unpack create-react-app presets. Once you `eject`, you can’t 
 ```
 
 ## Deploy
+
 ```
 nvm use 10
 yarn build
@@ -21,22 +22,20 @@ git push heroku master  // Deploy master branch to production heroku instance (n
 
 If you get errors when deploying, make sure you are logged into the radiantlabs probject in Heroku `heroku login`.
 
-
 For the project to build, **these files must exist with exact filenames**:
 
 - `public/index.html` is the page template;
 - `src/index.js` is the JavaScript entry point.
 
-You can delete or rename the other files.
+We can't use a static server, since we have client-side routing. Using a simple express server set up like this: https://medium.com/jeremy-gottfrieds-tech-blog/tutorial-how-to-deploy-a-production-react-app-to-heroku-c4831dfcfa08
 
-You may create subdirectories inside `src`. For faster rebuilds, only files inside `src` are processed by Webpack.<br>
-You need to **put any JS and CSS files inside `src`**, otherwise Webpack won’t see them.
 
-Only files inside `public` can be used from `public/index.html`.<br>
-Read instructions below for using assets from JavaScript and HTML.
+## Absolute Module Imports
+In order to get absolute imports (`components/FileChooser` instead of `../../../components/FileChooser`), Create React App doesn't yet support them. Here is a workaround using typescript compilation:
+https://github.com/facebook/create-react-app/issues/5118#issuecomment-439865778
 
-You can, however, create more top-level directories.<br>
-They will not be included in the production build so you can use them for things like documentation.
+Note: This requires setting NODE_PATH=./ in the Heroku environment variables (Config Vars)
+
 
 ## App Design
 
