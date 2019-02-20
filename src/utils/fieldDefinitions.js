@@ -14,9 +14,9 @@ export const fieldDefinitions = {
       'Apply the appliance nominal power (in kW) to determine the load profile for this appliance',
     type: 'float',
     minimum: 0,
-    maximum: 2,
+    maximum: 100,
     step: 0.1,
-    defaultValue: 0.5,
+    defaultValue: 2.2,
     units: '-',
   },
   dutyCycleDerateFactor: {
@@ -37,7 +37,7 @@ export const fieldDefinitions = {
     description:
       'Cost to produce or purchase electricity for the grid operator, not including unmet load costs.',
     type: 'float',
-    defaultValue: 5,
+    defaultValue: 0,
     units: '$/kWh',
   },
   unmetLoadCostPerKwh: {
@@ -46,7 +46,7 @@ export const fieldDefinitions = {
     description:
       'Cost to produce or purchase electricity for the grid operator, above what their system can handle. For example, this may be the cost of diesel for a generator',
     type: 'float',
-    defaultValue: 6,
+    defaultValue: 0.35,
     units: '$/kWh',
   },
   retailElectricityPrice: {
@@ -55,7 +55,7 @@ export const fieldDefinitions = {
     description:
       'Price of electricity for the consumer (appliance operator). This is also the revenue for the grid operator.',
     type: 'float',
-    defaultValue: 8,
+    defaultValue: 0.45,
     units: '$/kWh',
   },
   productionUnitsPerKwh: {
@@ -64,7 +64,7 @@ export const fieldDefinitions = {
     description:
       'How many units can be produced for a single kwh. Multiply by yearly kWh to get number of units produced in a year. Units could be kg grain / kWh.',
     type: 'float',
-    defaultValue: 1,
+    defaultValue: 136,
     units: '-',
   },
   revenuePerProductionUnits: {
@@ -73,10 +73,9 @@ export const fieldDefinitions = {
     description:
       'Revenue generated per unit of production. For example, multiply by yearly kg of grain to get yearly revenue: $ / kg of grain milled.',
     type: 'float',
-    defaultValue: 1,
+    defaultValue: 0.021,
     units: '-',
   },
-
   revenuePerProductionUnitsUnits: {
     $schema: jsonSchemaStandard,
     title:
