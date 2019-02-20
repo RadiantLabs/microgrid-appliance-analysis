@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import * as Sentry from '@sentry/browser'
 import * as serviceWorker from './serviceWorker'
 import App from './App'
-import 'styles/semantic.css'
+import 'src/styles/semantic.css'
 import 'styles/index.css'
 import 'react-virtualized/styles.css'
 
