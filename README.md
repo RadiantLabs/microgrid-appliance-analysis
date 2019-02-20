@@ -14,10 +14,13 @@ yarn eject    // Unpack create-react-app presets. Once you `eject`, you can’t 
 
 ## Deploy
 ```
+nvm use 10
 yarn build
 git push heroku master  // Deploy master branch to production heroku instance (need to be logged in and have authorization)
-
 ```
+
+If you get errors when deploying, make sure you are logged into the radiantlabs probject in Heroku `heroku login`.
+
 
 For the project to build, **these files must exist with exact filenames**:
 

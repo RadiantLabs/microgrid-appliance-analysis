@@ -44,6 +44,7 @@ activeGrid, not from homerFileInfo or activeGridInfo
 - [ ] Sequentially load rest of availableGrids
   - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
 - [ ] This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
+- [ ] Add app icon
 
 --------------------------------------------------------------------------------
 Option 1: <- let's do this one
