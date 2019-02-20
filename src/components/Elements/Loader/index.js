@@ -6,7 +6,7 @@ const LoaderSpinner = () => (
     <Dimmer active>
       <Loader>Loading</Loader>
     </Dimmer>
-    <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+    <Image src="https://react.semantic-ui.com/src/images/wireframe/short-paragraph.png" />
   </Segment>
 )
 

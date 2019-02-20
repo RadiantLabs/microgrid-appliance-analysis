@@ -1,4 +1,4 @@
-import { tableColorsByKey } from 'utils/constants'
+import { tableColorsByKey } from 'src/utils/constants'
 
 export const setHeaderStyles = (styles, rowIndex, tableName) => {
   let rowStyles = styles

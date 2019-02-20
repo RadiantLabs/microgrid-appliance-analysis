@@ -2,11 +2,11 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Grid, Button, Header } from 'semantic-ui-react'
-import LossChart from 'components/Charts/LossChart'
-import ActualVsPredicted from 'components/Charts/ActualVsPredicted'
-// import LoaderSpinner from 'components/Elements/Loader'
-import { FinalLossTable, EpochProgressTable } from 'components/Elements/MLResultsTables'
-import { greyColors } from 'utils/constants'
+import LossChart from 'src/components/Charts/LossChart'
+import ActualVsPredicted from 'src/components/Charts/ActualVsPredicted'
+// import LoaderSpinner from 'src/components/Elements/Loader'
+import { FinalLossTable, EpochProgressTable } from 'src/components/Elements/MLResultsTables'
+import { greyColors } from 'src/utils/constants'
 const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
 class BatteryModel extends React.Component {

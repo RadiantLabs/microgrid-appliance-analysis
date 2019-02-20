@@ -3,13 +3,13 @@ import { types, flow, getSnapshot } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
-import { getIsoTimestamp, removeFileExtension } from 'utils/helpers'
+import { getIsoTimestamp, removeFileExtension } from 'src/utils/helpers'
 import {
   csvOptions,
   analyzeHomerFile,
   fetchSampleFile,
   fetchSnapshotGridFile,
-} from 'utils/importFileHelpers'
+} from 'src/utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -20,7 +20,7 @@ import {
   calculatePlottableReferenceLine,
   formatTrainingTimeDisplay,
   multiLayerPerceptronRegressionModel1Hidden,
-} from 'utils/tensorflowHelpers'
+} from 'src/utils/tensorflowHelpers'
 
 //
 // -----------------------------------------------------------------------------

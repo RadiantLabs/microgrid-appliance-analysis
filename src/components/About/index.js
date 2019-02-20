@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Grid, Header, Segment, Image } from 'semantic-ui-react'
-import factoreLogo from 'images/factore-logo.png'
-import radiantLogo from 'images/radiant-labs-logo@256w.png'
-import softwareDiagram from 'images/minigrid-software-diagram.png'
+import factoreLogo from 'src/images/factore-logo.png'
+import radiantLogo from 'src/images/radiant-labs-logo@256w.png'
+import softwareDiagram from 'src/images/minigrid-software-diagram.png'
 
 const About = () => (
   <Grid padded>
@@ -25,7 +25,7 @@ const About = () => (
           <Grid>
             <Grid.Row>
               <Grid.Column width={3}>
-                <Image src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg" />
+                <Image src="https://react.semantic-ui.com/src/images/avatar/large/jenny.jpg" />
               </Grid.Column>
               <Grid.Column width={13}>
                 For general questions and comments about this app, contact{' '}
@@ -35,7 +35,7 @@ const About = () => (
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={3}>
-                <Image src="https://react.semantic-ui.com/images/avatar/large/justen.jpg" />
+                <Image src="https://react.semantic-ui.com/src/images/avatar/large/justen.jpg" />
               </Grid.Column>
               <Grid.Column width={13}>
                 For technical problems with this app, contact{' '}

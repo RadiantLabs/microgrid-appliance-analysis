@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Table, Input } from 'semantic-ui-react'
-import { HelperPopup } from 'components/Elements/HelperPopup'
-import borderlessTableStyles from 'styles/borderlessTableStyles.module.css'
+import { HelperPopup } from 'src/components/Elements/HelperPopup'
+import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
 
 const HomerFormFields = ({ store }) => {
   return (

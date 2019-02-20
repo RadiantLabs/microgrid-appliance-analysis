@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { tableColorsByKey } from 'utils/constants'
+import { tableColorsByKey } from 'src/utils/constants'
 
 /**
  * Column Header Legend

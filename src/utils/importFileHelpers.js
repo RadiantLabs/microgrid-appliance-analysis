@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 // import path from 'path-browserify'
-import { findColMax, findColMin } from 'utils/helpers'
+import { findColMax, findColMin } from 'src/utils/helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 

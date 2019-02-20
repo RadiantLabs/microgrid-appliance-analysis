@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
-import { NavItem } from 'components/Elements/NavItem'
-import HomerFiles from 'components/UploadFiles/HomerFiles'
-import ApplianceUsageFiles from 'components/UploadFiles/ApplianceUsageFiles'
+import { NavItem } from 'src/components/Elements/NavItem'
+import HomerFiles from 'src/components/UploadFiles/HomerFiles'
+import ApplianceUsageFiles from 'src/components/UploadFiles/ApplianceUsageFiles'
 
 const UploadFiles = () => {
   return (

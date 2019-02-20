@@ -7,7 +7,7 @@ import {
   fetchSnapshotApplianceFile,
   analyzeApplianceFile,
   csvOptions,
-} from 'utils/importFileHelpers'
+} from 'src/utils/importFileHelpers'
 
 //
 // -----------------------------------------------------------------------------
