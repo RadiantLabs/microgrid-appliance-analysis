@@ -1,85 +1,12 @@
 
-
-TODO: Map out the paths of file upload or restore
+Map out the paths of file upload or restore
 1. Load sample file: Uses fileInfo to retrieve, analyze and rehydrate the store
 2. Restore from snapshot: No need to analyze file - all state is in snapshot. These can come from either localforage or firebase.
 3. Uploaded file: Need to analyze file. This will eventually be saved as a snapshot
 
-    // Can I have activeGridFileInfo as a plain object and reassign the whole thing
-    // if it changes? It would include immutable values:
-    // id, timestamp, type, name, size, isSample
-    // mutable values (label, description) would be tracked within the Grid Store
-    // Then we can fetchActiveGrid when activeGridFileInfo is reassigned.
-
-    // activeGridFileInfo contains everything needed to load the data from
-    // either remote or localForage
-
-
-
-Next steps:
-- [x] Fix ancillary equipment selected list
-- [x] remove label and description from gridFileInfo and applianceFileInfo during instantiation
-- [x] fix data table loading for appliance kw_factor
-- [x] Load activeGrid and make sure all views and computed functions pull from
-activeGrid, not from homerFileInfo or activeGridInfo
-- [x] gridName -> gridStoreName
-- [ ] activeAppliance -> active
-- [ ] Get FileChooser hooked up again with HOMER files
-- [ ] remove activeGrid from availableGrids array
-- [ ] Fill out Grid FileChooser with activeGrid
-- [ ] reconsider whether I even need activeGridInfo and activeApplianceInfo
-  - I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
-
-- [ ] Make activeAppliance follow a similar approach as activeGrid
-  - [x] fetchAppliance -> fetchActiveAppliance
-  - [x] activeApplianceStore.fileData
-  - [x] processApplianceFile -> analyzeApplianceFile for sample files
-  - [x] availableAppliances
-  - [ ] FileChooser should pull from availableAppliances in store
-  - [ ] remove activeAppliance from availableAppliances
-  - [ ] Require appliance file to have certain columns
-
-- [ ] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
-- [ ] Fix required ancillaryEquipment that automatically sets as required
-- [ ] Sequentially load rest of availableGrids
-  - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
-- [ ] This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
-- [ ] Add app icon
-
---------------------------------------------------------------------------------
-Option 1: <- let's do this one
-I could populate the availableGrids with initial state that contains
-what I was going to put in GridNameStore and defaults for everything else.
-One of those will be marked active and start loading into activeGrid
-But then
-a) That will use a lot of memory
-b) activeGrid and availableGrids will have a duplicate, unless I manage that
-c) load availableGrids sequentially using https://pouchdb.com/2015/03/05/taming-the-async-beast-with-es7.html
-
-Option 2
-If I make availableGrids as only the metadata (fileName, description, path, isActive)
-then it's less memory.
-The flipside is that I have to update 2 stores at a time, such as when
-editing name or description.
-Unless... when the user picks a new grid as activeGrid, I remove it from
-the availableGrids array. If I edit name of existing activeGrid, fine.
-When I switch active grids, then I save to localforage and push only metadata
-into availableGrids
-
-[grid1, grid2, grid3]  // grid4 is active
-[grid4, grid2, grid3]  // grid1 is active
-
-TODO: construct initialMainStore that:
-1. sets activeGrid based on default sample or what's last active in localstorage
-2. sets availableGrids based on either what was in localForage or what is
-in samples that isn't default
-
-
-
-There is a bootstrapping problem I have to solve for when a user first fires up the app:
-- [ ] Make sure I can parse every HOMER file without errors
+Bootstrapping problem I have to solve for when a user first fires up the app:
 - [x] Switch from `processHomerFile` run through `analyzeHomerFile`
-- [ ] Put all sample files as CSVs in data and import and parse them sequentially
+- [x] Put all sample files as CSVs in data and import and parse them sequentially
 
 In localforage:
 - mg.activeGrid
@@ -96,19 +23,25 @@ How to bootstrap stored vs. sample files?
   - sample files load from data folder vs localforage for user files
   - load defaultOnLoad first and rehydrate
   - do I even keep sampels in availableGridNames? If I don't, how would I know what's defaultOnLoad?
+--------------------------------------------------------------------------------
+
+Next steps:
+- [ ] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
+- [x] Fix required ancillaryEquipment that automatically sets as required
+- [ ] Sequentially load rest of availableGrids
+  - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
+- [ ] User message: This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
+- [ ] Require appliance file to have certain columns
+- [ ] Add app icon
+
 
 
 ## Upload HOMER files
-- [ ] set gridName when init'ing the grid model (gridName='stagedGrid')
-- [ ] Import all example files without error
-  - [ ] Generator file fails on parsing
+- [ ] Make sure I can parse every HOMER file without errors
 - [ ] Provide Sample for download
-- [ ] Move training and trained model into file view
-- [ ] Show stats, such as battery min/max
-- [ ] Add metadata about batter
-- [ ] Attempt to upload all files and check for errors
+- [x] Move training and trained model into file view
+- [x] Show stats, such as battery min/max
 - [ ] Add datetime once staged file is accepted
-- [ ] Switch min/max battery soc and energy content to homer grid file
 - [ ] Remove effective min state of charge and energy content. The difference is less than 1%
 
 ## Convert to Mobx State Tree
@@ -134,6 +67,27 @@ How to bootstrap stored vs. sample files?
   - [ ] websql
 - [ ] Force indexdb for localforage(?)
 - [ ] Detect if we have indexdb and alert if not. Disable snapshots?
+
+## Active/available store overhaul
+- [x] Fix ancillary equipment selected list
+- [x] remove label and description from gridFileInfo and applianceFileInfo during instantiation
+- [x] fix data table loading for appliance kw_factor
+- [x] Load activeGrid and make sure all views and computed functions pull from
+activeGrid, not from homerFileInfo or activeGridInfo
+- [x] gridName -> gridStoreName
+- [x] Hook up FileChooser again with HOMER files
+- [x] remove activeGrid from availableGrids array
+- [x] Fill out Grid FileChooser with activeGrid
+- [x] Reconsider whether I even need activeGridInfo and activeApplianceInfo
+  - I could set activeGrid on availableGrids and remove the new activeGrid from avaialbleGrids
+- [x] Make activeAppliance follow a similar approach as activeGrid
+  - [x] fetchAppliance -> fetchActiveAppliance
+  - [x] activeApplianceStore.fileData
+  - [x] processApplianceFile -> analyzeApplianceFile for sample files
+  - [x] availableAppliances
+  - [x] FileChooser should pull from availableAppliances in store
+  - [x] remove activeAppliance from availableAppliances
+
 
 ## Battery charging problem
 
