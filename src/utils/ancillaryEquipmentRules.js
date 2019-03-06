@@ -15,25 +15,34 @@ export function getEquipmentDiagram(equipmentType) {
   }
 }
 
-const rules = {
-  powerConverter,
-  inverter,
-  vfd,
-  softStarter,
-  directOnlineStarter,
-  starDeltaStarter,
-  capacitorBank,
-  threeFourPointDcMotorStarter,
-}
-
 export function getAncillaryEquipmentStatus(grid, appliance, ancillaryEquipmentList) {
   if (_.isEmpty(grid) || _.isEmpty(appliance) || _.isEmpty(ancillaryEquipmentList)) {
     return {}
   }
-  checkEquipmentTypeRules(ancillaryEquipmentList, rules)
+  // This is verbose but clearer than the opaque meta-programming approach I had before
   const equipmentWithStatus = _.map(ancillaryEquipmentList, item => {
-    const ruleResults = rules[item.equipmentType]({ grid, appliance })
-    return { ...item, ...ruleResults }
+    switch (item.equipmentType) {
+      case 'powerConverter':
+        return { ...item, ...powerConverter({ grid, appliance }) }
+      case 'inverter':
+        return { ...item, ...inverter({ grid, appliance }) }
+      case 'vfd':
+        return { ...item, ...vfd({ grid, appliance }) }
+      case 'softStarter':
+        return { ...item, ...softStarter({ grid, appliance }) }
+      case 'directOnlineStarter':
+        return { ...item, ...directOnlineStarter({ grid, appliance }) }
+      case 'starDeltaStarter':
+        return { ...item, ...starDeltaStarter({ grid, appliance }) }
+      case 'capacitorBank':
+        return { ...item, ...capacitorBank({ grid, appliance }) }
+      case 'threeFourPointDcMotorStarter':
+        return { ...item, ...threeFourPointDcMotorStarter({ grid, appliance }) }
+      default:
+        throw new Error(
+          `Ancillary Equipment Rules: There is no rule for equipment type: ${item.equipmentType}`
+        )
+    }
   })
   const [required, leftover] = _.partition(equipmentWithStatus, { status: 'required' })
   const [useful, notuseful] = _.partition(leftover, { status: 'useful' })
@@ -167,17 +176,4 @@ function threeFourPointDcMotorStarter({ grid, appliance }) {
     message,
     status: isUseful ? 'useful' : 'notuseful',
   }
-}
-
-/**
- * Check to make sure we have functions to handle every ancillary equipment type
- */
-function checkEquipmentTypeRules(ancillaryEquipment, rules) {
-  const equipmentTypes = _.uniq(_.map(ancillaryEquipment, 'equipmentType'))
-  const ruleNames = _.keys(rules)
-  _.forEach(equipmentTypes, type => {
-    if (!_.includes(ruleNames, type)) {
-      throw new Error(`Ancillary Equipment Rules: There is no rule for equipment type: ${type}`)
-    }
-  })
 }

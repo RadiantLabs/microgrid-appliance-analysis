@@ -26,13 +26,14 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
+- [x] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
 - [x] Fix required ancillaryEquipment that automatically sets as required
 - [ ] Sequentially load rest of availableGrids
   - shallow grids already load when the mainStore instantiates. Do I need to load the actual data?
 - [ ] User message: This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
 - [ ] Require appliance file to have certain columns
 - [ ] Add app icon
+- [ ] Add Units to input fields
 
 
 
