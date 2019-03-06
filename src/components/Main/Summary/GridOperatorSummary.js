@@ -7,9 +7,6 @@ import { UnmetLoadHelperPopup } from 'src/components/Elements/HelperPopup/UnmetL
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-
-    // Financials
-    const newApplianceYearlyKwh = get(stats, 'newApplianceYearlyKwh', '-')
     const newApplianceElectricityRevenue = get(stats, 'newApplianceElectricityRevenue')
     const newApplianceElectricityCost = get(stats, 'newApplianceElectricityCost')
     const newApplianceUnmetLoadCost = get(stats, 'newApplianceUnmetLoadCost', '-')
