@@ -1,52 +1,7 @@
-// HOMER Files
-// homerFiles will be removed and be replaced with  sampleHomerFiles
-export const homerFiles = [
-  {
-    type: 'homer',
-    label: '12-50 Baseline',
-    fileName: '12-50 Baseline',
-    description: 'Baseline: Fill in HOMER file description.',
-    attributes: {
-      battery: 'Generic 1kWh Lead Acid [ASM]',
-      pvSystem: 'Generic flat plate',
-      powerType: 'AC',
-    },
-  },
-  {
-    type: 'homer',
-    label: '12-50 Oversize 20',
-    fileName: '12-50 Oversize 20',
-    description: 'Oversized: Fill in HOMER file description.',
-    attributes: {
-      battery: 'Generic 1kWh Lead Acid [ASM]',
-      pvSystem: 'Generic flat plate',
-      powerType: 'AC',
-    },
-  },
-  {
-    type: 'homer',
-    label: '12-50 Undersize 20',
-    fileName: '12-50 Undersize 20',
-    description: 'Undersized: Fill in HOMER file description.',
-    attributes: {
-      battery: 'Generic 1kWh Lead Acid [ASM]',
-      pvSystem: 'Generic flat plate',
-      powerType: 'AC',
-    },
-  },
-  {
-    type: 'homer',
-    label: '12-50 Undersize 20 AS',
-    fileName: 'homer_12_50_oversize_20_AS',
-    description: 'Undersized: Fill in HOMER file description.',
-    attributes: {
-      battery: 'Generic 1kWh Lead Acid [ASM]',
-      pvSystem: 'Generic flat plate',
-      powerType: 'AC',
-    },
-  },
-]
-
+// Sample HOMER files that are loaded so the user isn't stuck with a blank app
+// `attributes` aren't stored in the grid fileInfo object. They are tracked elsewhere.
+// But they are included here (and omitted when instantiating) because it's simpler
+// than creating separate objects with joining id
 export const sampleGridFileInfos = [
   {
     id: '12-50 Baseline_2019-02-16T20:33:55.583-07:00',
@@ -55,8 +10,14 @@ export const sampleGridFileInfos = [
     name: '12-50 Baseline',
     size: 2097646,
     isSample: true,
-    label: '12-50 Baseline',
-    description: 'Baseline: Fill in HOMER file description.',
+    attributes: {
+      label: '12-50 Baseline',
+      description: 'Baseline: Fill in HOMER file description.',
+      // These are auto-detected
+      // battery: 'Generic 1kWh Lead Acid [ASM]',
+      // pvSystem: 'Generic flat plate',
+      // powerType: 'AC',
+    },
   },
   {
     id: '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00',
@@ -65,8 +26,13 @@ export const sampleGridFileInfos = [
     name: '12-50 Oversize 20',
     size: 2084662,
     isSample: true,
-    label: '12-50 Oversize 20',
-    description: 'Oversized: Fill in HOMER file description.',
+    attributes: {
+      label: '12-50 Oversize 20',
+      description: 'Oversized: Fill in HOMER file description.',
+      // battery: 'Generic 1kWh Lead Acid [ASM]',
+      // pvSystem: 'Generic flat plate',
+      // powerType: 'AC',
+    },
   },
   {
     id: '12-50 Undersize 20_2019-02-16T20:34:53.869-07:00',
@@ -75,12 +41,20 @@ export const sampleGridFileInfos = [
     name: '12-50 Undersize 20',
     size: 2108574,
     isSample: true,
-    label: '12-50 Undersize 20',
-    description: 'Undersized: Fill in HOMER file description.',
+    attributes: {
+      label: '12-50 Undersize 20',
+      description: 'Undersized: Fill in HOMER file description.',
+      // battery: 'Generic 1kWh Lead Acid [ASM]',
+      // pvSystem: 'Generic flat plate',
+      // powerType: 'AC',
+    },
   },
 ]
 
-// Primary appliances
+// Sample Appliance files that are loaded so the user isn't stuck with a blank app
+// `attributes` aren't stored in the grid fileInfo object. They are tracked
+// elsewhere. But they are included here (and _.omitted when instantiating) because
+// it's simpler than creating separate objects with joining id
 export const sampleApplianceFiles = [
   {
     id: 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00',
@@ -89,9 +63,9 @@ export const sampleApplianceFiles = [
     name: 'rice_mill_usage_profile',
     size: 465709,
     isSample: true,
-    label: 'Rice Mill (Tanzania)',
-    description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
     attributes: {
+      label: 'Rice Mill (Tanzania)',
+      description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
       powerType: 'DC',
       phase: 3,
       hasMotor: true,
@@ -105,9 +79,9 @@ export const sampleApplianceFiles = [
     name: 'maize_mill_usage_profile_1',
     size: 438101,
     isSample: true,
-    label: 'Maize Mill 1 (Tanzania)',
-    description: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
     attributes: {
+      label: 'Maize Mill 1 (Tanzania)',
+      description: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
       powerType: 'AC',
       phase: 3,
       hasMotor: true,
@@ -121,9 +95,9 @@ export const sampleApplianceFiles = [
     name: 'maize_mill_usage_profile_2',
     size: 465121,
     isSample: true,
-    label: 'Maize Mill 2 (Tanzania)',
-    description: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
     attributes: {
+      label: 'Maize Mill 2 (Tanzania)',
+      description: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
       powerType: 'AC',
       phase: 3,
       hasMotor: true,
@@ -137,12 +111,12 @@ export const sampleApplianceFiles = [
     name: 'welder_usage_profile',
     size: 429487,
     isSample: true,
-    label: 'Welder (Tanzania)',
-    description: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
     defaults: {
       dutyCycleDerateFactor: 0.2,
     },
     attributes: {
+      label: 'Welder (Tanzania)',
+      description: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
       powerType: 'AC',
       phase: 3,
       hasMotor: false,

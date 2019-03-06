@@ -17,8 +17,8 @@ TODO: Map out the paths of file upload or restore
 
 
 Next steps:
-- [ ] Fix ancillary equipment selected list
-- [ ] remove label and description from gridFileInfo and applianceFileInfo during instantiation
+- [x] Fix ancillary equipment selected list
+- [x] remove label and description from gridFileInfo and applianceFileInfo during instantiation
 - [x] fix data table loading for appliance kw_factor
 - [x] Load activeGrid and make sure all views and computed functions pull from
 activeGrid, not from homerFileInfo or activeGridInfo

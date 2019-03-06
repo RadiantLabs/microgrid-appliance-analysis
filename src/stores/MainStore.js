@@ -207,46 +207,47 @@ const initialAncillaryEquipmentState = {
 let initialMainState = {
   activeGrid: GridStore.create({
     ...initialGridState,
-    ...{ fileInfo: activeGridFileInfo },
-    ...{ fileLabel: activeGridFileInfo.label, fileDescription: activeGridFileInfo.description },
+    ...{
+      fileLabel: activeGridFileInfo.attributes.label,
+      fileDescription: activeGridFileInfo.attributes.description,
+    },
+    ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes', 'defaults']) },
   }),
   activeGridIsLoading: true,
   stagedGrid: GridStore.create(initialGridState),
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
-      ...{ fileInfo: gridInfo },
-      ...{ fileLabel: gridInfo.label, fileDescription: gridInfo.description },
+      ...{ fileLabel: gridInfo.attributes.label, fileDescription: gridInfo.attributes.description },
+      ...{ fileInfo: _.omit(gridInfo, ['attributes', 'defaults']) },
     })
   }),
 
-  // TODO: remove label and description from activeApplianceFileInfo so it isn't
-  // stale data.
   activeAppliance: ApplianceStore.create({
     ...initialApplianceState,
-    ...{ fileInfo: activeApplianceFileInfo },
     ...{
-      fileLabel: activeApplianceFileInfo.label,
-      fileDescription: activeApplianceFileInfo.description,
+      fileLabel: activeApplianceFileInfo.attributes.label,
+      fileDescription: activeApplianceFileInfo.attributes.description,
       powerType: activeApplianceFileInfo.attributes.powerType,
       phase: activeApplianceFileInfo.attributes.phase,
       hasMotor: activeApplianceFileInfo.attributes.hasMotor,
       powerFactor: activeApplianceFileInfo.attributes.powerFactor,
     },
+    ...{ fileInfo: _.omit(activeApplianceFileInfo, ['attributes', 'defaults']) },
   }),
   activeApplianceIsLoading: true,
   availableAppliances: _.map(availableApplianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
       ...initialApplianceState,
-      ...{ fileInfo: applianceInfo },
       ...{
-        fileLabel: applianceInfo.label,
-        fileDescription: applianceInfo.description,
+        fileLabel: applianceInfo.attributes.label,
+        fileDescription: applianceInfo.attributes.description,
         powerType: applianceInfo.attributes.powerType,
         phase: applianceInfo.attributes.phase,
         hasMotor: applianceInfo.attributes.hasMotor,
         powerFactor: applianceInfo.attributes.powerFactor,
       },
+      ...{ fileInfo: _.omit(applianceInfo, ['attributes', 'defaults']) },
     })
   }),
 
