@@ -31,24 +31,28 @@ const StagedFileHeader = ({ viewedGrid }) => {
   return (
     <div>
       <Header as="h3" attached="top" style={{ paddingBottom: '20px' }}>
-        <FileButton
-          content="Upload & Analyze HOMER File"
-          icon="upload"
-          size="tiny"
-          color="blue"
-          floated="right"
-          onSelect={handleGridFileUpload}
-          basic
-        />
-        <Button
-          content="Save HOMER File"
-          icon="save"
-          size="tiny"
-          color="blue"
-          floated="right"
-          onClick={handleFileSave}
-          basic
-        />
+        {!fileIsSelected && (
+          <FileButton
+            content="Upload & Analyze HOMER File"
+            icon="upload"
+            size="tiny"
+            color="blue"
+            floated="right"
+            onSelect={handleGridFileUpload}
+            basic
+          />
+        )}
+        {fileIsSelected && (
+          <Button
+            content="Save HOMER File"
+            icon="save"
+            size="tiny"
+            color="blue"
+            floated="right"
+            onClick={handleFileSave}
+            basic
+          />
+        )}
         {fileIsSelected && (
           <Button floated="right" basic size="tiny" onClick={handleCancelUpload}>
             <Icon name="cancel" />

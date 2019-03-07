@@ -211,6 +211,7 @@ export const GridStore = types
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },
+
     handleFileSave() {
       self.saveGridSnapshot()
     },
