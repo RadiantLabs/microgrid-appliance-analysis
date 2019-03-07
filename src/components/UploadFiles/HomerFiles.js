@@ -15,30 +15,28 @@ const labelStyle = {
 }
 
 class HomerFiles extends React.Component {
-  state = {
-    activeNavId: null,
-    isAddingFile: false,
-    isAnalyzing: false,
-    isSaving: false,
-  }
-
-  // TODO: create stagedGrid instance when clicking this
   handleAddFileClick = (event, data) => {
     event.preventDefault()
-    this.setState({ isAddingFile: true, activeNavId: null })
+    this.props.store.setViewedGridId('staged')
   }
 
   handleFileNavClick = (fileId, event) => {
     event.preventDefault()
-    this.setState({ activeNavId: fileId })
+    this.props.store.setViewedGridId(fileId)
   }
 
   render() {
-    const { activeNavId, isAddingFile, isAnalyzing, isSaving } = this.state
-    const { stagedGrid, activeGrid, availableGrids } = this.props.store
-    const useBlankState =
-      !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving]) &&
-      !_.isEmpty(stagedGrid)
+    const {
+      viewedGridId,
+      stagedGrid,
+      activeGrid,
+      availableGrids,
+      viewedGridIsStaged,
+    } = this.props.store
+    const viewedGrid = viewedGridIsStaged
+      ? stagedGrid
+      : _.find(availableGrids.concat(activeGrid), grid => grid.fileInfo.id === viewedGridId)
+    const useBlankState = _.isEmpty(viewedGrid)
     return (
       <Grid padded>
         <Grid.Row>
@@ -46,7 +44,7 @@ class HomerFiles extends React.Component {
             <Menu vertical fluid>
               <Menu.Item
                 name="Add New HOMER File"
-                active={isAddingFile}
+                active={viewedGridIsStaged}
                 onClick={this.handleAddFileClick}>
                 Add New HOMER File
                 <Button
@@ -64,7 +62,7 @@ class HomerFiles extends React.Component {
               <Menu.Item
                 key={activeGrid.fileInfo.id}
                 name={activeGrid.fileLabel}
-                active={activeNavId === activeGrid.fileInfo.id}
+                active={viewedGridId === activeGrid.fileInfo.id}
                 onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
                 <Header sub>{activeGrid.fileLabel}</Header>
                 <HelperPopup
@@ -84,7 +82,7 @@ class HomerFiles extends React.Component {
                   <Menu.Item
                     key={file.fileInfo.id}
                     name={file.fileLabel}
-                    active={activeNavId === file.fileInfo.id}
+                    active={viewedGridId === file.fileInfo.id}
                     onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
                     <Header sub>{file.fileLabel}</Header>
                     <HelperPopup
@@ -104,7 +102,7 @@ class HomerFiles extends React.Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={12}>
-            {useBlankState ? <HomerFileBlankState /> : <HomerFile />}
+            {useBlankState ? <HomerFileBlankState /> : <HomerFile viewedGrid={viewedGrid} />}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -115,6 +113,7 @@ class HomerFiles extends React.Component {
 export default inject('store')(observer(HomerFiles))
 
 const HomerFileBlankState = () => {
+  // TODO: log this state. It shouldn't show up
   return (
     <div>
       <Header as="h3">HOMER File Management</Header>

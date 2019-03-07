@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getSnapshot } from 'mobx-state-tree'
+import { types, flow, getSnapshot, getParent } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
@@ -108,7 +108,7 @@ export const GridStore = types
     batteryCurrentEpoch: types.maybeNull(types.number),
     batteryTrainingTime: types.maybeNull(types.number),
 
-    // Temporary UI state variables. May be moved into volatile state
+    // Temporary UI state variables. Maybe move into volatile state?
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
     isBatteryModeling: types.boolean,
@@ -282,7 +282,10 @@ export const GridStore = types
   }))
   .views(self => ({
     get showAnalyzedResults() {
-      return self.fileIsSelected && !self.isAnalyzingFile
+      if (getParent(self).viewedGridIsStaged) {
+        return self.fileIsSelected && !self.isAnalyzingFile
+      }
+      return true
     },
     get batteryFeatureCount() {
       return _.size(self.batteryTrainingColumns)

@@ -20,65 +20,114 @@ const FileUploadErrors = ({ fileErrors }) => {
   )
 }
 
+const StagedFileHeader = ({ viewedGrid }) => {
+  const {
+    fileIsSelected,
+    isAnalyzingFile,
+    handleCancelUpload,
+    handleFileSave,
+    handleGridFileUpload,
+  } = viewedGrid
+  return (
+    <div>
+      <Header as="h2" attached="top">
+        <FileButton
+          content="Upload & Analyze HOMER File"
+          icon="upload"
+          size="small"
+          color="blue"
+          floated="right"
+          onSelect={handleGridFileUpload}
+          basic
+        />
+        <Button
+          content="Save HOMER File"
+          icon="save"
+          size="small"
+          color="blue"
+          floated="right"
+          onClick={handleFileSave}
+          basic
+        />
+        {fileIsSelected && (
+          <Button floated="right" basic size="small" onClick={handleCancelUpload}>
+            <Icon name="cancel" />
+            Cancel
+          </Button>
+        )}
+        Add HOMER File
+        {isAnalyzingFile && (
+          <Header.Subheader style={{ display: 'inline-block', marginLeft: '1rem' }}>
+            Analyzing File <Loader active inline size="tiny" />
+          </Header.Subheader>
+        )}
+      </Header>
+    </div>
+  )
+}
+
 class HomerFile extends React.Component {
+  handleGridFileEdit = () => {
+    return null
+  }
+
   render() {
-    const { stagedGrid } = this.props.store
-    if (_.isEmpty(stagedGrid)) {
-      return null
+    const { viewedGrid } = this.props
+    if (_.isEmpty(viewedGrid)) {
+      return <h3>Empty Viewed Grid</h3> // log this
     }
-    // TODO: gridStoreName="stagedGrid" should be dynamically set
-    const {
-      fileIsSelected,
-      isAnalyzingFile,
-      batteryIsTrained,
-      showAnalyzedResults,
-      fileErrors,
-      fileWarnings,
-      handleCancelUpload,
-      handleFileSave,
-      handleGridFileUpload,
-    } = stagedGrid
+    const { viewedGridIsStaged } = this.props.store
+    const { fileLabel, fileDescription, showAnalyzedResults, fileErrors, fileWarnings } = viewedGrid
     return (
       <div>
-        <Header as="h2" attached="top">
-          {!batteryIsTrained && (
-            <FileButton
-              content="Upload & Analyze HOMER File"
-              icon="upload"
-              size="small"
-              color="blue"
-              floated="right"
-              onSelect={handleGridFileUpload}
-              basic
-            />
-          )}
-          {batteryIsTrained && (
-            <Button
-              content="Save HOMER File"
-              icon="save"
-              size="small"
-              color="blue"
-              floated="right"
-              onClick={handleFileSave}
-              basic
-            />
-          )}
-          {fileIsSelected && (
-            <Button floated="right" basic size="small" onClick={handleCancelUpload}>
-              <Icon name="cancel" />
-              Cancel
+        {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
+        {!viewedGridIsStaged && (
+          <Header as="h3" attached="top">
+            {fileLabel}
+            <Button floated="right" basic size="small" onClick={this.handleGridFileEdit}>
+              Edit
             </Button>
-          )}
-          Add HOMER File
-          {isAnalyzingFile && (
-            <Header.Subheader style={{ display: 'inline-block', marginLeft: '1rem' }}>
-              Analyzing File <Loader active inline size="tiny" />
-            </Header.Subheader>
-          )}
-        </Header>
-
+            <Header.Subheader>{fileDescription}</Header.Subheader>
+          </Header>
+        )}
         {showAnalyzedResults && (
-          <AnalyzedResults fileErrors={fileErrors} fileWarnings={fileWarnings} />
+          <Segment attached>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <HomerFormFields grid={viewedGrid} />
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <BatteryChargeTable gridStoreName="stagedGrid" />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={4}>
+                  <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
+                    File Upload Errors
+                  </Label>
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <FileUploadErrors fileErrors={fileErrors} />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={4}>
+                  <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
+                    File Upload Warnings
+                  </Label>
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <FileUploadErrors fileErrors={fileWarnings} />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
+                  <BatteryModel />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Segment>
         )}
       </div>
     )
@@ -86,45 +135,3 @@ class HomerFile extends React.Component {
 }
 
 export default inject('store')(observer(HomerFile))
-
-const AnalyzedResults = ({ fileErrors, fileWarnings }) => {
-  return (
-    <Segment attached>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <HomerFormFields />
-          </Grid.Column>
-          <Grid.Column width={8}>
-            <BatteryChargeTable gridStoreName="stagedGrid" />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
-              File Upload Errors
-            </Label>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <FileUploadErrors fileErrors={fileErrors} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
-              File Upload Warnings
-            </Label>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <FileUploadErrors fileErrors={fileWarnings} />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <BatteryModel />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
-  )
-}

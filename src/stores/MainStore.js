@@ -33,14 +33,19 @@ export const MainStore = types
     // Homer Data
     activeGrid: types.maybeNull(GridStore),
     activeGridIsLoading: types.boolean,
-    stagedGrid: types.maybeNull(GridStore),
     availableGrids: types.optional(types.array(GridStore), []),
+
+    // For uploading and viewing different HOMER files
+    stagedGrid: types.maybeNull(GridStore),
+    viewedGridId: types.maybeNull(types.string),
 
     // Appliance Info
     activeAppliance: types.maybeNull(ApplianceStore),
     activeApplianceIsLoading: types.boolean,
-    stagedAppliance: types.maybeNull(ApplianceStore),
     availableAppliances: types.optional(types.array(ApplianceStore), []),
+
+    // For uploading and viewing different appliance files
+    stagedAppliance: types.maybeNull(ApplianceStore),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
     modelInputs: ModelInputsStore,
@@ -120,6 +125,18 @@ export const MainStore = types
       }
     },
 
+    // -------------------------------------------------------------------------
+    // -- Upload HOMER and Appliance Files
+    // -------------------------------------------------------------------------
+    // gridId is a unique string based on the filename and timestamp.
+    // It will be 'staged' if it's a file that is temporarily being uploaded
+    setViewedGridId(gridId) {
+      self.viewedGridId = gridId
+    },
+
+    // -------------------------------------------------------------------------
+    // -- Store history undo
+    // -------------------------------------------------------------------------
     saveSnapshot() {
       const snapshot = _.omit(getSnapshot(self), ['grid'])
       console.log('snapshot: ', snapshot)
@@ -158,6 +175,9 @@ export const MainStore = types
       return _.round(
         (_.size(self.filteredCombinedTableHeaders) / _.size(combinedColumnHeaderOrder)) * 100
       )
+    },
+    get viewedGridIsStaged() {
+      return self.viewedGridId === 'staged'
     },
   }))
 
@@ -215,7 +235,6 @@ let initialMainState = {
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes', 'defaults']) },
   }),
   activeGridIsLoading: true,
-  stagedGrid: GridStore.create(initialGridState),
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
@@ -223,6 +242,8 @@ let initialMainState = {
       ...{ fileInfo: _.omit(gridInfo, ['attributes', 'defaults']) },
     })
   }),
+  stagedGrid: GridStore.create(initialGridState),
+  viewedGridId: initGridFileId,
 
   activeAppliance: ApplianceStore.create({
     ...initialApplianceState,
