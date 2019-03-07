@@ -30,11 +30,11 @@ const StagedFileHeader = ({ viewedGrid }) => {
   } = viewedGrid
   return (
     <div>
-      <Header as="h2" attached="top">
+      <Header as="h3" attached="top" style={{ paddingBottom: '20px' }}>
         <FileButton
           content="Upload & Analyze HOMER File"
           icon="upload"
-          size="small"
+          size="tiny"
           color="blue"
           floated="right"
           onSelect={handleGridFileUpload}
@@ -43,14 +43,14 @@ const StagedFileHeader = ({ viewedGrid }) => {
         <Button
           content="Save HOMER File"
           icon="save"
-          size="small"
+          size="tiny"
           color="blue"
           floated="right"
           onClick={handleFileSave}
           basic
         />
         {fileIsSelected && (
-          <Button floated="right" basic size="small" onClick={handleCancelUpload}>
+          <Button floated="right" basic size="tiny" onClick={handleCancelUpload}>
             <Icon name="cancel" />
             Cancel
           </Button>
@@ -84,7 +84,7 @@ class HomerFile extends React.Component {
         {!viewedGridIsStaged && (
           <Header as="h3" attached="top">
             {fileLabel}
-            <Button floated="right" basic size="small" onClick={this.handleGridFileEdit}>
+            <Button floated="right" basic size="tiny" onClick={this.handleGridFileEdit}>
               Edit
             </Button>
             <Header.Subheader>{fileDescription}</Header.Subheader>
