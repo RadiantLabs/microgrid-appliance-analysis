@@ -82,13 +82,14 @@ export const MainStore = types
       }
     }),
 
-    setActiveGridFile(event, data) {
+    setActiveGridFile(fileId) {
       const selectedGridIndex = _.findIndex(self.availableGrids, grid => {
-        return grid.fileInfo.id === data.value
+        return grid.fileInfo.id === fileId
       })
-      // Cannot have the same instance of a grid assigned to two places at once
-      // runInAction keeps actions within a transaction
-      // TODO Next: run models sequentially: grid.loadGridFile();
+      if (selectedGridIndex === -1) {
+        // TODO: Log this error
+        throw new Error(`Could not find grid id in available grids. Looking for ${fileId}`)
+      }
       runInAction(() => {
         const activeGridSnapshot = getSnapshot(self.activeGrid)
         const selectedGridSnapshot = getSnapshot(self.availableGrids[selectedGridIndex])

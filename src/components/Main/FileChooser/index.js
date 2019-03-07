@@ -4,12 +4,16 @@ import _ from 'lodash'
 import { Dropdown, Header, Grid } from 'semantic-ui-react'
 
 class FileChoosers extends Component {
+  setActiveGridFile = (event, data) => {
+    event.preventDefault()
+    this.props.store.setActiveGridFile(data.value)
+  }
+
   render() {
     const {
       activeGrid,
       availableGrids,
       activeGridIsLoading,
-      setActiveGridFile,
       activeAppliance,
       availableAppliances,
       activeApplianceIsLoading,
@@ -17,7 +21,6 @@ class FileChoosers extends Component {
       ancillaryEquipment,
     } = this.props.store
     const { enabledEquipmentList } = ancillaryEquipment
-    console.log('activeGrid.fileLabel: ', activeGrid.fileLabel)
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
@@ -34,7 +37,7 @@ class FileChoosers extends Component {
                     description={grid.fileDescription}
                     value={grid.fileInfo.id}
                     active={grid.fileInfo.id === activeGrid.fileInfo.id}
-                    onClick={setActiveGridFile}
+                    onClick={this.setActiveGridFile}
                     // icon="check" // If currently active (or bold)
                   />
                 ))}

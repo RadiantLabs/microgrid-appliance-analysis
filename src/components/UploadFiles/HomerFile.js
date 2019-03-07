@@ -78,43 +78,7 @@ class HomerFile extends React.Component {
         </Header>
 
         {showAnalyzedResults && (
-          <Segment attached>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={8}>
-                  <HomerFormFields />
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <BatteryChargeTable gridStoreName="stagedGrid" />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
-                    File Upload Errors
-                  </Label>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <FileUploadErrors fileErrors={fileErrors} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
-                    File Upload Warnings
-                  </Label>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <FileUploadErrors fileErrors={fileWarnings} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column>
-                  <BatteryModel />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
+          <AnalyzedResults fileErrors={fileErrors} fileWarnings={fileWarnings} />
         )}
       </div>
     )
@@ -122,3 +86,45 @@ class HomerFile extends React.Component {
 }
 
 export default inject('store')(observer(HomerFile))
+
+const AnalyzedResults = ({ fileErrors, fileWarnings }) => {
+  return (
+    <Segment attached>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={8}>
+            <HomerFormFields />
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <BatteryChargeTable gridStoreName="stagedGrid" />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
+              File Upload Errors
+            </Label>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <FileUploadErrors fileErrors={fileErrors} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width={4}>
+            <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
+              File Upload Warnings
+            </Label>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <FileUploadErrors fileErrors={fileWarnings} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <BatteryModel />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Segment>
+  )
+}

@@ -14,52 +14,10 @@ const labelStyle = {
   marginTop: '1px',
 }
 
-const fakeSavedHomerFiles = [
-  {
-    fileName: '12-50 Oversize 20',
-    fileDescription: 'The original file, default',
-    fileIsSample: true,
-    fileSize: '4.2 MB',
-    fileData: [{}, {}, {}],
-    fileErrors: [],
-    fileWarnings: [],
-    pvType: 'Generic flat plate PV',
-    powerType: 'AC',
-    batteryType: 'Generic 1kWh Lead Acid [ASM]',
-    generatorType: 'Not Found',
-  },
-  {
-    fileName: '2-2-13 Optimized AC LA-gen Output',
-    fileDescription: 'This is the one we really want',
-    fileIsSample: false,
-    fileSize: '3.9 MB',
-    fileData: [{}, {}, {}],
-    fileErrors: [],
-    fileWarnings: [],
-    pvType: 'Generic flat plate PV',
-    powerType: 'DC',
-    batteryType: 'Li-Ion Generic',
-    generatorType: 'Not Found',
-  },
-  {
-    fileName: '12-50 Undersize 10',
-    fileDescription: 'This is not useful',
-    fileIsSample: true,
-    fileSize: '3.9 MB',
-    fileData: [{}, {}, {}],
-    fileErrors: [],
-    fileWarnings: [],
-    pvType: 'Sunerg',
-    powerType: 'AC',
-    batteryType: 'Generic 1kWh Li-Ion [ASM]',
-    generatorType: 'Not Found',
-  },
-]
-
 class HomerFiles extends React.Component {
   state = {
     activeNavId: null,
-    isAddingFile: true,
+    isAddingFile: false,
     isAnalyzing: false,
     isSaving: false,
   }
@@ -70,14 +28,14 @@ class HomerFiles extends React.Component {
     this.setState({ isAddingFile: true, activeNavId: null })
   }
 
-  handleFileNavClick = (fileIndex, event, data) => {
+  handleFileNavClick = (fileId, event) => {
     event.preventDefault()
-    this.setState({ isAddingFile: false, activeNavId: fileIndex })
+    this.setState({ activeNavId: fileId })
   }
 
   render() {
     const { activeNavId, isAddingFile, isAnalyzing, isSaving } = this.state
-    const { stagedGrid } = this.props.store
+    const { stagedGrid, activeGrid, availableGrids } = this.props.store
     const useBlankState =
       !_.some([_.isFinite(activeNavId), isAddingFile, isAnalyzing, isSaving]) &&
       !_.isEmpty(stagedGrid)
@@ -101,21 +59,41 @@ class HomerFiles extends React.Component {
                   <Icon name="plus" color="blue" />
                 </Button>
               </Menu.Item>
-              {_.map(fakeSavedHomerFiles, (file, fileIndex) => {
+            </Menu>
+            <Menu vertical fluid>
+              <Menu.Item
+                key={activeGrid.fileInfo.id}
+                name={activeGrid.fileLabel}
+                active={activeNavId === activeGrid.fileInfo.id}
+                onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
+                <Header sub>{activeGrid.fileLabel}</Header>
+                <HelperPopup
+                  content={<FileInfoPopupContent file={activeGrid} />}
+                  position="right center"
+                  wide={true}
+                />
+                <span>{activeGrid.fileDescription}</span>
+                {activeGrid.fileInfo.isSample && (
+                  <Label basic attached="top right" size="mini" style={labelStyle}>
+                    Active, Sample
+                  </Label>
+                )}
+              </Menu.Item>
+              {_.map(availableGrids, (file, fileIndex) => {
                 return (
                   <Menu.Item
-                    key={file.fileName}
-                    name={file.fileName}
-                    active={activeNavId === fileIndex}
-                    onClick={this.handleFileNavClick.bind(null, fileIndex)}>
-                    <Header sub>{file.fileName}</Header>
+                    key={file.fileInfo.id}
+                    name={file.fileLabel}
+                    active={activeNavId === file.fileInfo.id}
+                    onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
+                    <Header sub>{file.fileLabel}</Header>
                     <HelperPopup
                       content={<FileInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />
                     <span>{file.fileDescription}</span>
-                    {file.fileIsSample && (
+                    {file.fileInfo.isSample && (
                       <Label basic attached="top right" size="mini" style={labelStyle}>
                         Sample
                       </Label>
