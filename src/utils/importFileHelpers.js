@@ -2,7 +2,6 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-// import path from 'path-browserify'
 import { findColMax, findColMin } from 'src/utils/helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
@@ -323,7 +322,6 @@ export async function fetchSnapshotApplianceFile(fileInfo) {
  */
 export async function fetchSampleFile(fileInfo, urlLocation) {
   const filePath = filePathLookup(fileInfo.name, fileInfo.fileType, urlLocation)
-  console.log('filePath: ', filePath)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()

@@ -73,10 +73,30 @@ export const MainStore = types
       self.activeApplianceIsLoading = false
     }),
 
-    // All of these availableGrids will be instantiated GridStores with barely any data
+    // All availableGrids will be instantiated GridStores with barely any data
+    // Needs to be in a for...of loop so it's an async, sequential function calls
     loadAvailableGrids: flow(function* loadAvailableGrids() {
       for (let grid of self.availableGrids) {
         yield grid.loadFile(grid.fileInfo)
+      }
+      // Train battery models if they haven't run yet
+      for (let grid of self.availableGrids) {
+        if (_.isEmpty(grid.batteryModel)) {
+          const {
+            batteryFeatureCount,
+            batteryTensors,
+            batteryLearningRate,
+            batteryBatchSize,
+            batteryMaxEpochCount,
+          } = grid
+          yield grid.trainBatteryModel({
+            batteryFeatureCount,
+            batteryTensors,
+            batteryLearningRate,
+            batteryBatchSize,
+            batteryMaxEpochCount,
+          })
+        }
       }
     }),
 

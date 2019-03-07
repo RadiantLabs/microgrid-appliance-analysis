@@ -24,51 +24,6 @@ import {
 
 //
 // -----------------------------------------------------------------------------
-// Initial Grid State
-// -----------------------------------------------------------------------------
-const initialBatteryState = {
-  batteryMaxEpochCount: 3,
-  batteryCurrentEpoch: 0,
-  batteryModelStopLoss: 0.1,
-  batteryBatchSize: 40,
-  batteryLearningRate: 0.01,
-  batteryTargetColumn: 'Battery State of Charge',
-  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
-  batteryTrainingTime: null,
-  batteryModel: null,
-  batteryModelName: '',
-  batteryTrainingState: 'None',
-  batteryTrainLogs: [],
-  batteryFinalTrainSetLoss: null,
-  batteryValidationSetLoss: null,
-  batteryTestSetLoss: null,
-}
-
-export const initialGridState = {
-  fileInfo: {},
-  fileData: [],
-  fileLabel: '',
-  fileDescription: '',
-  fileErrors: [],
-  fileWarnings: [],
-  pvType: '',
-  powerType: '',
-  batteryType: '',
-  generatorType: '',
-  batteryMinSoC: null,
-  batteryMaxSoC: null,
-  batteryMinEnergyContent: null,
-  batteryMaxEnergyContent: null,
-  batteryModelSaved: false,
-  fileIsSelected: false,
-  isAnalyzingFile: false,
-  isBatteryModeling: false,
-  gridSaved: false,
-  ...initialBatteryState,
-}
-
-//
-// -----------------------------------------------------------------------------
 // Homer + Battery Kinetic Model Store
 // -----------------------------------------------------------------------------
 export const GridStore = types
@@ -115,9 +70,7 @@ export const GridStore = types
     gridSaved: types.boolean,
     batteryModelSaved: types.boolean,
   })
-  .volatile(self => ({
-    // stagedHomerFile: types.frozen(),
-  }))
+  .volatile(self => ({}))
   .actions(self => ({
     runInAction(fn) {
       return fn()
@@ -334,6 +287,51 @@ export const GridStore = types
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
   }))
+
+//
+// -----------------------------------------------------------------------------
+// Initial Grid State
+// -----------------------------------------------------------------------------
+const initialBatteryState = {
+  batteryMaxEpochCount: 3,
+  batteryCurrentEpoch: 0,
+  batteryModelStopLoss: 0.1,
+  batteryBatchSize: 40,
+  batteryLearningRate: 0.01,
+  batteryTargetColumn: 'Battery State of Charge',
+  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
+  batteryTrainingTime: null,
+  batteryModel: null,
+  batteryModelName: '',
+  batteryTrainingState: 'None',
+  batteryTrainLogs: [],
+  batteryFinalTrainSetLoss: null,
+  batteryValidationSetLoss: null,
+  batteryTestSetLoss: null,
+}
+
+export const initialGridState = {
+  fileInfo: {},
+  fileData: [],
+  fileLabel: '',
+  fileDescription: '',
+  fileErrors: [],
+  fileWarnings: [],
+  pvType: '',
+  powerType: '',
+  batteryType: '',
+  generatorType: '',
+  batteryMinSoC: null,
+  batteryMaxSoC: null,
+  batteryMinEnergyContent: null,
+  batteryMaxEnergyContent: null,
+  batteryModelSaved: false,
+  fileIsSelected: false,
+  isAnalyzingFile: false,
+  isBatteryModeling: false,
+  gridSaved: false,
+  ...initialBatteryState,
+}
 
 // saveModelSync(model) {
 //   function handleSave(artifacts) {
