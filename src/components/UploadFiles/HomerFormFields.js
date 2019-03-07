@@ -4,7 +4,7 @@ import { Table, Input } from 'semantic-ui-react'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
 import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
 
-const HomerFormFields = ({ store }) => {
+const HomerFormFields = ({ grid }) => {
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -19,11 +19,7 @@ const HomerFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input
-              onChange={store.stagedGrid.handleLabelChange}
-              value={store.stagedGrid.fileLabel}
-              size="small"
-            />
+            <Input onChange={grid.handleLabelChange} value={grid.fileLabel} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -36,8 +32,8 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>
             <Input
-              onChange={store.stagedGrid.handleDescriptionChange}
-              value={store.stagedGrid.fileDescription}
+              onChange={grid.handleDescriptionChange}
+              value={grid.fileDescription}
               size="small"
             />
           </Table.Cell>
@@ -46,7 +42,7 @@ const HomerFormFields = ({ store }) => {
           <Table.Cell>
             Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
           </Table.Cell>
-          <Table.Cell>{store.stagedGrid.powerType}</Table.Cell>
+          <Table.Cell>{grid.powerType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -58,7 +54,7 @@ const HomerFormFields = ({ store }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{store.stagedGrid.batteryType}</Table.Cell>
+          <Table.Cell>{grid.batteryType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -70,7 +66,7 @@ const HomerFormFields = ({ store }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{store.stagedGrid.pvType}</Table.Cell>
+          <Table.Cell>{grid.pvType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -82,7 +78,7 @@ const HomerFormFields = ({ store }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{store.stagedGrid.generatorType}</Table.Cell>
+          <Table.Cell>{grid.generatorType}</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { Grid, Button, Header } from 'semantic-ui-react'
 import LossChart from 'src/components/Charts/LossChart'
 import ActualVsPredicted from 'src/components/Charts/ActualVsPredicted'
-// import LoaderSpinner from 'src/components/Elements/Loader'
 import { FinalLossTable, EpochProgressTable } from 'src/components/Elements/MLResultsTables'
 import { greyColors } from 'src/utils/constants'
 const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
@@ -17,9 +16,8 @@ class BatteryModel extends React.Component {
   }
 
   render() {
-    const { fileErrors, gridStoreName } = this.props.store
-    console.log('TODO: set gridStoreName dynamically: ', gridStoreName)
-    if (!_.isEmpty(fileErrors)) {
+    const { grid } = this.props
+    if (!_.isEmpty(grid.fileErrors)) {
       return null
     }
     return (
@@ -49,10 +47,10 @@ class BatteryModel extends React.Component {
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <EpochProgressTable gridStoreName="stagedGrid" />
+              <EpochProgressTable grid={grid} />
             </Grid.Column>
             <Grid.Column>
-              <FinalLossTable gridStoreName="stagedGrid" />
+              <FinalLossTable grid={grid} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -60,11 +58,11 @@ class BatteryModel extends React.Component {
           <Grid.Row>
             <Grid.Column>
               <h3>Training Progress</h3>
-              <LossChart gridStoreName="stagedGrid" />
+              <LossChart grid={grid} />
             </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
-              <ActualVsPredicted gridStoreName="stagedGrid" />
+              <ActualVsPredicted grid={grid} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
