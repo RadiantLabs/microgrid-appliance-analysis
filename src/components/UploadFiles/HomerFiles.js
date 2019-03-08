@@ -17,6 +17,7 @@ const labelStyle = {
 class HomerFiles extends React.Component {
   handleAddFileClick = (event, data) => {
     event.preventDefault()
+    this.props.store.createStagedGrid()
     this.props.store.setViewedGridId('staged')
   }
 

@@ -154,6 +154,10 @@ export const MainStore = types
       self.viewedGridId = gridId
     },
 
+    createStagedGrid() {
+      self.stagedGrid = GridStore.create(initialGridState)
+    },
+
     // -------------------------------------------------------------------------
     // -- Store history undo
     // -------------------------------------------------------------------------
@@ -262,7 +266,7 @@ let initialMainState = {
       ...{ fileInfo: _.omit(gridInfo, ['attributes', 'defaults']) },
     })
   }),
-  stagedGrid: GridStore.create(initialGridState),
+  stagedGrid: null,
   viewedGridId: initGridFileId,
 
   activeAppliance: ApplianceStore.create({
