@@ -26,7 +26,7 @@ const StagedFileHeader = inject('store')(
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
-        <Header as="h3" attached="top" style={{ paddingBottom: '20px' }}>
+        <Header as="h3" attached="top" style={{ paddingBottom: '18px' }}>
           {!fileIsSelected && (
             <FileButton
               content="Upload & Analyze HOMER File"

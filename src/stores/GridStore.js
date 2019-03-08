@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getSnapshot, getParent } from 'mobx-state-tree'
+import { types, flow, getSnapshot, getParent, isAlive } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
@@ -161,6 +161,11 @@ export const GridStore = types
         validationSplit: 0.2,
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
+            // Prevent trying to write to the grid if it's no longer part of the state tree
+            // It may be destroyed if cancelling a file upload
+            if (!isAlive(self)) {
+              return null
+            }
             const t1 = performance.now()
             self.runInAction(() => {
               self.batteryCurrentEpoch = epoch
@@ -172,6 +177,9 @@ export const GridStore = types
             })
           },
           onTrainEnd: () => {
+            if (!isAlive(self)) {
+              return null
+            }
             const testSetLoss = calculateTestSetLoss(model, batteryTensors, batteryBatchSize)
             const { finalTrainSetLoss, finalValidationSetLoss } = calculateFinalLoss(
               self.batteryTrainLogs
