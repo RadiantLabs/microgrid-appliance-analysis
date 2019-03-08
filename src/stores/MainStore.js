@@ -159,7 +159,6 @@ export const MainStore = types
     },
 
     cancelStagedGrid() {
-      console.log('cancelling stagedGrid')
       destroy(self.stagedGrid)
       self.viewedGridId = null
     },

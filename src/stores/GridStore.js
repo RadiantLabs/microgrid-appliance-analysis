@@ -151,13 +151,9 @@ export const GridStore = types
       if (!self.batteryReadyToTrain) {
         return null
       }
-      if (self.batteryModel) {
-        return null // TODO: Is this right? Will need to refine this when hooking up retrainBatteryModel
-      }
       let model = neuralNet1Hidden(batteryFeatureCount, batteryLearningRate)
       self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
       self.batteryTrainingState = 'Training'
-      // self.batteryModel = model
       const t0 = performance.now()
       yield model.fit(batteryTensors.trainFeatures, batteryTensors.trainTarget, {
         batchSize: batteryBatchSize,
@@ -225,7 +221,7 @@ export const GridStore = types
 
     beforeDestroy() {
       console.log('destroying grid node, stopping model')
-      self.batteryModel.stopTraining = true
+      // self.batteryModel.stopTraining = true
     },
   }))
   .views(self => ({
@@ -250,6 +246,7 @@ export const GridStore = types
     },
     get batteryReadyToTrain() {
       return _.every([
+        _.isEmpty(self.batteryModel),
         _.isEmpty(self.fileErrors),
         _.isFinite(self.batteryFeatureCount),
         !_.isEmpty(self.batteryTensors),
