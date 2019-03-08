@@ -22,7 +22,7 @@ const FileUploadErrors = ({ fileErrors }) => {
 
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
-    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload } = viewedGrid
+    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, batteryIsTrained } = viewedGrid
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
@@ -45,6 +45,7 @@ const StagedFileHeader = inject('store')(
               size="tiny"
               color="blue"
               floated="right"
+              disabled={!batteryIsTrained}
               onClick={saveStagedGrid}
               basic
             />
