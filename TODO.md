@@ -26,6 +26,7 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
+- [ ] destroy(stagedGrid) when cancelling. Call beforeDestroy() to stop model training
 - [ ] Add size to popover
 - [ ] HOMER File Upload: Hook up Cancel and 'Save HOMER File'
 - [ ] Instantiate stagedGrid when clicking 'Upload new file': `GridStore.create(initialGridState)`

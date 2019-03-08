@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { autorun, runInAction } from 'mobx'
-import { types, flow, onSnapshot, getSnapshot, applySnapshot } from 'mobx-state-tree'
+import { types, flow, onSnapshot, getSnapshot, applySnapshot, destroy } from 'mobx-state-tree'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import localforage from 'localforage'
@@ -158,6 +158,16 @@ export const MainStore = types
       self.stagedGrid = GridStore.create(initialGridState)
     },
 
+    cancelStagedGrid() {
+      console.log('cancelling stagedGrid')
+      destroy(self.stagedGrid)
+      self.viewedGridId = null
+    },
+
+    saveStagedGrid() {
+      // TODO
+    },
+
     // -------------------------------------------------------------------------
     // -- Store history undo
     // -------------------------------------------------------------------------
@@ -200,8 +210,18 @@ export const MainStore = types
         (_.size(self.filteredCombinedTableHeaders) / _.size(combinedColumnHeaderOrder)) * 100
       )
     },
+
     get viewedGridIsStaged() {
       return self.viewedGridId === 'staged'
+    },
+
+    get viewedGrid() {
+      return self.viewedGridIsStaged
+        ? self.stagedGrid
+        : _.find(
+            self.availableGrids.concat(self.activeGrid),
+            grid => grid.fileInfo.id === self.viewedGridId
+          )
     },
   }))
 

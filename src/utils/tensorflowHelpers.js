@@ -80,9 +80,9 @@ export function arraysToTensors(trainingData) {
  * Given expected mean and standard deviation, normalizes a dataset by
  * subtracting the mean and dividing by the standard deviation.
  *
- * @param {Tensor2d} data: Data to normalize. Shape: [batch, numFeatures].
- * @param {Tensor1d} dataMean: Expected mean of the data. Shape [numFeatures].
- * @param {Tensor1d} dataStd: Expected std of the data. Shape [numFeatures]
+ * @param {Tensor2d} data: Data to normalize. Shape: [batch, featureCount].
+ * @param {Tensor1d} dataMean: Expected mean of the data. Shape [featureCount].
+ * @param {Tensor1d} dataStd: Expected std of the data. Shape [featureCount]
  *
  * @returns {Tensor2d}: Tensor the same shape as data, but each column
  * normalized to have zero mean and unit standard deviation.
@@ -129,17 +129,21 @@ export function determineMeanAndStddev(data) {
  *           We can use that as a guideline, testing loss as we experiment
  * @returns {tf.Sequential} The multi layer perceptron regression model.
  */
-export function multiLayerPerceptronRegressionModel1Hidden(numFeatures) {
+export function neuralNet1Hidden(featureCount, learningRate) {
   const model = tf.sequential()
   model.add(
     tf.layers.dense({
-      inputShape: [numFeatures],
+      inputShape: [featureCount],
       units: 9,
       activation: 'sigmoid',
       kernelInitializer: 'leCunNormal',
     })
   )
   model.add(tf.layers.dense({ units: 1 }))
+  model.compile({
+    optimizer: tf.train.sgd(learningRate),
+    loss: 'meanSquaredError',
+  })
   model.summary()
   return model
 }
@@ -157,11 +161,11 @@ export function calculateTestSetLoss(model, tensors, batchSize) {
  *
  * @returns {tf.Sequential} The multi layer perceptron regression mode  l.
  */
-export function multiLayerPerceptronRegressionModel2Hidden(numFeatures) {
+export function multiLayerPerceptronRegressionModel2Hidden(featureCount) {
   const model = tf.sequential()
   model.add(
     tf.layers.dense({
-      inputShape: [numFeatures],
+      inputShape: [featureCount],
       units: 12,
       activation: 'sigmoid',
       kernelInitializer: 'leCunNormal',

@@ -13,62 +13,59 @@ const FileUploadErrors = ({ fileErrors }) => {
   }
   return (
     <div>
-      {_.map(fileErrors, error => {
-        return <div key={error}>{error}</div>
-      })}
+      {_.map(fileErrors, error => (
+        <div key={error}>{error}</div>
+      ))}
     </div>
   )
 }
 
-const StagedFileHeader = ({ viewedGrid }) => {
-  const {
-    fileIsSelected,
-    isAnalyzingFile,
-    handleCancelUpload,
-    handleFileSave,
-    handleGridFileUpload,
-  } = viewedGrid
-  return (
-    <div>
-      <Header as="h3" attached="top" style={{ paddingBottom: '20px' }}>
-        {!fileIsSelected && (
-          <FileButton
-            content="Upload & Analyze HOMER File"
-            icon="upload"
-            size="tiny"
-            color="blue"
-            floated="right"
-            onSelect={handleGridFileUpload}
-            basic
-          />
-        )}
-        {fileIsSelected && (
-          <Button
-            content="Save HOMER File"
-            icon="save"
-            size="tiny"
-            color="blue"
-            floated="right"
-            onClick={handleFileSave}
-            basic
-          />
-        )}
-        {fileIsSelected && (
-          <Button floated="right" basic size="tiny" onClick={handleCancelUpload}>
-            <Icon name="cancel" />
-            Cancel
-          </Button>
-        )}
-        Add HOMER File
-        {isAnalyzingFile && (
-          <Header.Subheader style={{ display: 'inline-block', marginLeft: '1rem' }}>
-            Analyzing File <Loader active inline size="tiny" />
-          </Header.Subheader>
-        )}
-      </Header>
-    </div>
-  )
-}
+const StagedFileHeader = inject('store')(
+  observer(({ store, viewedGrid }) => {
+    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload } = viewedGrid
+    const { cancelStagedGrid, saveStagedGrid } = store
+    return (
+      <div>
+        <Header as="h3" attached="top" style={{ paddingBottom: '20px' }}>
+          {!fileIsSelected && (
+            <FileButton
+              content="Upload & Analyze HOMER File"
+              icon="upload"
+              size="tiny"
+              color="blue"
+              floated="right"
+              onSelect={handleGridFileUpload}
+              basic
+            />
+          )}
+          {fileIsSelected && (
+            <Button
+              content="Save HOMER File"
+              icon="save"
+              size="tiny"
+              color="blue"
+              floated="right"
+              onClick={saveStagedGrid}
+              basic
+            />
+          )}
+          {fileIsSelected && (
+            <Button floated="right" basic size="tiny" onClick={cancelStagedGrid}>
+              <Icon name="cancel" />
+              Cancel
+            </Button>
+          )}
+          Add HOMER File
+          {isAnalyzingFile && (
+            <Header.Subheader style={{ display: 'inline-block', marginLeft: '1rem' }}>
+              Analyzing File <Loader active inline size="tiny" />
+            </Header.Subheader>
+          )}
+        </Header>
+      </div>
+    )
+  })
+)
 
 class HomerFile extends React.Component {
   handleGridFileEdit = () => {

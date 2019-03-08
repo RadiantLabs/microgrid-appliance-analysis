@@ -19,7 +19,7 @@ import {
   calculatePlottablePredictedVsActualData,
   calculatePlottableReferenceLine,
   formatTrainingTimeDisplay,
-  multiLayerPerceptronRegressionModel1Hidden,
+  neuralNet1Hidden,
 } from 'src/utils/tensorflowHelpers'
 
 //
@@ -152,15 +152,12 @@ export const GridStore = types
         return null
       }
       if (self.batteryModel) {
-        return null
+        return null // TODO: Is this right? Will need to refine this when hooking up retrainBatteryModel
       }
-      let model = multiLayerPerceptronRegressionModel1Hidden(batteryFeatureCount)
+      let model = neuralNet1Hidden(batteryFeatureCount, batteryLearningRate)
       self.batteryModelName = 'Neural Network Regression with 1 Hidden Layer'
-      model.compile({
-        optimizer: tf.train.sgd(batteryLearningRate),
-        loss: 'meanSquaredError',
-      })
       self.batteryTrainingState = 'Training'
+      // self.batteryModel = model
       const t0 = performance.now()
       yield model.fit(batteryTensors.trainFeatures, batteryTensors.trainTarget, {
         batchSize: batteryBatchSize,
@@ -208,14 +205,6 @@ export const GridStore = types
       })
     },
 
-    handleCancelUpload() {
-      console.log('TODO: handleCancelUpload')
-    },
-
-    handleFileSave() {
-      self.saveGridSnapshot()
-    },
-
     saveGridSnapshot: flow(function* saveGridSnapshot() {
       function handleSave(artifacts) {
         localforage.setItem('microgridAppliances.batteryModel', artifacts).then(() => {
@@ -233,6 +222,11 @@ export const GridStore = types
         })
       })
     }),
+
+    beforeDestroy() {
+      console.log('destroying grid node, stopping model')
+      self.batteryModel.stopTraining = true
+    },
   }))
   .views(self => ({
     get showAnalyzedResults() {

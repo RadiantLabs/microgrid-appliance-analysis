@@ -29,15 +29,12 @@ class HomerFiles extends React.Component {
   render() {
     const {
       viewedGridId,
-      stagedGrid,
       activeGrid,
       availableGrids,
       viewedGridIsStaged,
+      viewedGrid,
     } = this.props.store
-    const viewedGrid = viewedGridIsStaged
-      ? stagedGrid
-      : _.find(availableGrids.concat(activeGrid), grid => grid.fileInfo.id === viewedGridId)
-    const useBlankState = _.isEmpty(viewedGrid)
+    const useBlankState = _.isEmpty(viewedGridId)
     return (
       <Grid padded>
         <Grid.Row>
