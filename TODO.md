@@ -26,9 +26,10 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
 - [ ] Add Units to input fields
 - [ ] Require appliance file to have certain columns
+- [x] Fix battery charge table for BatteryCharge view
+- [x] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
 - [x] Add size to popover
 - [x] Fix layout issues by testing if fileLabel is empty
 - [x] Consider whether including timezone in unqiue file id makes sense. It shouldn't matter - it's stringified and isn't used for any logic.

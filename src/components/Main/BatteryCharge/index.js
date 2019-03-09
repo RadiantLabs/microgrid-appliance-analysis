@@ -20,7 +20,7 @@ import { getChartColors, greyColors } from 'src/utils/constants'
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 class BatteryCharge extends React.Component {
   render() {
-    const { calculatedColumns } = this.props.store
+    const { activeGrid, calculatedColumns } = this.props.store
     if (_.isEmpty(calculatedColumns)) {
       return <LoaderSpinner />
     }
@@ -33,7 +33,7 @@ class BatteryCharge extends React.Component {
           This chart isn't useful yet. I need to calculate the charge characteristics of the battery
           first.
         </Message>
-        <BatteryChargeTable gridStoreName="activeGrid" />
+        <BatteryChargeTable grid={activeGrid} />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <LineChart
             width={1400}
