@@ -60,6 +60,7 @@ class HomerFiles extends React.Component {
               <Menu.Item
                 key={activeGrid.fileInfo.id}
                 name={activeGrid.fileLabel}
+                style={{ minHeight: '60px' }}
                 active={viewedGridId === activeGrid.fileInfo.id}
                 onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
                 <Header sub>{activeGrid.fileLabel}</Header>
@@ -79,6 +80,7 @@ class HomerFiles extends React.Component {
                   <Menu.Item
                     key={file.fileInfo.id}
                     name={file.fileLabel}
+                    style={{ minHeight: '60px' }}
                     active={viewedGridId === file.fileInfo.id}
                     onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
                     <Header sub>{file.fileLabel}</Header>

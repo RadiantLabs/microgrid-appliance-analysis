@@ -26,12 +26,12 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Add "Make Active Grid" Button in file viewer
-- [ ] Put real label on activeGrid in file viewer
 - [ ] Consider whether including timezone in unqiue file id makes sense. It may
 - [ ] Fix layout issues by testing if fileLabel is empty
 - [ ] Add size to popover
 - [ ] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
+- [x] Add "Make Active Grid" Button in file viewer
+- [x] Put label on activeGrid in file viewer
 - [x] Allow selecting new uploaded file (current bug)
 - [x] Create button to make viewed grid active (can be done like how filechooser does it)
 - [x] HOMER File Upload: Hook up 'Save HOMER File'
