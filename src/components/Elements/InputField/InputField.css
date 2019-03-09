@@ -5,6 +5,12 @@
   width: 600px;
 } */
 
+.InputFieldWrapper .ui.basic.label {
+  font-weight: 200;
+  font-size: 0.9em !important;
+  color: rgba(0, 0, 0, 0.87);
+}
+
 /* .ui.icon.input.input input {
   padding-right: 1em !important;
   background-color: pink !important;

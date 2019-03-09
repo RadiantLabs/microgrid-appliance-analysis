@@ -68,7 +68,7 @@ class InputField extends React.Component {
     if (_.isNil(fieldDefinitions[fieldKey])) {
       throw new Error(`fieldKey passed in isn't found in fieldDefinitions: ${fieldKey}`)
     }
-
+    const { units } = fieldDefinitions[fieldKey]
     return (
       <div>
         <div className="InputFieldWrapper">
@@ -78,10 +78,8 @@ class InputField extends React.Component {
             onBlur={this.handleBlur}
             error={Boolean(error)}
             size="small"
-            // disabled
-            // loading
-            // label={{ basic: true, content: 'kg' }}
-            // labelPosition="right"
+            label={{ basic: true, content: units }}
+            labelPosition="right"
           />
         </div>
       </div>

@@ -17,7 +17,7 @@ export const fieldDefinitions = {
     maximum: 100,
     step: 0.1,
     defaultValue: 2.2,
-    units: '-',
+    units: 'kW',
   },
   dutyCycleDerateFactor: {
     $schema: jsonSchemaStandard,
