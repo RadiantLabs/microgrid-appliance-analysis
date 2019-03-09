@@ -12,26 +12,15 @@ The trick is doing the *inference sequentially*, so I have a previous row to wor
 
 --------------------------------------------------------------------------------
 Next steps:
-- [ ] Add Units to input fields
 - [ ] Require appliance file to have certain columns
 - [ ] Add app icon
-- [ ] Remove unnecessary tensorflow functions
+- [ ] Fix Re-Train Model button
 
 ## Upload HOMER files
 - [ ] Make sure I can parse every HOMER file without errors
 - [ ] Provide Sample for download
-- [ ] Add datetime once staged file is accepted
-- [ ] Remove effective min state of charge and energy content. The difference is less than 1%
-
-## Convert to Mobx State Tree
-
-- [ ] Fix Re-Train Model button
-- [ ] Use afterCreate instead of autorun?
-- [ ] Break actions, models and views into discrete units for clarity `someModel.actions(self => {`
-- [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
 ## Save/Revert to Snapshots
-
 - [ ] Test rehydration of battery model from localforage
 - [ ] Test storage limits for
   - [ ] indexdb
@@ -39,9 +28,9 @@ Next steps:
   - [ ] websql
 - [ ] Force indexdb for localforage(?)
 - [ ] Detect if we have indexdb and alert if not. Disable snapshots?
+- [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
 ## Battery charging problem
-
 - [ ] PR on tensorflowjs documentation on tf.io.withSaveHandler
 
   - https://github.com/tensorflow/tfjs-core/blob/master/src/io/passthrough.ts#L86
