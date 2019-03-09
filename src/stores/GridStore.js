@@ -226,11 +226,6 @@ export const GridStore = types
         })
       })
     }),
-
-    beforeDestroy() {
-      console.log('destroying grid node, stopping model')
-      // self.batteryModel.stopTraining = true
-    },
   }))
   .views(self => ({
     get showAnalyzedResults() {

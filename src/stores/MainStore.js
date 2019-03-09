@@ -164,7 +164,10 @@ export const MainStore = types
     },
 
     saveStagedGrid() {
-      // TODO
+      const stagedGridSnapshot = getSnapshot(self.stagedGrid)
+      self.availableGrids.push(stagedGridSnapshot)
+      self.viewedGridId = null
+      destroy(self.stagedGrid)
     },
 
     // -------------------------------------------------------------------------

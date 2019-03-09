@@ -26,10 +26,12 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] destroy(stagedGrid) when cancelling. Call beforeDestroy() to stop model training
+- [ ] Create button to make viewed grid active (can be done like how filechooser does it)
+- [x] HOMER File Upload: Hook up 'Save HOMER File'
+- [x] HOMER File Upload: Hook up Cancel
+- [x] destroy(stagedGrid) when cancelling
 - [ ] Add size to popover
-- [ ] HOMER File Upload: Hook up Cancel and 'Save HOMER File'
-- [ ] Instantiate stagedGrid when clicking 'Upload new file': `GridStore.create(initialGridState)`
+- [x] Instantiate stagedGrid when clicking 'Upload new file': `GridStore.create(initialGridState)`
 - [x] Switch HOMER files in file management view
 - [x] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
 - [x] Fix required ancillaryEquipment that automatically sets as required
