@@ -69,8 +69,9 @@ const StagedFileHeader = inject('store')(
 )
 
 class HomerFile extends React.Component {
-  handleGridFileEdit = () => {
-    return null
+  handleActivateGrid = () => {
+    const viewedGridId = _.get(this, 'props.viewedGrid.fileInfo.id')
+    this.props.store.setActiveGridFile(viewedGridId)
   }
 
   render() {
@@ -79,16 +80,25 @@ class HomerFile extends React.Component {
       return <h3>Empty Viewed Grid</h3> // log this
     }
     const { viewedGridIsStaged } = this.props.store
-    const { fileLabel, fileDescription, showAnalyzedResults, fileErrors, fileWarnings } = viewedGrid
+    const {
+      fileLabel,
+      fileDescription,
+      showAnalyzedResults,
+      fileErrors,
+      fileWarnings,
+      isActiveGrid,
+    } = viewedGrid
     return (
       <div>
         {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
         {!viewedGridIsStaged && (
           <Header as="h3" attached="top">
             {fileLabel}
-            <Button floated="right" basic size="tiny" onClick={this.handleGridFileEdit}>
-              Edit
-            </Button>
+            {!isActiveGrid && (
+              <Button floated="right" basic size="tiny" onClick={this.handleActivateGrid}>
+                Make Grid Active
+              </Button>
+            )}
             <Header.Subheader>{fileDescription}</Header.Subheader>
           </Header>
         )}

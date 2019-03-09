@@ -69,11 +69,10 @@ class HomerFiles extends React.Component {
                   wide={true}
                 />
                 <span>{activeGrid.fileDescription}</span>
-                {activeGrid.fileInfo.isSample && (
-                  <Label basic attached="top right" size="mini" style={labelStyle}>
-                    Active, Sample
-                  </Label>
-                )}
+                <Label basic attached="top right" size="mini" style={labelStyle} color="green">
+                  Active
+                  {activeGrid.fileInfo.isSample && ', Sample'}
+                </Label>
               </Menu.Item>
               {_.map(availableGrids, (file, fileIndex) => {
                 return (

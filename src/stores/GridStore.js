@@ -281,6 +281,10 @@ export const GridStore = types
     get batteryPlottableReferenceLine() {
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
+    get isActiveGrid() {
+      const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')
+      return activeGridId ? self.fileInfo.id === activeGridId : false
+    },
   }))
 
 //
