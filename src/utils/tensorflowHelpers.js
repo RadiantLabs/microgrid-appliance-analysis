@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import * as tf from '@tensorflow/tfjs'
-window.tf = tf
 
 // Return an array of training features for every target value
 // Split them into a training and testing dataset
@@ -24,34 +23,11 @@ export function convertTableToTrainingData(
   // Order of the training features don't matter, as long as they are consistent
   // with training targets
   const features = _.map(shuffledTable, row => _.map(trainingColumns, col => row[col]))
-
-  // debugTensorMean(features, 'nosplit')
   const splitCount = _.round(targets.length * trainingSplitPercent)
   const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
-  // debugTensorMean(trainFeatures, 'split')
   return { trainFeatures, testFeatures, trainTarget, testTarget }
 }
-
-// function debugTensorMean(features, label) {
-//   console.log('__________ mean and st dev debugging ______________')
-//   // These are mean and stdev of the training features from the 12-50 Oversize 20.csv HOMER files
-//   const feature0ActualMean = 0.77472 // 0: electricalProductionLoadDiff
-//   const feature0ActualStdev = 2.93018
-//   const feature1ActualMean = 72.79839 // 1: prevBatterySOC
-//   const feature1ActualStdev = 15.58218
-//
-//   const { dataMean, dataStd } = determineMeanAndStddev(tf.tensor2d(features))
-//   const feature0MeanCompare = _.round(100 * (1 - feature0ActualMean / dataMean.dataSync()[0]), 2)
-//   const feature1MeanCompare = _.round(100 * (1 - feature1ActualMean / dataMean.dataSync()[1]), 2)
-//   console.log(`dataMean feature 0 ${label}: `, dataMean.dataSync()[0], `${feature0MeanCompare}%`)
-//   console.log(`dataMean feature 1 ${label}: `, dataMean.dataSync()[1], `${feature1MeanCompare}%`)
-//
-//   const pldStDevCompare = _.round(100 * (1 - feature0ActualStdev / dataStd.dataSync()[0]), 2)
-//   const pbsocStDevCompare = _.round(100 * (1 - feature1ActualStdev / dataStd.dataSync()[1]), 2)
-//   console.log(`dataStd feature 0 ${label}: `, dataStd.dataSync()[0], `${pldStDevCompare}%`)
-//   console.log(`dataStd feature 1 ${label}: `, dataStd.dataSync()[1], `${pbsocStDevCompare}%`)
-// }
 
 /**
  * Convert loaded data into normalized tensors
@@ -155,34 +131,6 @@ export function calculateTestSetLoss(model, tensors, batchSize) {
   return _.round(testSetLoss.dataSync()[0])
 }
 
-/**
- * Builds and returns Multi Layer Perceptron Regression Model
- * with 2 hidden layers, each with 10 units activated by sigmoid.
- *
- * @returns {tf.Sequential} The multi layer perceptron regression mode  l.
- */
-export function multiLayerPerceptronRegressionModel2Hidden(featureCount) {
-  const model = tf.sequential()
-  model.add(
-    tf.layers.dense({
-      inputShape: [featureCount],
-      units: 12,
-      activation: 'sigmoid',
-      kernelInitializer: 'leCunNormal',
-    })
-  )
-  model.add(
-    tf.layers.dense({
-      units: 12,
-      activation: 'sigmoid',
-      kernelInitializer: 'leCunNormal',
-    })
-  )
-  model.add(tf.layers.dense({ units: 1 }))
-  model.summary()
-  return model
-}
-
 export function calculateFinalLoss(trainLogs) {
   const finalTrainSetLoss = trainLogs[trainLogs.length - 1].loss
   const finalValidationSetLoss = trainLogs[trainLogs.length - 1].val_loss
@@ -190,27 +138,6 @@ export function calculateFinalLoss(trainLogs) {
     finalTrainSetLoss: _.round(finalTrainSetLoss, 2),
     finalValidationSetLoss: _.round(finalValidationSetLoss, 2),
   }
-}
-
-/**
- * Describe the current linear weights for a human to read.
- *
- * @param {Array} kernel Array of floats.  One value per feature.
- * @returns {List} List of objects, each with a string feature name, and value
- *     feature weight.
- */
-export function describeKernelElements(kernel, featureDescriptions) {
-  const kernelSize = featureDescriptions.length
-  tf.util.assert(
-    kernel.length === kernelSize,
-    `kernel must match featureDescriptions, got ${kernelSize}`
-  )
-  return _.map(kernel, (kernalValue, index) => {
-    return {
-      description: featureDescriptions[index],
-      value: _.round(kernalValue, 2),
-    }
-  })
 }
 
 /**
