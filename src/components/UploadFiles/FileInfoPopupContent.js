@@ -8,7 +8,7 @@ const FilePopupContent = ({ file }) => {
       <Table.Body>
         <Table.Row>
           <Table.Cell width={7}>File Size</Table.Cell>
-          <Table.Cell width={9}>{file.fileSize}</Table.Cell>
+          <Table.Cell width={9}>{file.prettyFileSize}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>File Warnings</Table.Cell>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader, Label } from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Label, Message } from 'semantic-ui-react'
 import FileButton from 'src/components/Elements/FileButton'
 import BatteryChargeTable from 'src/components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
@@ -101,6 +101,14 @@ class HomerFile extends React.Component {
             )}
             <Header.Subheader>{fileDescription}</Header.Subheader>
           </Header>
+        )}
+        {!showAnalyzedResults && (
+          <Message warning>
+            <p>
+              This app is in beta. You may have to re-upload files in the future when we update this
+              app. Make sure to keep copies of your files.
+            </p>
+          </Message>
         )}
         {showAnalyzedResults && (
           <Segment attached>

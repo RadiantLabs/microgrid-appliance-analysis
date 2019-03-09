@@ -3,6 +3,7 @@ import { types, flow, getSnapshot, getParent, isAlive } from 'mobx-state-tree'
 import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
+import prettyBytes from 'pretty-bytes'
 import { getIsoTimestamp, removeFileExtension } from 'src/utils/helpers'
 import {
   csvOptions,
@@ -284,6 +285,9 @@ export const GridStore = types
     get isActiveGrid() {
       const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')
       return activeGridId ? self.fileInfo.id === activeGridId : false
+    },
+    get prettyFileSize() {
+      return prettyBytes(self.fileInfo.size)
     },
   }))
 

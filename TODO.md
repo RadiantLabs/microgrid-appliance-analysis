@@ -26,10 +26,12 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Consider whether including timezone in unqiue file id makes sense. It may
-- [ ] Fix layout issues by testing if fileLabel is empty
-- [ ] Add size to popover
 - [ ] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
+- [ ] Add Units to input fields
+- [ ] Require appliance file to have certain columns
+- [x] Add size to popover
+- [x] Fix layout issues by testing if fileLabel is empty
+- [x] Consider whether including timezone in unqiue file id makes sense. It shouldn't matter - it's stringified and isn't used for any logic.
 - [x] Add "Make Active Grid" Button in file viewer
 - [x] Put label on activeGrid in file viewer
 - [x] Allow selecting new uploaded file (current bug)
@@ -41,10 +43,8 @@ Next steps:
 - [x] Switch HOMER files in file management view
 - [x] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
 - [x] Fix required ancillaryEquipment that automatically sets as required
-- [ ] User message: This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
-- [ ] Require appliance file to have certain columns
+- [x] User message: This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
 - [ ] Add app icon
-- [ ] Add Units to input fields
 
 
 
