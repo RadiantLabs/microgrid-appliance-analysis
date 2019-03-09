@@ -163,10 +163,12 @@ export const MainStore = types
     },
 
     saveStagedGrid() {
+      const stagedGridId = self.stagedGrid.fileInfo.id
       const stagedGridSnapshot = getSnapshot(self.stagedGrid)
       destroy(self.stagedGrid)
       self.availableGrids.push(GridStore.create(stagedGridSnapshot))
-      self.viewedGridId = null
+      self.viewedGridId = stagedGridId
+      self.setActiveGridFile(stagedGridId)
     },
 
     // -------------------------------------------------------------------------

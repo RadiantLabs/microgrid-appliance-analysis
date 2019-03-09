@@ -26,14 +26,17 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Allow selecting new uploaded file (current bug)
+- [ ] Add "Make Active Grid" Button in file viewer
+- [ ] Put real label on activeGrid in file viewer
 - [ ] Consider whether including timezone in unqiue file id makes sense. It may
+- [ ] Fix layout issues by testing if fileLabel is empty
+- [ ] Add size to popover
 - [ ] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
+- [x] Allow selecting new uploaded file (current bug)
 - [x] Create button to make viewed grid active (can be done like how filechooser does it)
 - [x] HOMER File Upload: Hook up 'Save HOMER File'
 - [x] HOMER File Upload: Hook up Cancel
 - [x] destroy(stagedGrid) when cancelling
-- [ ] Add size to popover
 - [x] Instantiate stagedGrid when clicking 'Upload new file': `GridStore.create(initialGridState)`
 - [x] Switch HOMER files in file management view
 - [x] Make getAncillaryEquipmentStatus more explicit wthout metaprogramming
