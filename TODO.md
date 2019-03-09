@@ -26,7 +26,10 @@ How to bootstrap stored vs. sample files?
 --------------------------------------------------------------------------------
 
 Next steps:
-- [ ] Create button to make viewed grid active (can be done like how filechooser does it)
+- [ ] Allow selecting new uploaded file (current bug)
+- [ ] Consider whether including timezone in unqiue file id makes sense. It may
+- [ ] Remove autorun fetchActiveAppliance and model it like I did for grids with loadActiveGrid in afterCreate()
+- [x] Create button to make viewed grid active (can be done like how filechooser does it)
 - [x] HOMER File Upload: Hook up 'Save HOMER File'
 - [x] HOMER File Upload: Hook up Cancel
 - [x] destroy(stagedGrid) when cancelling

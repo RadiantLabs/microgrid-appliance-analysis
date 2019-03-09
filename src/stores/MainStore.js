@@ -56,21 +56,21 @@ export const MainStore = types
     afterCreate() {
       // load data and run battery model of all grids (sample and user)
       // This may be hard on user's memory. We can turn this off if it's a problem
-      self.loadAvailableGrids()
+      self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
       self.loadAvailableAppliances()
     },
-
-    fetchActiveGrid: flow(function* fetchActiveGrid(fileInfo) {
-      console.log('running fetchActiveGrid')
-      self.activeGridIsLoading = true
-      yield self.activeGrid.loadFile(fileInfo)
-      self.activeGridIsLoading = false
-    }),
 
     fetchActiveAppliance: flow(function* fetchActiveAppliance(fileInfo) {
       self.activeApplianceIsLoading = true
       yield self.activeAppliance.loadFile(fileInfo)
       self.activeApplianceIsLoading = false
+    }),
+
+    loadActiveGrid: flow(function* loadActiveGrid() {
+      self.activeGridIsLoading = true
+      yield self.activeGrid.loadFile(self.activeGrid.fileInfo)
+      self.activeGridIsLoading = false
+      self.loadAvailableGrids()
     }),
 
     // All availableGrids will be instantiated GridStores with barely any data
@@ -112,8 +112,7 @@ export const MainStore = types
         return grid.fileInfo.id === fileId
       })
       if (selectedGridIndex === -1) {
-        // TODO: Log this error
-        throw new Error(`Could not find grid id in available grids. Looking for ${fileId}`)
+        throw new Error(`Could not find grid id in available grids. Looking for ${fileId}`) // TODO: Log this error
       }
       runInAction(() => {
         const activeGridSnapshot = getSnapshot(self.activeGrid)
@@ -165,9 +164,9 @@ export const MainStore = types
 
     saveStagedGrid() {
       const stagedGridSnapshot = getSnapshot(self.stagedGrid)
-      self.availableGrids.push(stagedGridSnapshot)
-      self.viewedGridId = null
       destroy(self.stagedGrid)
+      self.availableGrids.push(GridStore.create(stagedGridSnapshot))
+      self.viewedGridId = null
     },
 
     // -------------------------------------------------------------------------
@@ -368,7 +367,7 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-autorun(() => mainStore.fetchActiveGrid(mainStore.activeGrid.fileInfo))
+// TODO: remove this and model it like I did for grids with loadActiveGrid in afterCreate()
 autorun(() => mainStore.fetchActiveAppliance(mainStore.activeAppliance.fileInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
