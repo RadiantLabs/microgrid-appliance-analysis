@@ -275,6 +275,8 @@ export const GridStore = types
     get batteryPlottablePredictionVsActualData() {
       return calculatePlottablePredictedVsActualData(self.batteryTrainingData, self.batteryModel)
     },
+    // TODO: First predict battery energy content based on new appliance
+    // Then do another computed value for the plottable data
     // get calculatedBatteryEnergyContent() {
     //
     // }

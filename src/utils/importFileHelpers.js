@@ -117,6 +117,7 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
       rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
 
     // TODO: Eventually add other generation to this value
+    // TODO: Should be `Total Renewable Power Output`
     const totalElectricalProduction = row['PV Power Output']
 
     // electricalProductionLoadDiff defines whether we are producing excess (positive)
