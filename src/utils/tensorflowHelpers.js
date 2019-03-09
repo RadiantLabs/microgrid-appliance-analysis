@@ -217,7 +217,7 @@ export function describeKernelElements(kernel, featureDescriptions) {
  * Convert training and predicted values into plottable values for the
  * Actual vs Predicted chart
  */
-export function calculatePlottablePredictedVsActualData(trainingData, model, inputTensorShape) {
+export function calculatePlottablePredictedVsActualData(trainingData, model) {
   if (_.isEmpty(model)) {
     return []
   }

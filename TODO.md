@@ -46,7 +46,7 @@ Next steps:
 - [x] Fix required ancillaryEquipment that automatically sets as required
 - [x] User message: This app is in beta. You may have to reupload your HOMER and appliance files when we update the tool in the future
 - [ ] Add app icon
-
+- [ ] Remove unnecessary tensorflow functions
 
 
 ## Upload HOMER files

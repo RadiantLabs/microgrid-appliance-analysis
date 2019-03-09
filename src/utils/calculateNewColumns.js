@@ -16,6 +16,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
   const t0 = performance.now()
 
   const { batteryMinEnergyContent, batteryMinSoC } = grid
+
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
   const columnReducer = (result, row, rowIndex, rows) => {

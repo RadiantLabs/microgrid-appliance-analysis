@@ -83,7 +83,7 @@ export const GridStore = types
       const { name, size, type: mimeType } = rawFile
       const timeStamp = getIsoTimestamp()
       const fileInfo = {
-        id: `${name}_${getIsoTimestamp()}`,
+        id: `${name}_${timeStamp}`,
         timeStamp,
         fileType: 'homer',
         name,
@@ -273,12 +273,11 @@ export const GridStore = types
       return arraysToTensors(self.batteryTrainingData)
     },
     get batteryPlottablePredictionVsActualData() {
-      return calculatePlottablePredictedVsActualData(
-        self.batteryTrainingData,
-        self.batteryModel,
-        self.batteryInputTensorShape
-      )
+      return calculatePlottablePredictedVsActualData(self.batteryTrainingData, self.batteryModel)
     },
+    // get calculatedBatteryEnergyContent() {
+    //
+    // }
     get batteryPlottableReferenceLine() {
       return calculatePlottableReferenceLine(self.batteryTrainingData)
     },
@@ -301,8 +300,8 @@ const initialBatteryState = {
   batteryModelStopLoss: 0.1,
   batteryBatchSize: 40,
   batteryLearningRate: 0.01,
-  batteryTargetColumn: 'Battery State of Charge',
-  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatterySOC'],
+  batteryTargetColumn: 'Battery Energy Content',
+  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatteryEnergyContent'],
   batteryTrainingTime: null,
   batteryModel: null,
   batteryModelName: '',
