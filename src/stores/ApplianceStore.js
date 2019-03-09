@@ -66,7 +66,6 @@ export const ApplianceStore = types
     handleApplianceFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
-      console.log('parsing appliance rawFile: ', rawFile)
       const { name: fileName, size: fileSize, type: fileMimeType } = rawFile
       Papa.parse(rawFile, {
         ...csvOptions,

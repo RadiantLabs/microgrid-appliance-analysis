@@ -54,17 +54,9 @@ export const MainStore = types
   })
   .actions(self => ({
     afterCreate() {
-      // load data and run battery model of all grids (sample and user)
-      // This may be hard on user's memory. We can turn this off if it's a problem
       self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
-      self.loadAvailableAppliances()
+      self.loadActiveAppliance() // will call loadAvailableAppliances() after activeAppliance loads
     },
-
-    fetchActiveAppliance: flow(function* fetchActiveAppliance(fileInfo) {
-      self.activeApplianceIsLoading = true
-      yield self.activeAppliance.loadFile(fileInfo)
-      self.activeApplianceIsLoading = false
-    }),
 
     loadActiveGrid: flow(function* loadActiveGrid() {
       self.activeGridIsLoading = true
@@ -74,6 +66,8 @@ export const MainStore = types
     }),
 
     // All availableGrids will be instantiated GridStores with barely any data
+    // Load data and run battery model of all grids (sample and user)
+    // This may be hard on user's memory. We can turn this off if it's a problem
     // Needs to be in a for...of loop so it's an async, sequential function calls
     loadAvailableGrids: flow(function* loadAvailableGrids() {
       for (let grid of self.availableGrids) {
@@ -98,6 +92,13 @@ export const MainStore = types
           })
         }
       }
+    }),
+
+    loadActiveAppliance: flow(function* fetchActiveAppliance() {
+      self.activeApplianceIsLoading = true
+      yield self.activeAppliance.loadFile(self.activeAppliance.fileInfo)
+      self.activeApplianceIsLoading = false
+      self.loadAvailableAppliances()
     }),
 
     // All of these availableGrids will be instantiated GridStores with barely any data
@@ -369,8 +370,6 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-// TODO: remove this and model it like I did for grids with loadActiveGrid in afterCreate()
-autorun(() => mainStore.fetchActiveAppliance(mainStore.activeAppliance.fileInfo))
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>
