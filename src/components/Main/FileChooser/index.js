@@ -15,19 +15,22 @@ import {
   Input,
 } from 'semantic-ui-react'
 
-const ApplianceSelectionTrigger = props => {
-  const { loading } = props
-  return (
-    <div {..._.omit(props, ['loading'])} style={{ cursor: 'pointer' }}>
-      TODO show selected appliances here
-      {loading ? (
-        <Loader active inline size="tiny" style={{ paddingLeft: '26px' }} />
-      ) : (
-        <Icon name="dropdown" style={{ paddingLeft: '12px' }} />
-      )}
-    </div>
-  )
-}
+const ApplianceSelectionTrigger = inject('store')(
+  observer(props => {
+    const { store } = props
+    const { appliancesAreLoading, enabledApplianceLabels } = store
+    return (
+      <div {..._.omit(props, ['loading'])} style={{ cursor: 'pointer' }}>
+        {enabledApplianceLabels}
+        {appliancesAreLoading ? (
+          <Loader active inline size="tiny" style={{ paddingLeft: '26px' }} />
+        ) : (
+          <Icon name="dropdown" style={{ paddingLeft: '12px' }} />
+        )}
+      </div>
+    )
+  })
+)
 
 const ApplianceSelectionTable = inject('store')(
   observer(({ store }) => {
@@ -151,7 +154,7 @@ class FileChoosers extends Component {
             </Header>
             <Popup
               flowing
-              trigger={<ApplianceSelectionTrigger loading={appliancesAreLoading} />}
+              trigger={<ApplianceSelectionTrigger />}
               content={<ApplianceSelectionTable />}
               on="click"
               position="bottom center"

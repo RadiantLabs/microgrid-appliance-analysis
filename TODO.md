@@ -28,18 +28,19 @@ where `activeAppliances` is just a computed value?
 
 Next steps for Appliances:
 - [x] Make activeAppliance a collection
-- [ ] Add new fields to appliance model:
-  - [ ] cost
-  - [ ] cost assigned to grid operator or appliance owner
-  - [ ] enabled
+- [x] Add new fields to appliance model:
+  - [x] cost
+  - [x] cost assigned to grid operator or appliance owner
+  - [x] enabled
 - [x] Dropdown appliance selector as a table
+
 - Enable appliance inputs
-  - [ ] enable checkmark (slider)
+  - [x] enable checkmark (slider)
   - [ ] label
   - [ ] description
-  - [ ] editable costs
-  - [ ] assign to grid operator or appliance owner
-
+  - [x] editable costs
+  - [x] assign to grid operator or appliance owner
+- Fix broken ancillary equipment list
 - [ ] Keep appliance spinner going until it's actually clickable
 - [ ] Calculate grid and appliance ROI
 - [ ] Calculate grid and appliance Payback

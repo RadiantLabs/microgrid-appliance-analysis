@@ -154,7 +154,4 @@ export const ApplianceStore = types
     get showAnalyzedResults() {
       return self.fileIsSelected && !self.isAnalyzingFile
     },
-    get fileLabels() {
-      return _.map(self.availableAppliances, appliance => appliance.label)
-    },
   }))

@@ -54,7 +54,7 @@ export const MainStore = types
   .actions(self => ({
     afterCreate() {
       self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
-      self.loadAppliances() // will call loadAvailableAppliances() after activeAppliance loads
+      self.loadAppliances()
     },
 
     loadActiveGrid: flow(function* loadActiveGrid() {
@@ -214,6 +214,15 @@ export const MainStore = types
 
     get multipleAppliancesEnabled() {
       return _.size(self.enabledAppliances) > 1
+    },
+
+    get enabledApplianceLabels() {
+      const labels = _.map(self.enabledAppliances, appliance => appliance.fileLabel)
+      const labelCount = _.size(labels)
+      if (labelCount > 2) {
+        return `${labelCount} Appliances Selected`
+      }
+      return labels.join(', ')
     },
   }))
 
