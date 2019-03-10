@@ -86,15 +86,3 @@ export const fieldDefinitions = {
     units: '-',
   },
 }
-
-// We won't use productionToThroughput right now because kWh to grain production
-// is a common metrics that's measured. So we will go off that.
-// productionToThroughput: {
-//   $schema: jsonSchemaStandard,
-//   title: 'Production Factor to Throughput',
-//   description:
-//     'Given utilization of the appliance (production factor), how much grain is milled, water pumped or material is welded.',
-//   type: 'float',
-//   defaultValue: 1,
-//   units: '-',
-// },

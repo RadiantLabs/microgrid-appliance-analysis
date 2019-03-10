@@ -21,7 +21,7 @@ const ApplianceSelectionTrigger = props => {
     <div {..._.omit(props, ['loading'])} style={{ cursor: 'pointer' }}>
       TODO show selected appliances here
       {loading ? (
-        <Loader active inline size="tiny" style={{ paddingLeft: '12px' }} />
+        <Loader active inline size="tiny" style={{ paddingLeft: '26px' }} />
       ) : (
         <Icon name="dropdown" style={{ paddingLeft: '12px' }} />
       )}
@@ -31,11 +31,7 @@ const ApplianceSelectionTrigger = props => {
 
 const ApplianceSelectionTable = inject('store')(
   observer(({ store }) => {
-    const {
-      appliances,
-      appliancesAreLoading,
-      // setActiveApplianceFile,
-    } = store
+    const { appliances } = store
     return (
       <Table basic="very" compact>
         <Table.Header>
@@ -49,21 +45,29 @@ const ApplianceSelectionTable = inject('store')(
         </Table.Header>
         <Table.Body>
           {_.map(appliances, appliance => {
-            const { fileLabel, fileDescription } = appliance
+            const {
+              fileInfo,
+              fileLabel,
+              fileDescription,
+              capexTempValue,
+              capexInputError,
+              enabled,
+              toggleAppliance,
+              handleCapexChange,
+            } = appliance
             return (
-              <Table.Row key={appliance.fileInfo.id}>
+              <Table.Row key={fileInfo.id}>
                 <Table.Cell collapsing>
-                  <Checkbox toggle checked={appliance.enabled} />
+                  <Checkbox toggle checked={enabled} onChange={toggleAppliance} />
                 </Table.Cell>
                 <Table.Cell>{fileLabel}</Table.Cell>
                 <Table.Cell>{fileDescription}</Table.Cell>
                 <Table.Cell>
                   <Input
                     fluid
-                    value={2000}
-                    // onChange={this.handleChange}
-                    // onBlur={this.handleBlur}
-                    error={false}
+                    value={capexTempValue}
+                    onChange={handleCapexChange}
+                    error={capexInputError}
                     size="small"
                     label={{ basic: true, content: '$' }}
                     labelPosition="left"
@@ -112,10 +116,7 @@ class FileChoosers extends Component {
       activeGrid,
       availableGrids,
       activeGridIsLoading,
-      activeAppliance,
-      availableAppliances,
       appliancesAreLoading,
-      setActiveApplianceFile,
       ancillaryEquipment,
     } = this.props.store
     const { enabledEquipmentList } = ancillaryEquipment
@@ -167,19 +168,3 @@ class FileChoosers extends Component {
 }
 
 export default inject('store')(observer(FileChoosers))
-
-/* <Dropdown text={activeAppliance.fileLabel} loading={appliancesAreLoading}>
-<Dropdown.Menu>
-  {_.map(availableAppliances, appliance => (
-    <Dropdown.Item
-      text={appliance.fileLabel}
-      key={appliance.fileInfo.id}
-      description={appliance.fileDescription}
-      value={appliance.fileInfo.id}
-      active={appliance.fileInfo.id === activeAppliance.fileInfo.id}
-      onClick={setActiveApplianceFile}
-      // icon="check" // If currently active (or bold)
-    />
-  ))}
-</Dropdown.Menu>
-</Dropdown> */

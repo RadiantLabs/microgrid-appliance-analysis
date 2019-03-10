@@ -22,6 +22,9 @@ export const initialApplianceState = {
   fileErrors: [],
   fileWarnings: [],
   applianceType: '',
+  capex: 0,
+  capexTempValue: '',
+  capexInputError: false,
   applianceStoreName: '',
   fileIsSelected: false,
   isAnalyzingFile: false,
@@ -49,6 +52,9 @@ export const ApplianceStore = types
       'other',
       '',
     ]),
+    capex: types.number,
+    capexTempValue: types.frozen(),
+    capexInputError: types.boolean,
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     phase: types.maybeNull(types.number),
     hasMotor: types.maybeNull(types.boolean),
@@ -112,13 +118,28 @@ export const ApplianceStore = types
       self.fileLabel = data.value
     },
 
+    toggleAppliance(event) {
+      event.preventDefault()
+      self.enabled = !self.enabled
+    },
+
     handleDescriptionChange(event, data) {
+      event.preventDefault()
       self.fileDescription = data.value
+    },
+
+    handleCapexChange(event, data) {
+      event.preventDefault()
+      const inputError = !_.isFinite(parseInt(data.value, 10))
+      self.capexInputError = inputError
+      self.capexTempValue = data.value
+      self.capex = inputError ? self.capex : parseInt(self.capexTempValue, 10)
     },
 
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },
+
     handleFileSave() {
       self.saveGridSnapshot()
     },
