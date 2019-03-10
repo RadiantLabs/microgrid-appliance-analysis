@@ -51,9 +51,11 @@ const ApplianceSelectionTable = inject('store')(
               fileDescription,
               capexTempValue,
               capexInputError,
+              capexAssignment,
               enabled,
               toggleAppliance,
               handleCapexChange,
+              handleCapexAssignmentChange,
             } = appliance
             return (
               <Table.Row key={fileInfo.id}>
@@ -79,19 +81,19 @@ const ApplianceSelectionTable = inject('store')(
                       <Radio
                         label="Grid Owner"
                         name="radioGroup"
-                        value="this"
-                        checked={true}
+                        value="grid"
+                        checked={capexAssignment === 'grid'}
                         style={{ marginBottom: '3px' }}
-                        // onChange={this.handleChange}
+                        onChange={handleCapexAssignmentChange}
                       />
                     </Form.Field>
                     <Form.Field>
                       <Radio
                         label="Appliance Owner"
                         name="radioGroup"
-                        value="that"
-                        checked={false}
-                        // onChange={this.handleChange}
+                        value="appliance"
+                        checked={capexAssignment === 'appliance'}
+                        onChange={handleCapexAssignmentChange}
                       />
                     </Form.Field>
                   </Form>

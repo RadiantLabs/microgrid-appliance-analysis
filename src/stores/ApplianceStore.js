@@ -25,7 +25,7 @@ export const initialApplianceState = {
   capex: 0,
   capexTempValue: '',
   capexInputError: false,
-  applianceStoreName: '',
+  capexAssignment: 'appliance',
   fileIsSelected: false,
   isAnalyzingFile: false,
   applianceSaved: false,
@@ -55,6 +55,7 @@ export const ApplianceStore = types
     capex: types.number,
     capexTempValue: types.frozen(),
     capexInputError: types.boolean,
+    capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     phase: types.maybeNull(types.number),
     hasMotor: types.maybeNull(types.boolean),
@@ -134,6 +135,11 @@ export const ApplianceStore = types
       self.capexInputError = inputError
       self.capexTempValue = data.value
       self.capex = inputError ? self.capex : parseInt(self.capexTempValue, 10)
+    },
+
+    handleCapexAssignmentChange(event, data) {
+      event.preventDefault()
+      self.capexAssignment = data.value
     },
 
     handleCancelUpload() {
