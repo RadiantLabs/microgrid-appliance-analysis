@@ -11,44 +11,57 @@ Don't overcomplicate this:
 The trick is doing the *inference sequentially*, so I have a previous row to work from
 
 --------------------------------------------------------------------------------
+Big next steps
+* Calculate ROI & payback
+* Get battery model prediction working
+* Hook up appliance upload section
+* Save files and bootstrap from localforage
+
+--------------------------------------------------------------------------------
+
 Next steps:
-- [ ] Require appliance file to have certain columns
+- Appliance Cost
+  - [ ] Input in file viewer
+  - [ ] Dropdown appliance selector is a table with
+    - enable checkmark (slider)
+    - label
+    - description
+    - editable costs
+    - assign to grid operator or appliance owner
+- [ ] Calculate grid and appliance ROI
+- [ ] Calculate grid and appliance Payback
+- [ ] Assign appliance cost to either grid owner or grid operator
+
+
+- [ ] Add Appliance upload section
+  - [ ] Input for cost for appliance
+  - [ ] Require appliance file to have certain columns
 - [ ] Add app icon
 - [ ] Fix Re-Train Model button
 
 ## Upload HOMER files
+
 - [ ] Make sure I can parse every HOMER file without errors
 - [ ] Provide Sample for download
 
-## Save/Revert to Snapshots
-- [ ] Test rehydration of battery model from localforage
-- [ ] Test storage limits for
-  - [ ] indexdb
-  - [ ] localstorage
-  - [ ] websql
-- [ ] Force indexdb for localforage(?)
-- [ ] Detect if we have indexdb and alert if not. Disable snapshots?
-- [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
+## Battery charging model
 
-## Battery charging problem
+- [ ] Calculate battery energy content based on predicted values
+- [ ] Training Progress (loss) scale is all weird
+- [ ] Add batteryBaselineLoss to table
+- [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
 - [ ] PR on tensorflowjs documentation on tf.io.withSaveHandler
-
   - https://github.com/tensorflow/tfjs-core/blob/master/src/io/passthrough.ts#L86
   - https://js.tensorflow.org/api/0.14.2/#io.browserDownloads
   - https://github.com/tensorflow/tfjs/issues/503
   - https://github.com/tensorflow/tfjs/issues/495
   - https://js.tensorflow.org/api/0.14.2/#io.browserDownloads
   - https://js.tensorflow.org/api/0.14.2/#loadModel
-
-- [ ] Training Progress (loss) scale is all weird
-- [ ] rename batteryEpochCount to batteryMaxEpochCount
-- [ ] Add batteryBaselineLoss to table
 - [ ] Fix productionLoadDiff: It should be Total Renewable Power Output - Total Electrical Load Served (won't affect calculations yet)
-- [ ] Save trained model to localstorage: https://js.tensorflow.org/api/0.14.1/#tf.Model.save
 - [ ] Detect if HOMER file needs to be remodeled. A couple approaches:
-
   - convert SoC into a long, concatenated string and compare
   - sum SoC and hash it, along with other columns used for modeling. Compare speed of approaches
+- [x] rename batteryEpochCount to batteryMaxEpochCount
 
 ## Table fixes
 
@@ -58,7 +71,7 @@ Next steps:
 - [ ] Delete column by clicking on X in column header
 - [ ] Put battery stats in Battery Energy Content tab
 
-## TODO:
+## MISC TODO:
 
 - [ ] Create universally accessible small grey header. See unmet loads and battery model screens
 - [ ] Check that HOMER and Appliance file has required fields (including battery and pvSystem)
@@ -69,17 +82,24 @@ Next steps:
   - [ ] New appliance load
   - [ ] Excess production
 - [ ] Render appliance summary stats
-- [ ] Min State of chart is fragile. Find a more robust way of finding the floor
 - [ ] Add hour offset input(?)
 - [ ] Show Load and Unmet Load chart by datetime instead of hour of year (toggle between hour and datetime)
 - [ ] Page through datetime chart by day, week, month
 - [ ] Show column stats (max, min, avg, std) for HOMER and combined tables
-
-## TODO: Long term
-
 - [ ] Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-- [ ] Load other HOMER and appliance files in the background
 - [ ] Fonts are loading slowly. How to cache them?
+
+## Save/Revert to Snapshots
+
+- [ ] Test rehydration of battery model from localforage
+- [ ] Test storage limits for
+  - [ ] indexdb
+  - [ ] localstorage
+  - [ ] websql
+- [ ] Force indexdb for localforage(?)
+- [ ] Detect if we have indexdb and alert if not. Disable snapshots?
+- [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
+
 
 ## Battery charge calculation notes
 
@@ -97,7 +117,8 @@ The predictive model may just want to calculate Charge Rate and Discharge Rate (
 - Removing
   - Available Capacity: Because it depends on Excess Electrical, SoC and Energy Content for the given row.
 
----
+
+--------------------------------------------------------------------------------
 
 
 
