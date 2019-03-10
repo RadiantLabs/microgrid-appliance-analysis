@@ -32,10 +32,9 @@ const ApplianceSelectionTrigger = props => {
 const ApplianceSelectionTable = inject('store')(
   observer(({ store }) => {
     const {
-      activeAppliance,
-      availableAppliances,
-      activeApplianceIsLoading,
-      setActiveApplianceFile,
+      appliances,
+      appliancesAreLoading,
+      // setActiveApplianceFile,
     } = store
     return (
       <Table basic="very" compact>
@@ -49,12 +48,12 @@ const ApplianceSelectionTable = inject('store')(
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {_.map(availableAppliances, appliance => {
+          {_.map(appliances, appliance => {
             const { fileLabel, fileDescription } = appliance
             return (
               <Table.Row key={appliance.fileInfo.id}>
                 <Table.Cell collapsing>
-                  <Checkbox toggle checked />
+                  <Checkbox toggle checked={appliance.enabled} />
                 </Table.Cell>
                 <Table.Cell>{fileLabel}</Table.Cell>
                 <Table.Cell>{fileDescription}</Table.Cell>
@@ -115,7 +114,7 @@ class FileChoosers extends Component {
       activeGridIsLoading,
       activeAppliance,
       availableAppliances,
-      activeApplianceIsLoading,
+      appliancesAreLoading,
       setActiveApplianceFile,
       ancillaryEquipment,
     } = this.props.store
@@ -149,7 +148,7 @@ class FileChoosers extends Component {
             </Header>
             <Popup
               flowing
-              trigger={<ApplianceSelectionTrigger loading={activeApplianceIsLoading} />}
+              trigger={<ApplianceSelectionTrigger loading={appliancesAreLoading} />}
               content={<ApplianceSelectionTable />}
               on="click"
               position="bottom center"
@@ -169,7 +168,7 @@ class FileChoosers extends Component {
 
 export default inject('store')(observer(FileChoosers))
 
-/* <Dropdown text={activeAppliance.fileLabel} loading={activeApplianceIsLoading}>
+/* <Dropdown text={activeAppliance.fileLabel} loading={appliancesAreLoading}>
 <Dropdown.Menu>
   {_.map(availableAppliances, appliance => (
     <Dropdown.Item

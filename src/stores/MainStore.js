@@ -40,9 +40,8 @@ export const MainStore = types
     viewedGridId: types.maybeNull(types.string),
 
     // Appliance Info
-    activeAppliance: types.maybeNull(ApplianceStore),
-    activeApplianceIsLoading: types.boolean,
-    availableAppliances: types.optional(types.array(ApplianceStore), []),
+    appliancesAreLoading: types.boolean,
+    appliances: types.optional(types.array(ApplianceStore), []),
 
     // For uploading and viewing different appliance files
     stagedAppliance: types.maybeNull(ApplianceStore),
@@ -55,7 +54,7 @@ export const MainStore = types
   .actions(self => ({
     afterCreate() {
       self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
-      self.loadActiveAppliance() // will call loadAvailableAppliances() after activeAppliance loads
+      self.loadAppliances() // will call loadAvailableAppliances() after activeAppliance loads
     },
 
     loadActiveGrid: flow(function* loadActiveGrid() {
@@ -94,18 +93,13 @@ export const MainStore = types
       }
     }),
 
-    loadActiveAppliance: flow(function* fetchActiveAppliance() {
-      self.activeApplianceIsLoading = true
-      yield self.activeAppliance.loadFile(self.activeAppliance.fileInfo)
-      self.activeApplianceIsLoading = false
-      self.loadAvailableAppliances()
-    }),
-
     // All of these availableGrids will be instantiated GridStores with barely any data
-    loadAvailableAppliances: flow(function* loadAvailableAppliances() {
-      for (let appliance of self.availableAppliances) {
+    loadAppliances: flow(function* loadAppliances() {
+      self.appliancesAreLoading = true
+      for (let appliance of self.appliances) {
         yield appliance.loadFile(appliance.fileInfo)
       }
+      self.appliancesAreLoading = false
     }),
 
     setActiveGridFile(fileId) {
@@ -120,20 +114,6 @@ export const MainStore = types
         const selectedGridSnapshot = getSnapshot(self.availableGrids[selectedGridIndex])
         applySnapshot(self.availableGrids[selectedGridIndex], activeGridSnapshot)
         applySnapshot(self.activeGrid, selectedGridSnapshot)
-      })
-    },
-
-    setActiveApplianceFile(event, data) {
-      const selectedApplianceIndex = _.findIndex(self.availableAppliances, appliance => {
-        return appliance.fileInfo.id === data.value
-      })
-      runInAction(() => {
-        const activeApplianceSnapshot = getSnapshot(self.activeAppliance)
-        const selectedApplianceSnapshot = getSnapshot(
-          self.availableAppliances[selectedApplianceIndex]
-        )
-        applySnapshot(self.availableAppliances[selectedApplianceIndex], activeApplianceSnapshot)
-        applySnapshot(self.activeAppliance, selectedApplianceSnapshot)
       })
     },
 
@@ -242,23 +222,14 @@ const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
 const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
 const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
-
-// TODO: pull out label and description from sample fileInfo. Set it here:
-// const activeApplianceLabel = _.get(activeApplianceFileInfo, 'fileLabel', '')
-// _.remove(activeApplianceFileInfo, 'fileLabel')
-// Or keep label and description in a separate object
-const initApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
-const allApplianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
-const activeApplianceFileInfo = _.find(allApplianceFileInfos, { id: initApplianceFileId })
-const availableApplianceFileInfos = _.filter(
-  allApplianceFileInfos,
-  info => info.id !== activeApplianceFileInfo.id
-)
+const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
+const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
+const enabledApplianceFileInfo = _.find(applianceFileInfos, { id: enabledApplianceFileId })
 
 // Model inputs must have a definition in the fieldDefinitions file
 const initialModelInputsState = {
   applianceNominalPower: fieldDefinitions['applianceNominalPower'].defaultValue,
-  dutyCycleDerateFactor: _.get(activeApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
+  dutyCycleDerateFactor: _.get(enabledApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
   seasonalDerateFactor: null,
   wholesaleElectricityCost: 5,
   unmetLoadCostPerKwh: 6,
@@ -293,23 +264,12 @@ let initialMainState = {
   stagedGrid: null,
   viewedGridId: initGridFileId,
 
-  activeAppliance: ApplianceStore.create({
-    ...initialApplianceState,
-    ...{
-      fileLabel: activeApplianceFileInfo.attributes.label,
-      fileDescription: activeApplianceFileInfo.attributes.description,
-      powerType: activeApplianceFileInfo.attributes.powerType,
-      phase: activeApplianceFileInfo.attributes.phase,
-      hasMotor: activeApplianceFileInfo.attributes.hasMotor,
-      powerFactor: activeApplianceFileInfo.attributes.powerFactor,
-    },
-    ...{ fileInfo: _.omit(activeApplianceFileInfo, ['attributes', 'defaults']) },
-  }),
-  activeApplianceIsLoading: true,
-  availableAppliances: _.map(availableApplianceFileInfos, applianceInfo => {
+  appliancesAreLoading: true,
+  appliances: _.map(applianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
       ...initialApplianceState,
       ...{
+        enabled: applianceInfo.id === enabledApplianceFileId,
         fileLabel: applianceInfo.attributes.label,
         fileDescription: applianceInfo.attributes.description,
         powerType: applianceInfo.attributes.powerType,

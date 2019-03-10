@@ -14,6 +14,7 @@ import {
 // Initial Appliance State
 // -----------------------------------------------------------------------------
 export const initialApplianceState = {
+  enabled: false,
   fileInfo: {},
   fileData: [],
   fileLabel: '',
@@ -33,6 +34,7 @@ export const initialApplianceState = {
 // -----------------------------------------------------------------------------
 export const ApplianceStore = types
   .model({
+    enabled: types.boolean,
     fileInfo: types.frozen(),
     fileData: types.frozen(),
     fileLabel: types.string,
