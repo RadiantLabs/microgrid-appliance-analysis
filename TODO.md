@@ -27,7 +27,7 @@ where `activeAppliances` is just a computed value?
 (for that matter, I could do the same with grids... but there are a lot more expensive computatations for grids)
 
 Next steps for Appliances:
-- [ ] Make activeAppliance a collection
+- [x] Make activeAppliance a collection
 - [ ] Add new fields to appliance model:
   - [ ] cost
   - [ ] cost assigned to grid operator or appliance owner

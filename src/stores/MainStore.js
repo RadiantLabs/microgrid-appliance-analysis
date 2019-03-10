@@ -207,6 +207,14 @@ export const MainStore = types
             grid => grid.fileInfo.id === self.viewedGridId
           )
     },
+
+    get enabledAppliances() {
+      return _.filter(self.appliances, appliance => appliance.enabled)
+    },
+
+    get multipleAppliancesEnabled() {
+      return _.size(self.enabledAppliances) > 1
+    },
   }))
 
 //
