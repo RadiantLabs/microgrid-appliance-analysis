@@ -28,6 +28,7 @@ Next steps:
     - description
     - editable costs
     - assign to grid operator or appliance owner
+- [ ] Keep appliance spinner going until it's actually clickable
 - [ ] Calculate grid and appliance ROI
 - [ ] Calculate grid and appliance Payback
 - [ ] Assign appliance cost to either grid owner or grid operator
