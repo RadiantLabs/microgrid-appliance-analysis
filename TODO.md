@@ -18,20 +18,33 @@ Big next steps
 * Save files and bootstrap from localforage
 
 --------------------------------------------------------------------------------
+Should I get rid of the distiction of 'activeAppliance' and just make an availableAppliances,
+where `activeAppliances` is just a computed value?
+* I will need a summary of appliances
+  * hour-by-hour load
+  * up front cost
+  * Revenue Per Production Units
+(for that matter, I could do the same with grids... but there are a lot more expensive computatations for grids)
 
-Next steps:
-- Appliance Cost
-  - [ ] Input in file viewer
-  - [ ] Dropdown appliance selector is a table with
-    - enable checkmark (slider)
-    - label
-    - description
-    - editable costs
-    - assign to grid operator or appliance owner
+Next steps for Appliances:
+- [ ] Make activeAppliance a collection
+- [ ] Add new fields to appliance model:
+  - [ ] cost
+  - [ ] cost assigned to grid operator or appliance owner
+  - [ ] enabled
+- [x] Dropdown appliance selector as a table
+- Enable appliance inputs
+  - [ ] enable checkmark (slider)
+  - [ ] label
+  - [ ] description
+  - [ ] editable costs
+  - [ ] assign to grid operator or appliance owner
+
 - [ ] Keep appliance spinner going until it's actually clickable
 - [ ] Calculate grid and appliance ROI
 - [ ] Calculate grid and appliance Payback
 - [ ] Assign appliance cost to either grid owner or grid operator
+- [ ] Add commas to results numbers
 
 
 - [ ] Add Appliance upload section
@@ -39,7 +52,6 @@ Next steps:
   - [ ] Require appliance file to have certain columns
 - [ ] Add app icon
 - [ ] Fix Re-Train Model button
-
 ## Upload HOMER files
 
 - [ ] Make sure I can parse every HOMER file without errors
