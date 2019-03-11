@@ -312,6 +312,7 @@ let initialMainState = {
       ...{ fileInfo: _.omit(applianceInfo, ['attributes', 'defaults']) },
     })
   }),
+  viewedApplianceId: enabledApplianceFileId,
 
   modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),

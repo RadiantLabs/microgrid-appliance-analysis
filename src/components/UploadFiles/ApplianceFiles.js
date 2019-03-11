@@ -73,7 +73,7 @@ class ApplianceFiles extends React.Component {
                         attached="top right"
                         size="mini"
                         style={labelStyle}
-                        color={enabled && 'green'}>
+                        color={enabled ? 'green' : null}>
                         {enabled && 'Enabled'}
                         {fileInfo.isSample && enabled && ', '}
                         {fileInfo.isSample && 'Sample'}
