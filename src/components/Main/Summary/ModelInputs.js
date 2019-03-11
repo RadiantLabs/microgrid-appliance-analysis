@@ -61,11 +61,11 @@ export const TechnicalInputs = inject('store')(
         <Table.Body>
           <Table.Row>
             <Table.Cell>
-              {fieldDefinitions['applianceNominalPower'].title}{' '}
-              <HelperPopup content={fieldDefinitions['applianceNominalPower'].description} />
+              {fieldDefinitions['nominalPower'].title}{' '}
+              <HelperPopup content={fieldDefinitions['nominalPower'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="applianceNominalPower" />
+              <InputField fieldKey="nominalPower" />
             </Table.Cell>
           </Table.Row>
           <Table.Row>

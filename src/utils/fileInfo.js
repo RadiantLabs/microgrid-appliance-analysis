@@ -70,6 +70,11 @@ export const sampleApplianceFiles = [
       phase: 3,
       hasMotor: true,
       powerFactor: 0.8,
+      nominalPower: 2.2,
+      dutyCycleDerateFactor: 0.2,
+      productionUnitsPerKwh: 136,
+      revenuePerProductionUnits: 0.021,
+      productionUnitUnits: 'kg',
     },
   },
   {
@@ -86,6 +91,11 @@ export const sampleApplianceFiles = [
       phase: 3,
       hasMotor: true,
       powerFactor: 0.8,
+      nominalPower: 2.2,
+      dutyCycleDerateFactor: 0.2,
+      productionUnitsPerKwh: 136,
+      revenuePerProductionUnits: 0.021,
+      productionUnitUnits: 'kg',
     },
   },
   {
@@ -102,6 +112,11 @@ export const sampleApplianceFiles = [
       phase: 3,
       hasMotor: true,
       powerFactor: 0.8,
+      nominalPower: 2.2,
+      dutyCycleDerateFactor: 0.2,
+      productionUnitsPerKwh: 136,
+      revenuePerProductionUnits: 0.021,
+      productionUnitUnits: 'kg',
     },
   },
   {
@@ -111,9 +126,6 @@ export const sampleApplianceFiles = [
     name: 'welder_usage_profile',
     size: 429487,
     isSample: true,
-    defaults: {
-      dutyCycleDerateFactor: 0.2,
-    },
     attributes: {
       label: 'Welder (Tanzania)',
       description: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
@@ -121,6 +133,11 @@ export const sampleApplianceFiles = [
       phase: 3,
       hasMotor: false,
       powerFactor: 1,
+      nominalPower: 2.2,
+      dutyCycleDerateFactor: 0.2,
+      productionUnitsPerKwh: 136,
+      revenuePerProductionUnits: 0.021,
+      productionUnitUnits: 'hr',
     },
   },
 ]

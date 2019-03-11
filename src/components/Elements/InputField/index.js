@@ -33,9 +33,15 @@ class InputField extends React.Component {
   // If entered value is valid on blur, update mobx state so calcs can run
   handleBlur = e => {
     const { value } = this.state
-    const { fieldKey, store } = this.props
+    const { fieldKey, modelInstance, store } = this.props
     const fieldDef = fieldDefinitions[fieldKey]
-    const { onModelInputChange } = store.modelInputs
+    const { onModelInputChange } = store[modelInstance]
+    if (_.isEmpty(modelInstance)) {
+      throw new Error(`Must supply modelInstance to input field`)
+    }
+    if (_.isEmpty(onModelInputChange)) {
+      throw new Error(`modelInstance must have an onModelInputChange as an action`)
+    }
     const error = checkValidity(value, fieldDef)
     if (!error) {
       switch (fieldDef.type) {

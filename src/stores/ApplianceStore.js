@@ -26,6 +26,17 @@ export const initialApplianceState = {
   capexTempValue: '',
   capexInputError: false,
   capexAssignment: 'appliance',
+  powerType: 'AC',
+  phase: null,
+  hasMotor: null,
+  powerFactor: null,
+  nominalPower: null,
+  dutyCycleDerateFactor: null,
+  seasonalDerateFactor: null,
+  productionUnitsPerKwh: null,
+  revenuePerProductionUnits: null,
+  revenuePerProductionUnitsUnits: '',
+
   fileIsSelected: false,
   isAnalyzingFile: false,
   applianceSaved: false,
@@ -60,6 +71,12 @@ export const ApplianceStore = types
     phase: types.maybeNull(types.number),
     hasMotor: types.maybeNull(types.boolean),
     powerFactor: types.maybeNull(types.number),
+    nominalPower: types.maybeNull(types.number),
+    dutyCycleDerateFactor: types.maybeNull(types.number),
+    seasonalDerateFactor: types.maybeNull(types.number),
+    productionUnitsPerKwh: types.maybeNull(types.number),
+    revenuePerProductionUnits: types.maybeNull(types.number),
+    revenuePerProductionUnitsUnits: types.maybeNull(types.string),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
@@ -69,6 +86,12 @@ export const ApplianceStore = types
   .actions(self => ({
     runInAction(fn) {
       return fn()
+    },
+
+    // onModelInputChange depends on inputs being validated by the InputField
+    // before saving to the model. InputField uses fieldDefinitions for validation
+    onModelInputChange(fieldKey, value) {
+      self[fieldKey] = value
     },
 
     // These files come in through the file upload button

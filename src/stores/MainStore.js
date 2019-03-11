@@ -6,7 +6,6 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import localforage from 'localforage'
 
 // Import Other Stores:
-import { ModelInputsStore } from './ModelInputsStore'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
@@ -48,7 +47,6 @@ export const MainStore = types
     viewedApplianceId: types.maybeNull(types.string),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
-    modelInputs: ModelInputsStore,
     ancillaryEquipment: AncillaryEquipmentStore,
     router: RouterModel,
   })
@@ -254,22 +252,9 @@ const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
 const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
 const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
+
 const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
 const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
-const enabledApplianceFileInfo = _.find(applianceFileInfos, { id: enabledApplianceFileId })
-
-// Model inputs must have a definition in the fieldDefinitions file
-const initialModelInputsState = {
-  applianceNominalPower: fieldDefinitions['applianceNominalPower'].defaultValue,
-  dutyCycleDerateFactor: _.get(enabledApplianceFileInfo, 'defaults.dutyCycleDerateFactor', 1),
-  seasonalDerateFactor: null,
-  wholesaleElectricityCost: 5,
-  unmetLoadCostPerKwh: 6,
-  retailElectricityPrice: 8,
-  productionUnitsPerKwh: 5,
-  revenuePerProductionUnits: 2,
-  revenuePerProductionUnitsUnits: '$ / kg',
-}
 
 // Initially set all ancillary equipment to disabled
 const initialAncillaryEquipmentState = {
@@ -283,14 +268,14 @@ let initialMainState = {
       fileLabel: activeGridFileInfo.attributes.label,
       fileDescription: activeGridFileInfo.attributes.description,
     },
-    ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes', 'defaults']) },
+    ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
   activeGridIsLoading: true,
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
       ...{ fileLabel: gridInfo.attributes.label, fileDescription: gridInfo.attributes.description },
-      ...{ fileInfo: _.omit(gridInfo, ['attributes', 'defaults']) },
+      ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),
   stagedGrid: null,
@@ -309,12 +294,11 @@ let initialMainState = {
         hasMotor: applianceInfo.attributes.hasMotor,
         powerFactor: applianceInfo.attributes.powerFactor,
       },
-      ...{ fileInfo: _.omit(applianceInfo, ['attributes', 'defaults']) },
+      ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
     })
   }),
   viewedApplianceId: enabledApplianceFileId,
 
-  modelInputs: ModelInputsStore.create(initialModelInputsState),
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
   excludedTableColumns: [],
   router: routerModel,

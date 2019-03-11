@@ -7,7 +7,7 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 // https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 export const fieldDefinitions = {
-  applianceNominalPower: {
+  nominalPower: {
     $schema: jsonSchemaStandard,
     title: 'Appliance Nominal Power',
     description:
@@ -76,7 +76,7 @@ export const fieldDefinitions = {
     defaultValue: 0.021,
     units: '-',
   },
-  revenuePerProductionUnitsUnits: {
+  productionUnitUnits: {
     $schema: jsonSchemaStandard,
     title:
       'The suffix (units) attached to revenuePerProductionUnits. Could be $ / kg, $ / hour, $ / liter',

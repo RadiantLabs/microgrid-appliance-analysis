@@ -22,6 +22,7 @@ import {
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
 } from 'src/utils/tensorflowHelpers'
+import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 
 //
 // -----------------------------------------------------------------------------
@@ -39,6 +40,9 @@ export const GridStore = types
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     batteryType: types.string,
     generatorType: types.string,
+    wholesaleElectricityCost: types.maybeNull(types.number),
+    retailElectricityPrice: types.maybeNull(types.number),
+    unmetLoadCostPerKwh: types.maybeNull(types.number),
 
     batteryMinSoC: types.maybeNull(types.number),
     batteryMaxSoC: types.maybeNull(types.number),
@@ -76,6 +80,13 @@ export const GridStore = types
     runInAction(fn) {
       return fn()
     },
+
+    // onModelInputChange depends on inputs being validated by the InputField
+    // before saving to the model. InputField uses fieldDefinitions for validation
+    onModelInputChange(fieldKey, value) {
+      self[fieldKey] = value
+    },
+
     // These files come in through the file upload button
     handleGridFileUpload(rawFile) {
       self.fileIsSelected = true
@@ -325,6 +336,9 @@ export const initialGridState = {
   powerType: '',
   batteryType: '',
   generatorType: '',
+  wholesaleElectricityCost: fieldDefinitions['wholesaleElectricityCost'].defaultValue,
+  retailElectricityPrice: fieldDefinitions['retailElectricityPrice'].defaultValue,
+  unmetLoadCostPerKwh: fieldDefinitions['unmetLoadCostPerKwh'].defaultValue,
   batteryMinSoC: null,
   batteryMaxSoC: null,
   batteryMinEnergyContent: null,
