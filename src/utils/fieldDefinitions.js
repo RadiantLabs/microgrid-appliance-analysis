@@ -16,7 +16,7 @@ export const fieldDefinitions = {
     minimum: 0,
     maximum: 100,
     step: 0.1,
-    defaultValue: 2.2,
+    // defaultValue: 2.2,
     units: 'kW',
   },
   dutyCycleDerateFactor: {
@@ -28,7 +28,7 @@ export const fieldDefinitions = {
     minimum: 0,
     maximum: 2,
     step: 0.05,
-    defaultValue: 1,
+    // defaultValue: 1,
     units: '-',
   },
   wholesaleElectricityCost: {
@@ -37,7 +37,7 @@ export const fieldDefinitions = {
     description:
       'Cost to produce or purchase electricity for the grid operator, not including unmet load costs.',
     type: 'float',
-    defaultValue: 0,
+    // defaultValue: 0,
     units: '$/kWh',
   },
   unmetLoadCostPerKwh: {
@@ -46,7 +46,7 @@ export const fieldDefinitions = {
     description:
       'Cost to produce or purchase electricity for the grid operator, above what their system can handle. For example, this may be the cost of diesel for a generator',
     type: 'float',
-    defaultValue: 0.35,
+    // defaultValue: 0.35,
     units: '$/kWh',
   },
   retailElectricityPrice: {
@@ -55,7 +55,7 @@ export const fieldDefinitions = {
     description:
       'Price of electricity for the consumer (appliance operator). This is also the revenue for the grid operator.',
     type: 'float',
-    defaultValue: 0.45,
+    // defaultValue: 0.45,
     units: '$/kWh',
   },
   productionUnitType: {
@@ -64,7 +64,7 @@ export const fieldDefinitions = {
     description:
       'The type of "units" we are producing. Could be something like kg, hour, or liters.',
     type: 'string',
-    defaultValue: '',
+    // defaultValue: '',
   },
   productionUnitsPerKwh: {
     $schema: jsonSchemaStandard,
@@ -72,7 +72,7 @@ export const fieldDefinitions = {
     description:
       'How many units can be produced for a single kwh. Multiply by yearly kWh to get number of units produced in a year. Units could be kg grain / kWh.',
     type: 'float',
-    defaultValue: 136,
+    // defaultValue: 136,
     units: 'productionUnitType/kWh',
   },
   revenuePerProductionUnits: {
@@ -81,7 +81,7 @@ export const fieldDefinitions = {
     description:
       'Revenue generated per unit of production. For example, multiply by yearly kg of grain to get yearly revenue: $ / kg of grain milled.',
     type: 'float',
-    defaultValue: 0.021,
+    // defaultValue: 0.021,
     units: '$/productionUnitType',
   },
 }

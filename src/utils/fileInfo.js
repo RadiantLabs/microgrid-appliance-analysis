@@ -13,6 +13,9 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Baseline',
       description: 'Baseline: Fill in HOMER file description.',
+      wholesaleElectricityCost: 0,
+      retailElectricityPrice: 0.45,
+      unmetLoadCostPerKwh: 0.35,
       // These are auto-detected
       // battery: 'Generic 1kWh Lead Acid [ASM]',
       // pvSystem: 'Generic flat plate',
@@ -29,6 +32,9 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Oversize 20',
       description: 'Oversized: Fill in HOMER file description.',
+      wholesaleElectricityCost: 0,
+      retailElectricityPrice: 0.45,
+      unmetLoadCostPerKwh: 0.35,
       // battery: 'Generic 1kWh Lead Acid [ASM]',
       // pvSystem: 'Generic flat plate',
       // powerType: 'AC',
@@ -44,6 +50,9 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Undersize 20',
       description: 'Undersized: Fill in HOMER file description.',
+      wholesaleElectricityCost: 0,
+      retailElectricityPrice: 0.45,
+      unmetLoadCostPerKwh: 0.35,
       // battery: 'Generic 1kWh Lead Acid [ASM]',
       // pvSystem: 'Generic flat plate',
       // powerType: 'AC',

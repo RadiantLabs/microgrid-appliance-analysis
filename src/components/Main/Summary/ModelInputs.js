@@ -8,6 +8,7 @@ import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
 
 export const EconomicInputs = inject('store')(
   observer(({ store }) => {
+    const { activeGrid, enabledAppliances, multipleAppliancesEnabled } = store
     return (
       <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
         <Table.Body>
@@ -17,7 +18,7 @@ export const EconomicInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['wholesaleElectricityCost'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="wholesaleElectricityCost" />
+              <InputField fieldKey="wholesaleElectricityCost" modelInstance={activeGrid} />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -26,7 +27,7 @@ export const EconomicInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['unmetLoadCostPerKwh'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="unmetLoadCostPerKwh" />
+              <InputField fieldKey="unmetLoadCostPerKwh" modelInstance={activeGrid} />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -35,7 +36,7 @@ export const EconomicInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['retailElectricityPrice'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="retailElectricityPrice" />
+              <InputField fieldKey="retailElectricityPrice" modelInstance={activeGrid} />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -44,8 +45,14 @@ export const EconomicInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['revenuePerProductionUnits'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="revenuePerProductionUnits" />
-              {/* TODO: units */}
+              {multipleAppliancesEnabled ? (
+                'Multiple Appliance Enabled'
+              ) : (
+                <InputField
+                  fieldKey="revenuePerProductionUnits"
+                  modelInstance={enabledAppliances[0]}
+                />
+              )}
             </Table.Cell>
           </Table.Row>
         </Table.Body>
@@ -56,6 +63,7 @@ export const EconomicInputs = inject('store')(
 
 export const TechnicalInputs = inject('store')(
   observer(({ store }) => {
+    const { activeGrid, enabledAppliances, multipleAppliancesEnabled } = store
     return (
       <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
         <Table.Body>
@@ -65,7 +73,11 @@ export const TechnicalInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['nominalPower'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="nominalPower" />
+              {multipleAppliancesEnabled ? (
+                'Multiple Appliance Enabled'
+              ) : (
+                <InputField fieldKey="nominalPower" modelInstance={enabledAppliances[0]} />
+              )}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -74,7 +86,11 @@ export const TechnicalInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['dutyCycleDerateFactor'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="dutyCycleDerateFactor" />
+              {multipleAppliancesEnabled ? (
+                'Multiple Appliance Enabled'
+              ) : (
+                <InputField fieldKey="dutyCycleDerateFactor" modelInstance={enabledAppliances[0]} />
+              )}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -89,7 +105,11 @@ export const TechnicalInputs = inject('store')(
               <HelperPopup content={fieldDefinitions['productionUnitsPerKwh'].description} />
             </Table.Cell>
             <Table.Cell>
-              <InputField fieldKey="productionUnitsPerKwh" />
+              {multipleAppliancesEnabled ? (
+                'Multiple Appliance Enabled'
+              ) : (
+                <InputField fieldKey="productionUnitsPerKwh" modelInstance={enabledAppliances[0]} />
+              )}
             </Table.Cell>
           </Table.Row>
         </Table.Body>

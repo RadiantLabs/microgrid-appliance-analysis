@@ -266,6 +266,9 @@ let initialMainState = {
     ...{
       fileLabel: activeGridFileInfo.attributes.label,
       fileDescription: activeGridFileInfo.attributes.description,
+      wholesaleElectricityCost: activeGridFileInfo.attributes.wholesaleElectricityCost,
+      retailElectricityPrice: activeGridFileInfo.attributes.retailElectricityPrice,
+      unmetLoadCostPerKwh: activeGridFileInfo.attributes.unmetLoadCostPerKwh,
     },
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
@@ -273,7 +276,13 @@ let initialMainState = {
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
-      ...{ fileLabel: gridInfo.attributes.label, fileDescription: gridInfo.attributes.description },
+      ...{
+        fileLabel: gridInfo.attributes.label,
+        fileDescription: gridInfo.attributes.description,
+        wholesaleElectricityCost: gridInfo.attributes.wholesaleElectricityCost,
+        retailElectricityPrice: gridInfo.attributes.retailElectricityPrice,
+        unmetLoadCostPerKwh: gridInfo.attributes.unmetLoadCostPerKwh,
+      },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),

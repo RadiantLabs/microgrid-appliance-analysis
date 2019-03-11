@@ -20,10 +20,12 @@ Big next steps
 --------------------------------------------------------------------------------
 Next steps for Appliances:
 - [ ] Remove modelInputs and assign fields to either grid or appliance model
-  - [ ] Add <InputField /> to ApplianceFormFields in appliance file viewer
+  - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
   - [ ] Change appliance dropdown inputs to use <InputField />
-  - [ ] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
+  - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
   (btw, it was incorrect before having a genearl store for grid or appliance inputs, because you could change the grid or the appliance, and those inputs, which are unique to the grid or appliance, woulndn't change. This is a necessary step)
+  - [ ] Check that grid changes reflect new input values
+  - [ ] Check that appliance changes reflect new input values
 
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
@@ -49,7 +51,7 @@ Next steps for Appliances:
 - [ ] Calculate grid and appliance Payback
 - [ ] Assign appliance cost to either grid owner or grid operator
 - [ ] Add commas to results numbers
-
+- [ ] Find logging library that replaces 'throw'
 - [ ] Use `label` and `description` all over the app. Then I can just use a spread operator
 - [ ] Add Appliance upload section
   - [ ] Input for cost for appliance
