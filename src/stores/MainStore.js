@@ -45,6 +45,7 @@ export const MainStore = types
 
     // For uploading and viewing different appliance files
     stagedAppliance: types.maybeNull(ApplianceStore),
+    viewedApplianceId: types.maybeNull(types.string),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
     modelInputs: ModelInputsStore,
@@ -152,6 +153,10 @@ export const MainStore = types
       self.setActiveGridFile(stagedGridId)
     },
 
+    setViewedApplianceId(applianceId) {
+      self.viewedApplianceId = applianceId
+    },
+
     // -------------------------------------------------------------------------
     // -- Store history undo
     // -------------------------------------------------------------------------
@@ -206,6 +211,16 @@ export const MainStore = types
             self.availableGrids.concat(self.activeGrid),
             grid => grid.fileInfo.id === self.viewedGridId
           )
+    },
+
+    get viewedApplianceIsStaged() {
+      return self.viewedApplianceId === 'staged'
+    },
+
+    get viewedAppliance() {
+      return self.viewedApplianceIsStaged
+        ? self.stagedAppliance
+        : _.find(self.appliances, appliance => appliance.fileInfo.id === self.viewedApplianceId)
     },
 
     get enabledAppliances() {

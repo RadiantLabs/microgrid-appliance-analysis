@@ -55,6 +55,7 @@ Next steps for Appliances:
 - [ ] Fix Re-Train Model button
 ## Upload HOMER files
 
+- [ ] Clean up HOMER file upload sections by taking out passed props (such as viewedGrid) and injecting it from the store
 - [ ] Make sure I can parse every HOMER file without errors
 - [ ] Provide Sample for download
 
