@@ -1,11 +1,21 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader, Label, Message } from 'semantic-ui-react'
+import {
+  Grid,
+  Header,
+  Segment,
+  Button,
+  Icon,
+  Loader,
+  Label,
+  Message,
+  Checkbox,
+  Form,
+} from 'semantic-ui-react'
 import FileButton from 'src/components/Elements/FileButton'
 import BatteryChargeTable from 'src/components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
-import BatteryModel from './BatteryModel'
 
 const FileUploadErrors = ({ fileErrors }) => {
   if (_.isEmpty(fileErrors)) {
@@ -80,6 +90,8 @@ class ApplianceFile extends React.Component {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
     const {
+      enabled,
+      toggleAppliance,
       fileLabel,
       fileDescription,
       showAnalyzedResults,
@@ -94,9 +106,13 @@ class ApplianceFile extends React.Component {
           <Header as="h3" attached="top">
             {fileLabel}
             {!isActiveAppliance && (
-              <Button floated="right" basic size="tiny" onClick={() => 'TODO'}>
-                Enable Appliance
-              </Button>
+              <Checkbox
+                toggle
+                style={{ float: 'right' }}
+                checked={enabled}
+                onChange={toggleAppliance}
+                label={enabled ? 'Disable Appliance' : 'Enable Appliance'}
+              />
             )}
             <Header.Subheader>{fileDescription}</Header.Subheader>
           </Header>

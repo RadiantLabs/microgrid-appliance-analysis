@@ -52,23 +52,31 @@ class ApplianceFiles extends React.Component {
             </Menu>
             <Menu vertical fluid>
               {_.map(appliances, file => {
+                const { fileInfo, fileDescription, fileLabel, enabled } = file
                 return (
                   <Menu.Item
-                    key={file.fileInfo.id}
-                    name={file.fileLabel}
+                    key={fileInfo.id}
+                    name={fileLabel}
                     style={{ minHeight: '60px' }}
-                    active={viewedApplianceId === file.fileInfo.id}
-                    onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
-                    <Header sub>{file.fileLabel}</Header>
+                    active={viewedApplianceId === fileInfo.id}
+                    onClick={this.handleFileNavClick.bind(null, fileInfo.id)}>
+                    <Header sub>{fileLabel}</Header>
                     <HelperPopup
                       content={<FileInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />
-                    <span>{file.fileDescription}</span>
-                    {file.fileInfo.isSample && (
-                      <Label basic attached="top right" size="mini" style={labelStyle}>
-                        Sample
+                    <span>{fileDescription}</span>
+                    {(fileInfo.isSample || enabled) && (
+                      <Label
+                        basic
+                        attached="top right"
+                        size="mini"
+                        style={labelStyle}
+                        color={enabled && 'green'}>
+                        {enabled && 'Enabled'}
+                        {fileInfo.isSample && enabled && ', '}
+                        {fileInfo.isSample && 'Sample'}
                       </Label>
                     )}
                   </Menu.Item>
