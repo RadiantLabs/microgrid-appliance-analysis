@@ -11,11 +11,9 @@ import {
   Label,
   Message,
   Checkbox,
-  Form,
 } from 'semantic-ui-react'
 import FileButton from 'src/components/Elements/FileButton'
-import BatteryChargeTable from 'src/components/Elements/BatteryChargeTable'
-import HomerFormFields from './HomerFormFields'
+import ApplianceFormFields from './ApplianceFormFields'
 
 const FileUploadErrors = ({ fileErrors }) => {
   if (_.isEmpty(fileErrors)) {
@@ -117,7 +115,7 @@ class ApplianceFile extends React.Component {
             <Header.Subheader>{fileDescription}</Header.Subheader>
           </Header>
         )}
-        {!showAnalyzedResults && (
+        {viewedApplianceIsStaged && (
           <Message warning>
             <p>
               This app is in beta. You may have to re-upload files in the future when we update this
@@ -125,40 +123,32 @@ class ApplianceFile extends React.Component {
             </p>
           </Message>
         )}
-        {showAnalyzedResults && (
-          <Segment attached>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={8}>
-                  <HomerFormFields grid={viewedAppliance} />
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <BatteryChargeTable grid={viewedAppliance} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
-                    File Upload Errors
-                  </Label>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <FileUploadErrors fileErrors={fileErrors} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
-                    File Upload Warnings
-                  </Label>
-                </Grid.Column>
-                <Grid.Column width={12}>
-                  <FileUploadErrors fileErrors={fileWarnings} />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
-        )}
+        <Segment attached>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={8}>
+                <ApplianceFormFields />
+              </Grid.Column>
+              <Grid.Column width={8} />
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <div>File Upload Errors</div>
+              </Grid.Column>
+              <Grid.Column width={13}>
+                <FileUploadErrors fileErrors={fileErrors} />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <div>File Upload Warnings</div>
+              </Grid.Column>
+              <Grid.Column width={13}>
+                <FileUploadErrors fileErrors={fileWarnings} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
       </div>
     )
   }

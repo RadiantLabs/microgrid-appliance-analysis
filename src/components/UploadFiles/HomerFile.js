@@ -122,22 +122,18 @@ class HomerFile extends React.Component {
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileErrors) ? 'grey' : 'red'} basic>
-                    File Upload Errors
-                  </Label>
+                <Grid.Column width={3}>
+                  <div>File Upload Errors</div>
                 </Grid.Column>
-                <Grid.Column width={12}>
+                <Grid.Column width={13}>
                   <FileUploadErrors fileErrors={fileErrors} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
-                <Grid.Column width={4}>
-                  <Label color={_.isEmpty(fileWarnings) ? 'grey' : 'orange'} basic>
-                    File Upload Warnings
-                  </Label>
+                <Grid.Column width={3}>
+                  <div>File Upload Warnings</div>
                 </Grid.Column>
-                <Grid.Column width={12}>
+                <Grid.Column width={13}>
                   <FileUploadErrors fileErrors={fileWarnings} />
                 </Grid.Column>
               </Grid.Row>

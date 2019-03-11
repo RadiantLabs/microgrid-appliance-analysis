@@ -4,7 +4,18 @@ import { Table, Input } from 'semantic-ui-react'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
 import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
 
-const HomerFormFields = ({ grid }) => {
+const HomerFormFields = ({ store }) => {
+  const { viewedAppliance } = store
+  const {
+    fileLabel,
+    fileDescription,
+    powerType,
+    powerFactor,
+    phase,
+    hasMotor,
+    handleLabelChange,
+    handleDescriptionChange,
+  } = viewedAppliance
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -19,7 +30,7 @@ const HomerFormFields = ({ grid }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={grid.handleLabelChange} value={grid.fileLabel} size="small" />
+            <Input onChange={handleLabelChange} value={fileLabel} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -31,54 +42,32 @@ const HomerFormFields = ({ grid }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input
-              onChange={grid.handleDescriptionChange}
-              value={grid.fileDescription}
-              size="small"
-            />
+            <Input onChange={handleDescriptionChange} value={fileDescription} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
             Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
           </Table.Cell>
-          <Table.Cell>{grid.powerType}</Table.Cell>
+          <Table.Cell>{powerType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Battery Type{' '}
-            <HelperPopup
-              position="right center"
-              content={
-                'This is determined by reading the headers of the HOMER file. This is the battery you chose when you created the HOMER file.'
-              }
-            />
+            Power Factor <HelperPopup position="right center" content={'TODO'} />
           </Table.Cell>
-          <Table.Cell>{grid.batteryType}</Table.Cell>
+          <Table.Cell>{powerFactor}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            PV Type{' '}
-            <HelperPopup
-              position="right center"
-              content={
-                'This is determined by reading the headers of the HOMER file. This is the PV system you chose when you created the HOMER file.'
-              }
-            />
+            Phase <HelperPopup position="right center" content={'TODO'} />
           </Table.Cell>
-          <Table.Cell>{grid.pvType}</Table.Cell>
+          <Table.Cell>{phase}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Generator Type{' '}
-            <HelperPopup
-              position="right center"
-              content={
-                'This is determined by reading the headers of the HOMER file. This is the generator you chose when you created the HOMER file.'
-              }
-            />
+            Has Motor? <HelperPopup position="right center" content={'TODO'} />
           </Table.Cell>
-          <Table.Cell>{grid.generatorType}</Table.Cell>
+          <Table.Cell>{hasMotor ? 'Yes' : 'No'}</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
