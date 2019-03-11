@@ -3,8 +3,10 @@ import { observer, inject } from 'mobx-react'
 import { Table, Input } from 'semantic-ui-react'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
 import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
+import InputField from 'src/components/Elements/InputField'
+import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 
-const HomerFormFields = ({ store }) => {
+const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
   const {
     fileLabel,
@@ -69,9 +71,69 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>{hasMotor ? 'Yes' : 'No'}</Table.Cell>
         </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['nominalPower'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['nominalPower'].description}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="nominalPower" modelInstance={viewedAppliance} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['dutyCycleDerateFactor'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['dutyCycleDerateFactor'].description}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="dutyCycleDerateFactor" modelInstance={viewedAppliance} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['productionUnitType'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['productionUnitType'].description}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="productionUnitType" modelInstance={viewedAppliance} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['productionUnitsPerKwh'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['productionUnitsPerKwh'].description}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['revenuePerProductionUnits'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['revenuePerProductionUnits'].description}
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="revenuePerProductionUnits" modelInstance={viewedAppliance} />
+          </Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   )
 }
 
-export default inject('store')(observer(HomerFormFields))
+export default inject('store')(observer(ApplianceFormFields))

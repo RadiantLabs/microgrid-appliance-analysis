@@ -59,7 +59,7 @@ export const MainStore = types
       self.activeGridIsLoading = true
       yield self.activeGrid.loadFile(self.activeGrid.fileInfo)
       self.activeGridIsLoading = false
-      self.loadAvailableGrids()
+      // self.loadAvailableGrids() // Temp disable to speed up development
     }),
 
     // All availableGrids will be instantiated GridStores with barely any data

@@ -7,6 +7,26 @@ import { isFloat, isInteger } from 'src/utils/helpers'
 import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 import './InputField.css'
 
+function unitLabelPosition(units) {
+  if (!units) {
+    return null
+  }
+  return units === '$' ? 'left' : 'right'
+}
+
+function unitLabelContent(units, productionUnitType) {
+  if (!units) {
+    return null
+  }
+  console.log('productionUnitType: ', productionUnitType)
+  console.log(_.replace(units, 'productionUnitType', productionUnitType))
+  const content =
+    _.includes(units, 'productionUnitType') && productionUnitType
+      ? _.replace(units, 'productionUnitType', productionUnitType)
+      : units
+  return { basic: true, content }
+}
+
 const checkValidity = (value, fieldDef) => {
   let error = false
   if (fieldDef.type === 'float') {
@@ -33,15 +53,9 @@ class InputField extends React.Component {
   // If entered value is valid on blur, update mobx state so calcs can run
   handleBlur = e => {
     const { value } = this.state
-    const { fieldKey, modelInstance, store } = this.props
+    const { fieldKey, modelInstance } = this.props
     const fieldDef = fieldDefinitions[fieldKey]
-    const { onModelInputChange } = store[modelInstance]
-    if (_.isEmpty(modelInstance)) {
-      throw new Error(`Must supply modelInstance to input field`)
-    }
-    if (_.isEmpty(onModelInputChange)) {
-      throw new Error(`modelInstance must have an onModelInputChange as an action`)
-    }
+    const { onModelInputChange } = modelInstance
     const error = checkValidity(value, fieldDef)
     if (!error) {
       switch (fieldDef.type) {
@@ -66,28 +80,33 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey } = this.props
+    const { fieldKey, modelInstance } = this.props
     const { value, error } = this.state
+    const { productionUnitType } = modelInstance
+    if (_.isEmpty(modelInstance)) {
+      throw new Error(`Must supply modelInstance to input field`)
+    }
+    if (_.isEmpty(modelInstance.onModelInputChange)) {
+      throw new Error(`modelInstance must have an onModelInputChange as an action`)
+    }
     if (_.isNil(fieldKey)) {
       return <Input disabled loading />
     }
     if (_.isNil(fieldDefinitions[fieldKey])) {
-      throw new Error(`fieldKey passed in isn't found in fieldDefinitions: ${fieldKey}`)
+      throw new Error(`fieldKey passed in is not found in fieldDefinitions: ${fieldKey}`)
     }
     const { units } = fieldDefinitions[fieldKey]
     return (
-      <div>
-        <div className="InputFieldWrapper">
-          <Input
-            value={value}
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            error={Boolean(error)}
-            size="small"
-            label={{ basic: true, content: units }}
-            labelPosition="right"
-          />
-        </div>
+      <div className="InputFieldWrapper">
+        <Input
+          value={value}
+          onChange={this.handleChange}
+          onBlur={this.handleBlur}
+          error={Boolean(error)}
+          size="small"
+          label={unitLabelContent(units, productionUnitType)}
+          labelPosition={unitLabelPosition(units)}
+        />
       </div>
     )
   }

@@ -58,6 +58,14 @@ export const fieldDefinitions = {
     defaultValue: 0.45,
     units: '$/kWh',
   },
+  productionUnitType: {
+    $schema: jsonSchemaStandard,
+    title: 'Production Unit Type',
+    description:
+      'The type of "units" we are producing. Could be something like kg, hour, or liters.',
+    type: 'string',
+    defaultValue: '',
+  },
   productionUnitsPerKwh: {
     $schema: jsonSchemaStandard,
     title: 'Units of Production per kWh',
@@ -65,7 +73,7 @@ export const fieldDefinitions = {
       'How many units can be produced for a single kwh. Multiply by yearly kWh to get number of units produced in a year. Units could be kg grain / kWh.',
     type: 'float',
     defaultValue: 136,
-    units: '-',
+    units: 'productionUnitType/kWh',
   },
   revenuePerProductionUnits: {
     $schema: jsonSchemaStandard,
@@ -74,15 +82,6 @@ export const fieldDefinitions = {
       'Revenue generated per unit of production. For example, multiply by yearly kg of grain to get yearly revenue: $ / kg of grain milled.',
     type: 'float',
     defaultValue: 0.021,
-    units: '-',
-  },
-  productionUnitUnits: {
-    $schema: jsonSchemaStandard,
-    title:
-      'The suffix (units) attached to revenuePerProductionUnits. Could be $ / kg, $ / hour, $ / liter',
-    type: 'array',
-    values: ['$ / kg of grain', '$ / hour', '$ / liter'],
-    defaultValue: '-',
-    units: '-',
+    units: '$/productionUnitType',
   },
 }

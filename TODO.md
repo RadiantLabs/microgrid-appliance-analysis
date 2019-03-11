@@ -25,6 +25,9 @@ Next steps for Appliances:
   - [ ] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
   (btw, it was incorrect before having a genearl store for grid or appliance inputs, because you could change the grid or the appliance, and those inputs, which are unique to the grid or appliance, woulndn't change. This is a necessary step)
 
+- [ ] Make appliance enabled/disabled state clearer
+- [ ] Add appliance popover data
+- [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
 - [x] Make activeAppliance a collection
 - [x] Add new fields to appliance model:
   - [x] cost
