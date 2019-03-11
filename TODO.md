@@ -20,7 +20,11 @@ Big next steps
 --------------------------------------------------------------------------------
 Next steps for Appliances:
 - [ ] Remove modelInputs and assign fields to either grid or appliance model
-- [ ] Build generalized input field sanitizer that stores volatile, typed state for input fields
+  - [ ] Add <InputField /> to ApplianceFormFields in appliance file viewer
+  - [ ] Change appliance dropdown inputs to use <InputField />
+  - [ ] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
+  (btw, it was incorrect before having a genearl store for grid or appliance inputs, because you could change the grid or the appliance, and those inputs, which are unique to the grid or appliance, woulndn't change. This is a necessary step)
+
 - [x] Make activeAppliance a collection
 - [x] Add new fields to appliance model:
   - [x] cost

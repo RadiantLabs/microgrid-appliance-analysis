@@ -19,7 +19,6 @@ import {
   sampleApplianceFiles,
   ancillaryEquipmentList,
 } from 'src/utils/fileInfo'
-import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 import { combinedColumnHeaderOrder } from 'src/utils/columnHeaders'
 import { disableAllAncillaryEquipment } from 'src/utils/ancillaryEquipmentRules'
 
