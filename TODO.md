@@ -28,6 +28,7 @@ Next steps for Appliances:
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
 - [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
+- [ ] Get rid of fieldDefinition defaults so I am sure I'm not using them anywwhere
 - [x] Make activeAppliance a collection
 - [x] Add new fields to appliance model:
   - [x] cost
@@ -42,6 +43,7 @@ Next steps for Appliances:
   - [x] editable costs
   - [x] assign to grid operator or appliance owner
 - Fix broken ancillary equipment list
+
 - [ ] Keep appliance spinner going until it's actually clickable
 - [ ] Calculate grid and appliance ROI
 - [ ] Calculate grid and appliance Payback

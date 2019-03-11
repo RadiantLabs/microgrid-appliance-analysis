@@ -126,10 +126,10 @@ class ApplianceFile extends React.Component {
         <Segment attached>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}>
+              <Grid.Column width={10}>
                 <ApplianceFormFields />
               </Grid.Column>
-              <Grid.Column width={8} />
+              <Grid.Column width={6} />
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={3}>

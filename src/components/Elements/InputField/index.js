@@ -19,10 +19,9 @@ function unitLabelContent(units, modelInstance) {
     return null
   }
   const { productionUnitType } = modelInstance
-  const content =
-    _.includes(units, 'productionUnitType') && productionUnitType
-      ? _.replace(units, 'productionUnitType', productionUnitType)
-      : units
+  const content = _.includes(units, 'productionUnitType')
+    ? _.replace(units, 'productionUnitType', productionUnitType || '-')
+    : units
   return { basic: true, content }
 }
 
