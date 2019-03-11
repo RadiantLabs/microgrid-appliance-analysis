@@ -18,15 +18,9 @@ Big next steps
 * Save files and bootstrap from localforage
 
 --------------------------------------------------------------------------------
-Should I get rid of the distiction of 'activeAppliance' and just make an availableAppliances,
-where `activeAppliances` is just a computed value?
-* I will need a summary of appliances
-  * hour-by-hour load
-  * up front cost
-  * Revenue Per Production Units
-(for that matter, I could do the same with grids... but there are a lot more expensive computatations for grids)
-
 Next steps for Appliances:
+- [ ] Remove modelInputs and assign fields to either grid or appliance model
+- [ ] Build generalized input field sanitizer that stores volatile, typed state for input fields
 - [x] Make activeAppliance a collection
 - [x] Add new fields to appliance model:
   - [x] cost
@@ -58,6 +52,10 @@ Next steps for Appliances:
 - [ ] Clean up HOMER file upload sections by taking out passed props (such as viewedGrid) and injecting it from the store
 - [ ] Make sure I can parse every HOMER file without errors
 - [ ] Provide Sample for download
+
+## Ancillary Appliances
+- [ ] Allow assigning ancillary equipment to grid or appliance operator
+
 
 ## Battery charging model
 
