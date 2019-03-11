@@ -286,12 +286,17 @@ let initialMainState = {
       ...initialApplianceState,
       ...{
         enabled: applianceInfo.id === enabledApplianceFileId,
-        fileLabel: applianceInfo.attributes.label,
+        fileLabel: applianceInfo.attributes.label, // TODO: Just make this label and description all over the app. Then I can just use a spread operator
         fileDescription: applianceInfo.attributes.description,
         powerType: applianceInfo.attributes.powerType,
         phase: applianceInfo.attributes.phase,
         hasMotor: applianceInfo.attributes.hasMotor,
         powerFactor: applianceInfo.attributes.powerFactor,
+        nominalPower: applianceInfo.attributes.nominalPower,
+        dutyCycleDerateFactor: applianceInfo.attributes.dutyCycleDerateFactor,
+        productionUnitType: applianceInfo.attributes.productionUnitType,
+        productionUnitsPerKwh: applianceInfo.attributes.productionUnitsPerKwh,
+        revenuePerProductionUnits: applianceInfo.attributes.revenuePerProductionUnits,
       },
       ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
     })

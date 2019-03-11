@@ -14,12 +14,11 @@ function unitLabelPosition(units) {
   return units === '$' ? 'left' : 'right'
 }
 
-function unitLabelContent(units, productionUnitType) {
+function unitLabelContent(units, modelInstance) {
   if (!units) {
     return null
   }
-  console.log('productionUnitType: ', productionUnitType)
-  console.log(_.replace(units, 'productionUnitType', productionUnitType))
+  const { productionUnitType } = modelInstance
   const content =
     _.includes(units, 'productionUnitType') && productionUnitType
       ? _.replace(units, 'productionUnitType', productionUnitType)
@@ -82,7 +81,6 @@ class InputField extends React.Component {
   render() {
     const { fieldKey, modelInstance } = this.props
     const { value, error } = this.state
-    const { productionUnitType } = modelInstance
     if (_.isEmpty(modelInstance)) {
       throw new Error(`Must supply modelInstance to input field`)
     }
@@ -104,7 +102,7 @@ class InputField extends React.Component {
           onBlur={this.handleBlur}
           error={Boolean(error)}
           size="small"
-          label={unitLabelContent(units, productionUnitType)}
+          label={unitLabelContent(units, modelInstance)}
           labelPosition={unitLabelPosition(units)}
         />
       </div>

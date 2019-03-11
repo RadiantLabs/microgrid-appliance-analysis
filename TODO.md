@@ -48,7 +48,7 @@ Next steps for Appliances:
 - [ ] Assign appliance cost to either grid owner or grid operator
 - [ ] Add commas to results numbers
 
-
+- [ ] Use `label` and `description` all over the app. Then I can just use a spread operator
 - [ ] Add Appliance upload section
   - [ ] Input for cost for appliance
   - [ ] Require appliance file to have certain columns

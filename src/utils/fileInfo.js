@@ -72,9 +72,9 @@ export const sampleApplianceFiles = [
       powerFactor: 0.8,
       nominalPower: 2.2,
       dutyCycleDerateFactor: 0.2,
+      productionUnitType: 'kg',
       productionUnitsPerKwh: 136,
       revenuePerProductionUnits: 0.021,
-      productionUnitUnits: 'kg',
     },
   },
   {
@@ -93,9 +93,9 @@ export const sampleApplianceFiles = [
       powerFactor: 0.8,
       nominalPower: 2.2,
       dutyCycleDerateFactor: 0.2,
+      productionUnitType: 'kg',
       productionUnitsPerKwh: 136,
       revenuePerProductionUnits: 0.021,
-      productionUnitUnits: 'kg',
     },
   },
   {
@@ -114,9 +114,9 @@ export const sampleApplianceFiles = [
       powerFactor: 0.8,
       nominalPower: 2.2,
       dutyCycleDerateFactor: 0.2,
+      productionUnitType: 'kg',
       productionUnitsPerKwh: 136,
       revenuePerProductionUnits: 0.021,
-      productionUnitUnits: 'kg',
     },
   },
   {
@@ -135,9 +135,9 @@ export const sampleApplianceFiles = [
       powerFactor: 1,
       nominalPower: 2.2,
       dutyCycleDerateFactor: 0.2,
+      productionUnitType: 'hr',
       productionUnitsPerKwh: 136,
       revenuePerProductionUnits: 0.021,
-      productionUnitUnits: 'hr',
     },
   },
 ]
