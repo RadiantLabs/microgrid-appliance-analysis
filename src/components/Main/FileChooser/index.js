@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+import InputField from 'src/components/Elements/InputField'
 import _ from 'lodash'
 import {
   Dropdown,
@@ -12,7 +13,6 @@ import {
   Icon,
   Loader,
   Radio,
-  Input,
 } from 'semantic-ui-react'
 
 const ApplianceSelectionTrigger = inject('store')(
@@ -52,12 +52,9 @@ const ApplianceSelectionTable = inject('store')(
               fileInfo,
               fileLabel,
               fileDescription,
-              capexTempValue,
-              capexInputError,
               capexAssignment,
               enabled,
               toggleAppliance,
-              handleCapexChange,
               handleCapexAssignmentChange,
             } = appliance
             return (
@@ -68,15 +65,7 @@ const ApplianceSelectionTable = inject('store')(
                 <Table.Cell>{fileLabel}</Table.Cell>
                 <Table.Cell>{fileDescription}</Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={capexTempValue}
-                    onChange={handleCapexChange}
-                    error={capexInputError}
-                    size="small"
-                    label={{ basic: true, content: '$' }}
-                    labelPosition="left"
-                  />
+                  <InputField fieldKey="capex" modelInstance={appliance} />
                 </Table.Cell>
                 <Table.Cell>
                   <Form style={{ marginTop: '7px', marginBottom: '7px' }}>

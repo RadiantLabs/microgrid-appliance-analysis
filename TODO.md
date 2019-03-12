@@ -41,14 +41,15 @@ Next steps for Appliances:
   - [ ] Units of Productivity
     - rename to "Units Produced"
     - include unit label (kg, hr)
-
-
 - [ ] Fix summaryStats now that we don't depend on modelInputs
+
+
 - [ ] Make appliance Power Type, Power Factor, and others editable, unless it's a sample file
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
+- [ ] Change label and description to use <InputField /> (need to add to field definitions)
 - [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
-- [ ] Get rid of fieldDefinition defaults so I am sure I'm not using them anywwhere
+- [x] Get rid of fieldDefinition defaults so I am sure I'm not using them anywwhere
 - [x] Make activeAppliance a collection
 - [x] Add new fields to appliance model:
   - [x] cost

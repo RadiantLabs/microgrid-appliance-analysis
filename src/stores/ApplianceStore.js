@@ -65,8 +65,6 @@ export const ApplianceStore = types
       '',
     ]),
     capex: types.number,
-    capexTempValue: types.frozen(),
-    capexInputError: types.boolean,
     capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     phase: types.maybeNull(types.number),
@@ -152,14 +150,6 @@ export const ApplianceStore = types
     handleDescriptionChange(event, data) {
       event.preventDefault()
       self.fileDescription = data.value
-    },
-
-    handleCapexChange(event, data) {
-      event.preventDefault()
-      const inputError = !_.isFinite(parseInt(data.value, 10))
-      self.capexInputError = inputError
-      self.capexTempValue = data.value
-      self.capex = inputError ? self.capex : parseInt(self.capexTempValue, 10)
     },
 
     handleCapexAssignmentChange(event, data) {

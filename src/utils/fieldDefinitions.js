@@ -7,6 +7,13 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 // https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 export const fieldDefinitions = {
+  capex: {
+    $schema: jsonSchemaStandard,
+    title: 'Appliance Capex',
+    description: 'Capital expenditure for the appliance',
+    type: 'integer',
+    units: '$',
+  },
   nominalPower: {
     $schema: jsonSchemaStandard,
     title: 'Appliance Nominal Power',
