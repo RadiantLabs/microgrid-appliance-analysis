@@ -177,7 +177,7 @@ export const MainStore = types
       return combineTables(
         self.activeGrid.fileData,
         self.calculatedColumns,
-        self.activeAppliance.fileData
+        self.calculatedApplianceColumns
       )
     },
     get summaryStats() {

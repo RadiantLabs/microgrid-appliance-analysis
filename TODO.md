@@ -19,14 +19,13 @@ Big next steps
 
 --------------------------------------------------------------------------------
 Next steps for Appliances:
-- [ ] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
-  - [ ] Start with newAppliancesLoad and hooking up existing calculations (ignore ROI and payback)
-  - [ ] Show derived colummns Data grid
+- [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
+  - [x] Start with newAppliancesLoad and hooking up existing calculations
+  - [x] Show derived colummns Data grid
 - [ ] Remove modelInputs and assign fields to either grid or appliance model
   - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
-  - [ ] Change appliance dropdown inputs to use <InputField />
+  - [x] Change appliance dropdown inputs to use <InputField />
   - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
-  (btw, it was incorrect before having a genearl store for grid or appliance inputs, because you could change the grid or the appliance, and those inputs, which are unique to the grid or appliance, woulndn't change. This is a necessary step)
   - [ ] Check that grid changes reflect new input values
   - [ ] Check that appliance changes reflect new input values
 
@@ -41,6 +40,7 @@ Next steps for Appliances:
   - [ ] Units of Productivity
     - rename to "Units Produced"
     - include unit label (kg, hr)
+- [ ] Confirm summary calcs using a spreadsheet
 - [ ] Fix summaryStats now that we don't depend on modelInputs
 
 

@@ -7,11 +7,11 @@ import _ from 'lodash'
 //   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
 // const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
 
-export function calculateNewApplianceColumns(appliances) {
-  if (!_.every(_.map(appliances, appliance => !_.isEmpty(appliance.fileData)))) {
+export function calculateNewApplianceColumns(enabledAppliances) {
+  if (!_.every(_.map(enabledAppliances, appliance => !_.isEmpty(appliance.fileData)))) {
     return []
   }
-  const appliancesWithNewColummns = _.map(appliances, appliance => {
+  const appliancesWithNewColummns = _.map(enabledAppliances, appliance => {
     const { nominalPower, dutyCycleDerateFactor } = appliance
     return _.map(appliance.fileData, row => {
       return {
@@ -20,6 +20,7 @@ export function calculateNewApplianceColumns(appliances) {
       }
     })
   })
+  const multipleAppliances = _.size(enabledAppliances) > 1
   const zippedAppliances = _.zip(...appliancesWithNewColummns)
   return _.map(zippedAppliances, appliancesRow => {
     const newAppliancesLoad = _.sumBy(appliancesRow, appliance => appliance.newApplianceLoad)
@@ -28,6 +29,7 @@ export function calculateNewApplianceColumns(appliances) {
       hour_of_day: appliancesRow[0]['hour_of_day'],
       day_hour: appliancesRow[0]['day_hour'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
+      kw_factor: multipleAppliances ? 'Multiple' : appliancesRow[0]['kw_factor'],
     }
   })
 }
