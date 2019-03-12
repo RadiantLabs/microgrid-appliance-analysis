@@ -19,6 +19,9 @@ Big next steps
 
 --------------------------------------------------------------------------------
 Next steps for Appliances:
+- [ ] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
+  - [ ] Start with newAppliancesLoad and hooking up existing calculations (ignore ROI and payback)
+  - [ ] Show derived colummns Data grid
 - [ ] Remove modelInputs and assign fields to either grid or appliance model
   - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
   - [ ] Change appliance dropdown inputs to use <InputField />
@@ -27,6 +30,21 @@ Next steps for Appliances:
   - [ ] Check that grid changes reflect new input values
   - [ ] Check that appliance changes reflect new input values
 
+- [ ] *** Calculate everything on an hourly basis (not ROI and simple payback) ***
+  - [ ] Electricity Sales (from new appliances)
+  - [ ] New appliance unmet load cost
+  - [ ] New appliance net revenue
+  - [ ] Appliance Electricity Cost
+  - [ ] Appliance-Related Revenue
+  - [ ] Net Revenue
+  - [ ] Appliance Electricity Consumption
+  - [ ] Units of Productivity
+    - rename to "Units Produced"
+    - include unit label (kg, hr)
+
+
+- [ ] Fix summaryStats now that we don't depend on modelInputs
+- [ ] Make appliance Power Type, Power Factor, and others editable, unless it's a sample file
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
 - [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown

@@ -13,7 +13,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 // Import Helpers and domain data
 import { combineTables } from 'src/utils/helpers'
 import { getSummaryStats } from 'src/utils/calculateStats'
-import { calculateNewColumns } from 'src/utils/calculateNewColumns'
+import { calculateNewColumns, calculateNewApplianceColumns } from 'src/utils/calculateNewColumns'
 import {
   sampleGridFileInfos,
   sampleApplianceFiles,
@@ -167,12 +167,11 @@ export const MainStore = types
     },
   }))
   .views(self => ({
+    get calculatedApplianceColumns() {
+      return calculateNewApplianceColumns(self.enabledAppliances)
+    },
     get calculatedColumns() {
-      return calculateNewColumns({
-        grid: self.activeGrid,
-        appliance: self.activeAppliance,
-        modelInputs: self.modelInputs,
-      })
+      return calculateNewColumns(self.activeGrid, self.calculatedApplianceColumns)
     },
     get combinedTable() {
       return combineTables(
@@ -184,7 +183,7 @@ export const MainStore = types
     get summaryStats() {
       return _.isEmpty(self.calculatedColumns)
         ? null
-        : getSummaryStats(self.calculatedColumns, self.modelInputs)
+        : getSummaryStats(self.calculatedColumns, self.activeGrid)
     },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {
@@ -294,7 +293,8 @@ let initialMainState = {
     return ApplianceStore.create({
       ...initialApplianceState,
       ...{
-        enabled: applianceInfo.id === enabledApplianceFileId,
+        // enabled: applianceInfo.id === enabledApplianceFileId,
+        enabled: true,
         fileLabel: applianceInfo.attributes.label, // TODO: Just make this label and description all over the app. Then I can just use a spread operator
         fileDescription: applianceInfo.attributes.description,
         powerType: applianceInfo.attributes.powerType,

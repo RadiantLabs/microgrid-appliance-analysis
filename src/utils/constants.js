@@ -41,7 +41,7 @@ export const tableColorsByKey = {
 
 export const chartColorsByKey = {
   // Loads
-  newApplianceLoad: '#003f5c',
+  newAppliancesLoad: '#003f5c',
   availableCapacity: '#DD5182',
   availableCapacityAfterNewLoad: '#955196',
   newApplianceBatteryConsumption: '#FFA601',

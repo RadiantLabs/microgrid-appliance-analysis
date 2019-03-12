@@ -40,9 +40,9 @@ class LoadsByHour extends React.Component {
             <Tooltip />
             <Line
               type="monotone"
-              dataKey="newApplianceLoad"
+              dataKey="newAppliancesLoad"
               dot={false}
-              stroke={getChartColors('newApplianceLoad')}
+              stroke={getChartColors('newAppliancesLoad')}
             />
             <Line
               type="monotone"

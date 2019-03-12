@@ -1,20 +1,47 @@
 import _ from 'lodash'
 
+// TODO: Calculate these values on a hourly basis
+// // Calculate production of new appliance based on
+// const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
+// const yearlyProductionUnitsRevenue =
+//   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
+// const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
+
+export function calculateNewApplianceColumns(appliances) {
+  if (!_.every(_.map(appliances, appliance => !_.isEmpty(appliance.fileData)))) {
+    return []
+  }
+  const appliancesWithNewColummns = _.map(appliances, appliance => {
+    const { nominalPower, dutyCycleDerateFactor } = appliance
+    return _.map(appliance.fileData, row => {
+      return {
+        ...row,
+        newApplianceLoad: row['kw_factor'] * nominalPower * dutyCycleDerateFactor,
+      }
+    })
+  })
+  const zippedAppliances = _.zip(...appliancesWithNewColummns)
+  return _.map(zippedAppliances, appliancesRow => {
+    const newAppliancesLoad = _.sumBy(appliancesRow, appliance => appliance.newApplianceLoad)
+    return {
+      hour: appliancesRow[0]['hour'],
+      hour_of_day: appliancesRow[0]['hour_of_day'],
+      day_hour: appliancesRow[0]['day_hour'],
+      newAppliancesLoad: _.round(newAppliancesLoad, 4),
+    }
+  })
+}
+
 /**
- * Pass in the merged table that includes Homer and Appliance Usage factors
+ * Pass in the merged table that includes Homer and summed appliance calculated columnms.
  * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-export function calculateNewColumns({ grid, appliance, modelInputs }) {
-  if (_.isEmpty(grid) || _.isEmpty(appliance)) {
+export function calculateNewColumns(grid, summedAppliances) {
+  if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return null
   }
-  if (_.isEmpty(grid.fileData) || _.isEmpty(appliance.fileData)) {
-    return null
-  }
-  const applianceData = appliance.fileData
   const t0 = performance.now()
-
   const { batteryMinEnergyContent, batteryMinSoC } = grid
 
   // Reducer function. This is needed so that we can have access to values in
@@ -24,14 +51,14 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
     const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
 
     // Get the matching row for the appliance
-    const applianceRow = applianceData[rowIndex]
+    const applianceRow = summedAppliances[rowIndex]
 
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]
 
     // Get existing values from the current row we are iterating over:
     // Excess electrical production:  Original energy production minus original load (not new
-    // appliances) when the battery is charging as fast as possible
+    // summedAppliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
     const batteryEnergyContent = row['Battery Energy Content']
     const batterySOC = row['Battery State of Charge']
@@ -42,19 +69,8 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
 
-    // Calculate load profile from usage profile
-    const newApplianceLoad =
-      applianceRow['kw_factor'] * modelInputs['nominalPower'] * modelInputs['dutyCycleDerateFactor']
-
-    if (!_.isFinite(newApplianceLoad)) {
-      throw new Error(
-        `newApplianceLoad did not calculate properly. Check your file has all required columns and that all values are finite. Row: ${JSON.stringify(
-          applianceRow
-        )}. Also make sure modelInputs are numbers and not strings or undefined: ${JSON.stringify(
-          modelInputs
-        )}`
-      )
-    }
+    // Calculated (summed) loads from new enabled appliances
+    const newAppliancesLoad = applianceRow['newAppliancesLoad']
 
     /*
      * Now calculate new values based on the HOMER and usage profiles
@@ -68,7 +84,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
       excessElecProd + (batterySOC <= batteryMinSoC ? 0 : energyContentAboveMin)
 
     // Find available capacity after the new appliance is added
-    const availableCapacityAfterNewLoad = availableCapacity - newApplianceLoad
+    const availableCapacityAfterNewLoad = availableCapacity - newAppliancesLoad
 
     // Is there an unmet load after the new appliance is added?
     // If there is no available capacity (or goes negative) after the new appliance
@@ -87,7 +103,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
     // aren't draining the battery.
     // excessElecProd is the excess after taking into acount the original load
     const newApplianceBatteryConsumption =
-      newApplianceLoad > excessElecProd ? newApplianceLoad - excessElecProd : 0
+      newAppliancesLoad > excessElecProd ? newAppliancesLoad - excessElecProd : 0
 
     // Original Battery Energy Content Delta
     // This is how much the energy content in the battery has increased or decreased in
@@ -127,7 +143,7 @@ export function calculateNewColumns({ grid, appliance, modelInputs }) {
       hour_of_day: applianceRow['hour_of_day'],
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
-      newApplianceLoad: _.round(newApplianceLoad, 4),
+      newAppliancesLoad: _.round(newAppliancesLoad, 4),
       availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
       additionalUnmetLoad: _.round(additionalUnmetLoad, 1),

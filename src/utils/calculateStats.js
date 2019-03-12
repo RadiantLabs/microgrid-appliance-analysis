@@ -7,7 +7,7 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
-export function getSummaryStats(calculatedColumns, modelInputs) {
+export function getSummaryStats(calculatedColumns, activeGrid) {
   // Unmet Loads: Original without new appliance
   const originalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
@@ -47,27 +47,26 @@ export function getSummaryStats(calculatedColumns, modelInputs) {
 
   // Yearly kWh and Financial Calculations
   // New Appliance kWh for the year
-  const newApplianceYearlyKwh = sumGreaterThanZero(calculatedColumns, 'newApplianceLoad')
+  const newApplianceYearlyKwh = sumGreaterThanZero(calculatedColumns, 'newAppliancesLoad')
 
   // New Appliance kWh revenue for grid operator (cost for appliance owner)
   const newApplianceElectricityRevenue =
-    newApplianceYearlyKwh * modelInputs['retailElectricityPrice']
+    newApplianceYearlyKwh * activeGrid['retailElectricityPrice']
 
   // Electricity cost to grid operator
-  const newApplianceElectricityCost =
-    newApplianceYearlyKwh * modelInputs['wholesaleElectricityCost']
+  const newApplianceElectricityCost = newApplianceYearlyKwh * activeGrid['wholesaleElectricityCost']
 
   // Cost to grid operator of new appliance's unmet load
-  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * modelInputs['unmetLoadCostPerKwh']
+  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * activeGrid['unmetLoadCostPerKwh']
 
   const newApplianceNetRevenue =
     newApplianceElectricityRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
 
   // Calculate production of new appliance based on
-  const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
-  const yearlyProductionUnitsRevenue =
-    yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
-  const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
+  // const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
+  // const yearlyProductionUnitsRevenue =
+  //   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
+  // const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
 
   return {
     originalUnmetLoadCount,
@@ -93,8 +92,11 @@ export function getSummaryStats(calculatedColumns, modelInputs) {
     newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
     newApplianceNetRevenue: _.round(newApplianceNetRevenue),
 
-    yearlyProductionUnits: yearlyProductionUnits,
-    yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
-    netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
+    // yearlyProductionUnits: yearlyProductionUnits,
+    // yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
+    // netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
+    yearlyProductionUnits: 0,
+    yearlyProductionUnitsRevenue: 0,
+    netApplianceOwnerRevenue: 0,
   }
 }
