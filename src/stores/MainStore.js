@@ -273,13 +273,7 @@ const gridModelInputValues = {
 let initialMainState = {
   activeGrid: GridStore.create({
     ...initialGridState,
-    ...{
-      label: activeGridFileInfo.attributes.label,
-      description: activeGridFileInfo.attributes.description,
-      wholesaleElectricityCost,
-      retailElectricityPrice,
-      unmetLoadCostPerKwh,
-    },
+    ...{ ...activeGridFileInfo.attributes },
     ...{ modelInputValues: gridModelInputValues },
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
@@ -287,13 +281,7 @@ let initialMainState = {
   availableGrids: _.map(availableGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
-      ...{
-        label: gridInfo.attributes.label,
-        description: gridInfo.attributes.description,
-        wholesaleElectricityCost: gridInfo.attributes.wholesaleElectricityCost,
-        retailElectricityPrice: gridInfo.attributes.retailElectricityPrice,
-        unmetLoadCostPerKwh: gridInfo.attributes.unmetLoadCostPerKwh,
-      },
+      ...{ ...gridInfo.attributes },
       ...{ modelInputValues: gridModelInputValues },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
@@ -304,13 +292,9 @@ let initialMainState = {
   appliances: _.map(applianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
       ...initialApplianceState,
-      ...{
-        // enabled: applianceInfo.id === enabledApplianceFileId,
-        enabled: true,
-        label: applianceInfo.attributes.label, // TODO: Just make this label and description all over the app. Then I can just use a spread operator
-        description: applianceInfo.attributes.description,
-        ...{ ...applianceInfo.attributes },
-      },
+      // enabled: applianceInfo.id === enabledApplianceFileId,
+      ...{ enabled: true },
+      ...{ ...applianceInfo.attributes },
       ...{ modelInputValues: { ...applianceInfo.attributes } },
       ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
     })
