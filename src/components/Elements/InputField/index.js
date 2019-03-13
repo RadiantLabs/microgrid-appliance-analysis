@@ -67,7 +67,6 @@ class InputField extends React.Component {
     const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
-    console.log('value: ', value)
     return (
       <div className="InputFieldWrapper">
         <Input

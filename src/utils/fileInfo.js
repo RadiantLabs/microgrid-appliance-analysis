@@ -146,7 +146,7 @@ export const sampleApplianceFiles = [
       dutyCycleDerateFactor: 0.2,
       productionUnitType: 'hr',
       productionUnitsPerKwh: 136,
-      revenuePerProductionUnits: 0.021,
+      revenuePerProductionUnits: 0.022,
     },
   },
 ]

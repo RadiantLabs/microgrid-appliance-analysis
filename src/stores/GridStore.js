@@ -22,7 +22,6 @@ import {
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
 } from 'src/utils/tensorflowHelpers'
-import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 
 //
 // -----------------------------------------------------------------------------

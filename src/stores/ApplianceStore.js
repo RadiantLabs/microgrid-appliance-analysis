@@ -11,40 +11,6 @@ import {
 
 //
 // -----------------------------------------------------------------------------
-// Initial Appliance State
-// -----------------------------------------------------------------------------
-export const initialApplianceState = {
-  enabled: false,
-  fileInfo: {},
-  fileData: [],
-  fileLabel: '',
-  fileDescription: '',
-  fileErrors: [],
-  fileWarnings: [],
-  applianceType: '',
-  capex: 0,
-  capexTempValue: '',
-  capexInputError: false,
-  capexAssignment: 'appliance',
-  powerType: 'AC',
-  phase: null,
-  hasMotor: null,
-  powerFactor: null,
-  nominalPower: null,
-  dutyCycleDerateFactor: null,
-  seasonalDerateFactor: null,
-  productionUnitType: null,
-  productionUnitsPerKwh: null,
-  revenuePerProductionUnits: null,
-  revenuePerProductionUnitsUnits: '',
-
-  fileIsSelected: false,
-  isAnalyzingFile: false,
-  applianceSaved: false,
-}
-
-//
-// -----------------------------------------------------------------------------
 // Appliance Store
 // -----------------------------------------------------------------------------
 export const ApplianceStore = types
@@ -82,6 +48,8 @@ export const ApplianceStore = types
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
     applianceSaved: types.boolean,
+    modelInputValues: types.frozen(),
+    modelInputErrors: types.frozen(),
   })
   .actions(self => ({
     runInAction(fn) {
@@ -90,8 +58,21 @@ export const ApplianceStore = types
 
     // onModelInputChange depends on inputs being validated by the InputField
     // before saving to the model. InputField uses fieldDefinitions for validation
-    onModelInputChange(fieldKey, value) {
-      self[fieldKey] = value
+    onModelInputChange(fieldKey, value, error) {
+      const newModelInputValues = _.clone(self.modelInputValues)
+      const newModelInputErrors = _.clone(self.modelInputErrors)
+      newModelInputValues[fieldKey] = value
+      newModelInputErrors[fieldKey] = error
+      self.modelInputValues = newModelInputValues
+      self.modelInputErrors = newModelInputErrors
+    },
+
+    onModelInputBlur(fieldKey, value, error) {
+      if (!Boolean(error)) {
+        self[fieldKey] = value
+      } else {
+        console.log('Value not saved to store')
+      }
     },
 
     // These files come in through the file upload button
@@ -170,3 +151,39 @@ export const ApplianceStore = types
       return self.fileIsSelected && !self.isAnalyzingFile
     },
   }))
+
+//
+// -----------------------------------------------------------------------------
+// Initial Appliance State
+// -----------------------------------------------------------------------------
+export const initialApplianceState = {
+  enabled: false,
+  fileInfo: {},
+  fileData: [],
+  fileLabel: '',
+  fileDescription: '',
+  fileErrors: [],
+  fileWarnings: [],
+  applianceType: '',
+  capex: 0,
+  capexTempValue: '',
+  capexInputError: false,
+  capexAssignment: 'appliance',
+  powerType: 'AC',
+  phase: null,
+  hasMotor: null,
+  powerFactor: null,
+  nominalPower: null,
+  dutyCycleDerateFactor: null,
+  seasonalDerateFactor: null,
+  productionUnitType: null,
+  productionUnitsPerKwh: null,
+  revenuePerProductionUnits: null,
+  revenuePerProductionUnitsUnits: '',
+
+  fileIsSelected: false,
+  isAnalyzingFile: false,
+  applianceSaved: false,
+  modelInputValues: {},
+  modelInputErrors: {},
+}
