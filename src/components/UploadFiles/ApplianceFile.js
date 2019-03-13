@@ -90,8 +90,8 @@ class ApplianceFile extends React.Component {
     const {
       enabled,
       toggleAppliance,
-      fileLabel,
-      fileDescription,
+      label,
+      description,
       showAnalyzedResults,
       fileErrors,
       fileWarnings,
@@ -102,7 +102,7 @@ class ApplianceFile extends React.Component {
         {viewedApplianceIsStaged && <StagedFileHeader />}
         {!viewedApplianceIsStaged && (
           <Header as="h3" attached="top">
-            {fileLabel}
+            {label}
             {!isActiveAppliance && (
               <Checkbox
                 toggle
@@ -112,7 +112,7 @@ class ApplianceFile extends React.Component {
                 label={enabled ? 'Disable Appliance' : 'Enable Appliance'}
               />
             )}
-            <Header.Subheader>{fileDescription}</Header.Subheader>
+            <Header.Subheader>{description}</Header.Subheader>
           </Header>
         )}
         {viewedApplianceIsStaged && (

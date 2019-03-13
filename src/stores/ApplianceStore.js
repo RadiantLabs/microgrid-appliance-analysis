@@ -18,8 +18,8 @@ export const ApplianceStore = types
     enabled: types.boolean,
     fileInfo: types.frozen(),
     fileData: types.frozen(),
-    fileLabel: types.string,
-    fileDescription: types.string,
+    label: types.string,
+    description: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     applianceType: types.enumeration('applianceType', [
@@ -120,7 +120,7 @@ export const ApplianceStore = types
     },
 
     handleLabelChange(event, data) {
-      self.fileLabel = data.value
+      self.label = data.value
     },
 
     toggleAppliance(event) {
@@ -130,7 +130,7 @@ export const ApplianceStore = types
 
     handleDescriptionChange(event, data) {
       event.preventDefault()
-      self.fileDescription = data.value
+      self.description = data.value
     },
 
     handleCapexAssignmentChange(event, data) {
@@ -160,8 +160,8 @@ export const initialApplianceState = {
   enabled: false,
   fileInfo: {},
   fileData: [],
-  fileLabel: '',
-  fileDescription: '',
+  label: '',
+  description: '',
   fileErrors: [],
   fileWarnings: [],
   applianceType: '',

@@ -59,17 +59,17 @@ class HomerFiles extends React.Component {
             <Menu vertical fluid>
               <Menu.Item
                 key={activeGrid.fileInfo.id}
-                name={activeGrid.fileLabel}
+                name={activeGrid.label}
                 style={{ minHeight: '60px' }}
                 active={viewedGridId === activeGrid.fileInfo.id}
                 onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
-                <Header sub>{activeGrid.fileLabel}</Header>
+                <Header sub>{activeGrid.label}</Header>
                 <HelperPopup
                   content={<FileInfoPopupContent file={activeGrid} />}
                   position="right center"
                   wide={true}
                 />
-                <span>{activeGrid.fileDescription}</span>
+                <span>{activeGrid.description}</span>
                 <Label basic attached="top right" size="mini" style={labelStyle} color="green">
                   Active
                   {activeGrid.fileInfo.isSample && ', Sample'}
@@ -79,17 +79,17 @@ class HomerFiles extends React.Component {
                 return (
                   <Menu.Item
                     key={file.fileInfo.id}
-                    name={file.fileLabel}
+                    name={file.label}
                     style={{ minHeight: '60px' }}
                     active={viewedGridId === file.fileInfo.id}
                     onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
-                    <Header sub>{file.fileLabel}</Header>
+                    <Header sub>{file.label}</Header>
                     <HelperPopup
                       content={<FileInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />
-                    <span>{file.fileDescription}</span>
+                    <span>{file.description}</span>
                     {file.fileInfo.isSample && (
                       <Label basic attached="top right" size="mini" style={labelStyle}>
                         Sample

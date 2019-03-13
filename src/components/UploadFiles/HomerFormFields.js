@@ -19,7 +19,7 @@ const HomerFormFields = ({ grid }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={grid.handleLabelChange} value={grid.fileLabel} size="small" />
+            <Input onChange={grid.handleLabelChange} value={grid.label} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -31,11 +31,7 @@ const HomerFormFields = ({ grid }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input
-              onChange={grid.handleDescriptionChange}
-              value={grid.fileDescription}
-              size="small"
-            />
+            <Input onChange={grid.handleDescriptionChange} value={grid.description} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

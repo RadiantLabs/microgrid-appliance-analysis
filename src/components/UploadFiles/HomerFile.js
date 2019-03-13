@@ -81,8 +81,8 @@ class HomerFile extends React.Component {
     }
     const { viewedGridIsStaged } = this.props.store
     const {
-      fileLabel,
-      fileDescription,
+      label,
+      description,
       showAnalyzedResults,
       fileErrors,
       fileWarnings,
@@ -93,13 +93,13 @@ class HomerFile extends React.Component {
         {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
         {!viewedGridIsStaged && (
           <Header as="h3" attached="top">
-            {fileLabel}
+            {label}
             {!isActiveGrid && (
               <Button floated="right" basic size="tiny" onClick={this.handleActivateGrid}>
                 Make Grid Active
               </Button>
             )}
-            <Header.Subheader>{fileDescription}</Header.Subheader>
+            <Header.Subheader>{description}</Header.Subheader>
           </Header>
         )}
         {!showAnalyzedResults && (

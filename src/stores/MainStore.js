@@ -228,7 +228,7 @@ export const MainStore = types
     },
 
     get enabledApplianceLabels() {
-      const labels = _.map(self.enabledAppliances, appliance => appliance.fileLabel)
+      const labels = _.map(self.enabledAppliances, appliance => appliance.label)
       const labelCount = _.size(labels)
       if (labelCount > 2) {
         return `${labelCount} Appliances Selected`
@@ -274,8 +274,8 @@ let initialMainState = {
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{
-      fileLabel: activeGridFileInfo.attributes.label,
-      fileDescription: activeGridFileInfo.attributes.description,
+      label: activeGridFileInfo.attributes.label,
+      description: activeGridFileInfo.attributes.description,
       wholesaleElectricityCost,
       retailElectricityPrice,
       unmetLoadCostPerKwh,
@@ -288,8 +288,8 @@ let initialMainState = {
     return GridStore.create({
       ...initialGridState,
       ...{
-        fileLabel: gridInfo.attributes.label,
-        fileDescription: gridInfo.attributes.description,
+        label: gridInfo.attributes.label,
+        description: gridInfo.attributes.description,
         wholesaleElectricityCost: gridInfo.attributes.wholesaleElectricityCost,
         retailElectricityPrice: gridInfo.attributes.retailElectricityPrice,
         unmetLoadCostPerKwh: gridInfo.attributes.unmetLoadCostPerKwh,
@@ -307,8 +307,8 @@ let initialMainState = {
       ...{
         // enabled: applianceInfo.id === enabledApplianceFileId,
         enabled: true,
-        fileLabel: applianceInfo.attributes.label, // TODO: Just make this label and description all over the app. Then I can just use a spread operator
-        fileDescription: applianceInfo.attributes.description,
+        label: applianceInfo.attributes.label, // TODO: Just make this label and description all over the app. Then I can just use a spread operator
+        description: applianceInfo.attributes.description,
         ...{ ...applianceInfo.attributes },
       },
       ...{ modelInputValues: { ...applianceInfo.attributes } },

@@ -9,8 +9,8 @@ import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
   const {
-    fileLabel,
-    fileDescription,
+    label,
+    description,
     powerType,
     powerFactor,
     phase,
@@ -32,7 +32,7 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={handleLabelChange} value={fileLabel} size="small" />
+            <Input onChange={handleLabelChange} value={label} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -44,7 +44,7 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={handleDescriptionChange} value={fileDescription} size="small" />
+            <Input onChange={handleDescriptionChange} value={description} size="small" />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

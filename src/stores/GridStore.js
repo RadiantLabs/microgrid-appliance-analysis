@@ -31,8 +31,8 @@ export const GridStore = types
   .model({
     fileInfo: types.frozen(),
     fileData: types.frozen(),
-    fileLabel: types.string,
-    fileDescription: types.string,
+    label: types.string,
+    description: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
     pvType: types.string,
@@ -122,7 +122,7 @@ export const GridStore = types
         complete: parsedFile => {
           const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
           self.runInAction(() => {
-            self.fileLabel = removeFileExtension(name)
+            self.label = removeFileExtension(name)
             self.updateModel({ ...gridAttrs })
           })
         },
@@ -161,11 +161,11 @@ export const GridStore = types
     },
 
     handleLabelChange(event, data) {
-      self.fileLabel = data.value
+      self.label = data.value
     },
 
     handleDescriptionChange(event, data) {
-      self.fileDescription = data.value
+      self.description = data.value
     },
 
     trainBatteryModel: flow(function* batteryModelRun({
@@ -343,8 +343,8 @@ const initialBatteryState = {
 export const initialGridState = {
   fileInfo: {},
   fileData: [],
-  fileLabel: '',
-  fileDescription: '',
+  label: '',
+  description: '',
   fileErrors: [],
   fileWarnings: [],
   pvType: '',

@@ -50,8 +50,8 @@ const ApplianceSelectionTable = inject('store')(
           {_.map(appliances, appliance => {
             const {
               fileInfo,
-              fileLabel,
-              fileDescription,
+              label,
+              description,
               capexAssignment,
               enabled,
               toggleAppliance,
@@ -62,8 +62,8 @@ const ApplianceSelectionTable = inject('store')(
                 <Table.Cell collapsing>
                   <Checkbox toggle checked={enabled} onChange={toggleAppliance} />
                 </Table.Cell>
-                <Table.Cell>{fileLabel}</Table.Cell>
-                <Table.Cell>{fileDescription}</Table.Cell>
+                <Table.Cell>{label}</Table.Cell>
+                <Table.Cell>{description}</Table.Cell>
                 <Table.Cell>
                   <InputField fieldKey="capex" modelInstance={appliance} />
                 </Table.Cell>
@@ -121,13 +121,13 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Grid File:
             </Header>
-            <Dropdown text={activeGrid.fileLabel} loading={activeGridIsLoading}>
+            <Dropdown text={activeGrid.label} loading={activeGridIsLoading}>
               <Dropdown.Menu>
                 {_.map(availableGrids, grid => (
                   <Dropdown.Item
-                    text={grid.fileLabel}
+                    text={grid.label}
                     key={grid.fileInfo.id}
-                    description={grid.fileDescription}
+                    description={grid.description}
                     value={grid.fileInfo.id}
                     active={grid.fileInfo.id === activeGrid.fileInfo.id}
                     onClick={this.setActiveGridFile}

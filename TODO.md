@@ -181,7 +181,7 @@ In localforage:
 - mg.stagedGrid
 - mg.availableGrids (saved with battery model artifacts)
 - mg.availableGridNames  // I don't think I need this as a model, I just need to save it
-  - {fileName: 'xyz', fileDescription: 'abc', isSample: false, defaultOnLoad: true}
+  - {fileName: 'xyz', description: 'abc', isSample: false, defaultOnLoad: true}
 
 How does mg.availableGrids in localforage compare with availableGrids in memory?
   - does one have artifacts and the other rehydrated models?
