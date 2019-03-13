@@ -259,22 +259,29 @@ const initialAncillaryEquipmentState = {
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipmentList),
 }
 
+const {
+  wholesaleElectricityCost,
+  retailElectricityPrice,
+  unmetLoadCostPerKwh,
+} = activeGridFileInfo.attributes
+
+const gridModelInputValues = {
+  wholesaleElectricityCost,
+  retailElectricityPrice,
+  unmetLoadCostPerKwh,
+}
+
 let initialMainState = {
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{
       fileLabel: activeGridFileInfo.attributes.label,
       fileDescription: activeGridFileInfo.attributes.description,
-      wholesaleElectricityCost: activeGridFileInfo.attributes.wholesaleElectricityCost,
-      wholesaleElectricityCostTemp: activeGridFileInfo.attributes.wholesaleElectricityCost,
-      wholesaleElectricityCostError: null,
-      retailElectricityPrice: activeGridFileInfo.attributes.retailElectricityPrice,
-      retailElectricityPriceTemp: activeGridFileInfo.attributes.retailElectricityPrice,
-      retailElectricityPriceError: null,
-      unmetLoadCostPerKwh: activeGridFileInfo.attributes.unmetLoadCostPerKwh,
-      unmetLoadCostPerKwhTemp: activeGridFileInfo.attributes.unmetLoadCostPerKwh,
-      unmetLoadCostPerKwhError: null,
+      wholesaleElectricityCost,
+      retailElectricityPrice,
+      unmetLoadCostPerKwh,
     },
+    ...{ modelInputValues: gridModelInputValues },
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
   activeGridIsLoading: true,
@@ -285,15 +292,10 @@ let initialMainState = {
         fileLabel: gridInfo.attributes.label,
         fileDescription: gridInfo.attributes.description,
         wholesaleElectricityCost: gridInfo.attributes.wholesaleElectricityCost,
-        wholesaleElectricityCostTemp: gridInfo.attributes.wholesaleElectricityCost,
-        wholesaleElectricityCostError: null,
         retailElectricityPrice: gridInfo.attributes.retailElectricityPrice,
-        retailElectricityPriceTemp: gridInfo.attributes.retailElectricityPrice,
-        retailElectricityPriceError: null,
         unmetLoadCostPerKwh: gridInfo.attributes.unmetLoadCostPerKwh,
-        unmetLoadCostPerKwhTemp: gridInfo.attributes.unmetLoadCostPerKwh,
-        unmetLoadCostPerKwhError: null,
       },
+      ...{ modelInputValues: gridModelInputValues },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),

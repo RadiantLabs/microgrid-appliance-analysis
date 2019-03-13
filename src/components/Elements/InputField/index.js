@@ -38,8 +38,8 @@ class InputField extends React.Component {
   // If entered value is valid on blur, update mobx state so calcs can run
   handleBlur = e => {
     const { fieldKey, modelInstance } = this.props
-    const { onModelInputBlur } = modelInstance
-    const value = modelInstance[`${fieldKey}Temp`]
+    const { onModelInputBlur, modelInputValues } = modelInstance
+    const value = modelInputValues[fieldKey]
     const fieldDef = fieldDefinitions[fieldKey]
     const error = checkValidity(value, fieldDef)
     switch (fieldDef.type) {
@@ -64,14 +64,17 @@ class InputField extends React.Component {
 
   render() {
     const { fieldKey, modelInstance } = this.props
+    const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
+    const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
+    console.log('value: ', value)
     return (
       <div className="InputFieldWrapper">
         <Input
-          value={modelInstance[`${fieldKey}Temp`]}
+          value={value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          error={Boolean(modelInstance[`${fieldKey}Error`])}
+          error={Boolean(modelInputErrors[fieldKey])}
           size="small"
           fluid
           style={{ minWidth: '120px' }}
