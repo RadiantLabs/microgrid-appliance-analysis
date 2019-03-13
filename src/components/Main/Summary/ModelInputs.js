@@ -63,7 +63,7 @@ export const EconomicInputs = inject('store')(
 
 export const TechnicalInputs = inject('store')(
   observer(({ store }) => {
-    const { activeGrid, enabledAppliances, multipleAppliancesEnabled } = store
+    const { enabledAppliances, multipleAppliancesEnabled } = store
     return (
       <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
         <Table.Body>

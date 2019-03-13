@@ -19,15 +19,13 @@ Big next steps
 
 --------------------------------------------------------------------------------
 Next steps for Appliances:
-- [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
-  - [x] Start with newAppliancesLoad and hooking up existing calculations
-  - [x] Show derived colummns Data grid
 - [ ] Remove modelInputs and assign fields to either grid or appliance model
   - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
   - [x] Change appliance dropdown inputs to use <InputField />
   - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
   - [ ] Check that grid changes reflect new input values
-  - [ ] Check that appliance changes reflect new input values
+    - It's not rerendering on grid change
+  - [x] Check that appliance changes reflect new input values
 
 - [ ] *** Calculate everything on an hourly basis (not ROI and simple payback) ***
   - [ ] Electricity Sales (from new appliances)
@@ -56,6 +54,10 @@ Next steps for Appliances:
   - [x] cost assigned to grid operator or appliance owner
   - [x] enabled
 - [x] Dropdown appliance selector as a table
+
+- [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
+  - [x] Start with newAppliancesLoad and hooking up existing calculations
+  - [x] Show derived colummns Data grid
 
 - Enable appliance inputs
   - [x] enable checkmark (slider)

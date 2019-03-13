@@ -24,30 +24,33 @@ class InputField extends React.Component {
     if (_.isNil(fieldDefinitions[fieldKey])) {
       throw new Error(`fieldKey passed in is not found in fieldDefinitions: ${fieldKey}`)
     }
-    this.state = {
-      value: modelInstance[fieldKey],
-      error: '',
+    if (_.has(modelInstance[fieldKey])) {
+      throw new Error(`fieldKey passed in is not found in model instance: ${fieldKey}`)
+    }
+    if (_.has(modelInstance[`${fieldKey}Temp`])) {
+      throw new Error(`${fieldKey}Temp passed in is not found in model instance: ${fieldKey}Temp`)
+    }
+    if (_.has(modelInstance[`${fieldKey}Error`])) {
+      throw new Error(`${fieldKey}Error passed in is not found in model instance: ${fieldKey}Error`)
     }
   }
 
   // If entered value is valid on blur, update mobx state so calcs can run
   handleBlur = e => {
-    const { value } = this.state
     const { fieldKey, modelInstance } = this.props
+    const { onModelInputBlur } = modelInstance
+    const value = modelInstance[`${fieldKey}Temp`]
     const fieldDef = fieldDefinitions[fieldKey]
-    const { onModelInputChange } = modelInstance
     const error = checkValidity(value, fieldDef)
-    if (!error) {
-      switch (fieldDef.type) {
-        case 'integer':
-          onModelInputChange(fieldKey, parseInt(value, 10))
-          break
-        case 'float':
-          onModelInputChange(fieldKey, parseFloat(value))
-          break
-        default:
-          onModelInputChange(fieldKey, value)
-      }
+    switch (fieldDef.type) {
+      case 'integer':
+        onModelInputBlur(fieldKey, parseInt(value, 10), error)
+        break
+      case 'float':
+        onModelInputBlur(fieldKey, parseFloat(value), error)
+        break
+      default:
+        onModelInputBlur(fieldKey, value, error)
     }
   }
 
@@ -56,20 +59,19 @@ class InputField extends React.Component {
     const { fieldKey } = this.props
     const fieldDef = fieldDefinitions[fieldKey]
     const error = checkValidity(value, fieldDef)
-    this.setState({ value, error })
+    this.props.modelInstance.onModelInputChange(fieldKey, value, error)
   }
 
   render() {
     const { fieldKey, modelInstance } = this.props
-    const { value, error } = this.state
     const { units } = fieldDefinitions[fieldKey]
     return (
       <div className="InputFieldWrapper">
         <Input
-          value={value}
+          value={modelInstance[`${fieldKey}Temp`]}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          error={Boolean(error)}
+          error={Boolean(modelInstance[`${fieldKey}Error`])}
           size="small"
           fluid
           style={{ minWidth: '120px' }}

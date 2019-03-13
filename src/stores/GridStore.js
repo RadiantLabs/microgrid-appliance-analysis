@@ -40,9 +40,18 @@ export const GridStore = types
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     batteryType: types.string,
     generatorType: types.string,
+
+    // Temporary inputs values. This allows the user to continue typing into an
+    // input field even if there are errors. We set the actual model value on blur
     wholesaleElectricityCost: types.maybeNull(types.number),
+    wholesaleElectricityCostTemp: types.frozen(),
+    wholesaleElectricityCostError: types.frozen(),
     retailElectricityPrice: types.maybeNull(types.number),
+    retailElectricityPriceTemp: types.frozen(),
+    retailElectricityPriceError: types.frozen(),
     unmetLoadCostPerKwh: types.maybeNull(types.number),
+    unmetLoadCostPerKwhTemp: types.frozen(),
+    unmetLoadCostPerKwhError: types.frozen(),
 
     batteryMinSoC: types.maybeNull(types.number),
     batteryMaxSoC: types.maybeNull(types.number),
@@ -83,8 +92,16 @@ export const GridStore = types
 
     // onModelInputChange depends on inputs being validated by the InputField
     // before saving to the model. InputField uses fieldDefinitions for validation
-    onModelInputChange(fieldKey, value) {
-      self[fieldKey] = value
+    onModelInputChange(fieldKey, value, error) {
+      self[`${fieldKey}Temp`] = value
+      self[`${fieldKey}Error`] = error
+    },
+
+    onModelInputBlur(fieldKey, value, error) {
+      if (!Boolean(error)) {
+        self[fieldKey] = value
+      }
+      console.log('Value not saved to store')
     },
 
     // These files come in through the file upload button
@@ -336,9 +353,15 @@ export const initialGridState = {
   powerType: '',
   batteryType: '',
   generatorType: '',
-  wholesaleElectricityCost: fieldDefinitions['wholesaleElectricityCost'].defaultValue,
-  retailElectricityPrice: fieldDefinitions['retailElectricityPrice'].defaultValue,
-  unmetLoadCostPerKwh: fieldDefinitions['unmetLoadCostPerKwh'].defaultValue,
+  wholesaleElectricityCost: null,
+  wholesaleElectricityCostTemp: null,
+  wholesaleElectricityCostError: null,
+  retailElectricityPrice: null,
+  retailElectricityPriceTemp: null,
+  retailElectricityPriceError: null,
+  unmetLoadCostPerKwh: null,
+  unmetLoadCostPerKwhTemp: null,
+  unmetLoadCostPerKwhError: null,
   batteryMinSoC: null,
   batteryMaxSoC: null,
   batteryMinEnergyContent: null,

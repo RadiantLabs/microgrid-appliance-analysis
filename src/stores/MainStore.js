@@ -59,7 +59,7 @@ export const MainStore = types
       self.activeGridIsLoading = true
       yield self.activeGrid.loadFile(self.activeGrid.fileInfo)
       self.activeGridIsLoading = false
-      // self.loadAvailableGrids() // Temp disable to speed up development
+      self.loadAvailableGrids() // Temp disable to speed up development
     }),
 
     // All availableGrids will be instantiated GridStores with barely any data
@@ -266,8 +266,14 @@ let initialMainState = {
       fileLabel: activeGridFileInfo.attributes.label,
       fileDescription: activeGridFileInfo.attributes.description,
       wholesaleElectricityCost: activeGridFileInfo.attributes.wholesaleElectricityCost,
+      wholesaleElectricityCostTemp: activeGridFileInfo.attributes.wholesaleElectricityCost,
+      wholesaleElectricityCostError: null,
       retailElectricityPrice: activeGridFileInfo.attributes.retailElectricityPrice,
+      retailElectricityPriceTemp: activeGridFileInfo.attributes.retailElectricityPrice,
+      retailElectricityPriceError: null,
       unmetLoadCostPerKwh: activeGridFileInfo.attributes.unmetLoadCostPerKwh,
+      unmetLoadCostPerKwhTemp: activeGridFileInfo.attributes.unmetLoadCostPerKwh,
+      unmetLoadCostPerKwhError: null,
     },
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
@@ -279,15 +285,20 @@ let initialMainState = {
         fileLabel: gridInfo.attributes.label,
         fileDescription: gridInfo.attributes.description,
         wholesaleElectricityCost: gridInfo.attributes.wholesaleElectricityCost,
+        wholesaleElectricityCostTemp: gridInfo.attributes.wholesaleElectricityCost,
+        wholesaleElectricityCostError: null,
         retailElectricityPrice: gridInfo.attributes.retailElectricityPrice,
+        retailElectricityPriceTemp: gridInfo.attributes.retailElectricityPrice,
+        retailElectricityPriceError: null,
         unmetLoadCostPerKwh: gridInfo.attributes.unmetLoadCostPerKwh,
+        unmetLoadCostPerKwhTemp: gridInfo.attributes.unmetLoadCostPerKwh,
+        unmetLoadCostPerKwhError: null,
       },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),
   stagedGrid: null,
   viewedGridId: initGridFileId,
-
   appliancesAreLoading: true,
   appliances: _.map(applianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
@@ -311,7 +322,6 @@ let initialMainState = {
     })
   }),
   viewedApplianceId: enabledApplianceFileId,
-
   ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
   excludedTableColumns: [],
   router: routerModel,
