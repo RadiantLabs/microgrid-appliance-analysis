@@ -139,6 +139,11 @@ export const ApplianceStore = types
       self.phase = data.value
     },
 
+    handleHasMotorChange(event, data) {
+      event.preventDefault()
+      self.hasMotor = data.value
+    },
+
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },

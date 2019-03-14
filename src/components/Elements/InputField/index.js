@@ -63,7 +63,7 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey, modelInstance } = this.props
+    const { fieldKey, modelInstance, disabled } = this.props
     const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
@@ -76,6 +76,7 @@ class InputField extends React.Component {
           error={Boolean(modelInputErrors[fieldKey])}
           size="small"
           fluid
+          disabled={disabled}
           style={{ minWidth: '120px' }}
           label={unitLabelContent(units, modelInstance)}
           labelPosition={unitLabelPosition(units)}

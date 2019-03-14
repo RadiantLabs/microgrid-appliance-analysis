@@ -1,4 +1,5 @@
 import * as React from 'react'
+import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Table, Dropdown } from 'semantic-ui-react'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
@@ -11,11 +12,17 @@ const ApplianceFormFields = ({ store }) => {
   const {
     powerType,
     handlePowerTypeChange,
-    powerFactor,
     phase,
     handlePhaseChange,
     hasMotor,
+    handleHasMotorChange,
+    // fileInfo,
   } = viewedAppliance
+
+  // TODO: At some point we may want to disable these fields for sample files.
+  // Leave it open for at least testing
+  // const { isSample } = fileInfo
+  const fieldDisabled = false
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -42,42 +49,80 @@ const ApplianceFormFields = ({ store }) => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
+            {fieldDefinitions['powerType'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['powerType'].description}
+            />
           </Table.Cell>
           <Table.Cell>
-            <Dropdown text={powerType}>
+            <Dropdown text={powerType} disabled={fieldDisabled}>
               <Dropdown.Menu>
-                <Dropdown.Item text="AC" value="AC" onClick={handlePowerTypeChange} />
-                <Dropdown.Item text="DC" value="DC" onClick={handlePowerTypeChange} />
+                {_.map(fieldDefinitions['powerType'].enumerations, item => (
+                  <Dropdown.Item
+                    text={item}
+                    value={item}
+                    key={item}
+                    onClick={handlePowerTypeChange}
+                  />
+                ))}
               </Dropdown.Menu>
             </Dropdown>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Phase <HelperPopup position="right center" content={'TODO'} />
+            {fieldDefinitions['phase'].title}{' '}
+            <HelperPopup position="right center" content={fieldDefinitions['phase'].description} />
           </Table.Cell>
           <Table.Cell>
-            <Dropdown text={String(phase)}>
+            <Dropdown text={String(phase)} disabled={fieldDisabled}>
               <Dropdown.Menu>
-                <Dropdown.Item text="1" value={1} onClick={handlePhaseChange} />
-                <Dropdown.Item text="2" value={2} onClick={handlePhaseChange} />
-                <Dropdown.Item text="3" value={3} onClick={handlePhaseChange} />
+                {_.map(fieldDefinitions['phase'].enumerations, item => (
+                  <Dropdown.Item text={item} value={item} key={item} onClick={handlePhaseChange} />
+                ))}
               </Dropdown.Menu>
             </Dropdown>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Power Factor <HelperPopup position="right center" content={'TODO'} />
+            {fieldDefinitions['powerFactor'].title}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['powerFactor'].description}
+            />
           </Table.Cell>
-          <Table.Cell>{powerFactor}</Table.Cell>
+          <Table.Cell>
+            <InputField
+              fieldKey="powerFactor"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Has Motor? <HelperPopup position="right center" content={'TODO'} />
+            {fieldDefinitions['hasMotor'].title}{' '}
+            <HelperPopup
+              position="right center"
+              content={fieldDefinitions['hasMotor'].description}
+            />
           </Table.Cell>
-          <Table.Cell>{hasMotor ? 'Yes' : 'No'}</Table.Cell>
+          <Table.Cell>
+            <Dropdown text={hasMotor ? 'Yes' : 'No'} disabled={fieldDisabled}>
+              <Dropdown.Menu>
+                {_.map(fieldDefinitions['hasMotor'].enumerations, item => (
+                  <Dropdown.Item
+                    text={item ? 'Yes' : 'No'}
+                    value={item}
+                    key={item}
+                    onClick={handleHasMotorChange}
+                  />
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -88,7 +133,11 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="nominalPower" modelInstance={viewedAppliance} />
+            <InputField
+              fieldKey="nominalPower"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -100,7 +149,11 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="dutyCycleDerateFactor" modelInstance={viewedAppliance} />
+            <InputField
+              fieldKey="dutyCycleDerateFactor"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -112,7 +165,11 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="productionUnitType" modelInstance={viewedAppliance} />
+            <InputField
+              fieldKey="productionUnitType"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -124,7 +181,11 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
+            <InputField
+              fieldKey="productionUnitsPerKwh"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -136,7 +197,11 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="revenuePerProductionUnits" modelInstance={viewedAppliance} />
+            <InputField
+              fieldKey="revenuePerProductionUnits"
+              modelInstance={viewedAppliance}
+              disabled={fieldDisabled}
+            />
           </Table.Cell>
         </Table.Row>
       </Table.Body>
