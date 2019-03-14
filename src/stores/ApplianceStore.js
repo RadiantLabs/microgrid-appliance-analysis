@@ -129,6 +129,16 @@ export const ApplianceStore = types
       self.capexAssignment = data.value
     },
 
+    handlePowerTypeChange(event, data) {
+      event.preventDefault()
+      self.powerType = data.value
+    },
+
+    handlePhaseChange(event, data) {
+      event.preventDefault()
+      self.phase = data.value
+    },
+
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },

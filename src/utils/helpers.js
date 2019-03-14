@@ -4,9 +4,9 @@ import path from 'path-browserify'
 import { HOURS_PER_YEAR, tableDateFormat } from './constants'
 window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
-/**
- * These are more general purpose utility functions, not directly related to the store
- */
+// -----------------------------------------------------------------------------
+// These are more general purpose utility functions, not directly related to the store
+//------------------------------------------------------------------------------
 
 // Non-mutating array insert
 export const arrayInsert = (arr, item, index) => {
@@ -148,3 +148,7 @@ export function combineTables(gridData, calculatedColumns, applianceData) {
   console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
   return combinedTable
 }
+
+// -----------------------------------------------------------------------------
+// Domain specific helper functions
+//------------------------------------------------------------------------------
