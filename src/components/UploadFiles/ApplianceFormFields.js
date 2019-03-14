@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table, Input } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
 import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
 import InputField from 'src/components/Elements/InputField'
@@ -8,43 +8,29 @@ import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
-  const {
-    label,
-    description,
-    powerType,
-    powerFactor,
-    phase,
-    hasMotor,
-    handleLabelChange,
-    handleDescriptionChange,
-  } = viewedAppliance
+  const { powerType, powerFactor, phase, hasMotor } = viewedAppliance
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            File Label{' '}
-            <HelperPopup
-              content={
-                'By default, this is the name of the uploaded file, but you can name it whatever you want.'
-              }
-              position="right center"
-            />
+            {fieldDefinitions['label'].title}{' '}
+            <HelperPopup position="right center" content={fieldDefinitions['label'].description} />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={handleLabelChange} value={label} size="small" />
+            <InputField fieldKey="label" modelInstance={viewedAppliance} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Description{' '}
+            {fieldDefinitions['description'].title}
             <HelperPopup
-              content={"Description is to help you remember what's unique about this file."}
               position="right center"
+              content={fieldDefinitions['description'].description}
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={handleDescriptionChange} value={description} size="small" />
+            <InputField fieldKey="description" modelInstance={viewedAppliance} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

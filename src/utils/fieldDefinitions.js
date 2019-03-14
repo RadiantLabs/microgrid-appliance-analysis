@@ -7,6 +7,19 @@ const jsonSchemaStandard = 'http://json-schema.org/draft-04/schema#'
 // https://spin.atomicobject.com/2018/03/26/typescript-data-validation/
 
 export const fieldDefinitions = {
+  label: {
+    $schema: jsonSchemaStandard,
+    title: 'File Label',
+    description:
+      'By default, this is the name of the uploaded file, but you can name it whatever you want.',
+    type: 'string',
+  },
+  description: {
+    $schema: jsonSchemaStandard,
+    title: 'File Description',
+    description: '',
+    type: 'string',
+  },
   capex: {
     $schema: jsonSchemaStandard,
     title: 'Appliance Capex',

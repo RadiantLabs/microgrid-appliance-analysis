@@ -259,22 +259,11 @@ const initialAncillaryEquipmentState = {
   enabledStates: disableAllAncillaryEquipment(ancillaryEquipmentList),
 }
 
-const {
-  wholesaleElectricityCost,
-  retailElectricityPrice,
-  unmetLoadCostPerKwh,
-} = activeGridFileInfo.attributes
-const gridModelInputValues = {
-  wholesaleElectricityCost,
-  retailElectricityPrice,
-  unmetLoadCostPerKwh,
-}
-
 let initialMainState = {
   activeGrid: GridStore.create({
     ...initialGridState,
     ...{ ...activeGridFileInfo.attributes },
-    ...{ modelInputValues: gridModelInputValues },
+    ...{ modelInputValues: { ...activeGridFileInfo.attributes } },
     ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
   }),
   activeGridIsLoading: true,
@@ -282,7 +271,7 @@ let initialMainState = {
     return GridStore.create({
       ...initialGridState,
       ...{ ...gridInfo.attributes },
-      ...{ modelInputValues: gridModelInputValues },
+      ...{ modelInputValues: { ...activeGridFileInfo.attributes } },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),

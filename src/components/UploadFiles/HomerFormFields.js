@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table, Input } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
+import InputField from 'src/components/Elements/InputField'
 import { HelperPopup } from 'src/components/Elements/HelperPopup'
 import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
+import { fieldDefinitions } from 'src/utils/fieldDefinitions'
 
 const HomerFormFields = ({ grid }) => {
   return (
@@ -10,28 +12,23 @@ const HomerFormFields = ({ grid }) => {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            File Label{' '}
-            <HelperPopup
-              content={
-                'By default, this is the name of the uploaded file, but you can name it whatever you want.'
-              }
-              position="right center"
-            />
+            {fieldDefinitions['label'].title}{' '}
+            <HelperPopup content={fieldDefinitions['label'].description} position="right center" />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={grid.handleLabelChange} value={grid.label} size="small" />
+            <InputField fieldKey="label" modelInstance={grid} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
-            Description{' '}
+            {fieldDefinitions['description'].title}{' '}
             <HelperPopup
-              content={"Description is to help you remember what's unique about this file."}
+              content={fieldDefinitions['description'].description}
               position="right center"
             />
           </Table.Cell>
           <Table.Cell>
-            <Input onChange={grid.handleDescriptionChange} value={grid.description} size="small" />
+            <InputField fieldKey="description" modelInstance={grid} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

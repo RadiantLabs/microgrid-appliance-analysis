@@ -96,7 +96,7 @@ export const GridStore = types
 
     onModelInputBlur(fieldKey, value, error) {
       if (!Boolean(error)) {
-        self[fieldKey] = value
+        self[fieldKey] = value === 0 ? 0 : value || ''
       } else {
         console.log('Value not saved to store')
       }
@@ -158,14 +158,6 @@ export const GridStore = types
         self.batteryMaxEnergyContent = analyzedFile.batteryMaxEnergyContent
         self.isAnalyzingFile = false
       })
-    },
-
-    handleLabelChange(event, data) {
-      self.label = data.value
-    },
-
-    handleDescriptionChange(event, data) {
-      self.description = data.value
     },
 
     trainBatteryModel: flow(function* batteryModelRun({

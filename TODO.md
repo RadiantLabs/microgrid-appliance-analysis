@@ -19,14 +19,6 @@ Big next steps
 
 --------------------------------------------------------------------------------
 Next steps for Appliances:
-- [ ] Remove modelInputs and assign fields to either grid or appliance model
-  - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
-  - [x] Change appliance dropdown inputs to use <InputField />
-  - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
-  - [ ] Check that grid changes reflect new input values
-    - It's not rerendering on grid change
-  - [x] Check that appliance changes reflect new input values
-
 - [ ] *** Calculate everything on an hourly basis (not ROI and simple payback) ***
   - [ ] Electricity Sales (from new appliances)
   - [ ] New appliance unmet load cost
@@ -41,7 +33,7 @@ Next steps for Appliances:
 - [ ] Confirm summary calcs using a spreadsheet
 - [ ] Fix summaryStats now that we don't depend on modelInputs
 
-
+- [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
 - [ ] Make appliance Power Type, Power Factor, and others editable, unless it's a sample file
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
@@ -54,6 +46,14 @@ Next steps for Appliances:
   - [x] cost assigned to grid operator or appliance owner
   - [x] enabled
 - [x] Dropdown appliance selector as a table
+
+- [x] Remove modelInputs and assign fields to either grid or appliance model
+  - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
+  - [x] Change appliance dropdown inputs to use <InputField />
+  - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
+  - [x] Check that grid changes reflect new input values (It's not rerendering on grid change)
+  - [x] Check that appliance changes reflect new input values
+
 
 - [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
   - [x] Start with newAppliancesLoad and hooking up existing calculations

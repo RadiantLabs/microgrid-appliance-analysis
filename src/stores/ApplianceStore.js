@@ -69,7 +69,7 @@ export const ApplianceStore = types
 
     onModelInputBlur(fieldKey, value, error) {
       if (!Boolean(error)) {
-        self[fieldKey] = value
+        self[fieldKey] = value === 0 ? 0 : value || ''
       } else {
         console.log('Value not saved to store')
       }
@@ -119,18 +119,9 @@ export const ApplianceStore = types
       })
     },
 
-    handleLabelChange(event, data) {
-      self.label = data.value
-    },
-
     toggleAppliance(event) {
       event.preventDefault()
       self.enabled = !self.enabled
-    },
-
-    handleDescriptionChange(event, data) {
-      event.preventDefault()
-      self.description = data.value
     },
 
     handleCapexAssignmentChange(event, data) {
@@ -180,7 +171,6 @@ export const initialApplianceState = {
   productionUnitsPerKwh: null,
   revenuePerProductionUnits: null,
   revenuePerProductionUnitsUnits: '',
-
   fileIsSelected: false,
   isAnalyzingFile: false,
   applianceSaved: false,
