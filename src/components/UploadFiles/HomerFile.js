@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader, Label, Message } from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Message } from 'semantic-ui-react'
 import FileButton from 'src/components/Elements/FileButton'
 import BatteryChargeTable from 'src/components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
@@ -26,7 +26,7 @@ const StagedFileHeader = inject('store')(
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
-        <Header as="h3" attached="top" style={{ paddingBottom: '18px' }}>
+        <Header as="h2" attached="top" style={{ paddingBottom: '18px' }}>
           {!fileIsSelected && (
             <FileButton
               content="Upload & Analyze HOMER File"
@@ -77,7 +77,7 @@ class HomerFile extends React.Component {
   render() {
     const { viewedGrid } = this.props
     if (_.isEmpty(viewedGrid)) {
-      return <h3>Empty Viewed Grid</h3> // log this
+      return <h2>Empty Viewed Grid</h2> // log this
     }
     const { viewedGridIsStaged } = this.props.store
     const {
@@ -92,7 +92,7 @@ class HomerFile extends React.Component {
       <div>
         {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
         {!viewedGridIsStaged && (
-          <Header as="h3" attached="top">
+          <Header as="h2" attached="top">
             {label}
             {!isActiveGrid && (
               <Button floated="right" basic size="tiny" onClick={this.handleActivateGrid}>

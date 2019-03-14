@@ -1,5 +1,19 @@
-body {
+.fileChooser.ui.table tr td {
+  border-top: 0px !important;
 }
 
+/* -----------------------------------------------------------------------------
+ * Checkboxes styled as sliders. This formats the label as greyed out if disabled
+ * or darker if enabled
+ * ---------------------------------------------------------------------------*/
+.toggleFieldWrapper > label {
+  font-weight: 200;
+  font-size: 0.9em !important;
+  font-style: italic;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
 
-.fileChooser.ui.table tr td { border-top: 0px !important; }
+.toggleFieldWrapper.ui.toggle.checkbox input:checked~label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}

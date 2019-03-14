@@ -1,17 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import {
-  Grid,
-  Header,
-  Segment,
-  Button,
-  Icon,
-  Loader,
-  Label,
-  Message,
-  Checkbox,
-} from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Message, Checkbox } from 'semantic-ui-react'
 import FileButton from 'src/components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
 
@@ -28,6 +18,26 @@ const FileUploadErrors = ({ fileErrors }) => {
   )
 }
 
+const ApplianceEnabler = inject('store')(
+  observer(({ store }) => {
+    const { viewedAppliance } = store
+    const { enabled, toggleAppliance } = viewedAppliance
+    return (
+      <div>
+        <div>Enable Appliance</div>
+        <Checkbox
+          toggle
+          className="toggleFieldWrapper"
+          style={{ marginTop: '6px' }}
+          checked={enabled}
+          onChange={toggleAppliance}
+          label={enabled ? 'Enabled' : 'Disabled'}
+        />
+      </div>
+    )
+  })
+)
+
 const StagedFileHeader = inject('store')(
   observer(({ store }) => {
     const {
@@ -39,7 +49,7 @@ const StagedFileHeader = inject('store')(
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
-        <Header as="h3" attached="top" style={{ paddingBottom: '18px' }}>
+        <Header as="h2" attached="top" style={{ paddingBottom: '18px' }}>
           {!fileIsSelected && (
             <FileButton
               content="Upload & Analyze HOMER File"
@@ -87,34 +97,25 @@ class ApplianceFile extends React.Component {
     if (_.isEmpty(viewedAppliance)) {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
-    const {
-      enabled,
-      toggleAppliance,
-      label,
-      description,
-      showAnalyzedResults,
-      fileErrors,
-      fileWarnings,
-      isActiveAppliance,
-    } = viewedAppliance
+    const { label, description, fileErrors, fileWarnings, isActiveAppliance } = viewedAppliance
     return (
       <div>
         {viewedApplianceIsStaged && <StagedFileHeader />}
-        {!viewedApplianceIsStaged && (
-          <Header as="h3" attached="top">
-            {label}
-            {!isActiveAppliance && (
-              <Checkbox
-                toggle
-                style={{ float: 'right' }}
-                checked={enabled}
-                onChange={toggleAppliance}
-                label={enabled ? 'Disable Appliance' : 'Enable Appliance'}
-              />
-            )}
-            <Header.Subheader>{description}</Header.Subheader>
-          </Header>
-        )}
+        <Segment attached="top">
+          {!viewedApplianceIsStaged && (
+            <Grid>
+              <Grid.Column floated="left" width={12}>
+                <Header as="h2">
+                  {label}
+                  <Header.Subheader>{description}</Header.Subheader>
+                </Header>
+              </Grid.Column>
+              <Grid.Column floated="right" width={4}>
+                <ApplianceEnabler />
+              </Grid.Column>
+            </Grid>
+          )}
+        </Segment>
         {viewedApplianceIsStaged && (
           <Message warning>
             <p>
