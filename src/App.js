@@ -34,10 +34,10 @@ const App = () => (
             Microgrid Appliance Analysis Tool
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item as={NavItem} to="/snapshots">
+            {/* <Menu.Item as={NavItem} to="/snapshots">
               <Icon name="photo" />
               Snapshots
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item as={NavItem} to="/files/homer">
               <Icon name="file" />
               Files
