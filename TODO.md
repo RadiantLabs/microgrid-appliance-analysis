@@ -34,37 +34,13 @@ Next steps for Appliances:
 - [ ] Fix summaryStats now that we don't depend on modelInputs
 
 - [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
-- [ ] Make appliance Power Type, Power Factor, and others editable, unless it's a sample file
 - [ ] Make appliance enabled/disabled state clearer
 - [ ] Add appliance popover data
-- [ ] Change label and description to use <InputField /> (need to add to field definitions)
 - [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
-- [x] Get rid of fieldDefinition defaults so I am sure I'm not using them anywwhere
-- [x] Make activeAppliance a collection
-- [x] Add new fields to appliance model:
-  - [x] cost
-  - [x] cost assigned to grid operator or appliance owner
-  - [x] enabled
-- [x] Dropdown appliance selector as a table
-
-- [x] Remove modelInputs and assign fields to either grid or appliance model
-  - [x] Add <InputField /> to ApplianceFormFields in appliance file viewer
-  - [x] Change appliance dropdown inputs to use <InputField />
-  - [x] Change Grid Inputs to use <InputField /> and the grid's onModelInputChange
-  - [x] Check that grid changes reflect new input values (It's not rerendering on grid change)
-  - [x] Check that appliance changes reflect new input values
-
-
 - [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
   - [x] Start with newAppliancesLoad and hooking up existing calculations
   - [x] Show derived colummns Data grid
 
-- Enable appliance inputs
-  - [x] enable checkmark (slider)
-  - [ ] label
-  - [ ] description
-  - [x] editable costs
-  - [x] assign to grid operator or appliance owner
 - Fix broken ancillary equipment list
 
 - [ ] Keep appliance spinner going until it's actually clickable
