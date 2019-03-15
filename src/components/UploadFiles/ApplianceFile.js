@@ -97,7 +97,7 @@ class ApplianceFile extends React.Component {
     if (_.isEmpty(viewedAppliance)) {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
-    const { label, description, fileErrors, fileWarnings, isActiveAppliance } = viewedAppliance
+    const { label, description, fileErrors, fileWarnings } = viewedAppliance
     return (
       <div>
         {viewedApplianceIsStaged && <StagedFileHeader />}

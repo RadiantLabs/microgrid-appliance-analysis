@@ -12,23 +12,35 @@ export function calculateNewApplianceColumns(enabledAppliances) {
     return []
   }
   const appliancesWithNewColummns = _.map(enabledAppliances, appliance => {
-    const { nominalPower, dutyCycleDerateFactor } = appliance
+    const {
+      nominalPower,
+      dutyCycleDerateFactor,
+      productionUnitsPerKwh,
+      revenuePerProductionUnits,
+    } = appliance
     return _.map(appliance.fileData, row => {
+      const newApplianceLoad = row['kw_factor'] * nominalPower * dutyCycleDerateFactor
+      const productionUnits = newApplianceLoad * productionUnitsPerKwh
+      const productionUnitsRevenue = revenuePerProductionUnits * productionUnits
       return {
         ...row,
-        newApplianceLoad: row['kw_factor'] * nominalPower * dutyCycleDerateFactor,
+        newApplianceLoad,
+        productionUnits,
+        productionUnitsRevenue,
       }
     })
   })
   const multipleAppliances = _.size(enabledAppliances) > 1
   const zippedAppliances = _.zip(...appliancesWithNewColummns)
   return _.map(zippedAppliances, appliancesRow => {
-    const newAppliancesLoad = _.sumBy(appliancesRow, appliance => appliance.newApplianceLoad)
+    const newAppliancesLoad = _.sumBy(appliancesRow, 'newApplianceLoad')
+    const productionUnitsRevenue = _.sumBy(appliancesRow, 'productionUnitsRevenue')
     return {
       hour: appliancesRow[0]['hour'],
       hour_of_day: appliancesRow[0]['hour_of_day'],
       day_hour: appliancesRow[0]['day_hour'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
+      productionUnitsRevenue: _.round(productionUnitsRevenue, 4),
       kw_factor: multipleAppliances ? 'Multiple' : appliancesRow[0]['kw_factor'],
     }
   })

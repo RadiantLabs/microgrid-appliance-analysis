@@ -64,10 +64,17 @@ export function getSummaryStats(calculatedColumns, activeGrid) {
 
   // Calculate production of new appliance based on
   // const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
+
+  // TODO:
+  // Production units makes sense when we are calculating results from a single appliance
+  // Otherwise you might have kg rice, kg maize and hours of welding
+  // But shouldn't I do this? This should be a derived column on the appliance model
+  // calculateNewApplianceColumns should live on the appliance model
+  // const yearlyProductionUnits = sumGreaterThanZero(calculatedColumns, 'productionUnits')
+
   // const yearlyProductionUnitsRevenue =
   //   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
   // const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
-
   return {
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
@@ -95,7 +102,6 @@ export function getSummaryStats(calculatedColumns, activeGrid) {
     // yearlyProductionUnits: yearlyProductionUnits,
     // yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     // netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
-    yearlyProductionUnits: 0,
     yearlyProductionUnitsRevenue: 0,
     netApplianceOwnerRevenue: 0,
   }

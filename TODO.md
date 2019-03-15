@@ -19,8 +19,9 @@ Big next steps
 
 --------------------------------------------------------------------------------
 Next steps for Appliances:
-- [ ] *** Calculate everything on an hourly basis (not ROI and simple payback) ***
+- [ ] *** Calculate everything on an hourly basis for Appliances ***
   - [ ] Electricity Sales (from new appliances)
+  - [ ] production units
   - [ ] New appliance unmet load cost
   - [ ] New appliance net revenue
   - [ ] Appliance Electricity Cost
@@ -31,7 +32,10 @@ Next steps for Appliances:
     - rename to "Units Produced"
     - include unit label (kg, hr)
 - [ ] Confirm summary calcs using a spreadsheet
+- [ ] Put in React Virtualized Table for every appliance
+
 - [ ] Fix summaryStats now that we don't depend on modelInputs
+
 
 - [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
 - [ ] Make appliance enabled/disabled state clearer
