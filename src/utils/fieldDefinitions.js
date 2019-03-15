@@ -75,7 +75,7 @@ export const fieldDefinitions = {
   },
   dutyCycleDerateFactor: {
     $schema: jsonSchemaStandard,
-    title: 'Duty Cycle Derate Factor',
+    title: 'Appliance Duty Cycle Derate Factor',
     description:
       'A welder, for example, may only run 20% within a 2 minute measured interval. In that case, enter 0.2. Mills likely run for the entire 2 minute measured interval, so would have a value of 1',
     type: 'float',
@@ -122,7 +122,7 @@ export const fieldDefinitions = {
   },
   productionUnitsPerKwh: {
     $schema: jsonSchemaStandard,
-    title: 'Units of Production per kWh',
+    title: 'Appliance Units of Production per kWh',
     description:
       'How many units can be produced for a single kwh. Multiply by yearly kWh to get number of units produced in a year. Units could be kg grain / kWh.',
     type: 'float',
@@ -131,7 +131,7 @@ export const fieldDefinitions = {
   },
   revenuePerProductionUnits: {
     $schema: jsonSchemaStandard,
-    title: 'Revenue Per Production Units',
+    title: 'Appliance Revenue Per Production Units',
     description:
       'Revenue generated per unit of production. For example, multiply by yearly kg of grain to get yearly revenue: $ / kg of grain milled.',
     type: 'float',
