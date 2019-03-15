@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Grid, Header, Segment, Button, Icon, Loader, Message, Checkbox } from 'semantic-ui-react'
 import FileButton from '../../components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
+import ApplianceDataTable from './ApplianceDataTable'
 
 const FileUploadErrors = ({ fileErrors }) => {
   if (_.isEmpty(fileErrors)) {
@@ -150,6 +151,7 @@ class ApplianceFile extends React.Component {
             </Grid.Row>
           </Grid>
         </Segment>
+        <ApplianceDataTable />
       </div>
     )
   }

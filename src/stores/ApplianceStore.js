@@ -8,6 +8,7 @@ import {
   analyzeApplianceFile,
   csvOptions,
 } from '../utils/importFileHelpers'
+import { calculateApplianceColumns } from '../utils/calculateApplianceColumns'
 
 //
 // -----------------------------------------------------------------------------
@@ -155,6 +156,10 @@ export const ApplianceStore = types
   .views(self => ({
     get showAnalyzedResults() {
       return self.fileIsSelected && !self.isAnalyzingFile
+    },
+
+    get calculatedApplianceColumns() {
+      return calculateApplianceColumns(self)
     },
   }))
 

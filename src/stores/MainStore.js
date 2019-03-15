@@ -167,8 +167,9 @@ export const MainStore = types
     },
   }))
   .views(self => ({
+    // TODO
     get calculatedApplianceColumns() {
-      return calculateNewApplianceColumns(self.enabledAppliances)
+      return []
     },
     get calculatedColumns() {
       return calculateNewColumns(self.activeGrid, self.calculatedApplianceColumns)
