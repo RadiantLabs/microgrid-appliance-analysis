@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Label, Card, Form, Input, Checkbox } from 'semantic-ui-react'
-import { HelperPopup } from 'src/components/Elements/HelperPopup'
-import { getEquipmentDiagram } from 'src/utils/ancillaryEquipmentRules'
+import { HelperPopup } from '../../../components/Elements/HelperPopup'
+import { getEquipmentDiagram } from '../../../utils/ancillaryEquipmentRules'
 
 const cardBorderStyles = {
   border: '1px solid #2185d0',

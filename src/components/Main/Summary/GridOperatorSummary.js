@@ -2,7 +2,7 @@ import * as React from 'react'
 import { get } from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
-import { UnmetLoadHelperPopup } from 'src/components/Elements/HelperPopup/UnmetLoadHelperPopup'
+import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/UnmetLoadHelperPopup'
 
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {

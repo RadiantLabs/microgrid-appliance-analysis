@@ -2,8 +2,8 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Message } from 'semantic-ui-react'
 import _ from 'lodash'
-import LoaderSpinner from 'src/components/Elements/Loader'
-import BatteryChargeTable from 'src/components/Elements/BatteryChargeTable'
+import LoaderSpinner from '../../../components/Elements/Loader'
+import BatteryChargeTable from '../../../components/Elements/BatteryChargeTable'
 import {
   LineChart,
   Line,
@@ -14,7 +14,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { getChartColors, greyColors } from 'src/utils/constants'
+import { getChartColors, greyColors } from '../../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines

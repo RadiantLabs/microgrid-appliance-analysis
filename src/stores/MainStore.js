@@ -11,16 +11,16 @@ import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
 // Import Helpers and domain data
-import { combineTables } from 'src/utils/helpers'
-import { getSummaryStats } from 'src/utils/calculateStats'
-import { calculateNewColumns, calculateNewApplianceColumns } from 'src/utils/calculateNewColumns'
+import { combineTables } from '../utils/helpers'
+import { getSummaryStats } from '../utils/calculateStats'
+import { calculateNewColumns, calculateNewApplianceColumns } from '../utils/calculateNewColumns'
 import {
   sampleGridFileInfos,
   sampleApplianceFiles,
   ancillaryEquipmentList,
-} from 'src/utils/fileInfo'
-import { combinedColumnHeaderOrder } from 'src/utils/columnHeaders'
-import { disableAllAncillaryEquipment } from 'src/utils/ancillaryEquipmentRules'
+} from '../utils/fileInfo'
+import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
+import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
 
 //
 // -----------------------------------------------------------------------------

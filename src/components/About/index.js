@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Grid, Header, Segment, Image } from 'semantic-ui-react'
-import factoreLogo from 'src/images/factore-logo.png'
-import radiantLogo from 'src/images/radiant-labs-logo@256w.png'
-import softwareDiagram from 'src/images/minigrid-software-diagram.png'
+import factoreLogo from '../../images/factore-logo.png'
+import radiantLogo from '../../images/radiant-labs-logo@256w.png'
+import softwareDiagram from '../../images/minigrid-software-diagram.png'
 
 const About = () => (
   <Grid padded>

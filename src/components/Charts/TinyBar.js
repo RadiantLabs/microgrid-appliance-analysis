@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { BarChart, Bar, XAxis, Tooltip } from 'recharts'
 import _ from 'lodash'
-import { checkKey } from 'src/utils/helpers'
+import { checkKey } from '../../../utils/helpers'
 
 // This is unused at the moment
 export const TinyBarChart = props => {

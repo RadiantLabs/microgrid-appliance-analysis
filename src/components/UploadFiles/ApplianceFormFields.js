@@ -2,10 +2,10 @@ import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Table, Dropdown } from 'semantic-ui-react'
-import { HelperPopup } from 'src/components/Elements/HelperPopup'
-import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
-import InputField from 'src/components/Elements/InputField'
-import { fieldDefinitions } from 'src/utils/fieldDefinitions'
+import { HelperPopup } from '../../components/Elements/HelperPopup'
+import borderlessTableStyles from '../../styles/borderlessTableStyles.module.css'
+import InputField from '../../components/Elements/InputField'
+import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store

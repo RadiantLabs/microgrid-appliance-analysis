@@ -2,8 +2,8 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { List, Checkbox, Input, Popup, Icon } from 'semantic-ui-react'
-import { columnHeaderByTableType } from 'src/utils/columnHeaders'
-import { tableColorsByKey } from 'src/utils/constants'
+import { columnHeaderByTableType } from '../../../utils/columnHeaders'
+import { tableColorsByKey } from '../../../utils/constants'
 import styles from './styles.module.css'
 
 /**

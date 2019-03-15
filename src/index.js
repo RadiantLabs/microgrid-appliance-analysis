@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import App from './App'
 import 'semantic-ui-css/semantic.min.css'
 // import 'src/styles/semantic.css'
-import 'src/styles/index.css'
+import './styles/index.css'
 import 'react-virtualized/styles.css'
 
 // if (process.env.NODE_ENV === 'production') {

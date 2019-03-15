@@ -4,13 +4,13 @@ import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
-import { getIsoTimestamp, removeFileExtension } from 'src/utils/helpers'
+import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
 import {
   csvOptions,
   analyzeHomerFile,
   fetchSampleFile,
   fetchSnapshotGridFile,
-} from 'src/utils/importFileHelpers'
+} from '../utils/importFileHelpers'
 import {
   computeBaselineLoss,
   convertTableToTrainingData,
@@ -21,7 +21,7 @@ import {
   calculatePlottableReferenceLine,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
-} from 'src/utils/tensorflowHelpers'
+} from '../utils/tensorflowHelpers'
 
 //
 // -----------------------------------------------------------------------------

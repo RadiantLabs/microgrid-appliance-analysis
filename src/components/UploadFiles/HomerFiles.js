@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react'
 import HomerFile from './HomerFile'
-import { HelperPopup } from 'src/components/Elements/HelperPopup'
+import { HelperPopup } from '../../components/Elements/HelperPopup'
 import FileInfoPopupContent from './FileInfoPopupContent'
 
 const labelStyle = {

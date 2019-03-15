@@ -41,8 +41,8 @@ Next steps for Appliances:
   - [x] Start with newAppliancesLoad and hooking up existing calculations
   - [x] Show derived colummns Data grid
 
-- Fix broken ancillary equipment list
-
+- [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
+- [ ] Fix broken ancillary equipment list
 - [ ] Keep appliance spinner going until it's actually clickable
 - [ ] Calculate grid and appliance ROI
 - [ ] Calculate grid and appliance Payback

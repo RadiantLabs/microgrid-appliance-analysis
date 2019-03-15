@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
-import { NavItem } from 'src/components/Elements/NavItem'
-import FileChooser from 'src/components/Main/FileChooser'
+import { NavItem } from '../../components/Elements/NavItem'
+import FileChooser from '../../components/Main/FileChooser'
 
 // Route Pages
 import Summary from './Summary'

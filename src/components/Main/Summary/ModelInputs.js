@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { Table, Input } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
-import InputField from 'src/components/Elements/InputField'
-import { HelperPopup } from 'src/components/Elements/HelperPopup'
-import { fieldDefinitions } from 'src/utils/fieldDefinitions'
-import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
+import InputField from '../../../components/Elements/InputField'
+import { HelperPopup } from '../../../components/Elements/HelperPopup'
+import { fieldDefinitions } from '../../../utils/fieldDefinitions'
+import borderlessTableStyles from '../../../styles/borderlessTableStyles.module.css'
 
 export const EconomicInputs = inject('store')(
   observer(({ store }) => {

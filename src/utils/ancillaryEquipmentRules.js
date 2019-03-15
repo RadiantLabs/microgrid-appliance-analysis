@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import { ReactComponent as PowerConverterSVG } from 'src/images/ac_to_dc_power_converter.svg'
-import { ReactComponent as InverterSVG } from 'src/images/dc_to_ac_inverter.svg'
-import { ReactComponent as PlaceholderSVG } from 'src/images/placeholder.svg'
+import { ReactComponent as PowerConverterSVG } from '../images/ac_to_dc_power_converter.svg'
+import { ReactComponent as InverterSVG } from '../images/dc_to_ac_inverter.svg'
+import { ReactComponent as PlaceholderSVG } from '../images/placeholder.svg'
 
 export function getEquipmentDiagram(equipmentType) {
   switch (equipmentType) {

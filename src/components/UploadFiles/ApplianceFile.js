@@ -2,7 +2,7 @@ import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Grid, Header, Segment, Button, Icon, Loader, Message, Checkbox } from 'semantic-ui-react'
-import FileButton from 'src/components/Elements/FileButton'
+import FileButton from '../../components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
 
 const FileUploadErrors = ({ fileErrors }) => {

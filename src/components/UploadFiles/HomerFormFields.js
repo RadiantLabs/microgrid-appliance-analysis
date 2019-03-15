@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Table } from 'semantic-ui-react'
-import InputField from 'src/components/Elements/InputField'
-import { HelperPopup } from 'src/components/Elements/HelperPopup'
-import borderlessTableStyles from 'src/styles/borderlessTableStyles.module.css'
-import { fieldDefinitions } from 'src/utils/fieldDefinitions'
+import InputField from '../../components/Elements/InputField'
+import { HelperPopup } from '../../components/Elements/HelperPopup'
+import borderlessTableStyles from '../../styles/borderlessTableStyles.module.css'
+import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const HomerFormFields = ({ grid }) => {
   return (

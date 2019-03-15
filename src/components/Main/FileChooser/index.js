@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import InputField from 'src/components/Elements/InputField'
 import _ from 'lodash'
 import {
   Dropdown,
@@ -14,6 +13,7 @@ import {
   Loader,
   Radio,
 } from 'semantic-ui-react'
+import InputField from '../../../components/Elements/InputField'
 
 const ApplianceSelectionTrigger = inject('store')(
   observer(props => {

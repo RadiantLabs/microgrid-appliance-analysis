@@ -3,8 +3,8 @@ import { types, getParent } from 'mobx-state-tree'
 import {
   getAncillaryEquipmentStatus,
   setAncillaryEquipmentEnabledFromStatus,
-} from 'src/utils/ancillaryEquipmentRules'
-import { ancillaryEquipmentList } from 'src/utils/fileInfo'
+} from '../utils/ancillaryEquipmentRules'
+import { ancillaryEquipmentList } from '../utils/fileInfo'
 
 /**
  * Ancillary Equipment Store
