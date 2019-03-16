@@ -262,7 +262,11 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
     fileErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
   const processedData = _.map(parsedFile.data, row => {
-    return { ...row, ...{ kw_factor: _.round(row['kw_factor'], 5) } }
+    const trimmedRow = _.omit(row, ['production_factor'])
+    return {
+      ...trimmedRow,
+      ...{ kw_factor: _.round(row['kw_factor'], 5) },
+    }
   })
   return {
     fileInfo,

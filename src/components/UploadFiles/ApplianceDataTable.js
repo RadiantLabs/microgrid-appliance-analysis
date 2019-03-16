@@ -6,7 +6,6 @@ import { Grid } from 'semantic-ui-react'
 import LoaderSpinner from '../../components/Elements/Loader'
 import { setHeaderStyles } from '../../styles/tableStyles'
 import { formatApplianceDateForTable } from '../../utils/helpers'
-import { columnHeaderByTableType } from '../../utils/columnHeaders'
 
 class ApplianceDataTable extends React.Component {
   _cellRenderer = (headers, units, { columnIndex, key, rowIndex, style }) => {
@@ -78,7 +77,6 @@ class ApplianceDataTable extends React.Component {
       'newApplianceLoad',
       'productionUnits',
       'productionUnitsRevenue',
-      'production_factor',
     ]
     const applianceHeadersUnits = ['-', '-', '-', '-', '-', '-', 'kW', productionUnitType, '$']
     const rowCount = _.size(calculatedApplianceColumns)
