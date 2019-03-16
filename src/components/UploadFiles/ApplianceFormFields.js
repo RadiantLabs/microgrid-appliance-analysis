@@ -16,7 +16,8 @@ const ApplianceFormFields = ({ store }) => {
     handlePhaseChange,
     hasMotor,
     handleHasMotorChange,
-    // fileInfo,
+    fileErrors,
+    fileWarnings,
   } = viewedAppliance
 
   // TODO: At some point we may want to disable these fields for sample files.
@@ -204,9 +205,34 @@ const ApplianceFormFields = ({ store }) => {
             />
           </Table.Cell>
         </Table.Row>
+        <Table.Row>
+          <Table.Cell>File Upload Warnings</Table.Cell>
+          <Table.Cell>
+            <FileUploadErrors fileErrors={fileWarnings} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>File Upload Errors</Table.Cell>
+          <Table.Cell>
+            <FileUploadErrors fileErrors={fileErrors} />
+          </Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   )
 }
 
 export default inject('store')(observer(ApplianceFormFields))
+
+const FileUploadErrors = ({ fileErrors }) => {
+  if (_.isEmpty(fileErrors)) {
+    return 'None Found'
+  }
+  return (
+    <div>
+      {_.map(fileErrors, error => (
+        <div key={error}>{error}</div>
+      ))}
+    </div>
+  )
+}

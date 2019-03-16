@@ -7,19 +7,6 @@ import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
 
-const FileUploadErrors = ({ fileErrors }) => {
-  if (_.isEmpty(fileErrors)) {
-    return 'None Found'
-  }
-  return (
-    <div>
-      {_.map(fileErrors, error => (
-        <div key={error}>{error}</div>
-      ))}
-    </div>
-  )
-}
-
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
     const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, batteryIsTrained } = viewedGrid
@@ -80,14 +67,7 @@ class HomerFile extends React.Component {
       return <h2>Empty Viewed Grid</h2> // log this
     }
     const { viewedGridIsStaged } = this.props.store
-    const {
-      label,
-      description,
-      showAnalyzedResults,
-      fileErrors,
-      fileWarnings,
-      isActiveGrid,
-    } = viewedGrid
+    const { label, description, showAnalyzedResults, isActiveGrid } = viewedGrid
     return (
       <div>
         {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
@@ -119,22 +99,6 @@ class HomerFile extends React.Component {
                 </Grid.Column>
                 <Grid.Column width={8}>
                   <BatteryChargeTable grid={viewedGrid} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={3}>
-                  <div>File Upload Errors</div>
-                </Grid.Column>
-                <Grid.Column width={13}>
-                  <FileUploadErrors fileErrors={fileErrors} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={3}>
-                  <div>File Upload Warnings</div>
-                </Grid.Column>
-                <Grid.Column width={13}>
-                  <FileUploadErrors fileErrors={fileWarnings} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

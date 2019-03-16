@@ -1,4 +1,5 @@
 import * as React from 'react'
+import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Table } from 'semantic-ui-react'
 import InputField from '../../components/Elements/InputField'
@@ -7,6 +8,7 @@ import borderlessTableStyles from '../../styles/borderlessTableStyles.module.css
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const HomerFormFields = ({ grid }) => {
+  const { fileErrors, fileWarnings } = grid
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -73,9 +75,34 @@ const HomerFormFields = ({ grid }) => {
           </Table.Cell>
           <Table.Cell>{grid.generatorType}</Table.Cell>
         </Table.Row>
+        <Table.Row>
+          <Table.Cell>File Upload Warnings </Table.Cell>
+          <Table.Cell>
+            <FileUploadErrors fileErrors={fileWarnings} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>File Upload Errors </Table.Cell>
+          <Table.Cell>
+            <FileUploadErrors fileErrors={fileErrors} />
+          </Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   )
 }
 
 export default inject('store')(observer(HomerFormFields))
+
+const FileUploadErrors = ({ fileErrors }) => {
+  if (_.isEmpty(fileErrors)) {
+    return 'None Found'
+  }
+  return (
+    <div>
+      {_.map(fileErrors, error => (
+        <div key={error}>{error}</div>
+      ))}
+    </div>
+  )
+}

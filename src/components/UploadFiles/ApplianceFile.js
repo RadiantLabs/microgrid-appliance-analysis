@@ -6,19 +6,6 @@ import FileButton from '../../components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
 import ApplianceDataTable from './ApplianceDataTable'
 
-const FileUploadErrors = ({ fileErrors }) => {
-  if (_.isEmpty(fileErrors)) {
-    return 'None Found'
-  }
-  return (
-    <div>
-      {_.map(fileErrors, error => (
-        <div key={error}>{error}</div>
-      ))}
-    </div>
-  )
-}
-
 const ApplianceEnabler = inject('store')(
   observer(({ store }) => {
     const { viewedAppliance } = store
@@ -98,7 +85,7 @@ class ApplianceFile extends React.Component {
     if (_.isEmpty(viewedAppliance)) {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
-    const { label, description, fileErrors, fileWarnings } = viewedAppliance
+    const { label, description } = viewedAppliance
     return (
       <div>
         {viewedApplianceIsStaged && <StagedFileHeader />}
@@ -132,22 +119,6 @@ class ApplianceFile extends React.Component {
                 <ApplianceFormFields />
               </Grid.Column>
               <Grid.Column width={6} />
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={3}>
-                <div>File Upload Errors</div>
-              </Grid.Column>
-              <Grid.Column width={13}>
-                <FileUploadErrors fileErrors={fileErrors} />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={3}>
-                <div>File Upload Warnings</div>
-              </Grid.Column>
-              <Grid.Column width={13}>
-                <FileUploadErrors fileErrors={fileWarnings} />
-              </Grid.Column>
             </Grid.Row>
           </Grid>
         </Segment>
