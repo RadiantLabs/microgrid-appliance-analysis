@@ -38,18 +38,17 @@ Next steps for Appliances:
   - [x] Units of Productivity (include unit label (kg, hr))
 - [ ] Confirm summary calcs using a spreadsheet
 - [x] Put in React Virtualized Table for every appliance
+- [x] Fix summaryStats now that we don't depend on modelInputs
 
-- [ ] Fix summaryStats now that we don't depend on modelInputs
-
-* [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
 * [x] Make appliance enabled/disabled state clearer
-* [ ] Add appliance popover data
-* [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
+* [x] Add appliance popover data
 * [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
 
   - [x] Start with newAppliancesLoad and hooking up existing calculations
   - [x] Show derived colummns Data grid
 
+* [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
+* [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
 * [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
 * [ ] Fix broken ancillary equipment list
 * [ ] Keep appliance spinner going until it's actually clickable

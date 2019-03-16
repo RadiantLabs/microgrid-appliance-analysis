@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react'
 import HomerFile from './HomerFile'
 import { HelperPopup } from '../../components/Elements/HelperPopup'
-import FileInfoPopupContent from './FileInfoPopupContent'
+import GridInfoPopupContent from './GridInfoPopupContent'
 
 const labelStyle = {
   background: 'none #fff',
@@ -65,7 +65,7 @@ class HomerFiles extends React.Component {
                 onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
                 <Header sub>{activeGrid.label}</Header>
                 <HelperPopup
-                  content={<FileInfoPopupContent file={activeGrid} />}
+                  content={<GridInfoPopupContent file={activeGrid} />}
                   position="right center"
                   wide={true}
                 />
@@ -85,7 +85,7 @@ class HomerFiles extends React.Component {
                     onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
                     <Header sub>{file.label}</Header>
                     <HelperPopup
-                      content={<FileInfoPopupContent file={file} />}
+                      content={<GridInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />

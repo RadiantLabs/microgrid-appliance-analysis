@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { types, flow } from 'mobx-state-tree'
 // import localforage from 'localforage'
+import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import {
   fetchSampleFile,
@@ -165,6 +166,10 @@ export const ApplianceStore = types
 
     get applianceSummaryStats() {
       return calculateApplianceSummaryStats(self.calculatedApplianceColumns)
+    },
+
+    get prettyFileSize() {
+      return prettyBytes(self.fileInfo.size)
     },
   }))
 

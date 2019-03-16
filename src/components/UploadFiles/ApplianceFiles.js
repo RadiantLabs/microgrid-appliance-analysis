@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react'
 import ApplianceFile from './ApplianceFile'
 import { HelperPopup } from '../../components/Elements/HelperPopup'
-import FileInfoPopupContent from './FileInfoPopupContent'
+import ApplianceInfoPopupContent from './ApplianceInfoPopupContent'
 
 const labelStyle = {
   background: 'none #fff',
@@ -62,7 +62,7 @@ class ApplianceFiles extends React.Component {
                     onClick={this.handleFileNavClick.bind(null, fileInfo.id)}>
                     <Header sub>{label}</Header>
                     <HelperPopup
-                      content={<FileInfoPopupContent file={file} />}
+                      content={<ApplianceInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />
