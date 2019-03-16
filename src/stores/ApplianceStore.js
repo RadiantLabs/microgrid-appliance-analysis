@@ -9,6 +9,7 @@ import {
   csvOptions,
 } from '../utils/importFileHelpers'
 import { calculateApplianceColumns } from '../utils/calculateApplianceColumns'
+import { calculateApplianceSummaryStats } from '../utils/CalculateApplianceSummaryStats'
 
 //
 // -----------------------------------------------------------------------------
@@ -160,6 +161,10 @@ export const ApplianceStore = types
 
     get calculatedApplianceColumns() {
       return calculateApplianceColumns(self)
+    },
+
+    get applianceSummaryStats() {
+      return calculateApplianceSummaryStats(self.calculatedApplianceColumns)
     },
   }))
 
