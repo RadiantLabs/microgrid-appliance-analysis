@@ -13,7 +13,8 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
 import { getSummaryStats } from '../utils/calculateStats'
-import { calculateNewColumns, calculateNewApplianceColumns } from '../utils/calculateNewColumns'
+import { calculateHybridColumns } from '../utils/calculateHybridColumns'
+import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import {
   sampleGridFileInfos,
   sampleApplianceFiles,
@@ -167,18 +168,17 @@ export const MainStore = types
     },
   }))
   .views(self => ({
-    // TODO
-    get calculatedApplianceColumns() {
-      return []
+    get summedApplianceColumns() {
+      return sumApplianceColumns(self.enabledAppliances)
     },
     get calculatedColumns() {
-      return calculateNewColumns(self.activeGrid, self.calculatedApplianceColumns)
+      return calculateHybridColumns(self.activeGrid, self.summedApplianceColumns)
     },
     get combinedTable() {
       return combineTables(
         self.activeGrid.fileData,
         self.calculatedColumns,
-        self.calculatedApplianceColumns
+        self.summedApplianceColumns
       )
     },
     get summaryStats() {

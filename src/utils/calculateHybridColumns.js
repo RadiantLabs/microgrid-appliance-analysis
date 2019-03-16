@@ -5,7 +5,7 @@ import _ from 'lodash'
  * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-export function calculateNewColumns(grid, summedAppliances) {
+export function calculateHybridColumns(grid, summedAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return null
   }
