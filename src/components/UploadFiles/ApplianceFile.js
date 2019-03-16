@@ -1,17 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import {
-  Grid,
-  Header,
-  Segment,
-  Button,
-  Icon,
-  Loader,
-  Message,
-  Checkbox,
-  Table,
-} from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Message, Checkbox } from 'semantic-ui-react'
 import FileButton from '../../components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
 import ApplianceDataTable from './ApplianceDataTable'
@@ -123,16 +113,7 @@ class ApplianceFile extends React.Component {
           </Message>
         )}
         <Segment attached>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={10}>
-                <ApplianceFormFields />
-              </Grid.Column>
-              <Grid.Column width={6}>
-                <ApplianceSummaryStats />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          <ApplianceFormFields />
         </Segment>
         <ApplianceDataTable />
       </div>
@@ -141,31 +122,3 @@ class ApplianceFile extends React.Component {
 }
 
 export default inject('store')(observer(ApplianceFile))
-
-const ApplianceSummaryStats = inject('store')(
-  observer(({ store }) => {
-    const {
-      yearlyApplianceLoad,
-      yearlyProductionUnits,
-      yearlyProductionUnitsRevenue,
-    } = store.viewedAppliance.applianceSummaryStats
-    return (
-      <Table basic="very" celled>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell width={9}>Yearly Appliance Load</Table.Cell>
-            <Table.Cell width={7}>{yearlyApplianceLoad}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Yearly Production Units</Table.Cell>
-            <Table.Cell>{yearlyProductionUnits}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>yearlyProductionUnitsRevenue</Table.Cell>
-            <Table.Cell>{yearlyProductionUnitsRevenue}</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    )
-  })
-)
