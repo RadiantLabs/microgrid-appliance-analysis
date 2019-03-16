@@ -5,7 +5,7 @@ import { AutoSizer, MultiGrid } from 'react-virtualized'
 import { Grid } from 'semantic-ui-react'
 import LoaderSpinner from '../../components/Elements/Loader'
 import { setHeaderStyles } from '../../styles/tableStyles'
-import { formatDateForTable } from '../../utils/helpers'
+import { formatApplianceDateForTable } from '../../utils/helpers'
 import { columnHeaderByTableType } from '../../utils/columnHeaders'
 
 class ApplianceDataTable extends React.Component {
@@ -14,12 +14,11 @@ class ApplianceDataTable extends React.Component {
     const headerRowCount = 2 // column header name and units
     const columnHeader = headers[columnIndex]
     const columnUnit = units[columnIndex]
-    const tableType = columnHeaderByTableType[columnHeader]
 
     // Column header name
     if (rowIndex === 0) {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+        <div key={key} style={setHeaderStyles(style, rowIndex, 'appliance')}>
           {columnHeader}
         </div>
       )
@@ -28,7 +27,7 @@ class ApplianceDataTable extends React.Component {
     // Column header units
     if (rowIndex === 1) {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+        <div key={key} style={setHeaderStyles(style, rowIndex, 'appliance')}>
           {columnUnit || 'missing'}
         </div>
       )
@@ -37,13 +36,15 @@ class ApplianceDataTable extends React.Component {
     // All other rows
     if (columnHeader === 'datetime') {
       return (
-        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
-          {formatDateForTable(calculatedApplianceColumns[rowIndex - headerRowCount][columnHeader])}
+        <div key={key} style={setHeaderStyles(style, rowIndex, 'appliance')}>
+          {formatApplianceDateForTable(
+            calculatedApplianceColumns[rowIndex - headerRowCount][columnHeader]
+          )}
         </div>
       )
     }
     return (
-      <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+      <div key={key} style={setHeaderStyles(style, rowIndex, 'appliance')}>
         {calculatedApplianceColumns[rowIndex - headerRowCount][columnHeader]}
       </div>
     )

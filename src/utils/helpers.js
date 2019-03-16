@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import path from 'path-browserify'
-import { HOURS_PER_YEAR, tableDateFormat } from './constants'
+import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
 window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
 // -----------------------------------------------------------------------------
@@ -93,6 +93,11 @@ export const isValidLuxonDate = dateObj => {
 // instead of strings makes the app brittle
 export const formatDateForTable = val => {
   const dateObj = DateTime.fromISO(val)
+  return isValidLuxonDate(dateObj) ? dateObj.toFormat(tableDateFormat) : val
+}
+
+export const formatApplianceDateForTable = val => {
+  const dateObj = DateTime.fromFormat(val, applianceParseFormat)
   return isValidLuxonDate(dateObj) ? dateObj.toFormat(tableDateFormat) : val
 }
 
