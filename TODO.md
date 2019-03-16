@@ -1,25 +1,32 @@
 For the battery training mmodel, there are 2 inputs:
-  * newElectricalProductionLoadDiff
-  * prevBatteryEnergyContent
+
+- newElectricalProductionLoadDiff
+- prevBatteryEnergyContent
 
 Don't overcomplicate this:
+
 1. First train the mmodel on the data I have
 2. give it two inputs in order to calculate new energy content:
-  * newElectricalProductionLoadDiff
-  * prevBatteryEnergyContent: The prediction from the previous row. If it's the first row, use original Battery Energy Content
 
-The trick is doing the *inference sequentially*, so I have a previous row to work from
+- newElectricalProductionLoadDiff
+- prevBatteryEnergyContent: The prediction from the previous row. If it's the first row, use original Battery Energy Content
 
---------------------------------------------------------------------------------
+The trick is doing the _inference sequentially_, so I have a previous row to work from
+
+---
+
 Big next steps
-* Calculate ROI & payback
-* Get battery model prediction working
-* Hook up appliance upload section
-* Save files and bootstrap from localforage
 
---------------------------------------------------------------------------------
+- Calculate ROI & payback
+- Get battery model prediction working
+- Hook up appliance upload section
+- Save files and bootstrap from localforage
+
+---
+
 Next steps for Appliances:
-- [ ] *** Calculate everything on an hourly basis for Appliances ***
+
+- [ ] **_ Calculate everything on an hourly basis for Appliances _**
   - [ ] Electricity Sales (from new appliances)
   - [ ] production units
   - [ ] New appliance unmet load cost
@@ -28,37 +35,36 @@ Next steps for Appliances:
   - [ ] Appliance-Related Revenue
   - [ ] Net Revenue
   - [ ] Appliance Electricity Consumption
-  - [ ] Units of Productivity
-    - rename to "Units Produced"
-    - include unit label (kg, hr)
+  - [x] Units of Productivity (include unit label (kg, hr))
 - [ ] Confirm summary calcs using a spreadsheet
-- [ ] Put in React Virtualized Table for every appliance
+- [x] Put in React Virtualized Table for every appliance
 
 - [ ] Fix summaryStats now that we don't depend on modelInputs
 
+* [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
+* [x] Make appliance enabled/disabled state clearer
+* [ ] Add appliance popover data
+* [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
+* [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
 
-- [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
-- [ ] Make appliance enabled/disabled state clearer
-- [ ] Add appliance popover data
-- [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
-- [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
   - [x] Start with newAppliancesLoad and hooking up existing calculations
   - [x] Show derived colummns Data grid
 
-- [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
-- [ ] Fix broken ancillary equipment list
-- [ ] Keep appliance spinner going until it's actually clickable
-- [ ] Calculate grid and appliance ROI
-- [ ] Calculate grid and appliance Payback
-- [ ] Assign appliance cost to either grid owner or grid operator
-- [ ] Add commas to results numbers
-- [ ] Find logging library that replaces 'throw'
-- [ ] Use `label` and `description` all over the app. Then I can just use a spread operator
-- [ ] Add Appliance upload section
+* [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
+* [ ] Fix broken ancillary equipment list
+* [ ] Keep appliance spinner going until it's actually clickable
+* [ ] Calculate grid and appliance ROI
+* [ ] Calculate grid and appliance Payback
+* [ ] Assign appliance cost to either grid owner or grid operator
+* [ ] Add commas to results numbers
+* [ ] Find logging library that replaces 'throw'
+* [ ] Use `label` and `description` all over the app. Then I can just use a spread operator
+* [ ] Add Appliance upload section
   - [ ] Input for cost for appliance
   - [ ] Require appliance file to have certain columns
-- [ ] Add app icon
-- [ ] Fix Re-Train Model button
+* [ ] Add app icon
+* [ ] Fix Re-Train Model button
+
 ## Upload HOMER files
 
 - [ ] Clean up HOMER file upload sections by taking out passed props (such as viewedGrid) and injecting it from the store
@@ -66,8 +72,8 @@ Next steps for Appliances:
 - [ ] Provide Sample for download
 
 ## Ancillary Appliances
-- [ ] Allow assigning ancillary equipment to grid or appliance operator
 
+- [ ] Allow assigning ancillary equipment to grid or appliance operator
 
 ## Battery charging model
 
@@ -125,7 +131,6 @@ Next steps for Appliances:
 - [ ] Detect if we have indexdb and alert if not. Disable snapshots?
 - [ ] Look into onPatch for when a new battery model is created (even if volatile?). Then that could be saved to local storage? https://mobx-state-tree.gitbook.io/docs/concepts/listening-to-observables-snapshots-patches-or-actions
 
-
 ## Battery charge calculation notes
 
 Goal: Calculate Battery SOC for every hour. Use the spreadsheet values without new loads applied to generate the SoC based on loads we know.
@@ -142,32 +147,34 @@ The predictive model may just want to calculate Charge Rate and Discharge Rate (
 - Removing
   - Available Capacity: Because it depends on Excess Electrical, SoC and Energy Content for the given row.
 
-
---------------------------------------------------------------------------------
-
-
+---
 
 Map out the paths of file upload or restore
+
 1. Load sample file: Uses fileInfo to retrieve, analyze and rehydrate the store
 2. Restore from snapshot: No need to analyze file - all state is in snapshot. These can come from either localforage or firebase.
 3. Uploaded file: Need to analyze file. This will eventually be saved as a snapshot
 
 Bootstrapping problem I have to solve for when a user first fires up the app:
+
 - [x] Switch from `processHomerFile` run through `analyzeHomerFile`
 - [x] Put all sample files as CSVs in data and import and parse them sequentially
 
 In localforage:
+
 - mg.activeGrid
 - mg.stagedGrid
 - mg.availableGrids (saved with battery model artifacts)
-- mg.availableGridNames  // I don't think I need this as a model, I just need to save it
+- mg.availableGridNames // I don't think I need this as a model, I just need to save it
   - {fileName: 'xyz', description: 'abc', isSample: false, defaultOnLoad: true}
 
 How does mg.availableGrids in localforage compare with availableGrids in memory?
-  - does one have artifacts and the other rehydrated models?
-  - are we storing all availableGrids in memory?
+
+- does one have artifacts and the other rehydrated models?
+- are we storing all availableGrids in memory?
 
 How to bootstrap stored vs. sample files?
-  - sample files load from data folder vs localforage for user files
-  - load defaultOnLoad first and rehydrate
-  - do I even keep sampels in availableGridNames? If I don't, how would I know what's defaultOnLoad?
+
+- sample files load from data folder vs localforage for user files
+- load defaultOnLoad first and rehydrate
+- do I even keep sampels in availableGridNames? If I don't, how would I know what's defaultOnLoad?

@@ -17,7 +17,7 @@ export const fieldDefinitions = {
   description: {
     $schema: jsonSchemaStandard,
     title: 'File Description',
-    description: '',
+    description: 'This is a description for your records',
     type: 'string',
   },
   capex: {

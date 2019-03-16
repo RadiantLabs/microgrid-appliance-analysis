@@ -59,7 +59,7 @@ const ApplianceFormFields = ({ store }) => {
 
       <Grid.Row>
         <Grid.Column width={4}>
-          {fieldDefinitions['description'].title}
+          {fieldDefinitions['description'].title}{' '}
           <HelperPopup
             position="right center"
             content={fieldDefinitions['description'].description}
