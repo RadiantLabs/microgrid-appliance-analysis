@@ -182,6 +182,9 @@ export const MainStore = types
       })
     },
     get batteryStartingEnergyContent() {
+      if (_.isEmpty(self.activeGrid.fileData)) {
+        return null
+      }
       return _.first(self.activeGrid.fileData)['Original Battery Energy Content']
     },
     get predictedBatteryEnergyContent() {
