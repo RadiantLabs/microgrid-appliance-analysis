@@ -17,8 +17,8 @@ import {
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
-  calculatePlottablePredictedVsActualData,
-  calculatePlottableReferenceLine,
+  calcPredictedVsActualData,
+  calcReferenceLine,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
 } from '../utils/tensorflowHelpers'
@@ -291,15 +291,15 @@ export const GridStore = types
       return arraysToTensors(self.batteryTrainingData)
     },
     get batteryPlottablePredictionVsActualData() {
-      return calculatePlottablePredictedVsActualData(self.batteryTrainingData, self.batteryModel)
+      return calcPredictedVsActualData(
+        self.batteryTrainingData,
+        self.batteryModel,
+        self.batteryMinEnergyContent,
+        self.batteryMaxEnergyContent
+      )
     },
-    // TODO: First predict battery energy content based on new appliance
-    // Then do another computed value for the plottable data
-    // get calculatedBatteryEnergyContent() {
-    //
-    // }
     get batteryPlottableReferenceLine() {
-      return calculatePlottableReferenceLine(self.batteryTrainingData)
+      return calcReferenceLine(self.batteryTrainingData)
     },
     get isActiveGrid() {
       const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')
@@ -320,8 +320,11 @@ const initialBatteryState = {
   batteryModelStopLoss: 0.1,
   batteryBatchSize: 40,
   batteryLearningRate: 0.01,
-  batteryTargetColumn: 'Battery Energy Content',
-  batteryTrainingColumns: ['electricalProductionLoadDiff', 'prevBatteryEnergyContent'],
+  batteryTargetColumn: 'Original Battery Energy Content',
+  batteryTrainingColumns: [
+    'originalElectricalProductionLoadDiff',
+    'prevOriginalBatteryEnergyContent',
+  ],
   batteryTrainingTime: null,
   batteryModel: null,
   batteryModelName: '',

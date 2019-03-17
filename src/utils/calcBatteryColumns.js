@@ -14,7 +14,7 @@ export function calcBatteryColumns({
   ) {
     return []
   }
-  const startingBatteryEnergyContent = _.first(gridData)['Battery Energy Content']
+  const startingBatteryEnergyContent = _.first(gridData)['Original Battery Energy Content']
   const inputs = _.map(gridData, (row, rowIndex) => {
     const applianceRow = appliances[rowIndex]
     const totalElectricalProduction = row['Total Renewable Power Output']

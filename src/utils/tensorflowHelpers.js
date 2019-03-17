@@ -12,6 +12,8 @@ export function convertTableToTrainingData(
   if (_.isEmpty(table)) {
     return null
   }
+  const rawTargets = _.map(table, row => [row[targetColumn]])
+  const rawFeatures = _.map(table, row => _.map(trainingColumns, col => row[col]))
   const shuffledTable = _.shuffle(table)
 
   // Array of target variables. The index of each target should line up with the
@@ -26,7 +28,7 @@ export function convertTableToTrainingData(
   const splitCount = _.round(targets.length * trainingSplitPercent)
   const [trainFeatures, testFeatures] = _.chunk(features, splitCount)
   const [trainTarget, testTarget] = _.chunk(targets, splitCount)
-  return { trainFeatures, testFeatures, trainTarget, testTarget }
+  return { trainFeatures, testFeatures, rawFeatures, trainTarget, testTarget, rawTargets }
 }
 
 /**
@@ -144,25 +146,38 @@ export function calculateFinalLoss(trainLogs) {
  * Convert training and predicted values into plottable values for the
  * Actual vs Predicted chart
  */
-export function calculatePlottablePredictedVsActualData(trainingData, model) {
+export function calcPredictedVsActualData(trainingData, model, minEnergyContent, maxEnergyContent) {
   if (_.isEmpty(model)) {
     return []
   }
-  const { trainFeatures, testFeatures, testTarget } = trainingData
+  const { trainFeatures, rawFeatures, rawTargets } = trainingData
   const t0 = performance.now()
   const rawTrainFeatures = tf.tensor2d(trainFeatures)
   const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
-  const rawTestFeatures = tf.tensor2d(testFeatures)
-  const normalized_features = normalizeTensor(rawTestFeatures, dataMean, dataStd)
-  const normalized_predictions = model.predict(normalized_features).dataSync()
+  let predictions = []
+  rawFeatures.forEach((testElement, n) => {
+    let tensor_data
+    if (n === 0) {
+      tensor_data = testElement
+    } else {
+      tensor_data = new Float32Array(2)
+      tensor_data[0] = testElement[0]
+      tensor_data[1] = predictions[n - 1]
+    }
+    const newTensor = tf.tensor2d([testElement])
+    const normalized_tensor = normalizeTensor(newTensor, dataMean, dataStd)
+    const prediction = model.predict(normalized_tensor).dataSync()
+    const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
+    predictions.push(clampedPrediction)
+  })
   const t1 = performance.now()
   console.log('predict time: ', t1 - t0)
-  return _.map(testTarget, (target, targetIndex) => {
-    return { actual: target[0], predicted: normalized_predictions[targetIndex] }
+  return _.map(rawTargets, (target, targetIndex) => {
+    return { actual: target[0], predicted: predictions[targetIndex] }
   })
 }
 
-export function calculatePlottableReferenceLine(trainingData) {
+export function calcReferenceLine(trainingData) {
   if (_.isEmpty(trainingData)) {
     return []
   }

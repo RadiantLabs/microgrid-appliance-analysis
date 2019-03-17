@@ -38,11 +38,11 @@ export function calcHybridColumns(grid, summedAppliances, batteryColumns) {
     // Excess electrical production:  Original energy production minus original load (not new
     // summedAppliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent = row['Battery Energy Content']
+    const batteryEnergyContent = row['Original Battery Energy Content']
     const batterySOC = row['Battery State of Charge']
 
     const prevBatteryEnergyContent =
-      rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
+      rowIndex === 0 ? row['Original Battery Energy Content'] : prevRow['Original Battery Energy Content']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
@@ -83,7 +83,7 @@ export function calcHybridColumns(grid, summedAppliances, batteryColumns) {
     const newApplianceBatteryConsumption =
       newAppliancesLoad > excessElecProd ? newAppliancesLoad - excessElecProd : 0
 
-    // Original Battery Energy Content Delta
+    // Original Original Battery Energy Content Delta
     // This is how much the energy content in the battery has increased or decreased in
     // the last hour. First row is meaningless when referencing previous row, so set it to zero
     const originalBatteryEnergyContentDelta =

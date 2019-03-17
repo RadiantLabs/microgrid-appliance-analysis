@@ -81,7 +81,7 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
     switch (true) {
       // Replace names of all battery columns
       case _.includes(key, batteryType):
-        return _.replace(key, batteryType, 'Battery')
+        return _.replace(key, batteryType, 'Original Battery')
 
       // Replace names of all PV columns
       // TODO: PV Solar Altitude won't necessarily start with PV
@@ -107,29 +107,29 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
     const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent = row['Battery Energy Content']
+    const originalBatteryEnergyContent = row['Original Battery Energy Content']
     const batterySOC = row['Battery State of Charge']
 
-    const prevBatteryEnergyContent =
-      rowIndex === 0 ? row['Battery Energy Content'] : prevRow['Battery Energy Content']
+    const prevOriginalBatteryEnergyContent =
+      rowIndex === 0 ? originalBatteryEnergyContent : prevRow['Original Battery Energy Content']
 
     const prevBatterySOC =
       rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
 
     // TODO: Eventually add other generation to this value
     // TODO: Should be `Total Power Output` (renewable plus generator)
-    // const totalElectricalProduction = row['Total Renewable Power Output']
+    const totalElectricalProduction = row['Total Renewable Power Output']
 
     // electricalProductionLoadDiff defines whether we are producing excess (positive)
     // or in deficit (negative).
     // If excess (positive), `Inverter Power Input` kicks in
     // If deficit (negative), `Rectifier Power Input` kicks in
-    // const electricalProductionLoadDiff =
-    //   totalElectricalProduction - row['Total Electrical Load Served']
+    const originalElectricalProductionLoadDiff =
+      totalElectricalProduction - row['Total Electrical Load Served']
 
     // The energy content above what HOMER (or the user) decides is the Minimum
     // Energy content the battery should have
-    const energyContentAboveMin = batteryEnergyContent - batteryMinEnergyContent
+    const energyContentAboveMin = originalBatteryEnergyContent - batteryMinEnergyContent
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
@@ -139,17 +139,17 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
     // This is how much the energy content in the battery has increased or decreased in
     // the last hour. First row is meaningless when referencing previous row, so set it to zero
     const originalBatteryEnergyContentDelta =
-      rowIndex === 0 ? 0 : batteryEnergyContent - prevBatteryEnergyContent
+      rowIndex === 0 ? 0 : originalBatteryEnergyContent - prevOriginalBatteryEnergyContent
 
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
     return {
       datetime,
       hour_of_day: dateObject.hour,
-      // totalElectricalProduction: _.round(totalElectricalProduction, 4),
-      // electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
+      totalElectricalProduction: _.round(totalElectricalProduction, 4),
+      originalElectricalProductionLoadDiff: _.round(originalElectricalProductionLoadDiff, 4),
       prevBatterySOC: _.round(prevBatterySOC, 4),
-      prevBatteryEnergyContent: _.round(prevBatteryEnergyContent, 4),
+      prevOriginalBatteryEnergyContent: _.round(prevOriginalBatteryEnergyContent, 4),
       energyContentAboveMin: _.round(energyContentAboveMin, 4),
       availableCapacity: _.round(availableCapacity, 4),
       originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
@@ -212,10 +212,10 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   errors.push(generatorTypeErrors)
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
-  const batteryMaxSoC = findColMax(fileData, 'Battery State of Charge')
-  const batteryMinSoC = findColMin(fileData, 'Battery State of Charge')
-  const batteryMaxEnergyContent = findColMax(fileData, 'Battery Energy Content')
-  const batteryMinEnergyContent = findColMin(fileData, 'Battery Energy Content')
+  const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
+  const batteryMinSoC = findColMin(fileData, 'Original Battery State of Charge')
+  const batteryMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
+  const batteryMinEnergyContent = findColMin(fileData, 'Original Battery Energy Content')
 
   const withCalculatedColumns = calculateNewHomerColumns({
     fileData,
