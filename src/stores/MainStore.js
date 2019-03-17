@@ -206,7 +206,6 @@ export const MainStore = types
       )
     },
     get combinedTable() {
-      console.log('hybridColumns: ', self.hybridColumns)
       return combineTables(
         self.activeGrid.fileData,
         self.hybridColumns,

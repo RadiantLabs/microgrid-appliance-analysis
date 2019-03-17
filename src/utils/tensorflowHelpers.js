@@ -156,13 +156,7 @@ export function predictBatteryEnergyContent({
   minEnergyContent,
   maxEnergyContent,
 }) {
-  // TODO: guard against missing data
-  if (
-    _.isEmpty(model) ||
-    _.isEmpty(tensors) ||
-    _.isEmpty(inputColumns) ||
-    _.isEmpty(startingEnergyContent)
-  ) {
+  if (_.isEmpty(model) || _.isEmpty(tensors) || _.isEmpty(inputColumns) || !startingEnergyContent) {
     return []
   }
   const t0 = performance.now()
