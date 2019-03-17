@@ -14,8 +14,8 @@ export function calcBatteryColumns({
   ) {
     return []
   }
-  const startingBatteryEnergyContent = _.first(gridData)['Original Battery Energy Content']
-  const inputs = _.map(gridData, (row, rowIndex) => {
+
+  return _.map(gridData, (row, rowIndex) => {
     const applianceRow = appliances[rowIndex]
     const totalElectricalProduction = row['Total Renewable Power Output']
     const totalElectricalLoadServed =
@@ -25,30 +25,6 @@ export function calcBatteryColumns({
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       totalElectricalLoadServed: _.round(totalElectricalLoadServed, 4),
       electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
-      predictedBatteryEnergyContent: null,
     }
   })
-  const predictedBatteryEnergyContent = predictBatteryEnergyContent({
-    inputs,
-    startingBatteryEnergyContent,
-    batteryMinEnergyContent,
-    batteryMaxEnergyContent,
-  })
-  return _.map(inputs, (row, rowIndex) => {
-    return {
-      ...row,
-      ...predictedBatteryEnergyContent[rowIndex],
-    }
-  })
-}
-
-function predictBatteryEnergyContent({
-  inputs,
-  startingBatteryEnergyContent,
-  batteryMinEnergyContent,
-  batteryMaxEnergyContent,
-}) {
-  return {
-    predictedBatteryEnergyContent: [],
-  }
 }

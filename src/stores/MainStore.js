@@ -15,6 +15,7 @@ import { combineTables } from '../utils/helpers'
 import { getSummaryStats } from '../utils/calculateStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { calcBatteryColumns } from '../utils/calcBatteryColumns'
+import { predictBatteryEnergyContent } from '../utils/tensorflowHelpers'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
@@ -172,7 +173,7 @@ export const MainStore = types
     get summedApplianceColumns() {
       return sumApplianceColumns(self.enabledAppliances)
     },
-    get batteryColumns() {
+    get batteryInputColumns() {
       return calcBatteryColumns({
         gridData: self.activeGrid.fileData,
         appliances: self.summedApplianceColumns,
@@ -180,10 +181,29 @@ export const MainStore = types
         batteryMaxEnergyContent: self.activeGrid.batteryMaxEnergyContent,
       })
     },
+    get batteryStartingEnergyContent() {
+      return _.first(self.activeGrid.fileData)['Original Battery Energy Content']
+    },
+    get predictedBatteryEnergyContent() {
+      return predictBatteryEnergyContent({
+        model: self.batteryModel,
+        tensors: self.activeGrid.batteryTensors,
+        inputColumns: self.batteryInputColumns,
+        startingEnergyContent: self.batteryStartingEnergyContent,
+        minEnergyContent: self.batteryMinEnergyContent,
+        maxEnergyContent: self.batteryMaxEnergyContent,
+      })
+    },
     get hybridColumns() {
-      return calcHybridColumns(self.activeGrid, self.summedApplianceColumns, self.batteryColumns)
+      return calcHybridColumns(
+        self.activeGrid,
+        self.summedApplianceColumns,
+        self.batteryInputColumns,
+        self.predictedBatteryEnergyContent
+      )
     },
     get combinedTable() {
+      console.log('hybridColumns: ', self.hybridColumns)
       return combineTables(
         self.activeGrid.fileData,
         self.hybridColumns,

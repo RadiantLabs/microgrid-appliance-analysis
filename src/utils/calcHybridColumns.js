@@ -5,18 +5,23 @@ import _ from 'lodash'
  * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-export function calcHybridColumns(grid, summedAppliances, batteryColumns) {
+export function calcHybridColumns(
+  grid,
+  summedAppliances,
+  batteryInputColumns,
+  predictedBatteryEnergyContent
+) {
   if (
     _.isEmpty(grid) ||
     _.isEmpty(grid.fileData) ||
     _.isEmpty(summedAppliances) ||
-    _.isEmpty(batteryColumns)
+    _.isEmpty(batteryInputColumns) ||
+    _.isEmpty(predictedBatteryEnergyContent)
   ) {
-    return null
+    return []
   }
 
-  const { predictedBatteryEnergyContent } = batteryColumns
-  console.log('batteryColumns: ', batteryColumns)
+  console.log('batteryInputColumns: ', batteryInputColumns)
   console.log('predictedBatteryEnergyContent: ', predictedBatteryEnergyContent)
 
   const t0 = performance.now()
@@ -42,7 +47,9 @@ export function calcHybridColumns(grid, summedAppliances, batteryColumns) {
     const batterySOC = row['Battery State of Charge']
 
     const prevBatteryEnergyContent =
-      rowIndex === 0 ? row['Original Battery Energy Content'] : prevRow['Original Battery Energy Content']
+      rowIndex === 0
+        ? row['Original Battery Energy Content']
+        : prevRow['Original Battery Energy Content']
 
     // Some of these numbers from HOMER are -1x10-16
     const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)

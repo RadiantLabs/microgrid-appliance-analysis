@@ -293,6 +293,7 @@ export const GridStore = types
     get batteryPlottablePredictionVsActualData() {
       return calcPredictedVsActualData(
         self.batteryTrainingData,
+        self.batteryTensors,
         self.batteryModel,
         self.batteryMinEnergyContent,
         self.batteryMaxEnergyContent
