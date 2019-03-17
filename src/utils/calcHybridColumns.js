@@ -5,10 +5,20 @@ import _ from 'lodash'
  * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-export function calculateHybridColumns(grid, summedAppliances) {
-  if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
+export function calcHybridColumns(grid, summedAppliances, batteryColumns) {
+  if (
+    _.isEmpty(grid) ||
+    _.isEmpty(grid.fileData) ||
+    _.isEmpty(summedAppliances) ||
+    _.isEmpty(batteryColumns)
+  ) {
     return null
   }
+
+  const { predictedBatteryEnergyContent } = batteryColumns
+  console.log('batteryColumns: ', batteryColumns)
+  console.log('predictedBatteryEnergyContent: ', predictedBatteryEnergyContent)
+
   const t0 = performance.now()
   const { batteryMinEnergyContent, batteryMinSoC } = grid
 
@@ -123,8 +133,8 @@ export function calculateHybridColumns(grid, summedAppliances) {
   }
 
   // Iterate over homer data, pushing each new row into an array
-  const calculatedColumns = _.reduce(grid.fileData, columnReducer, [])
+  const hybridColumns = _.reduce(grid.fileData, columnReducer, [])
   const t1 = performance.now()
   console.log('calculateNewColumns took ' + _.round(t1 - t0) + ' milliseconds.')
-  return calculatedColumns
+  return hybridColumns
 }

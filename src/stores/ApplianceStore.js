@@ -10,7 +10,7 @@ import {
   csvOptions,
 } from '../utils/importFileHelpers'
 import { calculateApplianceColumns } from '../utils/calculateApplianceColumns'
-import { calculateApplianceSummaryStats } from '../utils/CalculateApplianceSummaryStats'
+import { calculateApplianceSummaryStats } from '../utils/calculateApplianceSummaryStats'
 
 //
 // -----------------------------------------------------------------------------

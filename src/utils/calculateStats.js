@@ -7,33 +7,33 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
-export function getSummaryStats(calculatedColumns, activeGrid) {
+export function getSummaryStats(hybridColumns, activeGrid) {
   // Unmet Loads: Original without new appliance
-  const originalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
+  const originalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
-  const originalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'originalUnmetLoad')
+  const originalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'originalUnmetLoad')
   const originalUnmetLoadHist = createGreaterThanZeroHistogram(
-    calculatedColumns,
+    hybridColumns,
     'hour_of_day',
     'originalUnmetLoad'
   )
 
   // Unmet Loads: Additional Appliance
-  const additionalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'additionalUnmetLoad')
+  const additionalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'additionalUnmetLoad')
   const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
-  const additionalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'additionalUnmetLoad')
+  const additionalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'additionalUnmetLoad')
   const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
-    calculatedColumns,
+    hybridColumns,
     'hour_of_day',
     'additionalUnmetLoad'
   )
 
   // Unmet Loads: Total with new appliance
-  const newTotalUnmetLoadCount = countGreaterThanZero(calculatedColumns, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'newTotalUnmetLoad')
   const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(calculatedColumns, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'newTotalUnmetLoad')
   const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
-    calculatedColumns,
+    hybridColumns,
     'hour_of_day',
     'newTotalUnmetLoad'
   )
@@ -47,7 +47,7 @@ export function getSummaryStats(calculatedColumns, activeGrid) {
 
   // Yearly kWh and Financial Calculations
   // New Appliance kWh for the year
-  const newApplianceYearlyKwh = sumGreaterThanZero(calculatedColumns, 'newAppliancesLoad')
+  const newApplianceYearlyKwh = sumGreaterThanZero(hybridColumns, 'newAppliancesLoad')
 
   // New Appliance kWh revenue for grid operator (cost for appliance owner)
   const newApplianceElectricityRevenue =
@@ -70,7 +70,7 @@ export function getSummaryStats(calculatedColumns, activeGrid) {
   // Otherwise you might have kg rice, kg maize and hours of welding
   // But shouldn't I do this? This should be a derived column on the appliance model
   // calculateNewApplianceColumns should live on the appliance model
-  // const yearlyProductionUnits = sumGreaterThanZero(calculatedColumns, 'productionUnits')
+  // const yearlyProductionUnits = sumGreaterThanZero(hybridColumns, 'productionUnits')
 
   // const yearlyProductionUnitsRevenue =
   //   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']

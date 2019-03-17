@@ -20,8 +20,8 @@ import { getChartColors, greyColors } from '../../../utils/constants'
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
 class BatteryCharge extends React.Component {
   render() {
-    const { activeGrid, calculatedColumns } = this.props.store
-    if (_.isEmpty(calculatedColumns)) {
+    const { activeGrid, hybridColumns } = this.props.store
+    if (_.isEmpty(hybridColumns)) {
       return <LoaderSpinner />
     }
     return (
@@ -38,7 +38,7 @@ class BatteryCharge extends React.Component {
           <LineChart
             width={1400}
             height={400}
-            data={calculatedColumns}
+            data={hybridColumns}
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />

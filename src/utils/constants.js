@@ -34,7 +34,7 @@ export const chartColorsByIndex = ['#003f5c', '#444e86', '#955196', '#DD5182', '
 export const tableColorsByKey = {
   appliance: '#DD5182',
   homer: '#FFA601',
-  calculatedColumns: '#444e86',
+  hybridColumns: '#444e86',
   excluded: greyColors[5],
   default: '#f9fafb',
 }

@@ -20,32 +20,35 @@ Big next steps
 - Calculate ROI & payback
 - Get battery model prediction working
 - Hook up appliance upload section
-- Save files and bootstrap from localforage
+- Save files and bootstrap from local forage
 
 ---
 
 Next steps for Appliances:
 
+- cache as many calculations as possible so we don't have to run prediction models again
+
+  - electricalProductionLoadDiff
+    - [ ] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
+    - [ ] mainStore: Calculate totalElectricalLoadServed
+    - [ ] mainStore: Calculate separately `totalElectricalProduction`
+    - [ ] mainStore: Calculate electricalProductionLoadDiff
+    - [ ] mainStore: battery starting energy content
+    - [ ] mainStore: predictedBatteryEnergyContent (takes electricalProductionLoadDiff and starting battery content)
+    - [ ] Comments on each of these calculate steps
+
 - [ ] **_ Calculate everything on an hourly basis for Appliances _**
   - [ ] Electricity Sales (from new appliances)
-  - [ ] production units
+  - [x] production units
   - [ ] New appliance unmet load cost
   - [ ] New appliance net revenue
   - [ ] Appliance Electricity Cost
-  - [ ] Appliance-Related Revenue
+  - [x] Appliance-Related Revenue
   - [ ] Net Revenue
-  - [ ] Appliance Electricity Consumption
+  - [x] Appliance Electricity Consumption
   - [x] Units of Productivity (include unit label (kg, hr))
-- [ ] Confirm summary calcs using a spreadsheet
-- [x] Put in React Virtualized Table for every appliance
-- [x] Fix summaryStats now that we don't depend on modelInputs
-
-* [x] Make appliance enabled/disabled state clearer
-* [x] Add appliance popover data
-* [x] Do calculatedColumns but for multiple appliance files (applianceCalculatedColumns?)
-
-  - [x] Start with newAppliancesLoad and hooking up existing calculations
-  - [x] Show derived colummns Data grid
+- [ ] Confirm summary calculations using a spreadsheet
+- [ ] Fix scale on predicted vs. actual chart
 
 * [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
 * [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown

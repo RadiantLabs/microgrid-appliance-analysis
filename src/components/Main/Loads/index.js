@@ -19,8 +19,8 @@ import { getChartColors, greyColors } from '../../../utils/constants'
 // Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
 class LoadsByHour extends React.Component {
   render() {
-    const { calculatedColumns } = this.props.store
-    if (_.isEmpty(calculatedColumns)) {
+    const { hybridColumns } = this.props.store
+    if (_.isEmpty(hybridColumns)) {
       return <LoaderSpinner />
     }
     return (
@@ -32,7 +32,7 @@ class LoadsByHour extends React.Component {
           <LineChart
             // width={1400}
             // height={400}
-            data={calculatedColumns}
+            data={hybridColumns}
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />

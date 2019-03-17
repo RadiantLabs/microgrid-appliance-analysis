@@ -154,10 +154,10 @@ export const combinedColumnHeaderUnits = {
 }
 
 export function setColumnHeaderTableType(calculatedColumnHeaders, homerHeaders, applianceHeaders) {
-  const calculatedColumns = _.reduce(
+  const hybridColumns = _.reduce(
     calculatedColumnHeaders,
     (result, header) => {
-      result[header] = 'calculatedColumns'
+      result[header] = 'hybridColumns'
       return result
     },
     {}
@@ -179,7 +179,7 @@ export function setColumnHeaderTableType(calculatedColumnHeaders, homerHeaders, 
     {}
   )
   return {
-    ...calculatedColumns,
+    ...hybridColumns,
     ...homer,
     ...appliance,
   }

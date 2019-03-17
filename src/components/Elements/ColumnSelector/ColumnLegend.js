@@ -22,7 +22,7 @@ export const ColumnLegend = inject('store')(
   observer(({ store }) => {
     return (
       <div>
-        <div style={setLegendStyles('calculatedColumns')}>Calculated Columns</div>
+        <div style={setLegendStyles('hybridColumns')}>Calculated Columns</div>
         <div style={setLegendStyles('homer')}>HOMER Columns</div>
         <div style={setLegendStyles('appliance')}>Appliance Columns</div>
       </div>

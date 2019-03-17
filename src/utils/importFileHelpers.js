@@ -117,15 +117,15 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
       rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
 
     // TODO: Eventually add other generation to this value
-    // TODO: Should be `Total Renewable Power Output`
-    const totalElectricalProduction = row['PV Power Output']
+    // TODO: Should be `Total Power Output` (renewable plus generator)
+    // const totalElectricalProduction = row['Total Renewable Power Output']
 
     // electricalProductionLoadDiff defines whether we are producing excess (positive)
     // or in deficit (negative).
     // If excess (positive), `Inverter Power Input` kicks in
     // If deficit (negative), `Rectifier Power Input` kicks in
-    const electricalProductionLoadDiff =
-      totalElectricalProduction - row['Total Electrical Load Served']
+    // const electricalProductionLoadDiff =
+    //   totalElectricalProduction - row['Total Electrical Load Served']
 
     // The energy content above what HOMER (or the user) decides is the Minimum
     // Energy content the battery should have
@@ -146,8 +146,8 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
     return {
       datetime,
       hour_of_day: dateObject.hour,
-      totalElectricalProduction: _.round(totalElectricalProduction, 4),
-      electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
+      // totalElectricalProduction: _.round(totalElectricalProduction, 4),
+      // electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
       prevBatterySOC: _.round(prevBatterySOC, 4),
       prevBatteryEnergyContent: _.round(prevBatteryEnergyContent, 4),
       energyContentAboveMin: _.round(energyContentAboveMin, 4),

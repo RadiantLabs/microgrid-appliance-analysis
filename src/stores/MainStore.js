@@ -13,15 +13,16 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
 import { getSummaryStats } from '../utils/calculateStats'
-import { calculateHybridColumns } from '../utils/calculateHybridColumns'
+import { calcHybridColumns } from '../utils/calcHybridColumns'
+import { calcBatteryColumns } from '../utils/calcBatteryColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
+import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
+import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
 import {
   sampleGridFileInfos,
   sampleApplianceFiles,
   ancillaryEquipmentList,
 } from '../utils/fileInfo'
-import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
-import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
 
 //
 // -----------------------------------------------------------------------------
@@ -171,20 +172,28 @@ export const MainStore = types
     get summedApplianceColumns() {
       return sumApplianceColumns(self.enabledAppliances)
     },
-    get calculatedColumns() {
-      return calculateHybridColumns(self.activeGrid, self.summedApplianceColumns)
+    get batteryColumns() {
+      return calcBatteryColumns({
+        gridData: self.activeGrid.fileData,
+        appliances: self.summedApplianceColumns,
+        batteryMinEnergyContent: self.activeGrid.batteryMinEnergyContent,
+        batteryMaxEnergyContent: self.activeGrid.batteryMaxEnergyContent,
+      })
+    },
+    get hybridColumns() {
+      return calcHybridColumns(self.activeGrid, self.summedApplianceColumns, self.batteryColumns)
     },
     get combinedTable() {
       return combineTables(
         self.activeGrid.fileData,
-        self.calculatedColumns,
+        self.hybridColumns,
         self.summedApplianceColumns
       )
     },
     get summaryStats() {
-      return _.isEmpty(self.calculatedColumns)
+      return _.isEmpty(self.hybridColumns)
         ? null
-        : getSummaryStats(self.calculatedColumns, self.activeGrid)
+        : getSummaryStats(self.hybridColumns, self.activeGrid)
     },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {

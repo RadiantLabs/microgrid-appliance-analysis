@@ -141,13 +141,13 @@ export function mergeArraysOfObjects(joinKey, arr1, ...arrays) {
     .value()
 }
 
-export function combineTables(gridData, calculatedColumns, applianceData) {
-  if (_.isEmpty(gridData) || _.isEmpty(calculatedColumns) || _.isEmpty(applianceData)) {
+export function combineTables(gridData, hybridColumns, applianceData) {
+  if (_.isEmpty(gridData) || _.isEmpty(hybridColumns) || _.isEmpty(applianceData)) {
     return []
   }
   const t0 = performance.now()
-  const combinedTable = calculatedColumns
-    ? mergeArraysOfObjects('hour', gridData, calculatedColumns, applianceData)
+  const combinedTable = hybridColumns
+    ? mergeArraysOfObjects('hour', gridData, hybridColumns, applianceData)
     : []
   const t1 = performance.now()
   console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
