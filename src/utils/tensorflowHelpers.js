@@ -195,26 +195,20 @@ export function calcPredictedVsActualData(
   if (_.isEmpty(model)) {
     return []
   }
-  const { trainFeatures, rawFeatures, rawTargets } = trainingData
+  const { rawFeatures, rawTargets } = trainingData
   const { dataMean, dataStd } = tensors
   const t0 = performance.now()
-  // const rawTrainFeatures = tf.tensor2d(trainFeatures)
-  // const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
   let predictions = []
   rawFeatures.forEach((testElement, n) => {
-    let tensor_data
-    if (n === 0) {
-      tensor_data = testElement
-    } else {
-      tensor_data = new Float32Array(2)
-      tensor_data[0] = testElement[0]
-      tensor_data[1] = predictions[n - 1]
-    }
-    const newTensor = tf.tensor2d([testElement])
-    const normalized_tensor = normalizeTensor(newTensor, dataMean, dataStd)
-    const prediction = model.predict(normalized_tensor).dataSync()
-    const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
-    predictions.push(clampedPrediction)
+    const tensorData =
+      n === 0 ? testElement : new Float32Array([testElement[0], predictions[n - 1]])
+    tf.tidy(() => {
+      const newTensor = tf.tensor2d([tensorData])
+      const normalized_tensor = normalizeTensor(newTensor, dataMean, dataStd)
+      const prediction = model.predict(normalized_tensor).dataSync()
+      const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
+      predictions.push(clampedPrediction)
+    })
   })
   const t1 = performance.now()
   console.log('predict time for chart: ', t1 - t0)

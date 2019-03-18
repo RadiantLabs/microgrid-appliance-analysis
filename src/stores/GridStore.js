@@ -316,9 +316,9 @@ export const GridStore = types
 // Initial Grid State
 // -----------------------------------------------------------------------------
 const initialBatteryState = {
-  batteryMaxEpochCount: 3,
+  batteryMaxEpochCount: 40,
   batteryCurrentEpoch: 0,
-  batteryModelStopLoss: 0.1,
+  batteryModelStopLoss: 0.05,
   batteryBatchSize: 40,
   batteryLearningRate: 0.01,
   batteryTargetColumn: 'Original Battery Energy Content',
