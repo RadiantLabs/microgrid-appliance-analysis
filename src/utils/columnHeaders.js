@@ -2,17 +2,18 @@ import _ from 'lodash'
 
 // TODO: This could all be done dynamically with computed values, removing
 // the columns I don't want
-export const calculatedColumnHeaders = [
+export const hybridColumnHeaders = [
   'hour',
   'datetime',
   'hour_of_day',
-  'day',
-  'day_hour',
+  // 'day_hour',
   'totalElectricalProduction',
   'originalElectricalProductionLoadDiff',
-  'prevBatterySOC',
+  'electricalProductionLoadDiff',
+  'totalElectricalLoadServed',
   'prevBatteryEnergyContent',
-  'newAppliancesLoad',
+  'originalBatteryEnergyContent',
+  // 'newAppliancesLoad',
   'availableCapacity',
   'availableCapacityAfterNewLoad',
   'additionalUnmetLoad',
@@ -23,17 +24,18 @@ export const calculatedColumnHeaders = [
   'newTotalUnmetLoad',
 ]
 
-export const calculatedColumnHeaderUnits = {
+export const hybridColumnHeaderUnits = {
   hour: '-',
   datetime: '-',
   hour_of_day: '-',
-  day: '-',
-  day_hour: '-',
+  // day_hour: '-',
   totalElectricalProduction: 'kW',
   originalElectricalProductionLoadDiff: 'kW',
-  prevBatterySOC: '%',
+  totalElectricalLoadServed: 'kW',
+  electricalProductionLoadDiff: 'kW',
   prevBatteryEnergyContent: 'kWh',
-  newAppliancesLoad: 'kW',
+  originalBatteryEnergyContent: 'kWh',
+  // newAppliancesLoad: 'kW',
   availableCapacity: 'kW',
   availableCapacityAfterNewLoad: 'kW',
   additionalUnmetLoad: 'kW',
@@ -64,18 +66,18 @@ export const homerHeaders = [
   'Inverter Power Output',
   'Rectifier Power Input',
   'Rectifier Power Output',
-  'Battery Maximum Charge Power',
-  'Battery Maximum Discharge Power',
-  'Battery Charge Power',
-  'Battery Discharge Power',
-  'Battery Input Power',
+  'Original Battery Maximum Charge Power',
+  'Original Battery Maximum Discharge Power',
+  'Original Battery Charge Power',
+  'Original Battery Discharge Power',
+  'Original Battery Input Power',
   'Original Battery Energy Content',
-  'Battery State of Charge',
-  'Battery Energy Cost',
-  'Battery Temperature',
-  'Battery Degradation - Time and Temperature',
-  'Battery Degradation - Cycling',
-  'Battery Equivalent Cycles',
+  'Original Battery State of Charge',
+  'Original Battery Energy Cost',
+  'Original Battery Temperature',
+  'Original Battery Degradation - Time and Temperature',
+  'Original Battery Degradation - Cycling',
+  'Original Battery Equivalent Cycles',
   'AC Required Operating Capacity',
   'DC Required Operating Capacity',
   'AC Operating Capacity',
@@ -123,39 +125,40 @@ export const homerHeaderUnits = {
 }
 
 export const applianceHeaders = [
+  'newAppliancesLoad',
+  'productionUnitsRevenue',
   // 'datetime',
   // 'hour',
   // 'day',
   // 'hour_of_day',
-  // 'day_hour',
+  'day_hour',
   'kw_factor',
   // 'production_factor',
 ]
 
 export const applianceHeaderUnits = {
+  newAppliancesLoad: 'kW',
+  productionUnitsRevenue: '$',
   // 'datetime',
   // 'hour',
   // 'day',
   // 'hour_of_day',
-  // 'day_hour',
+  day_hour: '-',
   kw_factor: '-',
   // 'production_factor',
 }
 
-export const combinedColumnHeaderOrder = calculatedColumnHeaders.concat(
-  homerHeaders,
-  applianceHeaders
-)
+export const combinedColumnHeaderOrder = hybridColumnHeaders.concat(homerHeaders, applianceHeaders)
 
 export const combinedColumnHeaderUnits = {
-  ...calculatedColumnHeaderUnits,
+  ...hybridColumnHeaderUnits,
   ...homerHeaderUnits,
   ...applianceHeaderUnits,
 }
 
-export function setColumnHeaderTableType(calculatedColumnHeaders, homerHeaders, applianceHeaders) {
+export function setColumnHeaderTableType(hybridColumnHeaders, homerHeaders, applianceHeaders) {
   const hybridColumns = _.reduce(
-    calculatedColumnHeaders,
+    hybridColumnHeaders,
     (result, header) => {
       result[header] = 'hybridColumns'
       return result
@@ -186,7 +189,7 @@ export function setColumnHeaderTableType(calculatedColumnHeaders, homerHeaders, 
 }
 
 export const columnHeaderByTableType = setColumnHeaderTableType(
-  calculatedColumnHeaders,
+  hybridColumnHeaders,
   homerHeaders,
   applianceHeaders
 )
