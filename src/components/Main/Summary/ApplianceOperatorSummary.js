@@ -8,15 +8,18 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
     const { summaryStats: stats } = store
     // Note: this is a cost for the appliance operator, but revenue for grid operator
     const newApplianceElectricityCost = _.get(stats, 'newApplianceGridRevenue', '-')
-    // const yearlyProductionFactor = _.get(stats, 'yearlyProductionFactor', '-')
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
     const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
-
+    const applianceCapexAssignedToAppliance = _.get(stats, 'applianceCapexAssignedToAppliance', '-')
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
         <Table basic="very" celled collapsing compact>
           <Table.Body>
+            <Table.Row>
+              <Table.Cell>CAPEX</Table.Cell>
+              <Table.Cell>${applianceCapexAssignedToAppliance}</Table.Cell>
+            </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance Electricity Cost</Table.Cell>
               <Table.Cell>${newApplianceElectricityCost}</Table.Cell>

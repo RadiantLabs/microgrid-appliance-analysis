@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { get } from 'lodash'
+import _ from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/UnmetLoadHelperPopup'
@@ -7,22 +7,27 @@ import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/U
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-    const newApplianceGridRevenue = get(stats, 'newApplianceGridRevenue')
-    const newApplianceElectricityCost = get(stats, 'newApplianceElectricityCost')
-    const newApplianceUnmetLoadCost = get(stats, 'newApplianceUnmetLoadCost', '-')
-    const newApplianceNetGridRevenue = get(stats, 'newApplianceNetGridRevenue', '-')
+    const newApplianceGridRevenue = _.get(stats, 'newApplianceGridRevenue')
+    const applianceCapexAssignedToGrid = _.get(stats, 'applianceCapexAssignedToGrid')
+    const newApplianceElectricityCost = _.get(stats, 'newApplianceElectricityCost')
+    const newApplianceUnmetLoadCost = _.get(stats, 'newApplianceUnmetLoadCost', '-')
+    const newApplianceNetGridRevenue = _.get(stats, 'newApplianceNetGridRevenue', '-')
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
-              <Table.Cell>${newApplianceGridRevenue}</Table.Cell>
+              <Table.Cell>CAPEX costs (due to new appliance)</Table.Cell>
+              <Table.Cell>${applianceCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>
               <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
+              <Table.Cell>${newApplianceGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Grid ROI</Table.Cell>
@@ -52,22 +57,22 @@ export const GridOperatorTechnicalSummary = inject('store')(
     const { summaryStats: stats } = store
 
     // Financials
-    const newApplianceYearlyKwh = get(stats, 'newApplianceYearlyKwh', '-')
+    const newApplianceYearlyKwh = _.get(stats, 'newApplianceYearlyKwh', '-')
 
     // Original unmet loads
-    const originalUnmetLoadCount = get(stats, 'originalUnmetLoadCount', '-')
-    const originalUnmetLoadCountPercent = get(stats, 'originalUnmetLoadCountPercent', '-')
-    const originalUnmetLoadSum = get(stats, 'originalUnmetLoadSum', '-')
+    const originalUnmetLoadCount = _.get(stats, 'originalUnmetLoadCount', '-')
+    const originalUnmetLoadCountPercent = _.get(stats, 'originalUnmetLoadCountPercent', '-')
+    const originalUnmetLoadSum = _.get(stats, 'originalUnmetLoadSum', '-')
 
     // Additional unmet loads
-    const additionalUnmetLoadCount = get(stats, 'additionalUnmetLoadCount', '-')
-    const additionalUnmetLoadCountPercent = get(stats, 'additionalUnmetLoadCountPercent', '-')
-    const additionalUnmetLoadSum = get(stats, 'additionalUnmetLoadSum', '-')
+    const additionalUnmetLoadCount = _.get(stats, 'additionalUnmetLoadCount', '-')
+    const additionalUnmetLoadCountPercent = _.get(stats, 'additionalUnmetLoadCountPercent', '-')
+    const additionalUnmetLoadSum = _.get(stats, 'additionalUnmetLoadSum', '-')
 
     // Total unmet loads
-    const newTotalUnmetLoadCount = get(stats, 'newTotalUnmetLoadCount', '-')
-    const newTotalUnmetLoadCountPercent = get(stats, 'newTotalUnmetLoadCountPercent', '-')
-    const newTotalUnmetLoadSum = get(stats, 'newTotalUnmetLoadSum', '-')
+    const newTotalUnmetLoadCount = _.get(stats, 'newTotalUnmetLoadCount', '-')
+    const newTotalUnmetLoadCountPercent = _.get(stats, 'newTotalUnmetLoadCountPercent', '-')
+    const newTotalUnmetLoadSum = _.get(stats, 'newTotalUnmetLoadSum', '-')
 
     return (
       <div>

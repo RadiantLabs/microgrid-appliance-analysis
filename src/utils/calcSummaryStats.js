@@ -66,7 +66,15 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const newApplianceNetGridRevenue =
     newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
 
-  // const gridApplianceCapex = capexAssignment === 'grid' ?
+  // Calculate Capex for appliances
+  const appliancesWithCapexAssignedToGrid = _.filter(enabledAppliances, appliance => {
+    return appliance.capexAssignment === 'grid'
+  })
+  const appliancesWithCapexAssignedToAppliance = _.filter(enabledAppliances, appliance => {
+    return appliance.capexAssignment === 'appliance'
+  })
+  const applianceCapexAssignedToGrid = _.sumBy(appliancesWithCapexAssignedToGrid, 'capex')
+  const applianceCapexAssignedToAppliance = _.sumBy(appliancesWithCapexAssignedToAppliance, 'capex')
 
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
@@ -100,5 +108,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     // yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
+    applianceCapexAssignedToGrid: _.round(applianceCapexAssignedToGrid),
+    applianceCapexAssignedToAppliance: _.round(applianceCapexAssignedToAppliance),
   }
 }
