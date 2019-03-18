@@ -228,6 +228,7 @@ export function calcPredictedVsActualData(
     return {
       actual: target[0],
       predicted: predictions[targetIndex],
+      errors,
     }
   })
 }
