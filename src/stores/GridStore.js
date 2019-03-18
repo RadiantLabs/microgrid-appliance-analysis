@@ -291,12 +291,8 @@ export const GridStore = types
       return arraysToTensors(self.batteryTrainingData)
     },
     get batteryPlottablePredictionVsActualData() {
-      return calcPredictedVsActualData(
-        self.batteryTrainingData,
-        self.batteryModel,
-        self.batteryMinEnergyContent,
-        self.batteryMaxEnergyContent
-      )
+      console.log('running batteryPlottablePredictionVsActualData')
+      return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
     },
     get batteryPlottableReferenceLine() {
       return calcReferenceLine(self.batteryTrainingData)

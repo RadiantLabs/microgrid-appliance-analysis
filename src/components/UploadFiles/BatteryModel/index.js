@@ -63,7 +63,7 @@ class BatteryModel extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
-              <ActualVsPredicted grid={grid} />
+              <ActualVsPredicted />
             </Grid.Column>
           </Grid.Row>
         </Grid>

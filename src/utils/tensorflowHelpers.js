@@ -184,11 +184,13 @@ export function predictBatteryEnergyContent({
  * Convert training and predicted values into plottable values for the
  * Actual vs Predicted chart
  */
-export function calcPredictedVsActualData(trainingData, model, minEnergyContent, maxEnergyContent) {
+export function calcPredictedVsActualData(trainingData, model) {
   if (_.isEmpty(model)) {
     return []
   }
   const t0 = performance.now()
+  const minEnergyContent = 26
+  const maxEnergyContent = 56
   const { trainFeatures, rawFeatures, rawTargets } = trainingData
   const rawTrainFeatures = tf.tensor2d(trainFeatures)
   const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)

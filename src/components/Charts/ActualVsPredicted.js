@@ -13,14 +13,15 @@ import {
   Dot,
 } from 'recharts'
 
-const ActualVsPredicted = ({ grid }) => {
+const ActualVsPredicted = ({ store }) => {
+  const { viewedGrid } = store
   const {
     batteryIsTraining,
     batteryPlottablePredictionVsActualData,
     referenceLineData,
     xAccessor = 'actual',
     yAccessor = 'predicted',
-  } = grid
+  } = viewedGrid
   return (
     <div>
       <Loader

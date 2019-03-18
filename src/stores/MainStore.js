@@ -188,14 +188,15 @@ export const MainStore = types
       return _.first(self.activeGrid.fileData)['Original Battery Energy Content']
     },
     get predictedBatteryEnergyContent() {
-      return predictBatteryEnergyContent({
-        model: self.activeGrid.batteryModel,
-        tensors: self.activeGrid.batteryTensors,
-        inputColumns: self.batteryInputColumns,
-        startingEnergyContent: self.batteryStartingEnergyContent,
-        minEnergyContent: self.batteryMinEnergyContent,
-        maxEnergyContent: self.batteryMaxEnergyContent,
-      })
+      return []
+      // return predictBatteryEnergyContent({
+      //   model: self.activeGrid.batteryModel,
+      //   tensors: self.activeGrid.batteryTensors,
+      //   inputColumns: self.batteryInputColumns,
+      //   startingEnergyContent: self.batteryStartingEnergyContent,
+      //   minEnergyContent: self.batteryMinEnergyContent,
+      //   maxEnergyContent: self.batteryMaxEnergyContent,
+      // })
     },
     get hybridColumns() {
       return calcHybridColumns(
