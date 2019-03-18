@@ -35,7 +35,7 @@ export const ApplianceSummaryStats = inject('store')(
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>yearlyProductionUnitsRevenue</Table.Cell>
+            <Table.Cell>Yearly Production Units Revenue</Table.Cell>
             <Table.Cell>${_.round(yearlyProductionUnitsRevenue) || ''}</Table.Cell>
             <Table.Cell>
               Revenue Per Production Units * Production Units (summed over year)

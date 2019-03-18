@@ -7,10 +7,10 @@ import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/U
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-    const newApplianceElectricityRevenue = get(stats, 'newApplianceElectricityRevenue')
+    const newApplianceGridRevenue = get(stats, 'newApplianceGridRevenue')
     const newApplianceElectricityCost = get(stats, 'newApplianceElectricityCost')
     const newApplianceUnmetLoadCost = get(stats, 'newApplianceUnmetLoadCost', '-')
-    const newApplianceNetRevenue = get(stats, 'newApplianceNetRevenue', '-')
+    const newApplianceNetGridRevenue = get(stats, 'newApplianceNetGridRevenue', '-')
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
@@ -18,7 +18,7 @@ export const GridOperatorEconomicSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
-              <Table.Cell>${newApplianceElectricityRevenue}</Table.Cell>
+              <Table.Cell>${newApplianceGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>
@@ -38,7 +38,7 @@ export const GridOperatorEconomicSummary = inject('store')(
             </Table.Row>
             <Table.Row>
               <Table.Cell>New appliance net revenue</Table.Cell>
-              <Table.Cell>${newApplianceNetRevenue}</Table.Cell>
+              <Table.Cell>${newApplianceNetGridRevenue}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

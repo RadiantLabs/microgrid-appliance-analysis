@@ -113,8 +113,8 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
     const prevOriginalBatteryEnergyContent =
       rowIndex === 0 ? originalBatteryEnergyContent : prevRow['Original Battery Energy Content']
 
-    const prevBatterySOC =
-      rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
+    // const prevBatterySOC =
+    //   rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
 
     // TODO: Eventually add other generation to this value
     // TODO: Should be `Total Power Output` (renewable plus generator)
@@ -148,7 +148,7 @@ function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyCon
       hour_of_day: dateObject.hour,
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       originalElectricalProductionLoadDiff: _.round(originalElectricalProductionLoadDiff, 4),
-      prevBatterySOC: _.round(prevBatterySOC, 4),
+      // prevBatterySOC: _.round(prevBatterySOC, 4),
       prevOriginalBatteryEnergyContent: _.round(prevOriginalBatteryEnergyContent, 4),
       energyContentAboveMin: _.round(energyContentAboveMin, 4),
       availableCapacity: _.round(availableCapacity, 4),

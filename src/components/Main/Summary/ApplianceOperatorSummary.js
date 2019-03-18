@@ -7,7 +7,7 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
     // Note: this is a cost for the appliance operator, but revenue for grid operator
-    const newApplianceElectricityCost = get(stats, 'newApplianceElectricityRevenue', '-')
+    const newApplianceElectricityCost = get(stats, 'newApplianceGridRevenue', '-')
     // const yearlyProductionFactor = get(stats, 'yearlyProductionFactor', '-')
     const yearlyProductionUnitsRevenue = get(stats, 'yearlyProductionUnitsRevenue', '-')
     const netApplianceOwnerRevenue = get(stats, 'netApplianceOwnerRevenue', '-')

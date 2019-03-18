@@ -7,33 +7,37 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
-export function calcSummaryStats(hybridColumns, activeGrid) {
+export function calcSummaryStats(grid, combinedTable) {
+  if (_.isEmpty(grid) || _.isEmpty(combinedTable)) {
+    return {}
+  }
+
   // Unmet Loads: Original without new appliance
-  const originalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'originalUnmetLoad')
+  const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
-  const originalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'originalUnmetLoad')
+  const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadHist = createGreaterThanZeroHistogram(
-    hybridColumns,
+    combinedTable,
     'hour_of_day',
     'originalUnmetLoad'
   )
 
   // Unmet Loads: Additional Appliance
-  const additionalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'additionalUnmetLoad')
+  const additionalUnmetLoadCount = countGreaterThanZero(combinedTable, 'additionalUnmetLoad')
   const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
-  const additionalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'additionalUnmetLoad')
+  const additionalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'additionalUnmetLoad')
   const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
-    hybridColumns,
+    combinedTable,
     'hour_of_day',
     'additionalUnmetLoad'
   )
 
   // Unmet Loads: Total with new appliance
-  const newTotalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadCount = countGreaterThanZero(combinedTable, 'newTotalUnmetLoad')
   const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(hybridColumns, 'newTotalUnmetLoad')
+  const newTotalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newTotalUnmetLoad')
   const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
-    hybridColumns,
+    combinedTable,
     'hour_of_day',
     'newTotalUnmetLoad'
   )
@@ -47,34 +51,25 @@ export function calcSummaryStats(hybridColumns, activeGrid) {
 
   // Yearly kWh and Financial Calculations
   // New Appliance kWh for the year
-  const newApplianceYearlyKwh = sumGreaterThanZero(hybridColumns, 'newAppliancesLoad')
+  const newApplianceYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
 
   // New Appliance kWh revenue for grid operator (cost for appliance owner)
-  const newApplianceElectricityRevenue =
-    newApplianceYearlyKwh * activeGrid['retailElectricityPrice']
+  // This is the appliance owner cost
+  const newApplianceGridRevenue = newApplianceYearlyKwh * grid['retailElectricityPrice']
 
   // Electricity cost to grid operator
-  const newApplianceElectricityCost = newApplianceYearlyKwh * activeGrid['wholesaleElectricityCost']
+  const newApplianceElectricityCost = newApplianceYearlyKwh * grid['wholesaleElectricityCost']
 
   // Cost to grid operator of new appliance's unmet load
-  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * activeGrid['unmetLoadCostPerKwh']
+  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * grid['unmetLoadCostPerKwh']
 
-  const newApplianceNetRevenue =
-    newApplianceElectricityRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
+  const newApplianceNetGridRevenue =
+    newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
 
-  // Calculate production of new appliance based on
-  // const yearlyProductionUnits = newApplianceYearlyKwh * modelInputs['productionUnitsPerKwh']
-
-  // TODO:
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
-  // But shouldn't I do this? This should be a derived column on the appliance model
-  // calculateNewApplianceColumns should live on the appliance model
-  // const yearlyProductionUnits = sumGreaterThanZero(hybridColumns, 'productionUnits')
-
-  // const yearlyProductionUnitsRevenue =
-  //   yearlyProductionUnits * modelInputs['revenuePerProductionUnits']
-  // const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceElectricityRevenue
+  const yearlyProductionUnitsRevenue = _.sumBy(combinedTable, 'productionUnitsRevenue')
+  const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceGridRevenue
   return {
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
@@ -94,15 +89,14 @@ export function calcSummaryStats(hybridColumns, activeGrid) {
     allUnmetLoadHist,
 
     newApplianceYearlyKwh: _.round(newApplianceYearlyKwh),
-    newApplianceElectricityRevenue: _.round(newApplianceElectricityRevenue),
+    newApplianceGridRevenue: _.round(newApplianceGridRevenue),
     newApplianceElectricityCost: _.round(newApplianceElectricityCost),
     newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
-    newApplianceNetRevenue: _.round(newApplianceNetRevenue),
+    newApplianceNetGridRevenue: _.round(newApplianceNetGridRevenue),
 
     // yearlyProductionUnits: yearlyProductionUnits,
     // yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
-    // netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
-    yearlyProductionUnitsRevenue: 0,
-    netApplianceOwnerRevenue: 0,
+    yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
+    netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
   }
 }
