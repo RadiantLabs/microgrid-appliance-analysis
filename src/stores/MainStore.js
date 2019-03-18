@@ -12,7 +12,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
-import { calcSummaryStats } from '../utils/calculateStats'
+import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 // import { predictBatteryEnergyContent } from '../utils/tensorflowHelpers'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
@@ -184,7 +184,7 @@ export const MainStore = types
     },
     get summaryStats() {
       return _.isEmpty(self.hybridColumns)
-        ? null
+        ? {}
         : calcSummaryStats(self.hybridColumns, self.activeGrid)
     },
     get filteredCombinedTableHeaders() {
