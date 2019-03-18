@@ -28,6 +28,8 @@ Next steps for Appliances:
 
 - cache as many calculations as possible so we don't have to run prediction models again
 
+  - [ ] do a simple no-op on battery calcs to see why it keeps running
+
   - electricalProductionLoadDiff
     - [ ] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
     - [ ] mainStore: Calculate totalElectricalLoadServed

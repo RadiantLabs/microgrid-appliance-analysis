@@ -167,15 +167,16 @@ export function predictBatteryEnergyContent({
       n === 0
         ? new Float32Array([row['electricalProductionLoadDiff'], startingEnergyContent])
         : new Float32Array([row['electricalProductionLoadDiff'], predictions[n - 1]])
-    const featureTensor = tf.tensor2d(feature)
-    const normalized_tensor = normalizeTensor(featureTensor, dataMean, dataStd)
-    const prediction = model.predict(normalized_tensor).dataSync()
-    const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
-    predictions.push(clampedPrediction)
+    tf.tidy(() => {
+      const featureTensor = tf.tensor2d([feature])
+      const normalized_tensor = normalizeTensor(featureTensor, dataMean, dataStd)
+      const prediction = model.predict(normalized_tensor).dataSync()
+      const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
+      predictions.push(clampedPrediction)
+    })
+    tf.memory()
   })
   console.log('predictions: ', predictions)
-  debugger
-
   const t1 = performance.now()
   console.log('predict time for battery model: ', t1 - t0)
   return predictions

@@ -189,7 +189,7 @@ export const MainStore = types
     },
     get predictedBatteryEnergyContent() {
       return predictBatteryEnergyContent({
-        model: self.batteryModel,
+        model: self.activeGrid.batteryModel,
         tensors: self.activeGrid.batteryTensors,
         inputColumns: self.batteryInputColumns,
         startingEnergyContent: self.batteryStartingEnergyContent,
