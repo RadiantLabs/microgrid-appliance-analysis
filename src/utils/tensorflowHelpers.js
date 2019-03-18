@@ -51,8 +51,6 @@ export function arraysToTensors(trainingData) {
     trainTarget,
     testFeatures: normalizeTensor(rawTestFeatures, dataMean, dataStd),
     testTarget,
-    dataMean,
-    dataStd,
   }
 }
 
@@ -157,49 +155,43 @@ export function predictBatteryEnergyContent({
   maxEnergyContent,
 }) {
   return []
-
-  if (_.isEmpty(model) || _.isEmpty(tensors) || _.isEmpty(inputColumns) || !startingEnergyContent) {
-    return []
-  }
-  const t0 = performance.now()
-  const { dataMean, dataStd } = tensors
-  let predictions = []
-  inputColumns.forEach((row, n) => {
-    const feature =
-      n === 0
-        ? new Float32Array([row['electricalProductionLoadDiff'], startingEnergyContent])
-        : new Float32Array([row['electricalProductionLoadDiff'], predictions[n - 1]])
-    tf.tidy(() => {
-      const featureTensor = tf.tensor2d([feature])
-      const normalized_tensor = normalizeTensor(featureTensor, dataMean, dataStd)
-      const prediction = model.predict(normalized_tensor).dataSync()
-      const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
-      predictions.push(clampedPrediction)
-    })
-    tf.memory()
-  })
-  const t1 = performance.now()
-  console.log('predict time for battery model: ', t1 - t0)
-  return predictions
+  // if (_.isEmpty(model) || _.isEmpty(tensors) || _.isEmpty(inputColumns) || !startingEnergyContent) {
+  //   return []
+  // }
+  // const t0 = performance.now()
+  // const { dataMean, dataStd } = tensors
+  // let predictions = []
+  // inputColumns.forEach((row, n) => {
+  //   const feature =
+  //     n === 0
+  //       ? new Float32Array([row['electricalProductionLoadDiff'], startingEnergyContent])
+  //       : new Float32Array([row['electricalProductionLoadDiff'], predictions[n - 1]])
+  //   tf.tidy(() => {
+  //     const featureTensor = tf.tensor2d([feature])
+  //     const normalized_tensor = normalizeTensor(featureTensor, dataMean, dataStd)
+  //     const prediction = model.predict(normalized_tensor).dataSync()
+  //     const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
+  //     predictions.push(clampedPrediction)
+  //   })
+  //   tf.memory()
+  // })
+  // const t1 = performance.now()
+  // console.log('predict time for battery model: ', t1 - t0)
+  // return predictions
 }
 
 /**
  * Convert training and predicted values into plottable values for the
  * Actual vs Predicted chart
  */
-export function calcPredictedVsActualData(
-  trainingData,
-  tensors,
-  model,
-  minEnergyContent,
-  maxEnergyContent
-) {
+export function calcPredictedVsActualData(trainingData, model, minEnergyContent, maxEnergyContent) {
   if (_.isEmpty(model)) {
     return []
   }
-  const { rawFeatures, rawTargets } = trainingData
-  const { dataMean, dataStd } = tensors
   const t0 = performance.now()
+  const { trainFeatures, rawFeatures, rawTargets } = trainingData
+  const rawTrainFeatures = tf.tensor2d(trainFeatures)
+  const { dataMean, dataStd } = determineMeanAndStddev(rawTrainFeatures)
   let predictions = []
   let errors = []
   rawFeatures.forEach((testElement, n) => {
@@ -224,6 +216,7 @@ export function calcPredictedVsActualData(
   console.log('predict time for chart: ', t1 - t0)
   console.log('max percentage error: +/-' + maxError.toFixed(2) + '%')
   console.log('average percentage error: +/-' + avgError.toFixed(2) + '%')
+  // TODO: dispose dataMean and dataStd
   return _.map(rawTargets, (target, targetIndex) => {
     return {
       actual: target[0],
