@@ -183,7 +183,7 @@ export const MainStore = types
       )
     },
     get summaryStats() {
-      return calcSummaryStats(self.activeGrid, self.combinedTable)
+      return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
     },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {

@@ -75,6 +75,8 @@ export const sampleApplianceFiles = [
     attributes: {
       label: 'Rice Mill (Tanzania)',
       description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
+      capex: 1200,
+      capexAssignment: 'appliance',
       powerType: 'DC',
       phase: 3,
       hasMotor: true,
@@ -96,6 +98,8 @@ export const sampleApplianceFiles = [
     attributes: {
       label: 'Maize Mill 1 (Tanzania)',
       description: 'Maize mill usage profile (1) from downloaded UTC file (Tanzania)',
+      capex: 1000,
+      capexAssignment: 'appliance',
       powerType: 'AC',
       phase: 3,
       hasMotor: true,
@@ -117,6 +121,8 @@ export const sampleApplianceFiles = [
     attributes: {
       label: 'Maize Mill 2 (Tanzania)',
       description: 'Maize mill usage profile (2) from downloaded UTC sensor file (Tanzania)',
+      capex: 1000,
+      capexAssignment: 'appliance',
       powerType: 'AC',
       phase: 3,
       hasMotor: true,
@@ -138,6 +144,8 @@ export const sampleApplianceFiles = [
     attributes: {
       label: 'Welder (Tanzania)',
       description: 'Welder usage profile from downloaded UTC sensor file (Tanzania)',
+      capex: 500,
+      capexAssignment: 'grid',
       powerType: 'AC',
       phase: 3,
       hasMotor: false,

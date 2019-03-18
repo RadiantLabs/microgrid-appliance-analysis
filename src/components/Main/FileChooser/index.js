@@ -69,6 +69,15 @@ const ApplianceSelectionTable = inject('store')(
                 </Table.Cell>
                 <Table.Cell>
                   <Form style={{ marginTop: '7px', marginBottom: '7px' }}>
+                    <Form.Field>
+                      <Radio
+                        label="Appliance Owner"
+                        name="radioGroup"
+                        value="appliance"
+                        checked={capexAssignment === 'appliance'}
+                        onChange={handleCapexAssignmentChange}
+                      />
+                    </Form.Field>
                     <Form.Field style={{ marginBottom: 0 }}>
                       <Radio
                         label="Grid Owner"
@@ -76,15 +85,6 @@ const ApplianceSelectionTable = inject('store')(
                         value="grid"
                         checked={capexAssignment === 'grid'}
                         style={{ marginBottom: '3px' }}
-                        onChange={handleCapexAssignmentChange}
-                      />
-                    </Form.Field>
-                    <Form.Field>
-                      <Radio
-                        label="Appliance Owner"
-                        name="radioGroup"
-                        value="appliance"
-                        checked={capexAssignment === 'appliance'}
                         onChange={handleCapexAssignmentChange}
                       />
                     </Form.Field>

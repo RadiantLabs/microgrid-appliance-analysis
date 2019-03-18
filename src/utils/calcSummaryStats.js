@@ -7,8 +7,8 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
-export function calcSummaryStats(grid, combinedTable) {
-  if (_.isEmpty(grid) || _.isEmpty(combinedTable)) {
+export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
+  if (_.isEmpty(grid) || _.isEmpty(combinedTable) || _.isEmpty(enabledAppliances)) {
     return {}
   }
 
@@ -65,6 +65,8 @@ export function calcSummaryStats(grid, combinedTable) {
 
   const newApplianceNetGridRevenue =
     newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
+
+  // const gridApplianceCapex = capexAssignment === 'grid' ?
 
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
