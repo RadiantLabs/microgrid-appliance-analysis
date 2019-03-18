@@ -94,12 +94,6 @@ export const TechnicalInputs = inject('store')(
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Usage Factor Seasonal Derate Curve</Table.Cell>
-            <Table.Cell>
-              <Input value="TBD" disabled />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell>
               {fieldDefinitions['productionUnitsPerKwh'].title}{' '}
               <HelperPopup content={fieldDefinitions['productionUnitsPerKwh'].description} />
@@ -110,6 +104,12 @@ export const TechnicalInputs = inject('store')(
               ) : (
                 <InputField fieldKey="productionUnitsPerKwh" modelInstance={enabledAppliances[0]} />
               )}
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Usage Factor Seasonal Derate Curve</Table.Cell>
+            <Table.Cell>
+              <Input value="TBD" disabled />
             </Table.Cell>
           </Table.Row>
         </Table.Body>
