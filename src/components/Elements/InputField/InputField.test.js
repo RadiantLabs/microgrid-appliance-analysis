@@ -17,7 +17,7 @@ import InputField from './index'
 //         <InputField fieldKey="retailElectricityPrice" />
 //         <InputField fieldKey="productionUnitsPerKwh" />
 //         <InputField fieldKey="revenuePerProductionUnits" />
-//         <InputField fieldKey="revenuePerProductionUnitsUnits" />
+//         <InputField fieldKey="productionUnitType" />
 //       </div>
 //     </Provider>,
 //     div

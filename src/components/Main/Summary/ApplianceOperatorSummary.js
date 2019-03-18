@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { get } from 'lodash'
+import _ from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 
@@ -7,10 +7,10 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
     // Note: this is a cost for the appliance operator, but revenue for grid operator
-    const newApplianceElectricityCost = get(stats, 'newApplianceGridRevenue', '-')
-    // const yearlyProductionFactor = get(stats, 'yearlyProductionFactor', '-')
-    const yearlyProductionUnitsRevenue = get(stats, 'yearlyProductionUnitsRevenue', '-')
-    const netApplianceOwnerRevenue = get(stats, 'netApplianceOwnerRevenue', '-')
+    const newApplianceElectricityCost = _.get(stats, 'newApplianceGridRevenue', '-')
+    // const yearlyProductionFactor = _.get(stats, 'yearlyProductionFactor', '-')
+    const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
+    const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
 
     return (
       <div>
@@ -46,10 +46,16 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
 
 export const ApplianceOperatorTechnicalSummary = inject('store')(
   observer(({ store }) => {
-    const { summaryStats: stats } = store
-    const newApplianceYearlyKwh = get(stats, 'newApplianceYearlyKwh', '-')
-    // Note: this is a cost for the appliance operator, but revenue for grid operator
-    const yearlyProductionUnits = get(stats, 'yearlyProductionUnits', '-')
+    const { enabledAppliances, multipleAppliancesEnabled, summaryStats } = store
+
+    // This is for all enabled appliances, which also applies if only 1 is selected
+    const newApplianceYearlyKwh = _.get(summaryStats, 'newApplianceYearlyKwh', '-')
+
+    // These values only apply to a single enabled appliance
+    const { applianceSummaryStats, productionUnitType } = enabledAppliances[0]
+    const yearlyProductionUnits = _.round(
+      _.get(applianceSummaryStats, 'yearlyProductionUnits', '-')
+    )
     return (
       <div>
         <Header as="h4">Technical Outputs</Header>
@@ -60,8 +66,11 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
               <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Units of Productivity</Table.Cell>
-              <Table.Cell>{yearlyProductionUnits} units</Table.Cell>
+              <Table.Cell>Units of Produced</Table.Cell>
+              <Table.Cell>
+                {multipleAppliancesEnabled ? 'Multiple Appliance Enabled' : yearlyProductionUnits}{' '}
+                {productionUnitType || '-'}
+              </Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

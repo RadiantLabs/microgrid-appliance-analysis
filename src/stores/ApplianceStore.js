@@ -45,7 +45,6 @@ export const ApplianceStore = types
     productionUnitType: types.maybeNull(types.string),
     productionUnitsPerKwh: types.maybeNull(types.number),
     revenuePerProductionUnits: types.maybeNull(types.number),
-    revenuePerProductionUnitsUnits: types.maybeNull(types.string),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
@@ -200,7 +199,6 @@ export const initialApplianceState = {
   productionUnitType: null,
   productionUnitsPerKwh: null,
   revenuePerProductionUnits: null,
-  revenuePerProductionUnitsUnits: '',
   fileIsSelected: false,
   isAnalyzingFile: false,
   applianceSaved: false,
