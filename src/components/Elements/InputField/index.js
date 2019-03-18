@@ -64,6 +64,9 @@ class InputField extends React.Component {
 
   render() {
     const { fieldKey, modelInstance, disabled } = this.props
+    if (_.isEmpty(modelInstance)) {
+      return <span>Missing Data</span>
+    }
     const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
