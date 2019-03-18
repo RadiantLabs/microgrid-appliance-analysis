@@ -156,6 +156,8 @@ export function predictBatteryEnergyContent({
   minEnergyContent,
   maxEnergyContent,
 }) {
+  return []
+
   if (_.isEmpty(model) || _.isEmpty(tensors) || _.isEmpty(inputColumns) || !startingEnergyContent) {
     return []
   }
@@ -176,7 +178,6 @@ export function predictBatteryEnergyContent({
     })
     tf.memory()
   })
-  console.log('predictions: ', predictions)
   const t1 = performance.now()
   console.log('predict time for battery model: ', t1 - t0)
   return predictions
@@ -200,6 +201,7 @@ export function calcPredictedVsActualData(
   const { dataMean, dataStd } = tensors
   const t0 = performance.now()
   let predictions = []
+  let errors = []
   rawFeatures.forEach((testElement, n) => {
     const tensorData =
       n === 0 ? testElement : new Float32Array([testElement[0], predictions[n - 1]])
@@ -209,12 +211,24 @@ export function calcPredictedVsActualData(
       const prediction = model.predict(normalized_tensor).dataSync()
       const clampedPrediction = _.clamp(prediction, minEnergyContent, maxEnergyContent)
       predictions.push(clampedPrediction)
+
+      // Calculate max and average error
+      const actual = testElement[1]
+      const delta = Math.abs((clampedPrediction - actual) / actual)
+      errors.push(delta)
     })
   })
+  const maxError = _.max(errors) * 100
+  const avgError = (_.sum(errors) * 100) / predictions.length
   const t1 = performance.now()
   console.log('predict time for chart: ', t1 - t0)
+  console.log('max percentage error: +/-' + maxError.toFixed(2) + '%')
+  console.log('average percentage error: +/-' + avgError.toFixed(2) + '%')
   return _.map(rawTargets, (target, targetIndex) => {
-    return { actual: target[0], predicted: predictions[targetIndex] }
+    return {
+      actual: target[0],
+      predicted: predictions[targetIndex],
+    }
   })
 }
 
