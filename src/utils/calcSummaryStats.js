@@ -7,7 +7,7 @@ import {
   createGreaterThanZeroHistogram,
 } from './helpers'
 
-export function getSummaryStats(hybridColumns, activeGrid) {
+export function calcSummaryStats(hybridColumns, activeGrid) {
   // Unmet Loads: Original without new appliance
   const originalUnmetLoadCount = countGreaterThanZero(hybridColumns, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
