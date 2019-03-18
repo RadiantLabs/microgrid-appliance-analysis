@@ -5,6 +5,8 @@ import {
   mergeArraysOfObjects,
   sumGreaterThanZero,
   createGreaterThanZeroHistogram,
+  calculateRoi,
+  calculatePayback,
 } from './helpers'
 
 export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
@@ -73,13 +75,27 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const appliancesWithCapexAssignedToAppliance = _.filter(enabledAppliances, appliance => {
     return appliance.capexAssignment === 'appliance'
   })
-  const applianceCapexAssignedToGrid = _.sumBy(appliancesWithCapexAssignedToGrid, 'capex')
   const applianceCapexAssignedToAppliance = _.sumBy(appliancesWithCapexAssignedToAppliance, 'capex')
+  const applianceCapexAssignedToGrid = _.sumBy(appliancesWithCapexAssignedToGrid, 'capex')
 
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
   const yearlyProductionUnitsRevenue = _.sumBy(combinedTable, 'productionUnitsRevenue')
   const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceGridRevenue
+  const netGridOwnerRevenue = newApplianceNetGridRevenue - newApplianceElectricityCost
+
+  // ROI and Payback
+  const applianceOwnerRoi = calculateRoi(
+    netApplianceOwnerRevenue,
+    applianceCapexAssignedToAppliance
+  )
+  const gridOwnerRoi = calculateRoi(netGridOwnerRevenue, applianceCapexAssignedToGrid)
+
+  const applianceOwnerPayback = calculatePayback(
+    netApplianceOwnerRevenue,
+    applianceCapexAssignedToAppliance
+  )
+  const gridOwnerPayback = calculatePayback(netGridOwnerRevenue, applianceCapexAssignedToGrid)
   return {
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
@@ -110,5 +126,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
     applianceCapexAssignedToGrid: _.round(applianceCapexAssignedToGrid),
     applianceCapexAssignedToAppliance: _.round(applianceCapexAssignedToAppliance),
+
+    applianceOwnerRoi: _.round(applianceOwnerRoi),
+    gridOwnerRoi: _.round(gridOwnerRoi),
+    applianceOwnerPayback: _.round(applianceOwnerPayback, 2),
+    gridOwnerPayback: _.round(gridOwnerPayback, 2),
   }
 }

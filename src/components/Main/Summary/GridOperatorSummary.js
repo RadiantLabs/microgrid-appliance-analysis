@@ -7,11 +7,13 @@ import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/U
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-    const newApplianceGridRevenue = _.get(stats, 'newApplianceGridRevenue')
-    const applianceCapexAssignedToGrid = _.get(stats, 'applianceCapexAssignedToGrid')
-    const newApplianceElectricityCost = _.get(stats, 'newApplianceElectricityCost')
+    const newApplianceGridRevenue = _.get(stats, 'newApplianceGridRevenue', '-')
+    const applianceCapexAssignedToGrid = _.get(stats, 'applianceCapexAssignedToGrid', '-')
+    const newApplianceElectricityCost = _.get(stats, 'newApplianceElectricityCost', '-')
     const newApplianceUnmetLoadCost = _.get(stats, 'newApplianceUnmetLoadCost', '-')
     const newApplianceNetGridRevenue = _.get(stats, 'newApplianceNetGridRevenue', '-')
+    const gridOwnerRoi = _.get(stats, 'gridOwnerRoi', '-')
+    const gridOwnerPayback = _.get(stats, 'gridOwnerPayback', '-')
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
@@ -19,31 +21,35 @@ export const GridOperatorEconomicSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>CAPEX costs (due to new appliance)</Table.Cell>
-              <Table.Cell>${applianceCapexAssignedToGrid}</Table.Cell>
+              <Table.Cell>$ {applianceCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>
-              <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
+              <Table.Cell>$ {newApplianceElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
-              <Table.Cell>${newApplianceGridRevenue}</Table.Cell>
+              <Table.Cell>$ {newApplianceGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Grid ROI</Table.Cell>
-              <Table.Cell />
+              <Table.Cell>
+                {gridOwnerRoi} {_.isFinite(gridOwnerRoi) ? '%' : ''}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Simple Payback</Table.Cell>
-              <Table.Cell />
+              <Table.Cell>Payback</Table.Cell>
+              <Table.Cell>
+                {gridOwnerPayback} {_.isFinite(gridOwnerPayback) ? 'yrs' : ''}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New appliance unmet load cost</Table.Cell>
-              <Table.Cell>${newApplianceUnmetLoadCost}</Table.Cell>
+              <Table.Cell>$ {newApplianceUnmetLoadCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New appliance net revenue</Table.Cell>
-              <Table.Cell>${newApplianceNetGridRevenue}</Table.Cell>
+              <Table.Cell>$ {newApplianceNetGridRevenue}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

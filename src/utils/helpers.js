@@ -8,6 +8,14 @@ window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------
 
+export function calculateRoi(netProfit, capex) {
+  return capex > 0 ? (100 * netProfit) / capex : Infinity
+}
+
+export function calculatePayback(netProfit, capex) {
+  return netProfit > 0 ? capex / netProfit : Infinity
+}
+
 // Non-mutating array insert
 export const arrayInsert = (arr, item, index) => {
   return [...arr.slice(0, index), item, ...arr.slice(index + 1)]

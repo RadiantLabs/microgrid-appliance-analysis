@@ -11,6 +11,8 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
     const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
     const applianceCapexAssignedToAppliance = _.get(stats, 'applianceCapexAssignedToAppliance', '-')
+    const applianceOwnerRoi = _.get(stats, 'applianceOwnerRoi', '-')
+    const applianceOwnerPayback = _.get(stats, 'applianceOwnerPayback', '-')
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
@@ -18,27 +20,29 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>CAPEX</Table.Cell>
-              <Table.Cell>${applianceCapexAssignedToAppliance}</Table.Cell>
+              <Table.Cell>$ {applianceCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance Electricity Cost</Table.Cell>
-              <Table.Cell>${newApplianceElectricityCost}</Table.Cell>
+              <Table.Cell>$ {newApplianceElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance-Related Revenue</Table.Cell>
-              <Table.Cell>${yearlyProductionUnitsRevenue}</Table.Cell>
+              <Table.Cell>$ {yearlyProductionUnitsRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Net Revenue</Table.Cell>
-              <Table.Cell>${netApplianceOwnerRevenue}</Table.Cell>
+              <Table.Cell>$ {netApplianceOwnerRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance ROI</Table.Cell>
-              <Table.Cell />
+              <Table.Cell>
+                {applianceOwnerRoi} {_.isFinite(applianceOwnerRoi) ? '%' : ''}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Appliance Simple Payback</Table.Cell>
-              <Table.Cell />
+              <Table.Cell>Appliance Payback</Table.Cell>
+              <Table.Cell>{applianceOwnerPayback} yrs</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
