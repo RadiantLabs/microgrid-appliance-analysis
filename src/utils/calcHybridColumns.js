@@ -5,33 +5,19 @@ import _ from 'lodash'
  * Also pass in adjustable fields from store that are required
  * to do the calculations
  */
-export function calcHybridColumns(
-  grid,
-  summedAppliances,
-  batteryInputColumns,
-  predictedBatteryEnergyContent
-) {
-  if (
-    _.isEmpty(grid) ||
-    _.isEmpty(grid.fileData) ||
-    _.isEmpty(summedAppliances) ||
-    _.isEmpty(batteryInputColumns) ||
-    _.isEmpty(predictedBatteryEnergyContent)
-  ) {
+export function calcHybridColumns(grid, summedAppliances) {
+  if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return []
   }
-
-  console.log('batteryInputColumns: ', batteryInputColumns)
-  console.log('predictedBatteryEnergyContent: ', predictedBatteryEnergyContent)
-
   const t0 = performance.now()
-  const { batteryMinEnergyContent, batteryMinSoC } = grid
+  const { batteryMinEnergyContent, batteryMaxEnergyContent, batteryMinSoC } = grid
+  // TODO: run predictedBatteryEnergyContent from this loop
 
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
-  const columnReducer = (result, row, rowIndex, rows) => {
+  const columnReducer = (result, homerRow, rowIndex, homerRows) => {
     // Get the previous HOMER row (from the original rows, not the new calculated rows)
-    const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
+    const prevRow = rowIndex === 0 ? {} : homerRows[rowIndex - 1]
 
     // Get the matching row for the appliance
     const applianceRow = summedAppliances[rowIndex]
@@ -39,20 +25,29 @@ export function calcHybridColumns(
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]
 
-    // Get existing values from the current row we are iterating over:
+    const totalElectricalProduction = homerRow['Total Renewable Power Output']
+    const totalElectricalLoadServed =
+      homerRow['Total Electrical Load Served'] + applianceRow['newAppliancesLoad']
+    const electricalProductionLoadDiff = totalElectricalProduction - totalElectricalLoadServed
+
+    // Get existing values from the current homerRow we are iterating over:
     // Excess electrical production:  Original energy production minus original load (not new
     // summedAppliances) when the battery is charging as fast as possible
-    const excessElecProd = row['Excess Electrical Production']
-    const batteryEnergyContent = row['Original Battery Energy Content']
-    const batterySOC = row['Battery State of Charge']
+    const excessElecProd = homerRow['Excess Electrical Production']
+    const originalBatteryEnergyContent = homerRow['Original Battery Energy Content']
+    const batterySOC = homerRow['Battery State of Charge']
+
+    // TODO:
+    // Calculate batteryEnergyContent properly with predictions
+    // const batteryEnergyContent = originalBatteryEnergyContent
 
     const prevBatteryEnergyContent =
       rowIndex === 0
-        ? row['Original Battery Energy Content']
+        ? homerRow['Original Battery Energy Content']
         : prevRow['Original Battery Energy Content']
 
     // Some of these numbers from HOMER are -1x10-16
-    const originalUnmetLoad = _.round(row['Unmet Electrical Load'], 6)
+    const originalUnmetLoad = _.round(homerRow['Unmet Electrical Load'], 6)
 
     // Calculated (summed) loads from new enabled appliances
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
@@ -62,7 +57,7 @@ export function calcHybridColumns(
      */
     // The energy content above what HOMER (or the user) decides is the minimum
     // Energy content the battery should have
-    const energyContentAboveMin = batteryEnergyContent - batteryMinEnergyContent
+    const energyContentAboveMin = originalBatteryEnergyContent - batteryMinEnergyContent
 
     // Find available capacity (kW) before the new appliance is added
     const availableCapacity =
@@ -94,7 +89,7 @@ export function calcHybridColumns(
     // This is how much the energy content in the battery has increased or decreased in
     // the last hour. First row is meaningless when referencing previous row, so set it to zero
     const originalBatteryEnergyContentDelta =
-      rowIndex === 0 ? 0 : batteryEnergyContent - prevBatteryEnergyContent
+      rowIndex === 0 ? 0 : originalBatteryEnergyContent - prevBatteryEnergyContent
 
     // New Appliance Battery Energy Content:
     // The battery energy content under the scenario of adding a new appliance.
@@ -104,11 +99,11 @@ export function calcHybridColumns(
     const prevNewApplianceBatteryEnergyContent =
       rowIndex === 0 ? 0 : prevResult['newApplianceBatteryEnergyContent']
 
-    const newApplianceBatteryEnergyContent =
+    const unclampedBatteryEnergyContent =
       rowIndex === 0
         ? // For the first hour: We just look at the energy content of the battery
           // and how much a new appliance would use from the battery:
-          batteryEnergyContent - newApplianceBatteryConsumption
+          originalBatteryEnergyContent - newApplianceBatteryConsumption
         : // For hours after that, we need to take the perspective of the battery if a new
           // appliance was added. Take the battery energy content we just calculated from the
           // previous hour:
@@ -118,13 +113,19 @@ export function calcHybridColumns(
           // Now subtract out any battery consumption the new appliance would use
           newApplianceBatteryConsumption
 
+    const newApplianceBatteryEnergyContent = _.clamp(
+      unclampedBatteryEnergyContent,
+      batteryMinEnergyContent,
+      batteryMaxEnergyContent
+    )
+
     // Unmet load counts are very sensitive to how many decimals you round to
     // Rounding to 3 decimals filters out loads less than 1 watthour
     // Rounding to 0 decimals filters out loads less than 1 kWh
     // Amanda decided to filter out anything less than 100 watthours (1 decimal)
     result.push({
-      hour: row['hour'],
-      datetime: row['Time'],
+      hour: homerRow['hour'],
+      datetime: homerRow['Time'],
       hour_of_day: applianceRow['hour_of_day'],
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
@@ -135,6 +136,11 @@ export function calcHybridColumns(
       newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
       newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
       newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
+      originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 4),
+      // batteryEnergyContent: _.round(batteryEnergyContent, 4),
+      totalElectricalProduction: _.round(totalElectricalProduction, 4),
+      totalElectricalLoadServed: _.round(totalElectricalLoadServed, 4),
+      electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
     })
     return result
   }
@@ -142,6 +148,6 @@ export function calcHybridColumns(
   // Iterate over homer data, pushing each new row into an array
   const hybridColumns = _.reduce(grid.fileData, columnReducer, [])
   const t1 = performance.now()
-  console.log('calculateNewColumns took ' + _.round(t1 - t0) + ' milliseconds.')
+  console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
   return hybridColumns
 }

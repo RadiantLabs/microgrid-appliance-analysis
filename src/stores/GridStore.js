@@ -17,7 +17,7 @@ import {
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
-  calcPredictedVsActualData,
+  // calcPredictedVsActualData,
   calcReferenceLine,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,

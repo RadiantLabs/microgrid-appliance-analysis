@@ -3,15 +3,13 @@ For the battery training mmodel, there are 2 inputs:
 - newElectricalProductionLoadDiff
 - prevBatteryEnergyContent
 
-Don't overcomplicate this:
-
 1. First train the mmodel on the data I have
 2. give it two inputs in order to calculate new energy content:
 
 - newElectricalProductionLoadDiff
-- prevBatteryEnergyContent: The prediction from the previous row. If it's the first row, use original Battery Energy Content
+- battery energy content prediction from the previous hour: The prediction from the previous row. The trick is doing the _inference sequentially_, so I have a previous row to work from
 
-The trick is doing the _inference sequentially_, so I have a previous row to work from
+What values depend on the battery energy content:
 
 ---
 
@@ -27,8 +25,6 @@ Big next steps
 Next steps for Appliances:
 
 - cache as many calculations as possible so we don't have to run prediction models again
-
-  - [ ] do a simple no-op on battery calcs to see why it keeps running
 
   - electricalProductionLoadDiff
     - [ ] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)

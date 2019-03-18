@@ -14,8 +14,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { combineTables } from '../utils/helpers'
 import { getSummaryStats } from '../utils/calculateStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
-import { calcBatteryColumns } from '../utils/calcBatteryColumns'
-import { predictBatteryEnergyContent } from '../utils/tensorflowHelpers'
+// import { predictBatteryEnergyContent } from '../utils/tensorflowHelpers'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
@@ -173,44 +172,14 @@ export const MainStore = types
     get summedApplianceColumns() {
       return sumApplianceColumns(self.enabledAppliances)
     },
-    get batteryInputColumns() {
-      return calcBatteryColumns({
-        gridData: self.activeGrid.fileData,
-        appliances: self.summedApplianceColumns,
-        batteryMinEnergyContent: self.activeGrid.batteryMinEnergyContent,
-        batteryMaxEnergyContent: self.activeGrid.batteryMaxEnergyContent,
-      })
-    },
-    get batteryStartingEnergyContent() {
-      if (_.isEmpty(self.activeGrid.fileData)) {
-        return null
-      }
-      return _.first(self.activeGrid.fileData)['Original Battery Energy Content']
-    },
-    get predictedBatteryEnergyContent() {
-      return []
-      // return predictBatteryEnergyContent({
-      //   model: self.activeGrid.batteryModel,
-      //   tensors: self.activeGrid.batteryTensors,
-      //   inputColumns: self.batteryInputColumns,
-      //   startingEnergyContent: self.batteryStartingEnergyContent,
-      //   minEnergyContent: self.batteryMinEnergyContent,
-      //   maxEnergyContent: self.batteryMaxEnergyContent,
-      // })
-    },
     get hybridColumns() {
-      return calcHybridColumns(
-        self.activeGrid,
-        self.summedApplianceColumns,
-        self.batteryInputColumns,
-        self.predictedBatteryEnergyContent
-      )
+      return calcHybridColumns(self.activeGrid, self.summedApplianceColumns)
     },
     get combinedTable() {
       return combineTables(
         self.activeGrid.fileData,
-        self.hybridColumns,
-        self.summedApplianceColumns
+        self.summedApplianceColumns,
+        self.hybridColumns
       )
     },
     get summaryStats() {
