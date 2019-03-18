@@ -292,7 +292,8 @@ export const GridStore = types
     },
     get batteryPlottablePredictionVsActualData() {
       console.log('running batteryPlottablePredictionVsActualData')
-      return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
+      return []
+      // return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
     },
     get batteryPlottableReferenceLine() {
       return calcReferenceLine(self.batteryTrainingData)
