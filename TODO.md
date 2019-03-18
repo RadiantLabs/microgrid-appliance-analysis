@@ -1,48 +1,33 @@
-For the battery training mmodel, there are 2 inputs:
+Big next steps:
 
-- newElectricalProductionLoadDiff
-- prevBatteryEnergyContent
-
-1. First train the mmodel on the data I have
-2. give it two inputs in order to calculate new energy content:
-
-- newElectricalProductionLoadDiff
-- battery energy content prediction from the previous hour: The prediction from the previous row. The trick is doing the _inference sequentially_, so I have a previous row to work from
-
-What values depend on the battery energy content:
-
----
-
-Big next steps
-
-- Calculate ROI & payback
-- Get battery model prediction working
 - Hook up appliance upload section
 - Save files and bootstrap from local forage
 
----
+What values depend on the battery energy content:
+
+-
 
 Next steps for Appliances:
 
 - cache as many calculations as possible so we don't have to run prediction models again
 
   - electricalProductionLoadDiff
-    - [ ] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
-    - [ ] mainStore: Calculate totalElectricalLoadServed
-    - [ ] mainStore: Calculate separately `totalElectricalProduction`
-    - [ ] mainStore: Calculate electricalProductionLoadDiff
-    - [ ] mainStore: battery starting energy content
-    - [ ] mainStore: predictedBatteryEnergyContent (takes electricalProductionLoadDiff and starting battery content)
-    - [ ] Comments on each of these calculate steps
+    - [x] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
+    - [x] mainStore: Calculate totalElectricalLoadServed
+    - [x] mainStore: Calculate separately `totalElectricalProduction`
+    - [x] mainStore: Calculate electricalProductionLoadDiff
+    - [x] mainStore: battery starting energy content
+    - [x] mainStore: predictedBatteryEnergyContent (takes electricalProductionLoadDiff and starting battery content)
+    - [x] Comments on each of these calculate steps
 
 - [ ] **_ Calculate everything on an hourly basis for Appliances _**
-  - [ ] Electricity Sales (from new appliances)
+  - [x] Electricity Sales (from new appliances)
   - [x] production units
   - [ ] New appliance unmet load cost
-  - [ ] New appliance net revenue
-  - [ ] Appliance Electricity Cost
+  - [x] New appliance net revenue
+  - [x] Appliance Electricity Cost
   - [x] Appliance-Related Revenue
-  - [ ] Net Revenue
+  - [x] Net Revenue
   - [x] Appliance Electricity Consumption
   - [x] Units of Productivity (include unit label (kg, hr))
 - [ ] Confirm summary calculations using a spreadsheet

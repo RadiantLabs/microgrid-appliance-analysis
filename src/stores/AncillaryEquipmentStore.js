@@ -38,7 +38,7 @@ export const AncillaryEquipmentStore = types
     get equipmentStatus() {
       return getAncillaryEquipmentStatus(
         getParent(self).activeGrid,
-        getParent(self).activeAppliance,
+        getParent(self).enabledAppliances,
         ancillaryEquipmentList
       )
     },

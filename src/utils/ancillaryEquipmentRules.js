@@ -15,10 +15,16 @@ export function getEquipmentDiagram(equipmentType) {
   }
 }
 
-export function getAncillaryEquipmentStatus(grid, appliance, ancillaryEquipmentList) {
-  if (_.isEmpty(grid) || _.isEmpty(appliance) || _.isEmpty(ancillaryEquipmentList)) {
+export function getAncillaryEquipmentStatus(grid, appliances, ancillaryEquipmentList) {
+  if (_.isEmpty(grid) || _.isEmpty(appliances) || _.isEmpty(ancillaryEquipmentList)) {
     return {}
   }
+  if (grid.multipleAppliancesEnabled) {
+    return {}
+  }
+
+  const appliance = appliances[0]
+
   // This is verbose but clearer than the opaque meta-programming approach I had before
   const equipmentWithStatus = _.map(ancillaryEquipmentList, item => {
     switch (item.equipmentType) {
