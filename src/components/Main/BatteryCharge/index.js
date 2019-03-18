@@ -18,6 +18,10 @@ import { getChartColors, greyColors } from '../../../utils/constants'
 
 // TODO:
 // Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
+// <Message warning>
+//   This chart isn't useful yet. I need to calculate the charge characteristics of the battery
+//   first.
+// </Message>
 class BatteryCharge extends React.Component {
   render() {
     const { activeGrid, hybridColumns } = this.props.store
@@ -29,10 +33,6 @@ class BatteryCharge extends React.Component {
         <h3>
           Battery Energy Content by hour of year <small style={{ color: greyColors[1] }}>kWh</small>
         </h3>
-        <Message warning>
-          This chart isn't useful yet. I need to calculate the charge characteristics of the battery
-          first.
-        </Message>
         <BatteryChargeTable grid={activeGrid} />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <LineChart
