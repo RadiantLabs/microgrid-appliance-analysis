@@ -224,8 +224,8 @@ export function calcPredictedVsActualData(trainingData, model) {
   const sampleIndexes = _.sampleSize(_.range(8760), 2000)
   return _.map(sampleIndexes, sampleIndex => {
     return {
-      actual: rawTargets[sampleIndex][0],
-      predicted: predictions[sampleIndex],
+      actual: _.round(rawTargets[sampleIndex][0], 2),
+      predicted: _.round(predictions[sampleIndex], 2),
       // errors,
     }
   })
