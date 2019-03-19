@@ -153,13 +153,7 @@ export function combineTables(gridData, hybridColumns, applianceData) {
   if (_.isEmpty(gridData) || _.isEmpty(hybridColumns) || _.isEmpty(applianceData)) {
     return []
   }
-  const t0 = performance.now()
-  const combinedTable = hybridColumns
-    ? mergeArraysOfObjects('hour', gridData, hybridColumns, applianceData)
-    : []
-  const t1 = performance.now()
-  console.log('combinedTable took ' + _.round(t1 - t0) + ' milliseconds.')
-  return combinedTable
+  return mergeArraysOfObjects('hour', gridData, hybridColumns, applianceData)
 }
 
 // -----------------------------------------------------------------------------

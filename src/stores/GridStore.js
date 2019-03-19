@@ -17,7 +17,7 @@ import {
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
-  // calcPredictedVsActualData,
+  calcPredictedVsActualData,
   calcReferenceLine,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
@@ -291,9 +291,9 @@ export const GridStore = types
       return arraysToTensors(self.batteryTrainingData)
     },
     get batteryPlottablePredictionVsActualData() {
-      console.log('running batteryPlottablePredictionVsActualData')
-      return []
-      // return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
+      // console.log('running batteryPlottablePredictionVsActualData')
+      // return []
+      return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
     },
     get batteryPlottableReferenceLine() {
       return calcReferenceLine(self.batteryTrainingData)

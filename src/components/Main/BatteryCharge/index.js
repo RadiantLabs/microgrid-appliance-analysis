@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Message } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import BatteryChargeTable from '../../../components/Elements/BatteryChargeTable'
@@ -16,12 +15,6 @@ import {
 } from 'recharts'
 import { getChartColors, greyColors } from '../../../utils/constants'
 
-// TODO:
-// Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-// <Message warning>
-//   This chart isn't useful yet. I need to calculate the charge characteristics of the battery
-//   first.
-// </Message>
 class BatteryCharge extends React.Component {
   render() {
     const { activeGrid, hybridColumns } = this.props.store

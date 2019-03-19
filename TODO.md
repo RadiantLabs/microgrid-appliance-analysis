@@ -1,15 +1,35 @@
 Big next steps:
 
+- Come up with estimate where clamping batter energy content is not a valid assumption
 - Hook up appliance upload section
 - Save files and bootstrap from local forage
+- TOU ?
 
 What values depend on the battery energy content:
 
--
+- unmet load
+- unmet load hours
+- unmet load costs
+
+  - OPEX, ROI, Payback, net revenue
+  -
+
+- Heuristic for calculating battery charge
+  - Check: Previous Battery Energy Content + Previous Production Load Difference =? Battery Energy Content
+  - pBEC + pProductionLoadDiff =? BEC
 
 Next steps for Appliances:
 
-- cache as many calculations as possible so we don't have to run prediction models again
+- Meeting tomorrow (Tuesday) at 7:30am Mountain/8:30pm Thailand (send out same meeting link)
+- [ ] Fix changing grid file
+- [ ] Require filing out appliance attributes on file upload
+- [ ] Save appliance without enabling
+- [ ] Amanda will do basic sanity check calculations
+- [ ] Amanda review question marks
+- [ ] Document kw_factor
+- [ ] Research if battery min/max should be editable
+
+* cache as many calculations as possible so we don't have to run prediction models again
 
   - electricalProductionLoadDiff
     - [x] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
@@ -20,7 +40,7 @@ Next steps for Appliances:
     - [x] mainStore: predictedBatteryEnergyContent (takes electricalProductionLoadDiff and starting battery content)
     - [x] Comments on each of these calculate steps
 
-- [ ] **_ Calculate everything on an hourly basis for Appliances _**
+* [ ] **_ Calculate everything on an hourly basis for Appliances _**
   - [x] Electricity Sales (from new appliances)
   - [x] production units
   - [ ] New appliance unmet load cost
@@ -30,25 +50,25 @@ Next steps for Appliances:
   - [x] Net Revenue
   - [x] Appliance Electricity Consumption
   - [x] Units of Productivity (include unit label (kg, hr))
-- [ ] Confirm summary calculations using a spreadsheet
-- [ ] Fix scale on predicted vs. actual chart
+* [ ] Confirm summary calculations using a spreadsheet
+* [ ] Fix scale on predicted vs. actual chart
 
-* [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
-* [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
-* [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
-* [ ] Fix broken ancillary equipment list
-* [ ] Keep appliance spinner going until it's actually clickable
-* [ ] Calculate grid and appliance ROI
-* [ ] Calculate grid and appliance Payback
-* [ ] Assign appliance cost to either grid owner or grid operator
-* [ ] Add commas to results numbers
-* [ ] Find logging library that replaces 'throw'
-* [ ] Use `label` and `description` all over the app. Then I can just use a spread operator
-* [ ] Add Appliance upload section
+- [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
+- [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
+- [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
+- [x] Fix broken ancillary equipment list
+- [ ] Keep appliance spinner going until it's actually clickable
+- [x] Calculate grid and appliance ROI
+- [x] Calculate grid and appliance Payback
+- [x] Assign appliance cost to either grid owner or grid operator
+- [ ] Add commas to results numbers
+- [ ] Find logging library that replaces 'throw'
+- [x] Use `label` and `description` all over the app. Then I can just use a spread operator
+- [ ] Add Appliance upload section
   - [ ] Input for cost for appliance
   - [ ] Require appliance file to have certain columns
-* [ ] Add app icon
-* [ ] Fix Re-Train Model button
+- [ ] Add app icon
+- [ ] Fix Re-Train Model button
 
 ## Upload HOMER files
 

@@ -9,7 +9,7 @@ export function calcHybridColumns(grid, summedAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return []
   }
-  const t0 = performance.now()
+  // const t0 = performance.now()
   const { batteryMinEnergyContent, batteryMaxEnergyContent, batteryMinSoC } = grid
   // TODO: run predictedBatteryEnergyContent from this loop
 
@@ -147,7 +147,7 @@ export function calcHybridColumns(grid, summedAppliances) {
 
   // Iterate over homer data, pushing each new row into an array
   const hybridColumns = _.reduce(grid.fileData, columnReducer, [])
-  const t1 = performance.now()
-  console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
+  // const t1 = performance.now()
+  // console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
   return hybridColumns
 }
