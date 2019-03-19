@@ -185,7 +185,7 @@ export function predictBatteryEnergyContent({
  * Actual vs Predicted chart
  */
 export function calcPredictedVsActualData(trainingData, model) {
-  if (_.isEmpty(model)) {
+  if (_.isEmpty(trainingData) || _.isEmpty(model)) {
     return []
   }
   const t0 = performance.now()
