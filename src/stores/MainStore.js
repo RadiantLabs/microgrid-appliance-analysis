@@ -338,6 +338,18 @@ onSnapshot(mainStore, snapshot => {
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
 
+// Calculate the predicted vs. actual battery values. This was set up as a
+// computed view, but it was rerunning when changing the page url. I'm guessing
+// this is because the app had stopped observing the results of the computed value
+// so mobx cleared the cached values. This runs it only when the inputs to the
+// function change
+autorun(() =>
+  mainStore.activeGrid.setBatteryPlottablePredictionVsActualData(
+    mainStore.activeGrid.batteryTrainingData,
+    mainStore.activeGrid.batteryModel
+  )
+)
+
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>
   mainStore.ancillaryEquipment.setEquipmentEnabledFromStatus(

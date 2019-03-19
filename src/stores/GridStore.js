@@ -63,6 +63,7 @@ export const GridStore = types
     batteryValidationSetLoss: types.maybeNull(types.number),
     batteryTestSetLoss: types.maybeNull(types.number),
     batteryTrainLogs: types.frozen(),
+    batteryPlottablePredictionVsActualData: types.frozen(),
 
     // Below are volatile properties. Switch them after I get it working
     batteryCurrentEpoch: types.maybeNull(types.number),
@@ -228,6 +229,13 @@ export const GridStore = types
       })
     },
 
+    setBatteryPlottablePredictionVsActualData() {
+      self.batteryPlottablePredictionVsActualData = calcPredictedVsActualData(
+        self.batteryTrainingData,
+        self.batteryModel
+      )
+    },
+
     saveGridSnapshot: flow(function* saveGridSnapshot() {
       function handleSave(artifacts) {
         localforage.setItem('microgridAppliances.batteryModel', artifacts).then(() => {
@@ -290,11 +298,6 @@ export const GridStore = types
     get batteryTensors() {
       return arraysToTensors(self.batteryTrainingData)
     },
-    get batteryPlottablePredictionVsActualData() {
-      // console.log('running batteryPlottablePredictionVsActualData')
-      // return []
-      return calcPredictedVsActualData(self.batteryTrainingData, self.batteryModel)
-    },
     get batteryPlottableReferenceLine() {
       return calcReferenceLine(self.batteryTrainingData)
     },
@@ -312,7 +315,7 @@ export const GridStore = types
 // Initial Grid State
 // -----------------------------------------------------------------------------
 const initialBatteryState = {
-  batteryMaxEpochCount: 3,
+  batteryMaxEpochCount: 40,
   batteryCurrentEpoch: 0,
   batteryModelStopLoss: 0.05,
   batteryBatchSize: 40,
@@ -330,6 +333,7 @@ const initialBatteryState = {
   batteryFinalTrainSetLoss: null,
   batteryValidationSetLoss: null,
   batteryTestSetLoss: null,
+  batteryPlottablePredictionVsActualData: [],
 }
 
 export const initialGridState = {

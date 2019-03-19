@@ -219,13 +219,24 @@ export function calcPredictedVsActualData(trainingData, model) {
   console.log('max percentage error: +/-' + maxError.toFixed(2) + '%')
   console.log('average percentage error: +/-' + avgError.toFixed(2) + '%')
   // TODO: dispose dataMean and dataStd
-  return _.map(rawTargets, (target, targetIndex) => {
+
+  // Plot only a sample of the 8760 data points to speed up rendering
+  const sampleIndexes = _.sampleSize(_.range(8760), 2000)
+  return _.map(sampleIndexes, sampleIndex => {
     return {
-      actual: target[0],
-      predicted: predictions[targetIndex],
-      errors,
+      actual: rawTargets[sampleIndex][0],
+      predicted: predictions[sampleIndex],
+      // errors,
     }
   })
+
+  // return _.map(rawTargets, (target, targetIndex) => {
+  //   return {
+  //     actual: target[0],
+  //     predicted: predictions[targetIndex],
+  //     errors,
+  //   }
+  // })
 }
 
 export function calcReferenceLine(trainingData) {
