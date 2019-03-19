@@ -343,12 +343,12 @@ onSnapshot(mainStore, snapshot => {
 // this is because the app had stopped observing the results of the computed value
 // so mobx cleared the cached values. This runs it only when the inputs to the
 // function change
-autorun(() =>
-  mainStore.activeGrid.setBatteryPlottablePredictionVsActualData(
-    mainStore.activeGrid.batteryTrainingData,
-    mainStore.activeGrid.batteryModel
-  )
-)
+// autorun(() =>
+//   mainStore.activeGrid.setBatteryPlottablePredictionVsActualData(
+//     mainStore.activeGrid.batteryTrainingData,
+//     mainStore.activeGrid.batteryModel
+//   )
+// )
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>
