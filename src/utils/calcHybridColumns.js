@@ -28,6 +28,11 @@ export function calcHybridColumns(grid, summedAppliances) {
     const totalElectricalProduction = homerRow['Total Renewable Power Output']
     const totalElectricalLoadServed =
       homerRow['Total Electrical Load Served'] + applianceRow['newAppliancesLoad']
+
+    // This value is key for predicting battery energy content
+    // Positive if battery is charging, negative if battery is discharging
+    const originalElectricalProductionLoadDiff =
+      totalElectricalProduction - homerRow['Total Electrical Load Served']
     const electricalProductionLoadDiff = totalElectricalProduction - totalElectricalLoadServed
 
     // Get existing values from the current homerRow we are iterating over:
@@ -119,6 +124,29 @@ export function calcHybridColumns(grid, summedAppliances) {
       batteryMaxEnergyContent
     )
 
+    // =========================================================================
+    // ==Experiment
+    // Experiment to see if I can do a rough and dirty battery energy content prediction
+    // May want to reduce electricalProductionLoadDiff 10% for losses
+    const tempPrevBatteryEnergyContent =
+      rowIndex === 0 ? originalBatteryEnergyContent : prevResult['tempBatteryEnergyContent']
+
+    // Inherent losses in the charge/discharge cycle
+    // const roundTripLosses = 0.1
+
+    // Use electricalProductionLoadDiff if we want the value that includes new appliances
+    // Use originalElectricalProductionLoadDiff to test this method against the original
+    // battery calculations that HOMER made
+    const tempUnclampedBatteryEnergyContent =
+      tempPrevBatteryEnergyContent * 0.99 + originalElectricalProductionLoadDiff
+
+    const tempBatteryEnergyContent = _.clamp(
+      tempUnclampedBatteryEnergyContent,
+      batteryMinEnergyContent,
+      batteryMaxEnergyContent
+    )
+    // =========================================================================
+
     // Unmet load counts are very sensitive to how many decimals you round to
     // Rounding to 3 decimals filters out loads less than 1 watthour
     // Rounding to 0 decimals filters out loads less than 1 kWh
@@ -141,6 +169,9 @@ export function calcHybridColumns(grid, summedAppliances) {
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       totalElectricalLoadServed: _.round(totalElectricalLoadServed, 4),
       electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
+
+      // Running an experiment:
+      tempBatteryEnergyContent: _.round(tempBatteryEnergyContent, 4),
     })
     return result
   }

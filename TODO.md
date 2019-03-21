@@ -1,22 +1,26 @@
-Big next steps:
+Next steps:
+
+1. Pricing for ancillary equipment
+  - Give guidelines and let user put the cost in
+  - Calculate efficiency losses on the appliance load
 
 - Come up with estimate where clamping batter energy content is not a valid assumption
+  - let the user override min and max state of charge
 - Hook up appliance upload section
-- Save files and bootstrap from local forage
-- TOU ?
+- Save files and bootstrap from local storage
+
+- TOU
+- line losses
+- appliance lifetime
+- user-input seasonality
+- single and 3-phase
+- show value to customer vs. their existing kit (electricity versus if a customer is using a diesel generator or engine)
 
 What values depend on the battery energy content:
 
 - unmet load
 - unmet load hours
-- unmet load costs
-
-  - OPEX, ROI, Payback, net revenue
-  -
-
-- Heuristic for calculating battery charge
-  - Check: Previous Battery Energy Content + Previous Production Load Difference =? Battery Energy Content
-  - pBEC + pProductionLoadDiff =? BEC
+- unmet load costs: OPEX, ROI, Payback, Net revenue
 
 Next steps for Appliances:
 
@@ -26,6 +30,7 @@ Next steps for Appliances:
 - [ ] Save appliance without enabling
 - [ ] Amanda will do basic sanity check calculations
 - [ ] Amanda review question marks
+- [ ] Amanda: tell what min/max state of charge for each type of battery
 - [ ] Document kw_factor
 - [ ] Research if battery min/max should be editable
 
@@ -51,7 +56,9 @@ Next steps for Appliances:
   - [x] Appliance Electricity Consumption
   - [x] Units of Productivity (include unit label (kg, hr))
 * [ ] Confirm summary calculations using a spreadsheet
-* [ ] Fix scale on predicted vs. actual chart
+* [x] Fix scale on predicted vs. actual chart
+
+- [ ] Fix case of zero appliances. It should revert to the original HOMER file values (set appliance loads to zero)
 
 - [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
 - [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown

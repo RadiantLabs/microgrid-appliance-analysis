@@ -23,6 +23,7 @@ import {
   sampleApplianceFiles,
   ancillaryEquipmentList,
 } from '../utils/fileInfo'
+import { calcPredictedVsActual } from '../utils/calcActualVsPredicted'
 
 //
 // -----------------------------------------------------------------------------
@@ -73,24 +74,24 @@ export const MainStore = types
         yield grid.loadFile(grid.fileInfo)
       }
       // Train battery models if they haven't run yet
-      for (let grid of self.availableGrids) {
-        if (_.isEmpty(grid.batteryModel)) {
-          const {
-            batteryFeatureCount,
-            batteryTensors,
-            batteryLearningRate,
-            batteryBatchSize,
-            batteryMaxEpochCount,
-          } = grid
-          yield grid.trainBatteryModel({
-            batteryFeatureCount,
-            batteryTensors,
-            batteryLearningRate,
-            batteryBatchSize,
-            batteryMaxEpochCount,
-          })
-        }
-      }
+      // for (let grid of self.availableGrids) {
+      //   if (_.isEmpty(grid.batteryModel)) {
+      //     const {
+      //       batteryFeatureCount,
+      //       batteryTensors,
+      //       batteryLearningRate,
+      //       batteryBatchSize,
+      //       batteryMaxEpochCount,
+      //     } = grid
+      //     yield grid.trainBatteryModel({
+      //       batteryFeatureCount,
+      //       batteryTensors,
+      //       batteryLearningRate,
+      //       batteryBatchSize,
+      //       batteryMaxEpochCount,
+      //     })
+      //   }
+      // }
     }),
 
     // All of these availableGrids will be instantiated GridStores with barely any data
@@ -185,6 +186,20 @@ export const MainStore = types
     get summaryStats() {
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
     },
+    // This is temporary to test a heuristic for faster battery predictions
+    // TODO: need to move this to the grid - don't actually need hybrid columns
+    get predictedVsActualBatteryValues() {
+      return calcPredictedVsActual(self.hybridColumns)
+    },
+    get predictedVsActualReferenceLine() {
+      if (_.isEmpty(self.predictedVsActualBatteryValues)) {
+        return []
+      }
+      const range = _.range(29, 58)
+      return _.map(range, val => {
+        return { actual: val, predicted: val }
+      })
+    },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {
         return !_.includes(self.excludedTableColumns, header)
@@ -195,11 +210,9 @@ export const MainStore = types
         (_.size(self.filteredCombinedTableHeaders) / _.size(combinedColumnHeaderOrder)) * 100
       )
     },
-
     get viewedGridIsStaged() {
       return self.viewedGridId === 'staged'
     },
-
     get viewedGrid() {
       return self.viewedGridIsStaged
         ? self.stagedGrid
@@ -208,25 +221,20 @@ export const MainStore = types
             grid => grid.fileInfo.id === self.viewedGridId
           )
     },
-
     get viewedApplianceIsStaged() {
       return self.viewedApplianceId === 'staged'
     },
-
     get viewedAppliance() {
       return self.viewedApplianceIsStaged
         ? self.stagedAppliance
         : _.find(self.appliances, appliance => appliance.fileInfo.id === self.viewedApplianceId)
     },
-
     get enabledAppliances() {
       return _.filter(self.appliances, appliance => appliance.enabled)
     },
-
     get multipleAppliancesEnabled() {
       return _.size(self.enabledAppliances) > 1
     },
-
     get enabledApplianceLabels() {
       const labels = _.map(self.enabledAppliances, appliance => appliance.label)
       const labelCount = _.size(labels)
@@ -358,44 +366,44 @@ autorun(() =>
 )
 
 // Run the battery regression model
-autorun(() => {
-  if (_.isEmpty(mainStore.activeGrid)) {
-    return null
-  }
-  const {
-    batteryFeatureCount,
-    batteryTensors,
-    batteryLearningRate,
-    batteryBatchSize,
-    batteryMaxEpochCount,
-  } = mainStore.activeGrid
-  mainStore.activeGrid.trainBatteryModel({
-    batteryFeatureCount,
-    batteryTensors,
-    batteryLearningRate,
-    batteryBatchSize,
-    batteryMaxEpochCount,
-  })
-})
+// autorun(() => {
+//   if (_.isEmpty(mainStore.activeGrid)) {
+//     return null
+//   }
+//   const {
+//     batteryFeatureCount,
+//     batteryTensors,
+//     batteryLearningRate,
+//     batteryBatchSize,
+//     batteryMaxEpochCount,
+//   } = mainStore.activeGrid
+//   mainStore.activeGrid.trainBatteryModel({
+//     batteryFeatureCount,
+//     batteryTensors,
+//     batteryLearningRate,
+//     batteryBatchSize,
+//     batteryMaxEpochCount,
+//   })
+// })
 
-autorun(() => {
-  if (_.isEmpty(mainStore.stagedGrid)) {
-    return null
-  }
-  const {
-    batteryFeatureCount,
-    batteryTensors,
-    batteryLearningRate,
-    batteryBatchSize,
-    batteryMaxEpochCount,
-  } = mainStore.stagedGrid
-  mainStore.stagedGrid.trainBatteryModel({
-    batteryFeatureCount,
-    batteryTensors,
-    batteryLearningRate,
-    batteryBatchSize,
-    batteryMaxEpochCount,
-  })
-})
+// autorun(() => {
+//   if (_.isEmpty(mainStore.stagedGrid)) {
+//     return null
+//   }
+//   const {
+//     batteryFeatureCount,
+//     batteryTensors,
+//     batteryLearningRate,
+//     batteryBatchSize,
+//     batteryMaxEpochCount,
+//   } = mainStore.stagedGrid
+//   mainStore.stagedGrid.trainBatteryModel({
+//     batteryFeatureCount,
+//     batteryTensors,
+//     batteryLearningRate,
+//     batteryBatchSize,
+//     batteryMaxEpochCount,
+//   })
+// })
 
 export { mainStore, history }

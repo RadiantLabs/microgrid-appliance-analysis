@@ -11,15 +11,18 @@ export const hybridColumnHeaders = [
   'originalElectricalProductionLoadDiff',
   'electricalProductionLoadDiff',
   'totalElectricalLoadServed',
-  'prevBatteryEnergyContent',
+  // 'prevBatteryEnergyContent',
   'originalBatteryEnergyContent',
   // 'newAppliancesLoad',
   'availableCapacity',
   'availableCapacityAfterNewLoad',
   'additionalUnmetLoad',
+
   'newApplianceBatteryConsumption',
   'originalBatteryEnergyContentDelta',
   'newApplianceBatteryEnergyContent',
+  'tempBatteryEnergyContent',
+
   'originalUnmetLoad',
   'newTotalUnmetLoad',
 ]
@@ -33,7 +36,7 @@ export const hybridColumnHeaderUnits = {
   originalElectricalProductionLoadDiff: 'kW',
   totalElectricalLoadServed: 'kW',
   electricalProductionLoadDiff: 'kW',
-  prevBatteryEnergyContent: 'kWh',
+  // prevBatteryEnergyContent: 'kWh',
   originalBatteryEnergyContent: 'kWh',
   // newAppliancesLoad: 'kW',
   availableCapacity: 'kW',
@@ -42,6 +45,8 @@ export const hybridColumnHeaderUnits = {
   newApplianceBatteryConsumption: 'kW',
   originalBatteryEnergyContentDelta: 'kWh',
   newApplianceBatteryEnergyContent: 'kWh',
+  tempBatteryEnergyContent: 'kW',
+
   originalUnmetLoad: 'kW',
   newTotalUnmetLoad: 'kW',
 }
