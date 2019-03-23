@@ -40,7 +40,7 @@ class UnmetLoads extends React.Component {
               dataKey="additionalUnmetLoad"
               fill={getChartColors('additionalUnmetLoad')}
             />
-            <Bar dataKey="newTotalUnmetLoad" fill={getChartColors('newTotalUnmetLoad')} />
+            <Bar dataKey="newUnmetLoad" fill={getChartColors('newUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
       </div>

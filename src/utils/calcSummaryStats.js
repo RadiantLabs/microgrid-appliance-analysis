@@ -35,20 +35,20 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   )
 
   // Unmet Loads: Total with new appliance
-  const newTotalUnmetLoadCount = countGreaterThanZero(combinedTable, 'newTotalUnmetLoad')
-  const newTotalUnmetLoadCountPercent = percentOfYear(newTotalUnmetLoadCount)
-  const newTotalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newTotalUnmetLoad')
-  const newTotalUnmetLoadHist = createGreaterThanZeroHistogram(
+  const newUnmetLoadCount = countGreaterThanZero(combinedTable, 'newUnmetLoad')
+  const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
+  const newUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newUnmetLoad')
+  const newUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
     'hour_of_day',
-    'newTotalUnmetLoad'
+    'newUnmetLoad'
   )
 
   const allUnmetLoadHist = mergeArraysOfObjects(
     'hour_of_day',
     originalUnmetLoadHist,
     additionalUnmetLoadHist,
-    newTotalUnmetLoadHist
+    newUnmetLoadHist
   )
 
   // Yearly kWh and Financial Calculations
@@ -107,10 +107,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     additionalUnmetLoadSum: _.round(additionalUnmetLoadSum),
     additionalUnmetLoadHist,
 
-    newTotalUnmetLoadCount,
-    newTotalUnmetLoadCountPercent,
-    newTotalUnmetLoadSum: _.round(newTotalUnmetLoadSum),
-    newTotalUnmetLoadHist,
+    newUnmetLoadCount,
+    newUnmetLoadCountPercent,
+    newUnmetLoadSum: _.round(newUnmetLoadSum),
+    newUnmetLoadHist,
 
     allUnmetLoadHist,
 

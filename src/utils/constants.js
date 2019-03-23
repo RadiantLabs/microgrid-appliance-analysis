@@ -48,7 +48,7 @@ export const chartColorsByKey = {
 
   // Unmet Loads
   originalUnmetLoad: '#FFA601',
-  newTotalUnmetLoad: '#444e86',
+  newUnmetLoad: '#444e86',
   additionalUnmetLoad: '#FF6E54',
 
   // Original Battery Energy Content

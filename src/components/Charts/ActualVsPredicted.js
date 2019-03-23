@@ -15,23 +15,13 @@ import {
 } from 'recharts'
 
 const ActualVsPredicted = ({ store }) => {
-  // TODO: Uncomment these because the actual vs precdicted calc will go on
-  // the grid, not mainstore
-  // const { viewedGrid } = store
-  // const {
-  //   batteryIsTraining,
-  //   batteryPlottablePredictionVsActualData,
-  //   referenceLineData,
-  //   xAccessor = 'actual',
-  //   yAccessor = 'predicted',
-  // } = viewedGrid
-
+  const { viewedGrid } = store
   const {
     predictedVsActualBatteryValues,
-    predictedVsActualReferenceLine: referenceLineData,
-  } = store
-  const xAccessor = 'actual'
-  const yAccessor = 'predicted'
+    predictedVsActualReferenceLine,
+    xAccessor = 'actual',
+    yAccessor = 'predicted',
+  } = viewedGrid
 
   if (_.isEmpty(predictedVsActualBatteryValues)) {
     return (
@@ -78,7 +68,7 @@ const ActualVsPredicted = ({ store }) => {
         <Scatter name="Training data" data={data} fill="#83A1C3" shape={<Dot r={1} />} />
         <Scatter
           name="Reference Line"
-          data={referenceLineData}
+          data={predictedVsActualReferenceLine}
           fill="#E20000"
           line={{ strokeDasharray: '5 5' }}
           legendType="line"

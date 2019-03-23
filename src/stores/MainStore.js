@@ -23,7 +23,6 @@ import {
   sampleApplianceFiles,
   ancillaryEquipmentList,
 } from '../utils/fileInfo'
-import { calcPredictedVsActual } from '../utils/calcActualVsPredicted'
 
 //
 // -----------------------------------------------------------------------------
@@ -185,20 +184,6 @@ export const MainStore = types
     },
     get summaryStats() {
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
-    },
-    // This is temporary to test a heuristic for faster battery predictions
-    // TODO: need to move this to the grid - don't actually need hybrid columns
-    get predictedVsActualBatteryValues() {
-      return calcPredictedVsActual(self.hybridColumns)
-    },
-    get predictedVsActualReferenceLine() {
-      if (_.isEmpty(self.predictedVsActualBatteryValues)) {
-        return []
-      }
-      const range = _.range(29, 58)
-      return _.map(range, val => {
-        return { actual: val, predicted: val }
-      })
     },
     get filteredCombinedTableHeaders() {
       return _.filter(combinedColumnHeaderOrder, header => {

@@ -5,6 +5,7 @@ import localforage from 'localforage'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
 import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
+import { calcPredictedVsActual, calcReferenceLine } from '../utils/calcPredictedVsActual'
 import {
   csvOptions,
   analyzeHomerFile,
@@ -18,7 +19,6 @@ import {
   calculateFinalLoss,
   arraysToTensors,
   calcPredictedVsActualData,
-  calcReferenceLine,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
 } from '../utils/tensorflowHelpers'
@@ -298,8 +298,11 @@ export const GridStore = types
     get batteryTensors() {
       return arraysToTensors(self.batteryTrainingData)
     },
-    get batteryPlottableReferenceLine() {
-      return calcReferenceLine(self.batteryTrainingData)
+    get predictedVsActualBatteryValues() {
+      return calcPredictedVsActual(self.hybridColumns)
+    },
+    get predictedVsActualReferenceLine() {
+      return calcReferenceLine(self.batteryMinEnergyContents, self.batteryMaxEnergyContent)
     },
     get isActiveGrid() {
       const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')

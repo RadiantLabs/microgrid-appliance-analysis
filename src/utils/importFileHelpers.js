@@ -4,6 +4,7 @@ import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import { findColMax, findColMin } from './helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
+import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
 
 /**
@@ -82,80 +83,58 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
       // Replace names of all battery columns
       case _.includes(key, batteryType):
         return _.replace(key, batteryType, 'Original Battery')
-
       // Replace names of all PV columns
       // TODO: PV Solar Altitude won't necessarily start with PV
       case _.includes(key, pvType):
         return _.replace(key, `${pvType} `, 'PV ')
-
       // Replace names of all generator columns
       // TODO: get more examples of generators
       case _.includes(key, generatorType):
         return _.replace(key, `${generatorType} `, 'Generator')
+      case _.includes(key, 'Unmet Electrical Load'):
+        return 'Original Unmet Electrical Load'
+      case _.includes(key, 'Excess Electrical Production'):
+        return 'Original Excess Electrical Production'
       default:
         return key
     }
   })
 }
 
-function calculateNewHomerColumns({ fileData, batteryMinSoC, batteryMinEnergyContent }) {
-  return _.map(fileData, (row, rowIndex, rows) => {
-    // Get the previous HOMER row
-    const prevRow = rowIndex === 0 ? {} : rows[rowIndex - 1]
-
+function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMaxEnergyContent }) {
+  const newColumns = _.map(fileData, (row, rowIndex, rows) => {
     // Get existing values from the current row we are iterating over:
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
-    const excessElecProd = row['Excess Electrical Production']
     const originalBatteryEnergyContent = row['Original Battery Energy Content']
-    const batterySOC = row['Battery State of Charge']
 
-    const prevOriginalBatteryEnergyContent =
-      rowIndex === 0 ? originalBatteryEnergyContent : prevRow['Original Battery Energy Content']
-
-    // const prevBatterySOC =
-    //   rowIndex === 0 ? row['Battery State of Charge'] : prevRow['Battery State of Charge']
-
-    // TODO: Eventually add other generation to this value
-    // TODO: Should be `Total Power Output` (renewable plus generator)
+    // TODO: Eventually add other power generation to this value.
+    // HOMER should have column `Total Power Output` (renewable plus generator)
     const totalElectricalProduction = row['Total Renewable Power Output']
 
-    // electricalProductionLoadDiff defines whether we are producing excess (positive)
-    // or in deficit (negative).
+    // electricalProductionLoadDiff is the kW in 1 hour produced
     // If excess (positive), `Inverter Power Input` kicks in
     // If deficit (negative), `Rectifier Power Input` kicks in
     const originalElectricalProductionLoadDiff =
       totalElectricalProduction - row['Total Electrical Load Served']
-
-    // The energy content above what HOMER (or the user) decides is the Minimum
-    // Energy content the battery should have
-    const energyContentAboveMin = originalBatteryEnergyContent - batteryMinEnergyContent
-
-    // Find available capacity (kW) before the new appliance is added
-    const availableCapacity =
-      excessElecProd + (batterySOC <= batteryMinSoC ? 0 : energyContentAboveMin)
-
-    // Original Battery Energy Content Delta
-    // This is how much the energy content in the battery has increased or decreased in
-    // the last hour. First row is meaningless when referencing previous row, so set it to zero
-    const originalBatteryEnergyContentDelta =
-      rowIndex === 0 ? 0 : originalBatteryEnergyContent - prevOriginalBatteryEnergyContent
 
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
     return {
       datetime,
       hour_of_day: dateObject.hour,
+      originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 4),
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       originalElectricalProductionLoadDiff: _.round(originalElectricalProductionLoadDiff, 4),
-      // prevBatterySOC: _.round(prevBatterySOC, 4),
-      prevOriginalBatteryEnergyContent: _.round(prevOriginalBatteryEnergyContent, 4),
-      energyContentAboveMin: _.round(energyContentAboveMin, 4),
-      availableCapacity: _.round(availableCapacity, 4),
-      originalBatteryEnergyContentDelta: _.round(originalBatteryEnergyContentDelta, 4),
-      ...row,
+      ..._.omit(row, ['Unmet Electrical Load', 'Original Battery Energy Content']),
     }
   })
+  const withBatteryPredictions = predictOriginalBatteryEnergyContent(
+    newColumns,
+    batteryMinEnergyContent,
+    batteryMaxEnergyContent
+  )
+  return withBatteryPredictions
 }
 
 export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }) {
@@ -212,6 +191,11 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   errors.push(generatorTypeErrors)
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
+
+  // TODO: precalculate min and max State of Charge (SoC) for the battery types that
+  // HOMER provides and look them up based on the type of battery imported.
+  // Let it be overridable (that's why it needs to be on the grid model)
+  // Then calculate the min/max energy content based on min/max state of charge
   const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
   const batteryMinSoC = findColMin(fileData, 'Original Battery State of Charge')
   const batteryMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
@@ -219,8 +203,8 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
 
   const withCalculatedColumns = calculateNewHomerColumns({
     fileData,
-    batteryMinSoC,
     batteryMinEnergyContent,
+    batteryMaxEnergyContent,
   })
   return {
     // TODO NEXT: See where this file returns to and integrate it into the gridmodel

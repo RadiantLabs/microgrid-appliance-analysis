@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { predictBatteryEnergyContent } from './predictBatteryEnergyContent'
 
 /**
  * Pass in the merged table that includes Homer and summed appliance calculated columnms.
@@ -9,148 +10,68 @@ export function calcHybridColumns(grid, summedAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return []
   }
-  // const t0 = performance.now()
-  const { batteryMinEnergyContent, batteryMaxEnergyContent, batteryMinSoC } = grid
-  // TODO: run predictedBatteryEnergyContent from this loop
+
+  const t0 = performance.now()
+  const { batteryMinEnergyContent, batteryMaxEnergyContent } = grid
 
   // Reducer function. This is needed so that we can have access to values in
   // rows we previously calculated
   const columnReducer = (result, homerRow, rowIndex, homerRows) => {
-    // Get the previous HOMER row (from the original rows, not the new calculated rows)
-    const prevRow = rowIndex === 0 ? {} : homerRows[rowIndex - 1]
-
     // Get the matching row for the appliance
     const applianceRow = summedAppliances[rowIndex]
 
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]
-
-    const totalElectricalProduction = homerRow['Total Renewable Power Output']
-    const totalElectricalLoadServed =
-      homerRow['Total Electrical Load Served'] + applianceRow['newAppliancesLoad']
-
-    // This value is key for predicting battery energy content
-    // Positive if battery is charging, negative if battery is discharging
-    const originalElectricalProductionLoadDiff =
-      totalElectricalProduction - homerRow['Total Electrical Load Served']
-    const electricalProductionLoadDiff = totalElectricalProduction - totalElectricalLoadServed
-
-    // Get existing values from the current homerRow we are iterating over:
-    // Excess electrical production:  Original energy production minus original load (not new
-    // summedAppliances) when the battery is charging as fast as possible
-    const excessElecProd = homerRow['Excess Electrical Production']
-    const originalBatteryEnergyContent = homerRow['Original Battery Energy Content']
-    const batterySOC = homerRow['Battery State of Charge']
-
-    // TODO:
-    // Calculate batteryEnergyContent properly with predictions
-    // const batteryEnergyContent = originalBatteryEnergyContent
-
-    const prevBatteryEnergyContent =
-      rowIndex === 0
-        ? homerRow['Original Battery Energy Content']
-        : prevRow['Original Battery Energy Content']
-
-    // Some of these numbers from HOMER are -1x10-16
-    const originalUnmetLoad = _.round(homerRow['Unmet Electrical Load'], 6)
+    // debugger
+    // if (_.isEmpty(applianceRow)) {
+    //   debugger
+    // }
 
     // Calculated (summed) loads from new enabled appliances
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
+    const totalElectricalProduction = homerRow['Total Renewable Power Output']
 
-    /*
-     * Now calculate new values based on the HOMER and usage profiles
-     */
-    // The energy content above what HOMER (or the user) decides is the minimum
-    // Energy content the battery should have
-    const energyContentAboveMin = originalBatteryEnergyContent - batteryMinEnergyContent
+    // 'Load Served' implies it was actually served, instead of just load demand.
+    // We want to calculate the battery energy content. Then, from that, the unmet load.
+    // In reality, there is no difference between 'load served' and just 'load' because
+    // if the grid goes down, there is no load. We will assume there is a generator
+    // on the grid, and then calculate economics based on unmet load costs/kWh
+    // So adding newAppliancesLoad to a 'load served' value I think makes sense.
+    const totalElectricalLoadServed = homerRow['Total Electrical Load Served'] + newAppliancesLoad
 
-    // Find available capacity (kW) before the new appliance is added
-    const availableCapacity =
-      excessElecProd + (batterySOC <= batteryMinSoC ? 0 : energyContentAboveMin)
+    // This value is important for predicting the battery energy content based on new loads
+    // It's positive if battery is charging, negative if battery is discharging
+    const electricalProductionLoadDiff = totalElectricalProduction - totalElectricalLoadServed
 
-    // Find available capacity after the new appliance is added
-    const availableCapacityAfterNewLoad = availableCapacity - newAppliancesLoad
+    // Predict battery energy content. From that we can calculate new unmet load
+    const prevBatteryEnergyContent =
+      rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
-    // Is there an unmet load after the new appliance is added?
-    // If there is no available capacity (or goes negative) after the new appliance
-    // is added, then the unmet load equals that (negative) "available" capacity
-    const additionalUnmetLoad =
-      availableCapacityAfterNewLoad > 0 ? 0 : -availableCapacityAfterNewLoad
-
-    // Add up the original unmet load with no new appliance and now the additional
-    // unmet load now that we have a new appliance on the grid
-    const newTotalUnmetLoad = originalUnmetLoad + additionalUnmetLoad
-
-    // Battery consumption (kW) now that we have a new appliance on the grid.
-    // If the new appliance load is greater than the excess electrical production, we are
-    // draining the battery by the difference between new load and the excess production.
-    // If the excess electrical production is greater than the new appliance load, then we
-    // aren't draining the battery.
-    // excessElecProd is the excess after taking into acount the original load
-    const newApplianceBatteryConsumption =
-      newAppliancesLoad > excessElecProd ? newAppliancesLoad - excessElecProd : 0
-
-    // Original Original Battery Energy Content Delta
-    // This is how much the energy content in the battery has increased or decreased in
-    // the last hour. First row is meaningless when referencing previous row, so set it to zero
-    const originalBatteryEnergyContentDelta =
-      rowIndex === 0 ? 0 : originalBatteryEnergyContent - prevBatteryEnergyContent
-
-    // New Appliance Battery Energy Content:
-    // The battery energy content under the scenario of adding a new appliance.
-    // This requires us to look at the energy content of the battery from the previous hour,
-    // which means we need to look at the previous row than the one we are iterating over.
-    // This is why these values are being calculated in a reducing function instead of a map
-    const prevNewApplianceBatteryEnergyContent =
-      rowIndex === 0 ? 0 : prevResult['newApplianceBatteryEnergyContent']
-
-    const unclampedBatteryEnergyContent =
-      rowIndex === 0
-        ? // For the first hour: We just look at the energy content of the battery
-          // and how much a new appliance would use from the battery:
-          originalBatteryEnergyContent - newApplianceBatteryConsumption
-        : // For hours after that, we need to take the perspective of the battery if a new
-          // appliance was added. Take the battery energy content we just calculated from the
-          // previous hour:
-          prevNewApplianceBatteryEnergyContent +
-          // Add how much energy content was added or removed from the original load:
-          originalBatteryEnergyContentDelta -
-          // Now subtract out any battery consumption the new appliance would use
-          newApplianceBatteryConsumption
-
-    const newApplianceBatteryEnergyContent = _.clamp(
-      unclampedBatteryEnergyContent,
+    const batteryEnergyContent = predictBatteryEnergyContent(
+      prevBatteryEnergyContent,
+      electricalProductionLoadDiff,
       batteryMinEnergyContent,
-      batteryMaxEnergyContent
+      batteryMaxEnergyContent,
+      false
     )
 
+    // == Calculate Unmet Load =================================================
+    // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
+    const originalUnmetLoad = _.round(homerRow['Original Unmet Electrical Load'], 6)
+
+    // The energy content contained in the battery that is available.
+    // This is important for calculating unmet loads
+    const availableBatteryEnergyContent = batteryEnergyContent - batteryMinEnergyContent
+
+    // Will this hour have an unmet load? Remember electricalProductionLoadDiff
+    // is negative if battery is discharging.
+    const willHaveUnmetLoad = electricalProductionLoadDiff + availableBatteryEnergyContent < 0
+    const newUnmetLoad = willHaveUnmetLoad
+      ? Math.abs(electricalProductionLoadDiff + availableBatteryEnergyContent)
+      : 0
+    const additionalUnmetLoad = newUnmetLoad - originalUnmetLoad
+
     // =========================================================================
-    // ==Experiment
-    // Experiment to see if I can do a rough and dirty battery energy content prediction
-    // May want to reduce electricalProductionLoadDiff 10% for losses
-    const tempPrevBatteryEnergyContent =
-      rowIndex === 0 ? originalBatteryEnergyContent : prevResult['tempBatteryEnergyContent']
-
-    // Inherent losses in the charge/discharge cycle
-    // const roundTripLosses = 0.1
-
-    // Use electricalProductionLoadDiff if we want the value that includes new appliances
-    // Use originalElectricalProductionLoadDiff to test this method against the original
-    // battery calculations that HOMER made
-    const tempUnclampedBatteryEnergyContent =
-      tempPrevBatteryEnergyContent * 0.99 + originalElectricalProductionLoadDiff
-
-    const tempBatteryEnergyContent = _.clamp(
-      tempUnclampedBatteryEnergyContent,
-      batteryMinEnergyContent,
-      batteryMaxEnergyContent
-    )
-    // =========================================================================
-
-    // Unmet load counts are very sensitive to how many decimals you round to
-    // Rounding to 3 decimals filters out loads less than 1 watthour
-    // Rounding to 0 decimals filters out loads less than 1 kWh
-    // Amanda decided to filter out anything less than 100 watthours (1 decimal)
     result.push({
       hour: homerRow['hour'],
       datetime: homerRow['Time'],
@@ -158,27 +79,23 @@ export function calcHybridColumns(grid, summedAppliances) {
       day: applianceRow['day'],
       day_hour: applianceRow['day_hour'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
-      availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
-      originalUnmetLoad: _.round(originalUnmetLoad, 1),
-      additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
-      newTotalUnmetLoad: _.round(newTotalUnmetLoad, 1),
-      newApplianceBatteryConsumption: _.round(newApplianceBatteryConsumption, 4),
-      newApplianceBatteryEnergyContent: _.round(newApplianceBatteryEnergyContent, 4),
-      originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 4),
-      // batteryEnergyContent: _.round(batteryEnergyContent, 4),
+      // availableCapacityAfterNewLoad: _.round(availableCapacityAfterNewLoad, 4),
+      batteryEnergyContent: _.round(batteryEnergyContent, 4),
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       totalElectricalLoadServed: _.round(totalElectricalLoadServed, 4),
       electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),
 
-      // Running an experiment:
-      tempBatteryEnergyContent: _.round(tempBatteryEnergyContent, 4),
+      // See note in README.md about how many decimal places to round unmet load
+      originalUnmetLoad: _.round(originalUnmetLoad, 1),
+      additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
+      newUnmetLoad: _.round(newUnmetLoad, 1),
     })
     return result
   }
 
   // Iterate over homer data, pushing each new row into an array
   const hybridColumns = _.reduce(grid.fileData, columnReducer, [])
-  // const t1 = performance.now()
-  // console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
+  const t1 = performance.now()
+  console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
   return hybridColumns
 }

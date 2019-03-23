@@ -51,3 +51,10 @@ Note: This requires setting NODE_PATH=./ in the Heroku environment variables (Co
 Welder and Water pump throughput:
 
 > I think what we need to do is let the tool apply some value to a unit of welding (maybe hours), and a value to a unit of water (liters) , but then it’ll be up to the user to decide what to put in there for water pumping in particular, one kind of pump (submersible) could be used to pump drinking water to be sold, which is a very standard economic model, but another kind of pump (surface) could be used to water small horticultural crops for which a person wouldn’t realize the economic value for several months until the harvest happens.
+
+
+### Unmet Load
+Unmet load counts are very sensitive to how many decimals you round to
+Rounding to 3 decimals filters out loads less than 1 watthour
+Rounding to 0 decimals filters out loads less than 1 kWh
+Amanda decided to filter out anything less than 100 watthours (1 decimal)
