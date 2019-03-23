@@ -1,8 +1,7 @@
 - Overhaul calculations
   - [x] Make sure calculations are in the right place: if they can be done on HOMER import, make sure they are in calculateNewHomerColumns. If they require new appliance loads, then put them in calcHybridColumns
-  - [ ] Switch column header file to use arrays of tuples so we only need 1 array to specify it
-  - [ ] Calculate min battery energy content based on when HOMER determines an unmet load, or if nothing is found, then use global number or min found
-  - [ ] Calculate max battery energy content based on ...?
+  - [x] Switch column header file to use arrays of tuples so we only need 1 array to specify it
+  - [x] Calculate min battery energy content based on when HOMER determines an unmet load, or if nothing is found, then use global number or min found
   - [ ] Figure out why the first row of the predicted battery energy content is so different from the actual value
   - [ ] When no appliances are chosen, newApplianceLoad should equal zero and the CSV should roughly match the original HOMER file
   - [ ] Allow downloading data table so it can be manipulated and checked in Excel

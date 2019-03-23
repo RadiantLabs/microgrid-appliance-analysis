@@ -136,6 +136,11 @@ export const findColMax = (table, key) => {
   return _.max(filterNums(table, key))
 }
 
+export const findColAverage = (table, key) => {
+  const size = _.size(table)
+  return size === 0 ? Infinity : _.sumBy(table, key) / size
+}
+
 // This lodash approach is ~100x faster than doing a iterating over
 // arrays and merging row objects together with spread operator.
 // This runs ~300ms the first time, ~100ms subsequent times.

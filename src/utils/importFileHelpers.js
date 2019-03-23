@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import { findColMax, findColMin } from './helpers'
+import { findColMax, findColMin, findColAverage } from './helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
 export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
@@ -192,14 +192,17 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
 
-  // TODO: precalculate min and max State of Charge (SoC) for the battery types that
-  // HOMER provides and look them up based on the type of battery imported.
-  // Let it be overridable (that's why it needs to be on the grid model)
-  // Then calculate the min/max energy content based on min/max state of charge
+  // Calculate battery minimum by looking at when HOMER decides we have unmet loads
+  // This seems to slowly lower over a year by about 1 kWh. So take all unmet load
+  // hours and average the battery energy content over the course of a year.
+  // That gets us within +/- 0.5 kWh.
+  const unmetLoadHours = _.filter(fileData, row => {
+    return _.round(row['Original Unmet Electrical Load'], 5) > 0
+  })
+  const batteryMinEnergyContent = findColAverage(unmetLoadHours, 'Original Battery Energy Content')
+  const batteryMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
   const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
   const batteryMinSoC = findColMin(fileData, 'Original Battery State of Charge')
-  const batteryMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
-  const batteryMinEnergyContent = findColMin(fileData, 'Original Battery Energy Content')
 
   const withCalculatedColumns = calculateNewHomerColumns({
     fileData,
