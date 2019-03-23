@@ -1,8 +1,11 @@
 import _ from 'lodash'
 
+// Someone can deselect all appliances. When they do, the grid should behave as
+// the original HOMER file modeled it. So pass in an empty array of objects so
+// subsequent checks and calculations still work
 export function sumApplianceColumns(enabledAppliances) {
-  if (!_.every(_.map(enabledAppliances, appliance => !_.isEmpty(appliance.fileData)))) {
-    return []
+  if (_.isEmpty(enabledAppliances)) {
+    return emptyApplianceRows
   }
   const zippedAppliances = _.zip(..._.map(enabledAppliances, 'calculatedApplianceColumns'))
   return _.map(zippedAppliances, appliancesRow => {
@@ -17,3 +20,13 @@ export function sumApplianceColumns(enabledAppliances) {
     }
   })
 }
+
+const emptyApplianceRows = _.map(_.range(0, 8760), hour => {
+  return {
+    hour,
+    hour_of_day: null,
+    day_hour: null,
+    newAppliancesLoad: 0,
+    productionUnitsRevenue: 0,
+  }
+})
