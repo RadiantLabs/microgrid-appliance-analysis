@@ -10,7 +10,6 @@ const setLegendStyles = tableName => {
     display: 'inline-block',
     paddingRight: '4px',
     marginRight: '6px',
-    marginTop: '20px',
     fontStyle: 'italic',
     fontSize: '14px',
     lineHeight: 1.8,

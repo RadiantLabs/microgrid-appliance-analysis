@@ -12,7 +12,6 @@ import styles from './styles.module.css'
 const selectorBoxStyles = {
   cursor: 'pointer',
   marginRight: '2%',
-  marginTop: '4px',
   width: '100%',
   verticalAlign: 'top',
 }

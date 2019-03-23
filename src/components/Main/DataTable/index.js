@@ -2,7 +2,7 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Icon } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { setHeaderStyles } from '../../../styles/tableStyles'
 import { formatDateForTable } from '../../../utils/helpers'
@@ -76,14 +76,31 @@ class DataTable extends React.Component {
     }
     const rowCount = _.size(combinedTable)
     const columnCount = _.size(filteredCombinedTableHeaders)
+    const downloadCsv = () => {
+      console.log('downlaoding csv')
+    }
     return (
-      <Grid>
+      <Grid verticalAlign="top">
         <Grid.Row>
           <Grid.Column width={6}>
             <ColumnLegend />
           </Grid.Column>
-          <Grid.Column width={10}>
+          <Grid.Column width={8}>
             <ColumnSelector headers={combinedColumnHeaderOrder} />
+          </Grid.Column>
+          <Grid.Column width={2} textAlign="center">
+            <div style={{ cursor: 'pointer' }} onClick={downloadCsv}>
+              Download CSV
+              <br />
+              <Icon.Group size="large">
+                <Icon name="file outline" />
+                <Icon
+                  corner="bottom right"
+                  name="arrow circle down"
+                  style={{ transform: 'rotate(90deg)' }}
+                />
+              </Icon.Group>
+            </div>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
