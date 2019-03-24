@@ -16,6 +16,22 @@ export function calculatePayback(netProfit, capex) {
   return netProfit > 0 ? capex / netProfit : Infinity
 }
 
+export function calcAvgError(table, key) {
+  if (_.isEmpty(table)) {
+    return null
+  }
+  const dataSize = _.size(table)
+  const sum = _.sumBy(table, key)
+  return dataSize === 0 ? Infinity : _.round((sum * 100) / dataSize, 2)
+}
+
+export function calcMaxError(table, key) {
+  if (_.isEmpty(table)) {
+    return null
+  }
+  return _.round(_.maxBy(table, key)[key] * 100, 2)
+}
+
 // Non-mutating array insert
 export const arrayInsert = (arr, item, index) => {
   return [...arr.slice(0, index), item, ...arr.slice(index + 1)]

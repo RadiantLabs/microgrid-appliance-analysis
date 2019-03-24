@@ -23,28 +23,25 @@ const PredictedVsActual = ({ store }) => {
     yAccessor = 'predicted',
   } = viewedGrid
   if (_.isEmpty(predictedVsActualBatteryValues)) {
+    console.log('returning loader')
     return (
       <Loader
-        // active={batteryIsTraining}
+        active={true}
         inline="centered"
-        style={{ position: 'absolute', top: '40%', left: '50%' }}
+        style={{
+          position: 'absolute',
+          top: '60%',
+          left: '50%',
+        }}
       />
     )
   }
-  const dataSize = _.size(predictedVsActualBatteryValues)
   const dataMin = _.minBy(predictedVsActualBatteryValues, 'actual')['actual']
   const dataMax = _.maxBy(predictedVsActualBatteryValues, 'actual')['actual']
-
-  const maxErrorPct = _.maxBy(predictedVsActualBatteryValues, 'error')['error'] * 100
-  const avgErrorPct = (_.sumBy(predictedVsActualBatteryValues, 'error') * 100) / dataSize
-
-  console.log('Actual vs Predicted maxErrorPct: ', maxErrorPct)
-  console.log('Actual vs Predicted avgErrorPct: ', avgErrorPct)
-
   const data = _.sampleSize(predictedVsActualBatteryValues, 2000)
   return (
-    <ResponsiveContainer height={400}>
-      <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+    <ResponsiveContainer height={500}>
+      <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 40 }}>
         <XAxis
           type="number"
           dataKey={xAccessor}

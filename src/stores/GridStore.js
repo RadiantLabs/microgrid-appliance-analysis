@@ -4,7 +4,7 @@ import * as tf from '@tensorflow/tfjs'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
-import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
+import { getIsoTimestamp, removeFileExtension, calcAvgError, calcMaxError } from '../utils/helpers'
 import { calcPredictedVsActual, calcReferenceLine } from '../utils/calcPredictedVsActual'
 import {
   csvOptions,
@@ -18,7 +18,7 @@ import {
   calculateTestSetLoss,
   calculateFinalLoss,
   arraysToTensors,
-  calcPredictedVsActualData,
+  // calcPredictedVsActualData,
   formatTrainingTimeDisplay,
   neuralNet1Hidden,
 } from '../utils/tensorflowHelpers'
@@ -228,14 +228,6 @@ export const GridStore = types
         batteryMaxEpochCount: self.batteryMaxEpochCount,
       })
     },
-
-    setBatteryPlottablePredictionVsActualData() {
-      self.batteryPlottablePredictionVsActualData = calcPredictedVsActualData(
-        self.batteryTrainingData,
-        self.batteryModel
-      )
-    },
-
     saveGridSnapshot: flow(function* saveGridSnapshot() {
       function handleSave(artifacts) {
         localforage.setItem('microgridAppliances.batteryModel', artifacts).then(() => {
@@ -302,7 +294,13 @@ export const GridStore = types
       return calcPredictedVsActual(self.fileData)
     },
     get predictedVsActualReferenceLine() {
-      return calcReferenceLine(self.batteryMinEnergyContents, self.batteryMaxEnergyContent)
+      return calcReferenceLine(self.batteryMinEnergyContent, self.batteryMaxEnergyContent)
+    },
+    get batteryAvgErrorPct() {
+      return calcAvgError(self.predictedVsActualBatteryValues, 'error')
+    },
+    get batteryMaxErrorPct() {
+      return calcMaxError(self.predictedVsActualBatteryValues, 'error')
     },
     get isActiveGrid() {
       const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')
