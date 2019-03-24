@@ -223,6 +223,9 @@ export const MainStore = types
     get enabledApplianceLabels() {
       const labels = _.map(self.enabledAppliances, appliance => appliance.label)
       const labelCount = _.size(labels)
+      if (labelCount === 0) {
+        return 'No Appliances Selected'
+      }
       if (labelCount > 2) {
         return `${labelCount} Appliances Selected`
       }
