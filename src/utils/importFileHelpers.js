@@ -117,7 +117,6 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
     // If deficit (negative), `Rectifier Power Input` kicks in
     const originalElectricalProductionLoadDiff =
       totalElectricalProduction - row['Total Electrical Load Served']
-
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
     return {

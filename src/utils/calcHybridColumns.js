@@ -10,8 +10,6 @@ export function calcHybridColumns(grid, summedAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return []
   }
-
-  const t0 = performance.now()
   const { batteryMinEnergyContent, batteryMaxEnergyContent } = grid
 
   // Reducer function. This is needed so that we can have access to values in
@@ -22,10 +20,6 @@ export function calcHybridColumns(grid, summedAppliances) {
 
     // Get the previous row from the calculated results (the reason for the reduce function)
     const prevResult = rowIndex === 0 ? {} : result[rowIndex - 1]
-    // debugger
-    // if (_.isEmpty(applianceRow)) {
-    //   debugger
-    // }
 
     // Calculated (summed) loads from new enabled appliances
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
@@ -48,11 +42,11 @@ export function calcHybridColumns(grid, summedAppliances) {
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
     const batteryEnergyContent = predictBatteryEnergyContent(
+      rowIndex,
       prevBatteryEnergyContent,
       electricalProductionLoadDiff,
       batteryMinEnergyContent,
-      batteryMaxEnergyContent,
-      false
+      batteryMaxEnergyContent
     )
 
     // == Calculate Unmet Load =================================================
@@ -94,8 +88,5 @@ export function calcHybridColumns(grid, summedAppliances) {
   }
 
   // Iterate over homer data, pushing each new row into an array
-  const hybridColumns = _.reduce(grid.fileData, columnReducer, [])
-  const t1 = performance.now()
-  console.log('calcHybridColumns took ' + _.round(t1 - t0) + ' milliseconds.')
-  return hybridColumns
+  return _.reduce(grid.fileData, columnReducer, [])
 }
