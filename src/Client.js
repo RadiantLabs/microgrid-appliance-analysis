@@ -5,7 +5,6 @@ import { withClientState } from 'apollo-link-state'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
-// import Papa from 'papaparse'
 
 const todoDefaults = {
   currentTodos: [],

@@ -2,12 +2,13 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { AutoSizer, MultiGrid } from 'react-virtualized'
-import { Grid, Icon } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { setHeaderStyles } from '../../../styles/tableStyles'
 import { formatDateForTable } from '../../../utils/helpers'
 import ColumnSelector from '../../../components/Elements/ColumnSelector'
 import { ColumnLegend } from '../../../components/Elements/ColumnSelector/ColumnLegend'
+import { FileSaver } from '../../../components/Elements/FileSaver'
 import {
   columnHeaderByTableType,
   combinedColumnHeaderUnits,
@@ -76,9 +77,6 @@ class DataTable extends React.Component {
     }
     const rowCount = _.size(combinedTable)
     const columnCount = _.size(filteredCombinedTableHeaders)
-    const downloadCsv = () => {
-      console.log('downlaoding csv')
-    }
     return (
       <Grid verticalAlign="top">
         <Grid.Row>
@@ -89,18 +87,7 @@ class DataTable extends React.Component {
             <ColumnSelector headers={combinedColumnHeaderOrder} />
           </Grid.Column>
           <Grid.Column width={2} textAlign="center">
-            <div style={{ cursor: 'pointer' }} onClick={downloadCsv}>
-              Download CSV
-              <br />
-              <Icon.Group size="large">
-                <Icon name="file outline" />
-                <Icon
-                  corner="bottom right"
-                  name="arrow circle down"
-                  style={{ transform: 'rotate(90deg)' }}
-                />
-              </Icon.Group>
-            </div>
+            <FileSaver />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

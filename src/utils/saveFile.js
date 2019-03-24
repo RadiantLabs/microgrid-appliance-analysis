@@ -1,0 +1,8 @@
+import { saveAs } from 'file-saver'
+import Papa from 'papaparse'
+
+export function saveFile(tableData) {
+  const csv = Papa.unparse(tableData)
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  saveAs(blob, 'grid_with_appliances.csv')
+}
