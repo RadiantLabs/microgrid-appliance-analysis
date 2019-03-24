@@ -3,7 +3,7 @@
   - [x] Switch column header file to use arrays of tuples so we only need 1 array to specify it
   - [x] Calculate min battery energy content based on when HOMER determines an unmet load, or if nothing is found, then use global number or min found
   - [x] When no appliances are chosen, newApplianceLoad should equal zero and the CSV should roughly match the original HOMER file
-  - [ ] Allow downloading data table so it can be manipulated and checked in Excel
+  - [x] Allow downloading data table so it can be manipulated and checked in Excel
   - [ ] Figure out why the first row of the predicted battery energy content is so different from the actual value
   - [ ] Missing kw_factor, even for 1 appliance
   - [ ] Fix battery prediction chart, remove Tensorflow views

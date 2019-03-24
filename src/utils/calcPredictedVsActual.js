@@ -1,10 +1,10 @@
 import _ from 'lodash'
 
-export function calcPredictedVsActual(hybridColumns) {
-  if (_.isEmpty(hybridColumns)) {
+export function calcPredictedVsActual(fileData) {
+  if (_.isEmpty(fileData)) {
     return []
   }
-  return _.map(hybridColumns, row => {
+  return _.map(fileData, row => {
     const prediction = row['originalModeledBatteryEnergyContent']
     const actual = row['originalBatteryEnergyContent']
     return {

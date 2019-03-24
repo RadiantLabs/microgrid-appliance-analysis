@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import { Grid, Button, Header } from 'semantic-ui-react'
 import LossChart from '../../../components/Charts/LossChart'
-import ActualVsPredicted from '../../../components/Charts/ActualVsPredicted'
+import PredictedVsActual from '../../../components/Charts/PredictedVsActual'
 import { FinalLossTable, EpochProgressTable } from '../../../components/Elements/MLResultsTables'
 import { greyColors } from '../../../utils/constants'
 
@@ -63,7 +63,7 @@ class BatteryModel extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <h3>Predicted vs. Actual</h3>
-              <ActualVsPredicted />
+              <PredictedVsActual />
             </Grid.Column>
           </Grid.Row>
         </Grid>

@@ -299,7 +299,7 @@ export const GridStore = types
       return arraysToTensors(self.batteryTrainingData)
     },
     get predictedVsActualBatteryValues() {
-      return calcPredictedVsActual(self.hybridColumns)
+      return calcPredictedVsActual(self.fileData)
     },
     get predictedVsActualReferenceLine() {
       return calcReferenceLine(self.batteryMinEnergyContents, self.batteryMaxEnergyContent)

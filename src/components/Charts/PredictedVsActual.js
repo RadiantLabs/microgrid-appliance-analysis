@@ -14,7 +14,7 @@ import {
   Dot,
 } from 'recharts'
 
-const ActualVsPredicted = ({ store }) => {
+const PredictedVsActual = ({ store }) => {
   const { viewedGrid } = store
   const {
     predictedVsActualBatteryValues,
@@ -22,7 +22,6 @@ const ActualVsPredicted = ({ store }) => {
     xAccessor = 'actual',
     yAccessor = 'predicted',
   } = viewedGrid
-
   if (_.isEmpty(predictedVsActualBatteryValues)) {
     return (
       <Loader
@@ -79,4 +78,4 @@ const ActualVsPredicted = ({ store }) => {
   )
 }
 
-export default inject('store')(observer(ActualVsPredicted))
+export default inject('store')(observer(PredictedVsActual))
