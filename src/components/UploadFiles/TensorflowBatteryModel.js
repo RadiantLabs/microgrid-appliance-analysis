@@ -9,7 +9,7 @@ import { greyColors } from '../../../utils/constants'
 
 const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
-class BatteryModel extends React.Component {
+class TensorflowBatteryModel extends React.Component {
   retrainModelClick = event => {
     event.preventDefault()
     console.log('TODO')
@@ -72,4 +72,4 @@ class BatteryModel extends React.Component {
   }
 }
 
-export default inject('store')(observer(BatteryModel))
+export default inject('store')(observer(TensorflowBatteryModel))

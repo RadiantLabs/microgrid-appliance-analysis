@@ -5,7 +5,7 @@ import { Grid, Header, Segment, Button, Icon, Loader, Message } from 'semantic-u
 import FileButton from '../../components/Elements/FileButton'
 import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
-import BatteryModel from './BatteryModel'
+import TensorflowBatteryModel from './TensorflowBatteryModel'
 
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
@@ -103,7 +103,7 @@ class HomerFile extends React.Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column>
-                  <BatteryModel grid={viewedGrid} />
+                  <TensorflowBatteryModel grid={viewedGrid} />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
