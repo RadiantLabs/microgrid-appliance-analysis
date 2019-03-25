@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { autorun, runInAction } from 'mobx'
-import { types, flow, onSnapshot, getSnapshot, applySnapshot, destroy } from 'mobx-state-tree'
+import { types, flow, onSnapshot, getSnapshot, destroy } from 'mobx-state-tree'
+import { keepAlive } from 'mobx-utils'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import localforage from 'localforage'
@@ -31,8 +32,9 @@ import {
 export const MainStore = types
   .model({
     // Homer Data
-    activeGrid: types.maybeNull(GridStore),
-    activeGridIsLoading: types.boolean,
+    // List of all available grids. The app doesn't use this directly - it uses
+    // a computted view of the `activeGrid` and `inactiveGrids`, identified by
+    // isActive on the grid model
     availableGrids: types.optional(types.array(GridStore), []),
 
     // For uploading and viewing different HOMER files
@@ -53,7 +55,8 @@ export const MainStore = types
   })
   .actions(self => ({
     afterCreate() {
-      self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
+      // self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
+      self.loadAvailableGrids()
       self.loadAppliances()
     },
 
@@ -103,17 +106,10 @@ export const MainStore = types
     }),
 
     setActiveGridFile(fileId) {
-      const selectedGridIndex = _.findIndex(self.availableGrids, grid => {
-        return grid.fileInfo.id === fileId
-      })
-      if (selectedGridIndex === -1) {
-        throw new Error(`Could not find grid id in available grids. Looking for ${fileId}`) // TODO: Log this error
-      }
       runInAction(() => {
-        const activeGridSnapshot = getSnapshot(self.activeGrid)
-        const selectedGridSnapshot = getSnapshot(self.availableGrids[selectedGridIndex])
-        applySnapshot(self.availableGrids[selectedGridIndex], activeGridSnapshot)
-        applySnapshot(self.activeGrid, selectedGridSnapshot)
+        self.availableGrids.forEach(grid => {
+          grid.isActive = grid.fileInfo.id === fileId
+        })
       })
     },
 
@@ -169,6 +165,12 @@ export const MainStore = types
     },
   }))
   .views(self => ({
+    get activeGrid() {
+      return _.find(self.availableGrids, grid => grid.isActive)
+    },
+    get inActiveGrids() {
+      return _.filter(self.availableGrids, grid => !grid.isActive)
+    },
     get summedApplianceColumns() {
       return sumApplianceColumns(self.enabledAppliances)
     },
@@ -245,8 +247,6 @@ const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO: Check localforage
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
 const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
-const availableGridFileInfos = _.filter(allGridFileInfos, info => info.id !== activeGridFileInfo.id)
-
 const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
 const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
 
@@ -256,16 +256,10 @@ const initialAncillaryEquipmentState = {
 }
 
 let initialMainState = {
-  activeGrid: GridStore.create({
-    ...initialGridState,
-    ...{ ...activeGridFileInfo.attributes },
-    ...{ modelInputValues: { ...activeGridFileInfo.attributes } },
-    ...{ fileInfo: _.omit(activeGridFileInfo, ['attributes']) },
-  }),
-  activeGridIsLoading: true,
-  availableGrids: _.map(availableGridFileInfos, gridInfo => {
+  availableGrids: _.map(allGridFileInfos, gridInfo => {
     return GridStore.create({
       ...initialGridState,
+      ...{ isActive: gridInfo.id === initGridFileId },
       ...{ ...gridInfo.attributes },
       ...{ modelInputValues: { ...activeGridFileInfo.attributes } },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
@@ -312,11 +306,18 @@ if (localStorage.getItem('microgridAppliances_excludedTableColumns')) {
   initialMainState = { ...initialMainState, ...{ excludedTableColumns } }
 }
 
-/**
- * Instantiate Primary Store
- */
+// -----------------------------------------------------------------------------
+// Instantiate Primary Store
+// -----------------------------------------------------------------------------
 let mainStore = MainStore.create(initialMainState)
 window.mainStore = mainStore // inspect the store in console for debugging
+
+// -----------------------------------------------------------------------------
+// keepAlivve
+// -----------------------------------------------------------------------------
+// Keep computed views alive even when they aren't being observed so they still
+// stay up-to-date but not disposed of when they aren't observed anymore
+keepAlive(mainStore, 'activeGrid')
 
 /**
  * Watch for snapshot changes

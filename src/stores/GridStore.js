@@ -29,6 +29,7 @@ import {
 // -----------------------------------------------------------------------------
 export const GridStore = types
   .model({
+    isActive: types.boolean,
     fileInfo: types.frozen(),
     fileData: types.frozen(),
     label: types.string,
@@ -338,6 +339,7 @@ const initialBatteryState = {
 }
 
 export const initialGridState = {
+  isActive: false,
   fileInfo: {},
   fileData: [],
   label: '',

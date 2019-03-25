@@ -57,24 +57,6 @@ class HomerFiles extends React.Component {
               </Menu.Item>
             </Menu>
             <Menu vertical fluid>
-              <Menu.Item
-                key={activeGrid.fileInfo.id}
-                name={activeGrid.label}
-                style={{ minHeight: '60px' }}
-                active={viewedGridId === activeGrid.fileInfo.id}
-                onClick={this.handleFileNavClick.bind(null, activeGrid.fileInfo.id)}>
-                <Header sub>{activeGrid.label}</Header>
-                <HelperPopup
-                  content={<GridInfoPopupContent file={activeGrid} />}
-                  position="right center"
-                  wide={true}
-                />
-                <span>{activeGrid.description}</span>
-                <Label basic attached="top right" size="mini" style={labelStyle} color="green">
-                  Active
-                  {activeGrid.fileInfo.isSample && ', Sample'}
-                </Label>
-              </Menu.Item>
               {_.map(availableGrids, (file, fileIndex) => {
                 return (
                   <Menu.Item

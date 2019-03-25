@@ -106,13 +106,7 @@ class FileChoosers extends Component {
   }
 
   render() {
-    const {
-      activeGrid,
-      availableGrids,
-      activeGridIsLoading,
-      // appliancesAreLoading,
-      ancillaryEquipment,
-    } = this.props.store
+    const { activeGrid, availableGrids, activeGridIsLoading, ancillaryEquipment } = this.props.store
     const { enabledEquipmentList } = ancillaryEquipment
     return (
       <Grid columns="equal" padded>
