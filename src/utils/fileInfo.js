@@ -13,7 +13,7 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Baseline',
       description: 'Baseline: Fill in HOMER file description.',
-      wholesaleElectricityCost: 0,
+      wholesaleElectricityCost: 0.001,
       retailElectricityPrice: 0.45,
       unmetLoadCostPerKwh: 0.35,
       // These are auto-detected

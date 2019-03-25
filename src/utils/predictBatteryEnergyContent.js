@@ -52,6 +52,7 @@ export function predictBatteryEnergyContent(
   if (rowIndex === 0) {
     return prevBatteryEnergyContent
   }
+
   const unclampedBatteryEnergyContent =
     prevBatteryEnergyContent * (1 - roundTripLosses) + electricalProductionLoadDiff
 

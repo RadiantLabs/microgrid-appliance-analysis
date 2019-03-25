@@ -5,10 +5,12 @@
   - [x] When no appliances are chosen, newApplianceLoad should equal zero and the CSV should roughly match the original HOMER file
   - [x] Allow downloading data table so it can be manipulated and checked in Excel
   - [x] Figure out why the first row of the predicted battery energy content is so different from the actual value
+  - [x] Fix battery prediction chart
   - [ ] Missing kw_factor, even for 1 appliance
-  - [ ] Fix battery prediction chart, remove Tensorflow views
+  - [ ] Make sure activeGrid updates InputField's
+    - It may have something to do with snapshotting the model when switching activeGrid.
+    - can I do a forceUpdate?
 
-- [ ] Make sure activeGrid updates InputField's
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
 
@@ -18,7 +20,7 @@
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
-
+- [ ] Remove Tensorflow views
 
 Next steps:
 

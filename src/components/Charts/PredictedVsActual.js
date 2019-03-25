@@ -23,7 +23,6 @@ const PredictedVsActual = ({ store }) => {
     yAccessor = 'predicted',
   } = viewedGrid
   if (_.isEmpty(predictedVsActualBatteryValues)) {
-    console.log('returning loader')
     return (
       <Loader
         active={true}
