@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export function calculateApplianceSummaryStats(applianceColumns) {
+export function calcApplianceSummaryStats(applianceColumns) {
   if (_.isEmpty(applianceColumns)) {
     return {}
   }

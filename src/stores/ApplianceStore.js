@@ -10,7 +10,7 @@ import {
   csvOptions,
 } from '../utils/importFileHelpers'
 import { calculateApplianceColumns } from '../utils/calculateApplianceColumns'
-import { calculateApplianceSummaryStats } from '../utils/calculateApplianceSummaryStats'
+import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
 
 //
 // -----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ export const ApplianceStore = types
     },
 
     get applianceSummaryStats() {
-      return calculateApplianceSummaryStats(self.calculatedApplianceColumns)
+      return calcApplianceSummaryStats(self.calculatedApplianceColumns)
     },
 
     get prettyFileSize() {
