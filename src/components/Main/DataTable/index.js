@@ -17,7 +17,7 @@ import {
 
 class DataTable extends React.Component {
   _cellRenderer = (filteredCombinedTableHeaders, { columnIndex, key, rowIndex, style }) => {
-    const { combinedTable } = this.props.store
+    const { combinedTable, enabledAppliances, multipleAppliancesEnabled } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return null
     }
@@ -48,6 +48,15 @@ class DataTable extends React.Component {
       return (
         <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
           {formatDateForTable(combinedTable[rowIndex - headerRowCount][columnHeader])}
+        </div>
+      )
+    }
+    if (columnHeader === 'kw_factor') {
+      return (
+        <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
+          {multipleAppliancesEnabled
+            ? 'Multiple'
+            : enabledAppliances[0].fileData[rowIndex - headerRowCount]['kw_factor']}
         </div>
       )
     }

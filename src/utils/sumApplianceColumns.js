@@ -2,7 +2,12 @@ import _ from 'lodash'
 
 // Someone can deselect all appliances. When they do, the grid should behave as
 // the original HOMER file modeled it. So pass in an empty array of objects so
-// subsequent checks and calculations still work
+// subsequent checks and calculations still work.
+
+// Note: kw_factor only makes sense for a single appliance type, so we are not
+// summing it here. kw_factor is the number of minutes an appliance was fully
+// utilized, summed over an hour. If it was running at 50% RPM, the factor for
+// 1 minute is less than if it was at 100% RPM
 export function sumApplianceColumns(enabledAppliances) {
   if (_.isEmpty(enabledAppliances)) {
     return emptyApplianceRows

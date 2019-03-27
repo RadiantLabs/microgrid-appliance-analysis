@@ -11,7 +11,7 @@
     - [x] Can I do a forceUpdate? (no)
     - [x] Computed values are disposed when not observed. You can keep them alive with autorun or keepAlive. Maybe I should just set the activeGridId. Then an autorun sets the activeGrid. Is that a copy or a reference?
   - [ ] Missing kw_factor, even for 1 appliance
-    
+
 - [ ] Highlight active Grid in grid file list
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
@@ -23,6 +23,7 @@
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
 - [ ] Remove Tensorflow views
+- [ ] Create FAQ in app and/or repo
 
 Next steps:
 

@@ -59,6 +59,12 @@ Rounding to 3 decimals filters out loads less than 1 watthour
 Rounding to 0 decimals filters out loads less than 1 kWh
 Amanda decided to filter out anything less than 100 watthours (1 decimal)
 
+### Definitions:
+##### kw_factor
+is the number of minutes an appliance was fully utilized, summed over an hour. If it was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM.
+Link to other repo.
+
+Explain why we don't display kw_factor for multiple appliances 
 
 ### Battery Model Prediction
 How does this simple equation predict the kinetic batttery model so well?
