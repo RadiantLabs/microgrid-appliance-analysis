@@ -7,10 +7,11 @@
   - [x] Figure out why the first row of the predicted battery energy content is so different from the actual value
   - [x] Fix battery prediction chart
   - [ ] Missing kw_factor, even for 1 appliance
-  - [ ] Make sure activeGrid updates InputField's
+  - [x] Make sure activeGrid updates InputField's
     - [x] It may have something to do with snapshotting the model when switching activeGrid.
-    - [ ] Can I do a forceUpdate?
-    - [ ] Computed values are disposed when not observed. You can keep them alive with autorun or keepAlive. Maybe I should just set the activeGridId. Then an autorun sets the activeGrid. Is that a copy or a reference?
+    - [x] Can I do a forceUpdate? (no)
+    - [x] Computed values are disposed when not observed. You can keep them alive with autorun or keepAlive. Maybe I should just set the activeGridId. Then an autorun sets the activeGrid. Is that a copy or a reference?
+    
 
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts

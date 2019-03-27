@@ -246,7 +246,6 @@ const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 
 const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO: Check localforage
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
-const activeGridFileInfo = _.find(allGridFileInfos, { id: initGridFileId })
 const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
 const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
 
@@ -261,7 +260,7 @@ let initialMainState = {
       ...initialGridState,
       ...{ isActive: gridInfo.id === initGridFileId },
       ...{ ...gridInfo.attributes },
-      ...{ modelInputValues: { ...activeGridFileInfo.attributes } },
+      ...{ modelInputValues: { ...gridInfo.attributes } },
       ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
     })
   }),

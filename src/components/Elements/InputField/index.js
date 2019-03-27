@@ -69,17 +69,14 @@ class InputField extends React.Component {
     }
     const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
-    const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
 
-    if (fieldKey === 'wholesaleElectricityCost') {
-      console.log('wholesaleElectricityCost: ', value)
-      console.log('modelInstance: ', modelInstance)
-    }
+    // We don't want to pass the value attribute `null`. So pass it an empty string.
+    // Except in JS-wisdom, zero is falsy, so ensure that doesn't get set to empty string.
+    const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
     return (
       <div className="InputFieldWrapper">
         <Input
-          // value={value}
-          value={modelInstance.modelInputValues[fieldKey]}
+          value={value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           error={Boolean(modelInputErrors[fieldKey])}
