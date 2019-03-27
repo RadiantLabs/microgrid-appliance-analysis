@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 export function calcApplianceColumns(appliance) {
-  if (_.isEmpty(appliance.fileData) || !appliance.enabled) {
+  if (_.isEmpty(appliance.fileData)) {
     return []
   }
   const {

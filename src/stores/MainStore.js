@@ -317,6 +317,10 @@ window.mainStore = mainStore // inspect the store in console for debugging
 // Keep computed views alive even when they aren't being observed so they still
 // stay up-to-date but not disposed of when they aren't observed anymore
 keepAlive(mainStore, 'activeGrid')
+_.forEach(mainStore.appliances, appliance => {
+  keepAlive(appliance, 'calculatedApplianceColumns')
+  keepAlive(appliance, 'applianceSummaryStats')
+})
 
 /**
  * Watch for snapshot changes

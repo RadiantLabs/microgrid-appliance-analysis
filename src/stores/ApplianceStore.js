@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { types, flow } from 'mobx-state-tree'
-// import localforage from 'localforage'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import {
