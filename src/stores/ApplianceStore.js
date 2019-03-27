@@ -9,7 +9,7 @@ import {
   analyzeApplianceFile,
   csvOptions,
 } from '../utils/importFileHelpers'
-import { calculateApplianceColumns } from '../utils/calculateApplianceColumns'
+import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
 
 //
@@ -160,7 +160,7 @@ export const ApplianceStore = types
     },
 
     get calculatedApplianceColumns() {
-      return calculateApplianceColumns(self)
+      return calcApplianceColumns(self)
     },
 
     get applianceSummaryStats() {

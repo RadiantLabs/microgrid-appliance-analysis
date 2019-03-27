@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export function calculateApplianceColumns(appliance) {
+export function calcApplianceColumns(appliance) {
   if (_.isEmpty(appliance.fileData) || !appliance.enabled) {
     return []
   }
