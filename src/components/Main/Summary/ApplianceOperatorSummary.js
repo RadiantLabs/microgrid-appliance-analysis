@@ -53,16 +53,8 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
 
 export const ApplianceOperatorTechnicalSummary = inject('store')(
   observer(({ store }) => {
-    const { enabledAppliances, multipleAppliancesEnabled, summaryStats } = store
-
-    // This is for all enabled appliances, which also applies if only 1 is selected
-    const newApplianceYearlyKwh = _.get(summaryStats, 'newApplianceYearlyKwh', '-')
-
-    // These values only apply to a single enabled appliance
-    const { applianceSummaryStats, productionUnitType } = enabledAppliances[0]
-    const yearlyProductionUnits = _.round(
-      _.get(applianceSummaryStats, 'yearlyProductionUnits', '-')
-    )
+    const { summaryStats } = store
+    const { yearlyProductionUnits, productionUnitType, newApplianceYearlyKwh } = summaryStats
     return (
       <div>
         <Header as="h4">Technical Outputs</Header>
@@ -70,13 +62,12 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Appliance Electricity Consumption</Table.Cell>
-              <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
+              <Table.Cell>{newApplianceYearlyKwh || 0} kWh</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Units of Produced</Table.Cell>
+              <Table.Cell>Units Produced</Table.Cell>
               <Table.Cell>
-                {multipleAppliancesEnabled ? 'Multiple Appliance Enabled' : yearlyProductionUnits}{' '}
-                {productionUnitType || '-'}
+                {yearlyProductionUnits} {productionUnitType}
               </Table.Cell>
             </Table.Row>
           </Table.Body>

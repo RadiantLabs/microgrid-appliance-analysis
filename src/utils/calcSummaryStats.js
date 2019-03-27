@@ -84,6 +84,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceGridRevenue
   const netGridOwnerRevenue = newApplianceNetGridRevenue - newApplianceElectricityCost
 
+  const yearlyProductionUnits = calcYearlyProductionUnits(enabledAppliances)
+  const productionUnitType = calcProductionUnitType(enabledAppliances)
+
   // ROI and Payback
   const applianceOwnerRoi = calculateRoi(
     netApplianceOwnerRevenue,
@@ -120,8 +123,11 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
     newApplianceNetGridRevenue: _.round(newApplianceNetGridRevenue),
 
-    // yearlyProductionUnits: yearlyProductionUnits,
-    // yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
+    // yearlyProductionUnits and productionUnitType only makes sense for a single
+    // appliance enabled
+    yearlyProductionUnits: _.round(yearlyProductionUnits),
+    productionUnitType,
+
     yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
     applianceCapexAssignedToGrid: _.round(applianceCapexAssignedToGrid),
@@ -132,4 +138,24 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     applianceOwnerPayback: _.round(applianceOwnerPayback, 2),
     gridOwnerPayback: _.round(gridOwnerPayback, 2),
   }
+}
+
+function calcYearlyProductionUnits(enabledAppliances) {
+  if (_.isEmpty(enabledAppliances)) {
+    return 0
+  }
+  if (_.size(enabledAppliances) > 1) {
+    return 'Multiple'
+  }
+  return enabledAppliances[0].applianceSummaryStats['yearlyProductionUnits']
+}
+
+function calcProductionUnitType(enabledAppliances) {
+  if (_.isEmpty(enabledAppliances)) {
+    return '-'
+  }
+  if (_.size(enabledAppliances) > 1) {
+    return 'Multiple'
+  }
+  return enabledAppliances[0]['productionUnitType']
 }
