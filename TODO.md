@@ -10,7 +10,7 @@
     - [x] It may have something to do with snapshotting the model when switching activeGrid.
     - [x] Can I do a forceUpdate? (no)
     - [x] Computed values are disposed when not observed. You can keep them alive with autorun or keepAlive. Maybe I should just set the activeGridId. Then an autorun sets the activeGrid. Is that a copy or a reference?
-  - [ ] Missing kw_factor, even for 1 appliance
+  - [x] Missing kw_factor, even for 1 appliance
 
 - [ ] Highlight active Grid in grid file list
 - [ ] Fix Unmet load chart to exclude the additional piece
@@ -18,7 +18,6 @@
 
 - [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Columns to check for in HOMER import
-  - Original Unmet Load (renamed)
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)

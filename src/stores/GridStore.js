@@ -303,10 +303,6 @@ export const GridStore = types
     get batteryMaxErrorPct() {
       return calcMaxError(self.predictedVsActualBatteryValues, 'error')
     },
-    get isActiveGrid() {
-      const activeGridId = _.get(getParent(self).activeGrid, 'fileInfo.id')
-      return activeGridId ? self.fileInfo.id === activeGridId : false
-    },
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
     },

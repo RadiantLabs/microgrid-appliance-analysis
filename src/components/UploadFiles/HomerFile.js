@@ -67,15 +67,20 @@ class HomerFile extends React.Component {
       return <h2>Empty Viewed Grid</h2> // log this
     }
     const { viewedGridIsStaged } = this.props.store
-    const { label, description, showAnalyzedResults, isActiveGrid } = viewedGrid
+    const { label, description, showAnalyzedResults, isActive } = viewedGrid
     return (
       <div>
         {viewedGridIsStaged && <StagedFileHeader viewedGrid={viewedGrid} />}
         {!viewedGridIsStaged && (
-          <Header as="h2" attached="top">
+          <Header as="h2" attached="top" className={isActive ? 'activeFileBorderNoBottom' : null}>
             {label}
-            {!isActiveGrid && (
-              <Button floated="right" basic size="tiny" onClick={this.handleActivateGrid}>
+            {!isActive && (
+              <Button
+                floated="right"
+                basic
+                size="tiny"
+                onClick={this.handleActivateGrid}
+                color="blue">
                 Make Grid Active
               </Button>
             )}
@@ -91,7 +96,7 @@ class HomerFile extends React.Component {
           </Message>
         )}
         {showAnalyzedResults && (
-          <Segment attached>
+          <Segment attached className={isActive ? 'activeFileBorderNoTop' : null}>
             <Grid>
               <Grid.Row>
                 <Grid.Column width={8}>

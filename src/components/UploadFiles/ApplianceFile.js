@@ -85,11 +85,11 @@ class ApplianceFile extends React.Component {
     if (_.isEmpty(viewedAppliance)) {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
-    const { label, description } = viewedAppliance
+    const { label, description, enabled } = viewedAppliance
     return (
       <div>
         {viewedApplianceIsStaged && <StagedFileHeader />}
-        <Segment attached="top">
+        <Segment attached="top" className={enabled ? 'activeFileBorderNoBottom' : null}>
           {!viewedApplianceIsStaged && (
             <Grid>
               <Grid.Column floated="left" width={12}>
@@ -112,7 +112,7 @@ class ApplianceFile extends React.Component {
             </p>
           </Message>
         )}
-        <Segment attached>
+        <Segment attached className={enabled ? 'activeFileBorderNoTop' : null}>
           <ApplianceFormFields />
         </Segment>
         <ApplianceDataTable />

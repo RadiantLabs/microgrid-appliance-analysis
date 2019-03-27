@@ -103,6 +103,7 @@ class ApplianceDataTable extends React.Component {
                   rowHeight={this._rowHeight}
                   estimatedRowSize={26}
                   width={width}
+                  style={{ border: '1px solid #d4d4d5' }}
                 />
               )}
             </AutoSizer>

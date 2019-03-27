@@ -52,23 +52,31 @@ class HomerFiles extends React.Component {
             </Menu>
             <Menu vertical fluid>
               {_.map(availableGrids, (file, fileIndex) => {
+                const { isActive, fileInfo, label } = file
                 return (
                   <Menu.Item
-                    key={file.fileInfo.id}
-                    name={file.label}
+                    key={fileInfo.id}
+                    name={label}
                     style={{ minHeight: '60px' }}
-                    active={viewedGridId === file.fileInfo.id}
-                    onClick={this.handleFileNavClick.bind(null, file.fileInfo.id)}>
-                    <Header sub>{file.label}</Header>
+                    active={viewedGridId === fileInfo.id}
+                    onClick={this.handleFileNavClick.bind(null, fileInfo.id)}>
+                    <Header sub>{label}</Header>
                     <HelperPopup
                       content={<GridInfoPopupContent file={file} />}
                       position="right center"
                       wide={true}
                     />
                     <span>{file.description}</span>
-                    {file.fileInfo.isSample && (
-                      <Label basic attached="top right" size="mini" style={labelStyle}>
-                        Sample
+                    {(isActive || fileInfo.isSample) && (
+                      <Label
+                        basic
+                        attached="top right"
+                        size="mini"
+                        style={labelStyle}
+                        color={isActive ? 'blue' : null}>
+                        {isActive && 'Active'}
+                        {fileInfo.isSample && isActive && ', '}
+                        {fileInfo.isSample && 'Sample'}
                       </Label>
                     )}
                   </Menu.Item>
