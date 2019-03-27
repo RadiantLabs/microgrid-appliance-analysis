@@ -7,8 +7,9 @@ import { HelperPopup } from '../../components/Elements/HelperPopup'
 import borderlessTableStyles from '../../styles/borderlessTableStyles.module.css'
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
-const HomerFormFields = ({ grid }) => {
-  const { fileErrors, fileWarnings } = grid
+const HomerFormFields = ({ store }) => {
+  const { viewedGrid } = store
+  const { fileErrors, fileWarnings } = viewedGrid
   return (
     <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
@@ -18,7 +19,7 @@ const HomerFormFields = ({ grid }) => {
             <HelperPopup content={fieldDefinitions['label'].description} position="right center" />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="label" modelInstance={grid} />
+            <InputField fieldKey="label" modelInstance={viewedGrid} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -30,14 +31,26 @@ const HomerFormFields = ({ grid }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="description" modelInstance={grid} />
+            <InputField fieldKey="description" modelInstance={viewedGrid} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['wholesaleElectricityCost'].title}{' '}
+            <HelperPopup
+              content={fieldDefinitions['wholesaleElectricityCost'].wholesaleElectricityCost}
+              position="right center"
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="wholesaleElectricityCost" modelInstance={viewedGrid} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
             Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
           </Table.Cell>
-          <Table.Cell>{grid.powerType}</Table.Cell>
+          <Table.Cell>{viewedGrid.powerType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -49,7 +62,7 @@ const HomerFormFields = ({ grid }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{grid.batteryType}</Table.Cell>
+          <Table.Cell>{viewedGrid.batteryType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -61,7 +74,7 @@ const HomerFormFields = ({ grid }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{grid.pvType}</Table.Cell>
+          <Table.Cell>{viewedGrid.pvType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -73,7 +86,7 @@ const HomerFormFields = ({ grid }) => {
               }
             />
           </Table.Cell>
-          <Table.Cell>{grid.generatorType}</Table.Cell>
+          <Table.Cell>{viewedGrid.generatorType}</Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>File Upload Warnings </Table.Cell>

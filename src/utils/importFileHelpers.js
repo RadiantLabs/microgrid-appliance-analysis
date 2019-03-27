@@ -218,10 +218,10 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
     pvType,
     batteryType,
     generatorType,
-    batteryMaxSoC,
-    batteryMinSoC,
-    batteryMaxEnergyContent,
-    batteryMinEnergyContent,
+    batteryMaxSoC: _.round(batteryMaxSoC, 2),
+    batteryMinSoC: _.round(batteryMinSoC, 2),
+    batteryMaxEnergyContent: _.round(batteryMaxEnergyContent, 4),
+    batteryMinEnergyContent: _.round(batteryMinEnergyContent, 4),
   }
 }
 

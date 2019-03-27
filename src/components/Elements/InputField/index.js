@@ -70,10 +70,16 @@ class InputField extends React.Component {
     const { modelInputValues, modelInputErrors } = modelInstance
     const { units } = fieldDefinitions[fieldKey]
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
+
+    if (fieldKey === 'wholesaleElectricityCost') {
+      console.log('wholesaleElectricityCost: ', value)
+      console.log('modelInstance: ', modelInstance)
+    }
     return (
       <div className="InputFieldWrapper">
         <Input
-          value={value}
+          // value={value}
+          value={modelInstance.modelInputValues[fieldKey]}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           error={Boolean(modelInputErrors[fieldKey])}

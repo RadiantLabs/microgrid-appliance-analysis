@@ -27,13 +27,7 @@ class HomerFiles extends React.Component {
   }
 
   render() {
-    const {
-      viewedGridId,
-      activeGrid,
-      availableGrids,
-      viewedGridIsStaged,
-      viewedGrid,
-    } = this.props.store
+    const { viewedGridId, availableGrids, viewedGridIsStaged, viewedGrid } = this.props.store
     const useBlankState = _.isEmpty(viewedGridId)
     return (
       <Grid padded>

@@ -95,7 +95,7 @@ class HomerFile extends React.Component {
             <Grid>
               <Grid.Row>
                 <Grid.Column width={8}>
-                  <HomerFormFields grid={viewedGrid} />
+                  <HomerFormFields />
                 </Grid.Column>
                 <Grid.Column width={8}>
                   <BatteryChargeTable grid={viewedGrid} />

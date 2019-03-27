@@ -21,8 +21,6 @@ const ApplianceFormFields = ({ store }) => {
   } = viewedAppliance
 
   // TODO: At some point we may want to disable these fields for sample files.
-  // Leave it open for at least testing
-  // const { isSample } = fileInfo
   const fieldDisabled = false
   return (
     <Grid>

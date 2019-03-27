@@ -13,7 +13,7 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Baseline',
       description: 'Baseline: Fill in HOMER file description.',
-      wholesaleElectricityCost: 0.001,
+      wholesaleElectricityCost: 0.1,
       retailElectricityPrice: 0.45,
       unmetLoadCostPerKwh: 0.35,
       // These are auto-detected
@@ -32,7 +32,7 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Oversize 20',
       description: 'Oversized: Fill in HOMER file description.',
-      wholesaleElectricityCost: 0.1, // 0 is what we want to keep it at - changing it now for debugging
+      wholesaleElectricityCost: 0.2, // 0 is what we want to keep it at - changing it now for debugging
       retailElectricityPrice: 0.45,
       unmetLoadCostPerKwh: 0.35,
       // battery: 'Generic 1kWh Lead Acid [ASM]',
@@ -50,7 +50,7 @@ export const sampleGridFileInfos = [
     attributes: {
       label: '12-50 Undersize 20',
       description: 'Undersized: Fill in HOMER file description.',
-      wholesaleElectricityCost: 0.2, // 0 is what we want to keep it at - changing it now for debugging
+      wholesaleElectricityCost: 0.3, // 0 is what we want to keep it at - changing it now for debugging
       retailElectricityPrice: 0.45,
       unmetLoadCostPerKwh: 0.35,
       // battery: 'Generic 1kWh Lead Acid [ASM]',
