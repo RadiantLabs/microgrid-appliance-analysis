@@ -13,10 +13,10 @@
   - [x] Missing kw_factor, even for 1 appliance
 
 - [x] Highlight active Grid in grid file list
+- [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
 
-- [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Columns to check for in HOMER import
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
