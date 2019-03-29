@@ -3,7 +3,7 @@ import { autorun, runInAction } from 'mobx'
 import { types, flow, onSnapshot, getSnapshot, destroy } from 'mobx-state-tree'
 import { keepAlive } from 'mobx-utils'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
-import createBrowserHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
 import localforage from 'localforage'
 
 // Import Other Stores:

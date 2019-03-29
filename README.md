@@ -12,7 +12,7 @@ yarn eject    // Unpack create-react-app presets. Once you `eject`, you can’t 
 ## Deploy
 
 ```
-nvm use 10
+nvm use 11
 yarn build
 git push heroku master  // Deploy master branch to production heroku instance (need to be logged in and have authorization)
 ```
