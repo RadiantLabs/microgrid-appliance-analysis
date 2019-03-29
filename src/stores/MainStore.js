@@ -15,7 +15,6 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { combineTables } from '../utils/helpers'
 import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
-// import { predictBatteryEnergyContent } from '../utils/tensorflowHelpers'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
@@ -75,25 +74,6 @@ export const MainStore = types
       for (let grid of self.availableGrids) {
         yield grid.loadFile(grid.fileInfo)
       }
-      // Train battery models if they haven't run yet
-      // for (let grid of self.availableGrids) {
-      //   if (_.isEmpty(grid.batteryModel)) {
-      //     const {
-      //       batteryFeatureCount,
-      //       batteryTensors,
-      //       batteryLearningRate,
-      //       batteryBatchSize,
-      //       batteryMaxEpochCount,
-      //     } = grid
-      //     yield grid.trainBatteryModel({
-      //       batteryFeatureCount,
-      //       batteryTensors,
-      //       batteryLearningRate,
-      //       batteryBatchSize,
-      //       batteryMaxEpochCount,
-      //     })
-      //   }
-      // }
     }),
 
     // All of these availableGrids will be instantiated GridStores with barely any data
