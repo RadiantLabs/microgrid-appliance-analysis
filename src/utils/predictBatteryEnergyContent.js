@@ -1,9 +1,5 @@
 import _ from 'lodash'
 
-// This is for any losses in the battery charge/discharge cycle. This is found by trial and error
-// minimizing losses against the original battery model from HOMER
-const roundTripLosses = 0.01
-
 // This function gives us the battery energy content as if there are no new appliances
 // on the grid. This should match what HOMER provides. By calculing this version,
 // I can minimize the errors
@@ -49,12 +45,16 @@ export function predictOriginalBatteryEnergyContent(
 }
 
 // See explanation in README why I'm predicting the battery model like I am.
+// roundTripLosses is for any losses in the battery charge/discharge cycle.
+// This is found by trial and error minimizing losses against the original battery
+// model from HOMER
 export function predictBatteryEnergyContent({
   rowIndex,
   prevBatteryEnergyContent,
   electricalProductionLoadDiff,
   batteryMinEnergyContent,
   batteryMaxEnergyContent,
+  roundTripLosses = 0.01,
 }) {
   // For first hour's prediction, use energy content from original HOMER file.
   // Since excess production and unmet loads don't depend on previous values,
@@ -75,7 +75,7 @@ export function predictBatteryEnergyContent({
 
   return {
     batteryEnergyContent: clamped,
-    newExcessProduction,
-    newUnmetLoad,
+    newExcessProduction: _.round(newExcessProduction, 4),
+    newUnmetLoad: _.round(newUnmetLoad, 4),
   }
 }
