@@ -41,28 +41,19 @@ export function calcHybridColumns(grid, summedAppliances) {
     const prevBatteryEnergyContent =
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
-    const batteryEnergyContent = predictBatteryEnergyContent(
-      rowIndex,
-      prevBatteryEnergyContent,
-      electricalProductionLoadDiff,
-      batteryMinEnergyContent,
-      batteryMaxEnergyContent
+    const { batteryEnergyContent, newExcessProduction, newUnmetLoad } = predictBatteryEnergyContent(
+      {
+        rowIndex,
+        prevBatteryEnergyContent,
+        electricalProductionLoadDiff,
+        batteryMinEnergyContent,
+        batteryMaxEnergyContent,
+      }
     )
 
     // == Calculate Unmet Load =================================================
     // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
     const originalUnmetLoad = _.round(homerRow['Original Unmet Electrical Load'], 6)
-
-    // The energy content contained in the battery that is available.
-    // This is important for calculating unmet loads
-    const availableBatteryEnergyContent = batteryEnergyContent - batteryMinEnergyContent
-
-    // Will this hour have an unmet load? Remember electricalProductionLoadDiff
-    // is negative if battery is discharging.
-    const willHaveUnmetLoad = electricalProductionLoadDiff + availableBatteryEnergyContent < 0
-    const newUnmetLoad = willHaveUnmetLoad
-      ? Math.abs(electricalProductionLoadDiff + availableBatteryEnergyContent)
-      : 0
     const additionalUnmetLoad = newUnmetLoad - originalUnmetLoad
 
     // =========================================================================
@@ -83,6 +74,8 @@ export function calcHybridColumns(grid, summedAppliances) {
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
       additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
       newUnmetLoad: _.round(newUnmetLoad, 1),
+
+      newExcessProduction: _.round(newExcessProduction, 4),
     })
     return result
   }

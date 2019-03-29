@@ -24,16 +24,24 @@ export function predictOriginalBatteryEnergyContent(
         ? row['originalBatteryEnergyContent']
         : prevResult['originalModeledBatteryEnergyContent']
 
-    const originalModeledBatteryEnergyContent = predictBatteryEnergyContent(
+    const {
+      batteryEnergyContent: originalModeledBatteryEnergyContent,
+      newExcessProduction,
+      newUnmetLoad,
+    } = predictBatteryEnergyContent({
       rowIndex,
       prevBatteryEnergyContent,
-      row['originalElectricalProductionLoadDiff'],
+      electricalProductionLoadDiff: row['originalElectricalProductionLoadDiff'],
       batteryMinEnergyContent,
-      batteryMaxEnergyContent
-    )
+      batteryMaxEnergyContent,
+    })
     result.push({
       ...row,
-      ...{ originalModeledBatteryEnergyContent: _.round(originalModeledBatteryEnergyContent, 4) },
+      ...{
+        originalModeledBatteryEnergyContent: _.round(originalModeledBatteryEnergyContent, 4),
+        originalModeledExcessProduction: _.round(newExcessProduction, 4),
+        originalModeledUnmetLoad: _.round(newUnmetLoad, 1),
+      },
     })
     return result
   }
@@ -41,20 +49,33 @@ export function predictOriginalBatteryEnergyContent(
 }
 
 // See explanation in README why I'm predicting the battery model like I am.
-export function predictBatteryEnergyContent(
+export function predictBatteryEnergyContent({
   rowIndex,
   prevBatteryEnergyContent,
   electricalProductionLoadDiff,
   batteryMinEnergyContent,
-  batteryMaxEnergyContent
-) {
-  // For first hour's prediction, use energy content from original HOMER file
+  batteryMaxEnergyContent,
+}) {
+  // For first hour's prediction, use energy content from original HOMER file.
+  // Since excess production and unmet loads don't depend on previous values,
+  // set them to zero for the first row to make it simpler.
   if (rowIndex === 0) {
-    return prevBatteryEnergyContent
+    return {
+      batteryEnergyContent: prevBatteryEnergyContent,
+      newExcessProduction: 0,
+      newUnmetLoad: 0,
+    }
   }
 
-  const unclampedBatteryEnergyContent =
-    prevBatteryEnergyContent * (1 - roundTripLosses) + electricalProductionLoadDiff
+  const unclamped = prevBatteryEnergyContent * (1 - roundTripLosses) + electricalProductionLoadDiff
+  const clamped = _.clamp(unclamped, batteryMinEnergyContent, batteryMaxEnergyContent)
 
-  return _.clamp(unclampedBatteryEnergyContent, batteryMinEnergyContent, batteryMaxEnergyContent)
+  const newExcessProduction = unclamped - clamped > 0 ? unclamped - clamped : 0
+  const newUnmetLoad = unclamped - clamped < 0 ? Math.abs(unclamped - clamped) : 0
+
+  return {
+    batteryEnergyContent: clamped,
+    newExcessProduction,
+    newUnmetLoad,
+  }
 }
