@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
-  Line,
+  // Line,
   XAxis,
   YAxis,
   Tooltip,

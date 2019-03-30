@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getSnapshot, getParent, isAlive } from 'mobx-state-tree'
+import { types, flow, getSnapshot, getParent } from 'mobx-state-tree'
 import localforage from 'localforage'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'

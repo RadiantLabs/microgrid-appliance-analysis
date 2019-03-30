@@ -1,18 +1,3 @@
-- Overhaul calculations
-  - [x] Make sure calculations are in the right place: if they can be done on HOMER import, make sure they are in calculateNewHomerColumns. If they require new appliance loads, then put them in calcHybridColumns
-  - [x] Switch column header file to use arrays of tuples so we only need 1 array to specify it
-  - [x] Calculate min battery energy content based on when HOMER determines an unmet load, or if nothing is found, then use global number or min found
-  - [x] When no appliances are chosen, newApplianceLoad should equal zero and the CSV should roughly match the original HOMER file
-  - [x] Allow downloading data table so it can be manipulated and checked in Excel
-  - [x] Figure out why the first row of the predicted battery energy content is so different from the actual value
-  - [x] Fix battery prediction chart
-  - [x] Make sure activeGrid updates InputField's
-    - [x] It may have something to do with snapshotting the model when switching activeGrid.
-    - [x] Can I do a forceUpdate? (no)
-    - [x] Computed values are disposed when not observed. You can keep them alive with autorun or keepAlive. Maybe I should just set the activeGridId. Then an autorun sets the activeGrid. Is that a copy or a reference?
-  - [x] Missing kw_factor, even for 1 appliance
-
-- [x] Highlight active Grid in grid file list
 - [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
@@ -21,7 +6,6 @@
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
-- [ ] Remove Tensorflow views
 - [ ] Create FAQ in app and/or repo
 
 Next steps:
