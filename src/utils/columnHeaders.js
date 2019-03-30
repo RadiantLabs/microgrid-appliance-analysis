@@ -15,6 +15,7 @@ export const hybridColumnHeaderUnits = [
   ['originalUnmetLoad', 'kW'],
   ['additionalUnmetLoad', 'kW'],
   ['newUnmetLoad', 'kW'],
+  ['newExcessProduction', 'kW'],
 ]
 
 export const homerHeaderUnits = [
