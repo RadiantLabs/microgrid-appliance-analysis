@@ -1,3 +1,33 @@
+// TODO:
+// Move the autorun in mainStore to afterCreate()
+//  - first disable all ancillary equipment from the list
+//  - then run that appliance through the rules
+//  - Do I even need a dedicated ancillary appliance store?
+//  - maybe, but I'm dealing with a very opaque data structure. Check Heroku's
+// version to see what it is currently. Then consider a map:
+// const equipment = [
+//   {
+//     enabled: true,
+//     recommendation: 'required',
+//     equipmentType: 'powerConverter',
+//     label: 'AC to DC Power Converter',
+//     sizeUnits: 'kW',
+//     description:
+//       'A power converter converts AC power to DC power. An example may be converting AC grid electricity to power a fan driven by a DC motor',
+//   },
+//   {
+//     enabled: false,
+//     recommendation: 'notuseful',
+//     equipmentType: 'inverter',
+//     label: 'DC to AC Inverter',
+//     sizeUnits: 'kW',
+//     description:
+//       'An inverter converts DC power to AC power. An example may be converting DC power from a battery to electrify an AC powered printer.',
+//   },
+// ]
+
+
+
 - [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts

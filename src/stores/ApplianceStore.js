@@ -8,6 +8,7 @@ import {
   analyzeApplianceFile,
   csvOptions,
 } from '../utils/importFileHelpers'
+import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
 
@@ -44,6 +45,7 @@ export const ApplianceStore = types
     productionUnitType: types.maybeNull(types.string),
     productionUnitsPerKwh: types.maybeNull(types.number),
     revenuePerProductionUnits: types.maybeNull(types.number),
+    ancillaryEquipment: AncillaryEquipmentStore,
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,

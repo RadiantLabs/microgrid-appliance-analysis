@@ -106,8 +106,13 @@ class FileChoosers extends Component {
   }
 
   render() {
-    const { activeGrid, availableGrids, activeGridIsLoading, ancillaryEquipment } = this.props.store
-    const { enabledEquipmentList } = ancillaryEquipment
+    const {
+      activeGrid,
+      availableGrids,
+      activeGridIsLoading,
+      ancillaryEquipment,
+      ancillaryEquipmentLabels,
+    } = this.props.store
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
@@ -147,7 +152,7 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Selected Ancillary Equipment
             </Header>
-            {!_.isEmpty(enabledEquipmentList) && enabledEquipmentList.join(', ')}
+            {ancillaryEquipmentLabels}
           </Grid.Column>
         </Grid.Row>
       </Grid>

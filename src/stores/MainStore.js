@@ -18,11 +18,8 @@ import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
-import {
-  sampleGridFileInfos,
-  sampleApplianceFiles,
-  ancillaryEquipmentList,
-} from '../utils/fileInfo'
+import { sampleGridFileInfos, sampleApplianceFiles } from '../utils/fileInfo'
+import { ancillaryEquipmentList } from '../utils/fileInfo'
 
 //
 // -----------------------------------------------------------------------------
@@ -49,7 +46,6 @@ export const MainStore = types
     viewedApplianceId: types.maybeNull(types.string),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
-    ancillaryEquipment: AncillaryEquipmentStore,
     router: RouterModel,
   })
   .actions(self => ({
@@ -202,6 +198,9 @@ export const MainStore = types
     get multipleAppliancesEnabled() {
       return _.size(self.enabledAppliances) > 1
     },
+    get noAppliancesEnabled() {
+      return _.size(self.enabledAppliances) === 0
+    },
     get enabledApplianceLabels() {
       const labels = _.map(self.enabledAppliances, appliance => appliance.label)
       const labelCount = _.size(labels)
@@ -212,6 +211,15 @@ export const MainStore = types
         return `${labelCount} Appliances Selected`
       }
       return labels.join(', ')
+    },
+    get ancillaryEquipmentLabels() {
+      if (self.multipleAppliancesEnabled) {
+        return 'Multiple'
+      }
+      if (self.noAppliancesEnabled) {
+        return '-'
+      }
+      return self.enabledAppliances[0].ancillaryEquipment.enabledEquipmentList.join(', ')
     },
   }))
 
@@ -255,10 +263,10 @@ let initialMainState = {
       ...{ ...applianceInfo.attributes },
       ...{ modelInputValues: { ...applianceInfo.attributes } },
       ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
+      ...{ ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState) },
     })
   }),
   viewedApplianceId: enabledApplianceFileId,
-  ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState),
   excludedTableColumns: [],
   router: routerModel,
 }
@@ -332,9 +340,11 @@ onSnapshot(mainStore, snapshot => {
 
 // Set Ancillary Equipment enabled/disabled status based on if it is required:
 autorun(() =>
-  mainStore.ancillaryEquipment.setEquipmentEnabledFromStatus(
-    mainStore.ancillaryEquipment.equipmentStatus
-  )
+  mainStore.appliances.forEach(appliance => {
+    appliance.ancillaryEquipment.setEquipmentEnabledFromStatus(
+      appliance.ancillaryEquipment.equipmentStatus
+    )
+  })
 )
 
 // Run the battery regression model
