@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Header, Grid } from 'semantic-ui-react'
 import EquipmentCard from './EquipmentCard'
 
-const EquipmentRowsByStatus = ({ status, header }) => {
+const EquipmentRowsByStatus = ({ compatibility, header }) => {
   return (
     <div>
       <Header as="h3" dividing>
@@ -15,13 +15,13 @@ const EquipmentRowsByStatus = ({ status, header }) => {
           return (
             <Grid.Row key={rowIndex}>
               <Grid.Column>
-                <EquipmentCard equipmentInfo={status[rowIndex] || {}} />
+                <EquipmentCard equipment={compatibility[rowIndex] || {}} />
               </Grid.Column>
               <Grid.Column>
-                <EquipmentCard equipmentInfo={status[rowIndex + 1] || {}} />
+                <EquipmentCard equipment={compatibility[rowIndex + 1] || {}} />
               </Grid.Column>
               <Grid.Column>
-                <EquipmentCard equipmentInfo={status[rowIndex + 2] || {}} />
+                <EquipmentCard equipment={compatibility[rowIndex + 2] || {}} />
               </Grid.Column>
             </Grid.Row>
           )
@@ -34,17 +34,17 @@ const EquipmentRowsByStatus = ({ status, header }) => {
 class EquipmentCards extends Component {
   render() {
     const { viewedAppliance } = this.props.store
-    const required = _.get(viewedAppliance, 'ancillaryEquipment.equipmentStatus.required')
-    const useful = _.get(viewedAppliance, 'ancillaryEquipment.equipmentStatus.useful')
-    const notuseful = _.get(viewedAppliance, 'ancillaryEquipment.equipmentStatus.notuseful')
+    const required = viewedAppliance.requiredAncillaryEquipment
+    const useful = viewedAppliance.usefulAncillaryEquipment
+    const notuseful = viewedAppliance.notusefulAncillaryEquipment
     if (!_.isArray(required) || !_.isArray(useful) || !_.isArray(notuseful)) {
       return <h4>Calculating AncillaryEquipment </h4>
     }
     return (
       <div>
-        <EquipmentRowsByStatus status={required} header="Required Equipment" />
-        <EquipmentRowsByStatus status={useful} header="Equipment that may be useful" />
-        <EquipmentRowsByStatus status={notuseful} header="Incompatible Equipment" />
+        <EquipmentRowsByStatus compatibility={required} header="Required Equipment" />
+        <EquipmentRowsByStatus compatibility={useful} header="Equipment that may be useful" />
+        <EquipmentRowsByStatus compatibility={notuseful} header="Incompatible Equipment" />
       </div>
     )
   }

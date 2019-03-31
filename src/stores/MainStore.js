@@ -328,13 +328,26 @@ onSnapshot(mainStore, snapshot => {
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
 // Keep all autoruns here so they aren't spread out everywhere
+
+// Based on the activeGrid and the appliance characteristics, set values such as
+// compatibility (required, useful, notuseful), estimated cost, efficiency, ...
+// From those, set defaults such as enabled.
+// We need high-resolution arguments so this function runs anytime they change.
 autorun(() => {
   if (_.isEmpty(mainStore.activeGrid) || _.isEmpty(mainStore.appliances)) {
     return null
   }
   mainStore.appliances.forEach(appliance => {
     appliance.ancillaryEquipment.forEach(equip => {
-      equip.updateValues(mainStore.activeGrid, appliance, ancillaryEquipmentList)
+      equip.updateValues({
+        equipmentType: equip.equipmentType,
+        gridPowerType: mainStore.activeGrid.powerType,
+        appliancePowerType: appliance.powerType,
+        applianceHasMotor: appliance.hasMotor,
+        appliancePhase: appliance.phase,
+        appliancePowerFactor: appliance.powerFactor,
+        ancillaryEquipmentList,
+      })
     })
   })
 })

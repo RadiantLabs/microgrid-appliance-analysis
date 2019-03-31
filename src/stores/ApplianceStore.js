@@ -171,12 +171,20 @@ export const ApplianceStore = types
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
     },
-
     get enabledAncillaryEquipment() {
       return _.filter(self.ancillaryEquipment, equip => equip.enabled)
     },
     get enabledAncillaryEquipmentLabels() {
       return _.filter(self.enabledAncillaryEquipment, equip => equip.label)
+    },
+    get requiredAncillaryEquipment() {
+      return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'required')
+    },
+    get usefulAncillaryEquipment() {
+      return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'useful')
+    },
+    get notusefulAncillaryEquipment() {
+      return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'notuseful')
     },
   }))
 

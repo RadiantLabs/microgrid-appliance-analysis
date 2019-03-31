@@ -25,26 +25,23 @@ export const AncillaryEquipmentStore = types
     // values below are determined based on the appliance this ancillary
     // equipment store is attached to.
     enabled: types.boolean,
-    compatibility: types.enumeration('compatibility', ['required', 'useful', 'notuseful', '']),
+    compatibility: types.maybeNull(
+      types.enumeration('compatibility', ['required', 'useful', 'notuseful'])
+    ),
     compatibilityMessage: types.maybeNull(types.string),
     size: types.maybeNull(types.number), // size of appliance, in kW
-    capex: types.number,
-    estimatedCapex: types.number,
+    capex: types.maybeNull(types.number),
+    estimatedCapex: types.maybeNull(types.number),
     capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
-    efficiency: types.number,
-    estimatedEfficiency: types.number,
+    efficiency: types.maybeNull(types.number),
+    estimatedEfficiency: types.maybeNull(types.number),
     defaultsAreSet: types.boolean,
   })
   .actions(self => ({
     // Called from an autorun, which will update this whenever activeGrid or
     // appliance attributes change
-    updateValues(grid, appliance, ancillaryEquipmentList) {
-      const results = setAncillaryEquipmentValues(
-        grid,
-        appliance,
-        ancillaryEquipmentList,
-        self.equipmentType
-      )
+    updateValues(ruleValues) {
+      const results = setAncillaryEquipmentValues(ruleValues)
       self.compatibility = results.compatibility
       self.compatibilityMessage = results.compatibilityMessage
       // self.size = results.size
@@ -53,11 +50,10 @@ export const AncillaryEquipmentStore = types
 
       // This function will run on any change to it's arguments but we only want
       // defaults to be set once and then later can be overriden by user.
-      if (!self.defaultsAreSet) {
-        console.log('setting defaults')
+      if (self.readyToSetDefaults) {
         self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
-        self.capex = self.estimatedCapex
-        self.efficiency = self.estimatedEfficiency
+        // self.capex = self.estimatedCapex
+        // self.efficiency = self.estimatedEfficiency
         self.defaultsAreSet = true
       }
     },
@@ -68,6 +64,15 @@ export const AncillaryEquipmentStore = types
     },
   }))
   .views(self => ({
+    get readyToSetDefaults() {
+      return _.every([
+        !self.defaultsAreSet,
+        self.compatibility,
+        // self.estimatedCapex,
+        // self.estimatedEfficiency
+      ])
+    },
+
     // List of selected ancillary equipment by label
     get enabledEquipmentList() {
       return _(self.enabledStates)
@@ -80,13 +85,13 @@ export const AncillaryEquipmentStore = types
 
 export const initialAncillaryEquipmentState = {
   enabled: false,
-  compatibility: '',
+  compatibility: null,
   compatibilityMessage: '',
-  size: 0,
-  capex: 0,
-  estimatedCapex: 0,
+  size: null,
+  capex: null,
+  estimatedCapex: null,
   capexAssignment: 'appliance',
-  efficiency: 0,
-  estimatedEfficiency: 0,
+  efficiency: null,
+  estimatedEfficiency: null,
   defaultsAreSet: false,
 }

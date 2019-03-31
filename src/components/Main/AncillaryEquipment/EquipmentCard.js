@@ -17,13 +17,18 @@ class EquipmentCard extends Component {
   }
 
   render() {
-    if (_.isEmpty(this.props.equipmentInfo)) {
+    if (_.isEmpty(this.props.equipment)) {
       return null
     }
-    const { equipmentType, label, description, message, status } = this.props.equipmentInfo
-    const { enabledStates } = this.props.store.ancillaryEquipment
-    const enabled = enabledStates[equipmentType]
-    const isRequired = status === 'required'
+    const {
+      equipmentType,
+      label,
+      description,
+      enabled,
+      compatibilityMessage,
+      compatibility,
+    } = this.props.equipment
+    const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
       <Card fluid style={enabled ? cardBorderStyles : {}}>
@@ -41,7 +46,7 @@ class EquipmentCard extends Component {
           <Card.Header>
             {label} <HelperPopup content={description} position="right center" />
           </Card.Header>
-          <Card.Description>{message}</Card.Description>
+          <Card.Description>{compatibilityMessage}</Card.Description>
         </Card.Content>
         {enabled && (
           <Card.Content extra>
