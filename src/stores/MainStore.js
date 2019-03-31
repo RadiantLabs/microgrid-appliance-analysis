@@ -7,9 +7,9 @@ import { createBrowserHistory } from 'history'
 import localforage from 'localforage'
 
 // Import Other Stores:
-import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
+import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
 
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
@@ -17,7 +17,6 @@ import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
-import { disableAllAncillaryEquipment } from '../utils/ancillaryEquipmentRules'
 import { sampleGridFileInfos, sampleApplianceFiles } from '../utils/fileInfo'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
 
@@ -219,7 +218,8 @@ export const MainStore = types
       if (self.noAppliancesEnabled) {
         return '-'
       }
-      return self.enabledAppliances[0].ancillaryEquipment.enabledEquipmentList.join(', ')
+      const labels = self.enabledAppliances[0].enabledAncillaryEquipmentLabels
+      return _.isEmpty(labels) ? '-' : labels.join(', ')
     },
   }))
 
@@ -236,11 +236,6 @@ const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO
 const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
 const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
 const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
-
-// Initially set all ancillary equipment to disabled
-const initialAncillaryEquipmentState = {
-  enabledStates: disableAllAncillaryEquipment(ancillaryEquipmentList),
-}
 
 let initialMainState = {
   availableGrids: _.map(allGridFileInfos, gridInfo => {
@@ -263,7 +258,14 @@ let initialMainState = {
       ...{ ...applianceInfo.attributes },
       ...{ modelInputValues: { ...applianceInfo.attributes } },
       ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
-      ...{ ancillaryEquipment: AncillaryEquipmentStore.create(initialAncillaryEquipmentState) },
+      ...{
+        ancillaryEquipment: _.map(ancillaryEquipmentList, ancillaryEquip => {
+          return AncillaryEquipmentStore.create({
+            ...ancillaryEquip,
+            ...initialAncillaryEquipmentState,
+          })
+        }),
+      },
     })
   }),
   viewedApplianceId: enabledApplianceFileId,
@@ -325,67 +327,16 @@ onSnapshot(mainStore, snapshot => {
 // -----------------------------------------------------------------------------
 // Autorun: Run functions whenever arguments change
 // -----------------------------------------------------------------------------
-
-// Calculate the predicted vs. actual battery values. This was set up as a
-// computed view, but it was rerunning when changing the page url. I'm guessing
-// this is because the app had stopped observing the results of the computed value
-// so mobx cleared the cached values. This runs it only when the inputs to the
-// function change
-// autorun(() =>
-//   mainStore.activeGrid.setBatteryPlottablePredictionVsActualData(
-//     mainStore.activeGrid.batteryTrainingData,
-//     mainStore.activeGrid.batteryModel
-//   )
-// )
-
-// Set Ancillary Equipment enabled/disabled status based on if it is required:
-autorun(() =>
+// Keep all autoruns here so they aren't spread out everywhere
+autorun(() => {
+  if (_.isEmpty(mainStore.activeGrid) || _.isEmpty(mainStore.appliances)) {
+    return null
+  }
   mainStore.appliances.forEach(appliance => {
-    appliance.ancillaryEquipment.setEquipmentEnabledFromStatus(
-      appliance.ancillaryEquipment.equipmentStatus
-    )
+    appliance.ancillaryEquipment.forEach(equip => {
+      equip.updateValues(mainStore.activeGrid, appliance, ancillaryEquipmentList)
+    })
   })
-)
-
-// Run the battery regression model
-// autorun(() => {
-//   if (_.isEmpty(mainStore.activeGrid)) {
-//     return null
-//   }
-//   const {
-//     batteryFeatureCount,
-//     batteryTensors,
-//     batteryLearningRate,
-//     batteryBatchSize,
-//     batteryMaxEpochCount,
-//   } = mainStore.activeGrid
-//   mainStore.activeGrid.trainBatteryModel({
-//     batteryFeatureCount,
-//     batteryTensors,
-//     batteryLearningRate,
-//     batteryBatchSize,
-//     batteryMaxEpochCount,
-//   })
-// })
-
-// autorun(() => {
-//   if (_.isEmpty(mainStore.stagedGrid)) {
-//     return null
-//   }
-//   const {
-//     batteryFeatureCount,
-//     batteryTensors,
-//     batteryLearningRate,
-//     batteryBatchSize,
-//     batteryMaxEpochCount,
-//   } = mainStore.stagedGrid
-//   mainStore.stagedGrid.trainBatteryModel({
-//     batteryFeatureCount,
-//     batteryTensors,
-//     batteryLearningRate,
-//     batteryBatchSize,
-//     batteryMaxEpochCount,
-//   })
-// })
+})
 
 export { mainStore, history }

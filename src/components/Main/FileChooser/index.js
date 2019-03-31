@@ -110,7 +110,6 @@ class FileChoosers extends Component {
       activeGrid,
       availableGrids,
       activeGridIsLoading,
-      ancillaryEquipment,
       ancillaryEquipmentLabels,
     } = this.props.store
     return (

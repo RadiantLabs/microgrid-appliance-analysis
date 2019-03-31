@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Label, Card, Form, Input, Checkbox } from 'semantic-ui-react'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
-import { getEquipmentDiagram } from '../../../utils/ancillaryEquipmentRules'
+import { AncillaryEquipmentDiagram } from './EquipmentDiagram'
 
 const cardBorderStyles = {
   border: '1px solid #2185d0',
@@ -36,7 +36,7 @@ class EquipmentCard extends Component {
             onChange={this.handleToggleChange.bind(null, equipmentType)}
           />
         </div>
-        {getEquipmentDiagram(equipmentType)}
+        <AncillaryEquipmentDiagram equipmentType={equipmentType} />
         <Card.Content style={{ borderTop: 'none' }}>
           <Card.Header>
             {label} <HelperPopup content={description} position="right center" />

@@ -45,7 +45,7 @@ export const ApplianceStore = types
     productionUnitType: types.maybeNull(types.string),
     productionUnitsPerKwh: types.maybeNull(types.number),
     revenuePerProductionUnits: types.maybeNull(types.number),
-    ancillaryEquipment: AncillaryEquipmentStore,
+    ancillaryEquipment: types.array(AncillaryEquipmentStore),
 
     // Temporary UI state variables. May be moved into volatile state
     fileIsSelected: types.boolean,
@@ -170,6 +170,13 @@ export const ApplianceStore = types
 
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
+    },
+
+    get enabledAncillaryEquipment() {
+      return _.filter(self.ancillaryEquipment, equip => equip.enabled)
+    },
+    get enabledAncillaryEquipmentLabels() {
+      return _.filter(self.enabledAncillaryEquipment, equip => equip.label)
     },
   }))
 
