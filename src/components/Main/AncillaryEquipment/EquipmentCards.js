@@ -1,32 +1,22 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Header, Grid } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 import EquipmentCard from './EquipmentCard'
 
-const EquipmentRowsByStatus = ({ compatibility, header }) => {
+const EquipmentRowsByStatus = ({ compatibility, header, isFirst }) => {
+  const cardStyle = {
+    minHeight: '200px',
+    marginTop: isFirst ? 0 : '40px',
+  }
   return (
-    <div>
+    <div style={cardStyle}>
       <Header as="h3" dividing>
         {header}
       </Header>
-      <Grid columns="equal">
-        {_.map(_.range(0, 9, 3), rowIndex => {
-          return (
-            <Grid.Row key={rowIndex}>
-              <Grid.Column>
-                <EquipmentCard equipment={compatibility[rowIndex] || {}} />
-              </Grid.Column>
-              <Grid.Column>
-                <EquipmentCard equipment={compatibility[rowIndex + 1] || {}} />
-              </Grid.Column>
-              <Grid.Column>
-                <EquipmentCard equipment={compatibility[rowIndex + 2] || {}} />
-              </Grid.Column>
-            </Grid.Row>
-          )
-        })}
-      </Grid>
+      {_.map(compatibility, (card, cardIndex) => (
+        <EquipmentCard equipment={card || {}} key={`i${cardIndex}`} />
+      ))}
     </div>
   )
 }
@@ -42,7 +32,7 @@ class EquipmentCards extends Component {
     }
     return (
       <div>
-        <EquipmentRowsByStatus compatibility={required} header="Required Equipment" />
+        <EquipmentRowsByStatus compatibility={required} header="Required Equipment" isFirst />
         <EquipmentRowsByStatus compatibility={useful} header="Equipment that may be useful" />
         <EquipmentRowsByStatus compatibility={notuseful} header="Incompatible Equipment" />
       </div>
