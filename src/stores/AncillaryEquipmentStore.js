@@ -59,8 +59,8 @@ export const AncillaryEquipmentStore = types
     },
 
     // Set from checkboxes in UI
-    setEnabledFromCheckbox(equipmentType, enabled) {
-      self.enabledStates = { ...self.enabledStates, [equipmentType]: enabled }
+    toggleEnabled() {
+      self.enabled = !self.enabled
     },
   }))
   .views(self => ({

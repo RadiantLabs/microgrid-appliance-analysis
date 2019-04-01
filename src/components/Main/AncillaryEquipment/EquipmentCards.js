@@ -14,9 +14,9 @@ const EquipmentRowsByStatus = ({ compatibility, header, isFirst }) => {
       <Header as="h3" dividing>
         {header}
       </Header>
-      {_.map(compatibility, (card, cardIndex) => (
-        <EquipmentCard equipment={card || {}} key={`i${cardIndex}`} />
-      ))}
+      {_.map(compatibility, (card, cardIndex) => {
+        return <EquipmentCard equipment={card} key={`i${cardIndex}`} />
+      })}
     </div>
   )
 }

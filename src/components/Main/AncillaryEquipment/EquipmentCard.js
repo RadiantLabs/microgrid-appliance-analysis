@@ -14,9 +14,8 @@ const estimatedValueStyles = {
 }
 
 class EquipmentCard extends Component {
-  handleToggleChange = (equipmentType, event, data) => {
-    event.preventDefault()
-    this.props.store.ancillaryEquipment.setEnabledFromCheckbox(equipmentType, data.checked)
+  handleToggleChange = () => {
+    this.props.equipment.toggleEnabled()
   }
 
   render() {
@@ -45,7 +44,7 @@ class EquipmentCard extends Component {
                   label={toggleLabel}
                   checked={enabled}
                   disabled={isRequired ? true : null}
-                  onChange={this.handleToggleChange.bind(null, equipmentType)}
+                  onChange={this.handleToggleChange}
                 />
               </div>
             </Grid.Row>
