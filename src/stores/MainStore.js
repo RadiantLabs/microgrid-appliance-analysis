@@ -342,10 +342,11 @@ autorun(() => {
       equip.updateValues({
         equipmentType: equip.equipmentType,
         gridPowerType: mainStore.activeGrid.powerType,
-        appliancePowerType: appliance.powerType,
-        applianceHasMotor: appliance.hasMotor,
-        appliancePhase: appliance.phase,
-        appliancePowerFactor: appliance.powerFactor,
+        applPowerType: appliance.powerType,
+        applHasMotor: appliance.hasMotor,
+        applPhase: appliance.phase,
+        applPowerFactor: appliance.powerFactor,
+        applSize: appliance.nominalPower,
         ancillaryEquipmentList,
       })
     })

@@ -58,7 +58,6 @@ export const ApplianceStore = types
     runInAction(fn) {
       return fn()
     },
-
     // onModelInputChange depends on inputs being validated by the InputField
     // before saving to the model. InputField uses fieldDefinitions for validation
     onModelInputChange(fieldKey, value, error) {
@@ -69,7 +68,6 @@ export const ApplianceStore = types
       self.modelInputValues = newModelInputValues
       self.modelInputErrors = newModelInputErrors
     },
-
     onModelInputBlur(fieldKey, value, error) {
       if (!Boolean(error)) {
         self[fieldKey] = value === 0 ? 0 : value || ''
@@ -77,7 +75,6 @@ export const ApplianceStore = types
         console.log('Value not saved to store')
       }
     },
-
     // These files come in through the file upload button
     handleApplianceFileUpload(rawFile) {
       self.fileIsSelected = true
@@ -101,7 +98,6 @@ export const ApplianceStore = types
         },
       })
     },
-
     // These files come in from either samples or previously uploaded user files
     loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
@@ -111,7 +107,6 @@ export const ApplianceStore = types
       self.updateModel(analyzedFile)
       self.isAnalyzingFile = false
     }),
-
     updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
@@ -121,36 +116,29 @@ export const ApplianceStore = types
         self.isAnalyzingFile = false
       })
     },
-
     toggleAppliance(event) {
       event.preventDefault()
       self.enabled = !self.enabled
     },
-
     handleCapexAssignmentChange(event, data) {
       event.preventDefault()
       self.capexAssignment = data.value
     },
-
     handlePowerTypeChange(event, data) {
       event.preventDefault()
       self.powerType = data.value
     },
-
     handlePhaseChange(event, data) {
       event.preventDefault()
       self.phase = data.value
     },
-
     handleHasMotorChange(event, data) {
       event.preventDefault()
       self.hasMotor = data.value
     },
-
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },
-
     handleFileSave() {
       self.saveGridSnapshot()
     },
@@ -159,15 +147,12 @@ export const ApplianceStore = types
     get showAnalyzedResults() {
       return self.fileIsSelected && !self.isAnalyzingFile
     },
-
     get calculatedApplianceColumns() {
       return calcApplianceColumns(self)
     },
-
     get applianceSummaryStats() {
       return calcApplianceSummaryStats(self.calculatedApplianceColumns)
     },
-
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
     },

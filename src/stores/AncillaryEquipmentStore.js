@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import { types } from 'mobx-state-tree'
 import { setAncillaryEquipmentValues } from '../utils/setAncillaryEquipmentValues'
-import { ancillaryEquipmentList } from '../utils/fileInfo'
 
+//
 //------------------------------------------------------------------------------
 // Ancillary Equipment Store
 //------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ export const AncillaryEquipmentStore = types
       types.enumeration('compatibility', ['required', 'useful', 'notuseful'])
     ),
     compatibilityMessage: types.maybeNull(types.string),
-    size: types.maybeNull(types.number), // size of appliance, in kW
+    equipmentSize: types.maybeNull(types.number), // size of appliance, in kW
     capex: types.maybeNull(types.number),
     estimatedCapex: types.maybeNull(types.number),
     capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
@@ -44,16 +44,16 @@ export const AncillaryEquipmentStore = types
       const results = setAncillaryEquipmentValues(ruleValues)
       self.compatibility = results.compatibility
       self.compatibilityMessage = results.compatibilityMessage
-      // self.size = results.size
-      // self.estimatedCapex = results.estimatedCapex
-      // self.estimatedEfficiency = results.estimatedEfficiency
+      self.equipmentSize = results.equipmentSize
+      self.estimatedCapex = results.estimatedCapex
+      self.estimatedEfficiency = results.estimatedEfficiency
 
       // This function will run on any change to it's arguments but we only want
       // defaults to be set once and then later can be overriden by user.
       if (self.readyToSetDefaults) {
         self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
-        // self.capex = self.estimatedCapex
-        // self.efficiency = self.estimatedEfficiency
+        self.capex = self.estimatedCapex
+        self.efficiency = self.estimatedEfficiency
         self.defaultsAreSet = true
       }
     },
@@ -68,18 +68,10 @@ export const AncillaryEquipmentStore = types
       return _.every([
         !self.defaultsAreSet,
         self.compatibility,
-        // self.estimatedCapex,
-        // self.estimatedEfficiency
+        self.equipmentSize,
+        self.estimatedCapex,
+        self.estimatedEfficiency,
       ])
-    },
-
-    // List of selected ancillary equipment by label
-    get enabledEquipmentList() {
-      return _(self.enabledStates)
-        .pickBy(val => val === true)
-        .keys()
-        .map(equipmentType => _.find(ancillaryEquipmentList, { equipmentType }).label)
-        .value()
     },
   }))
 
@@ -87,7 +79,7 @@ export const initialAncillaryEquipmentState = {
   enabled: false,
   compatibility: null,
   compatibilityMessage: '',
-  size: null,
+  equipmentSize: null,
   capex: null,
   estimatedCapex: null,
   capexAssignment: 'appliance',

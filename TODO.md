@@ -1,7 +1,8 @@
 Ancillary Equipment:
-- [ ] Calculate compatibility as a computed view (requires grid & appliance)
-- [ ] keepAlive ancillary equipment compatibility
-
+- [ ] size
+- [ ] estimatedCapex
+- [ ] estimatedEfficiency
+- [ ] set defaults for capex, efficiency
 
 
 Misc:
