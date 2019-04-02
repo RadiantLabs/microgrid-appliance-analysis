@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Label, Card, Form, Input, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
 import { AncillaryEquipmentDiagram } from './EquipmentDiagram'
+import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
 const cardBorderStyles = {
   border: '1px solid #2185d0',
@@ -92,6 +93,37 @@ class EquipmentCard extends Component {
                     </Form.Field>
                     <Form.Field style={estimatedValueStyles}>Estimated Efficiency: 90%</Form.Field>
                   </Form.Group>
+                  <div>
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        verticalAlign: 'top',
+                        marginRight: '10px',
+                        paddingLeft: '4px',
+                      }}>
+                      Cost Assignment
+                    </div>
+                    <div style={{ display: 'inline-block' }}>
+                      <Form.Field>
+                        <Form.Radio
+                          label="Appliance Owner"
+                          name="radioGroup"
+                          value="this"
+                          checked={true}
+                          onChange={this.handleChange}
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Form.Radio
+                          label="Grid Owner"
+                          name="radioGroup"
+                          value="that"
+                          checked={false}
+                          onChange={this.handleChange}
+                        />
+                      </Form.Field>
+                    </div>
+                  </div>
                 </Form>
               </Grid.Column>
             </Grid.Row>

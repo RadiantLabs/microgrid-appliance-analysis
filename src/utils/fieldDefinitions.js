@@ -138,4 +138,21 @@ export const fieldDefinitions = {
     // defaultValue: 0.021,
     units: '$/productionUnitType',
   },
+  equipmentSize: {
+    $schema: jsonSchemaStandard,
+    title: 'Ancillary Equipment Size',
+    description:
+      "Size of ancillary equipment needs to more than cover the appliance's nominal appliance power.",
+    type: 'float',
+    units: 'kW',
+  },
+  efficiencyRating: {
+    $schema: jsonSchemaStandard,
+    title: 'Efficiency Rating',
+    description: 'Efficiency Rating of the Equipment, between 0 and 1.',
+    minimum: 0,
+    maximum: 1,
+    type: 'float',
+    units: 'kW',
+  },
 }
