@@ -33,11 +33,31 @@ export const AncillaryEquipmentStore = types
     capex: types.maybeNull(types.number),
     estimatedCapex: types.maybeNull(types.number),
     capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
-    efficiency: types.maybeNull(types.number),
+    efficiencyRating: types.maybeNull(types.number),
     estimatedEfficiency: types.maybeNull(types.number),
     defaultsAreSet: types.boolean,
+    modelInputValues: types.frozen(),
+    modelInputErrors: types.frozen(),
   })
   .actions(self => ({
+    // onModelInputChange depends on inputs being validated by the InputField
+    // before saving to the model. InputField uses fieldDefinitions for validation
+    onModelInputChange(fieldKey, value, error) {
+      const newModelInputValues = _.clone(self.modelInputValues)
+      const newModelInputErrors = _.clone(self.modelInputErrors)
+      newModelInputValues[fieldKey] = value
+      newModelInputErrors[fieldKey] = error
+      self.modelInputValues = newModelInputValues
+      self.modelInputErrors = newModelInputErrors
+    },
+    onModelInputBlur(fieldKey, value, error) {
+      if (!Boolean(error)) {
+        self[fieldKey] = value === 0 ? 0 : value || ''
+      } else {
+        console.log('Value not saved to store')
+      }
+    },
+
     // Called from an autorun, which will update this whenever activeGrid or
     // appliance attributes change
     updateValues(ruleValues) {
@@ -53,7 +73,7 @@ export const AncillaryEquipmentStore = types
       if (self.readyToSetDefaults) {
         self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
         self.capex = self.estimatedCapex
-        self.efficiency = self.estimatedEfficiency
+        self.efficiencyRating = self.estimatedEfficiency
         self.defaultsAreSet = true
       }
     },
@@ -83,7 +103,9 @@ export const initialAncillaryEquipmentState = {
   capex: null,
   estimatedCapex: null,
   capexAssignment: 'appliance',
-  efficiency: null,
+  efficiencyRating: null,
   estimatedEfficiency: null,
   defaultsAreSet: false,
+  modelInputValues: {},
+  modelInputErrors: {},
 }

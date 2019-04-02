@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Label, Card, Form, Input, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
 import { AncillaryEquipmentDiagram } from './EquipmentDiagram'
+import InputField from '../../../components/Elements/InputField'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
 const cardBorderStyles = {
@@ -23,6 +24,7 @@ class EquipmentCard extends Component {
     if (_.isEmpty(this.props.equipment)) {
       return null
     }
+    const { equipment } = this.props
     const {
       equipmentType,
       label,
@@ -31,7 +33,7 @@ class EquipmentCard extends Component {
       compatibilityMessage,
       compatibility,
       // capex,
-    } = this.props.equipment
+    } = equipment
     const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
@@ -64,35 +66,38 @@ class EquipmentCard extends Component {
               <Grid.Column width={10}>
                 <Form>
                   <Form.Group>
-                    <Form.Field width={8}>
-                      <Input labelPosition="right" type="text" size="mini" fluid>
-                        <Label basic>Size</Label>
-                        <input />
-                        <Label>kW</Label>
-                      </Input>
-                    </Form.Field>
-                    <Form.Field style={estimatedValueStyles}>Appliance Size: 2 kW</Form.Field>
+                    <InputField
+                      fieldKey="equipmentSize"
+                      modelInstance={equipment}
+                      labelLeft="Size"
+                      labelRight={fieldDefinitions['equipmentSize'].units}
+                      size="mini"
+                    />
+                    <Form.Field style={estimatedValueStyles}>Estimated Cost: 90%</Form.Field>
                   </Form.Group>
+
                   <Form.Group>
-                    <Form.Field width={8}>
-                      <Input labelPosition="right" type="text" size="mini" fluid>
-                        <Label basic>Cost</Label>
-                        <input />
-                        <Label>USD</Label>
-                      </Input>
-                    </Form.Field>
-                    <Form.Field style={estimatedValueStyles}>Estimated Cost: $1000</Form.Field>
+                    <InputField
+                      fieldKey="capex"
+                      modelInstance={equipment}
+                      labelLeft="Cost"
+                      labelRight="USD"
+                      size="mini"
+                    />
+                    <Form.Field style={estimatedValueStyles}>Estimated Cost: 90%</Form.Field>
                   </Form.Group>
+
                   <Form.Group>
-                    <Form.Field width={8}>
-                      <Input labelPosition="right" type="text" size="mini" fluid>
-                        <Label basic>Efficiency</Label>
-                        <input />
-                        <Label>-</Label>
-                      </Input>
-                    </Form.Field>
+                    <InputField
+                      fieldKey="efficiencyRating"
+                      modelInstance={equipment}
+                      labelLeft="Efficiency"
+                      labelRight="-"
+                      size="mini"
+                    />
                     <Form.Field style={estimatedValueStyles}>Estimated Efficiency: 90%</Form.Field>
                   </Form.Group>
+
                   <div>
                     <div
                       style={{

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input } from 'semantic-ui-react'
+import { Input, Label, Form } from 'semantic-ui-react'
 // import { Slider } from 'react-semantic-ui-range'
 import _ from 'lodash'
 import { isFloat, isInteger } from '../../../utils/helpers'
@@ -63,7 +63,7 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey, modelInstance, disabled } = this.props
+    const { fieldKey, modelInstance, disabled, labelLeft, labelRight, size } = this.props
     if (_.isEmpty(modelInstance)) {
       return <span>Missing Data</span>
     }
@@ -73,14 +73,32 @@ class InputField extends React.Component {
     // We don't want to pass the value attribute `null`. So pass it an empty string.
     // Except in JS-wisdom, zero is falsy, so ensure that doesn't get set to empty string.
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
+    const error = Boolean(modelInputErrors[fieldKey])
+
+    if (labelLeft) {
+      return (
+        <Form.Field width={8} error={error}>
+          <Input labelPosition="right" type="text" size={size || 'mini'} fluid>
+            <Label basic>{labelLeft}</Label>
+            <input
+              value={value}
+              onChange={this.handleChange}
+              onBlur={this.handleBlur}
+              disabled={disabled}
+            />
+            <Label>{labelRight}</Label>
+          </Input>
+        </Form.Field>
+      )
+    }
     return (
       <div className="InputFieldWrapper">
         <Input
           value={value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          error={Boolean(modelInputErrors[fieldKey])}
-          size="small"
+          error={error}
+          size={size || 'small'}
           fluid
           disabled={disabled}
           style={{ minWidth: '120px' }}
