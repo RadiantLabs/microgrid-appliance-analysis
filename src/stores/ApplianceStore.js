@@ -160,7 +160,10 @@ export const ApplianceStore = types
       return _.filter(self.ancillaryEquipment, equip => equip.enabled)
     },
     get enabledAncillaryEquipmentLabels() {
-      return _.filter(self.enabledAncillaryEquipment, equip => equip.label)
+      return _(self.enabledAncillaryEquipment)
+        .map(equip => equip.label)
+        .compact()
+        .value()
     },
     get requiredAncillaryEquipment() {
       return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'required')
