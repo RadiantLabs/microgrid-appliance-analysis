@@ -58,6 +58,7 @@ export const homerHeaderUnits = [
 ]
 export const applianceHeaderUnits = [
   ['newAppliancesLoad', 'kW'],
+  ['newAppliancesAncillaryLoad', 'kW'],
   ['productionUnitsRevenue', '$'],
   ['day_hour', '-'],
   ['kw_factor', '-'],

@@ -15,12 +15,14 @@ export function sumApplianceColumns(enabledAppliances) {
   const zippedAppliances = _.zip(..._.map(enabledAppliances, 'calculatedApplianceColumns'))
   return _.map(zippedAppliances, appliancesRow => {
     const newAppliancesLoad = _.sumBy(appliancesRow, 'newApplianceLoad')
+    const newAppliancesAncillaryLoad = _.sumBy(appliancesRow, 'newApplianceAncillaryLoad')
     const productionUnitsRevenue = _.sumBy(appliancesRow, 'productionUnitsRevenue')
     return {
       hour: appliancesRow[0]['hour'],
       hour_of_day: appliancesRow[0]['hour_of_day'],
       day_hour: appliancesRow[0]['day_hour'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
+      newAppliancesAncillaryLoad: _.round(newAppliancesAncillaryLoad, 4),
       productionUnitsRevenue: _.round(productionUnitsRevenue, 4),
     }
   })

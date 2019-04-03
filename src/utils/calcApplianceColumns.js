@@ -9,14 +9,18 @@ export function calcApplianceColumns(appliance) {
     dutyCycleDerateFactor,
     productionUnitsPerKwh,
     revenuePerProductionUnits,
+    ancillaryEquipmentEfficiency,
   } = appliance
   return _.map(appliance.fileData, row => {
     const newApplianceLoad = row['kw_factor'] * nominalPower * dutyCycleDerateFactor
+    const newApplianceAncillaryLoad =
+      newApplianceLoad / ancillaryEquipmentEfficiency - newApplianceLoad
     const productionUnits = newApplianceLoad * productionUnitsPerKwh
     const productionUnitsRevenue = revenuePerProductionUnits * productionUnits
     return {
       ...row,
       newApplianceLoad: _.round(newApplianceLoad, 4),
+      newApplianceAncillaryLoad: _.round(newApplianceAncillaryLoad, 4),
       productionUnits: _.round(productionUnits, 4),
       productionUnitsRevenue: _.round(productionUnitsRevenue, 4),
     }

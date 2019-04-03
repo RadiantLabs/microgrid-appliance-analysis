@@ -1,5 +1,7 @@
 Ancillary Equipment
-- [ ] Add ancillary equipment efficiency to appliance loads
+- [x] Add ancillary equipment efficiency to appliance loads
+- [ ] Sum appliance and ancillary equipment load
+- [ ] Sum original, appliance and ancillary equipment loads
 - [ ] Add ancillary equipment capex to summary calculations
 - [x] Hook up Three/Four Point DC Motor Starter
 

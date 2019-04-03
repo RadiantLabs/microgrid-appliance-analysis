@@ -11,6 +11,7 @@ import {
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
+import { calcCombinedEfficiency } from '../utils/calcCombinedEfficiency'
 
 //
 // -----------------------------------------------------------------------------
@@ -173,6 +174,9 @@ export const ApplianceStore = types
     },
     get notusefulAncillaryEquipment() {
       return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'notuseful')
+    },
+    get ancillaryEquipmentEfficiency() {
+      return calcCombinedEfficiency(self.enabledAncillaryEquipment)
     },
   }))
 
