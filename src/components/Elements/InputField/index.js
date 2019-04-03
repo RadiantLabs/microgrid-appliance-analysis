@@ -82,7 +82,7 @@ class InputField extends React.Component {
             <Label basic>{labelLeft}</Label>
             <input
               value={value}
-              onChange={this.handleChange}
+              onChange={e => this.handleChange(e, { value: e.target.value })}
               onBlur={this.handleBlur}
               disabled={disabled}
             />
