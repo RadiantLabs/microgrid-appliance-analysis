@@ -93,9 +93,9 @@ export const AncillaryEquipmentStore = types
       return _.every([
         !self.defaultsAreSet,
         self.compatibility,
-        self.equipmentSize,
-        self.estimatedCapex,
-        self.estimatedEfficiency,
+        _.isFinite(self.equipmentSize),
+        _.isFinite(self.estimatedCapex),
+        _.isFinite(self.estimatedEfficiency),
       ])
     },
     get parentApplianceSize() {
