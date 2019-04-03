@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types } from 'mobx-state-tree'
+import { types, getParent, hasParent } from 'mobx-state-tree'
 import { setAncillaryEquipmentValues } from '../utils/setAncillaryEquipmentValues'
 
 //
@@ -97,6 +97,9 @@ export const AncillaryEquipmentStore = types
         self.estimatedCapex,
         self.estimatedEfficiency,
       ])
+    },
+    get parentApplianceSize() {
+      return hasParent(self, 2) ? getParent(self, 2).nominalPower : null
     },
   }))
 

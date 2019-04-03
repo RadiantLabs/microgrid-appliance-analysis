@@ -24,7 +24,7 @@ class EquipmentCard extends Component {
     if (_.isEmpty(this.props.equipment)) {
       return null
     }
-    const { equipment, store } = this.props
+    const { equipment } = this.props
     const {
       equipmentType,
       label,
@@ -34,9 +34,8 @@ class EquipmentCard extends Component {
       compatibility,
       estimatedCapex,
       estimatedEfficiency,
+      parentApplianceSize,
     } = equipment
-    const { viewedAppliance } = store
-    const { nominalPower } = viewedAppliance
     const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
@@ -76,7 +75,9 @@ class EquipmentCard extends Component {
                       labelRight={fieldDefinitions['equipmentSize'].units}
                       size="mini"
                     />
-                    <Form.Field style={estimatedValueStyles}>Size: {nominalPower} kW</Form.Field>
+                    <Form.Field style={estimatedValueStyles}>
+                      Size: {parentApplianceSize} kW
+                    </Form.Field>
                   </Form.Group>
 
                   <Form.Group>
