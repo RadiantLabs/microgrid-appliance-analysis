@@ -163,7 +163,7 @@ class EquipmentCard extends Component {
 export default inject('store')(observer(EquipmentCard))
 
 const cardBorderStyles = {
-  border: '1px solid #2185d0',
+  outline: '1px solid #2185d0',
 }
 const estimatedValueStyles = {
   marginTop: '4px',
