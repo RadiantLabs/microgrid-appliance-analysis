@@ -1,14 +1,11 @@
-Ancillary Equipment:
-- [ ] size
-- [ ] estimatedCapex
-- [ ] estimatedEfficiency
-- [ ] set defaults for capex, efficiency
-
 
 Misc:
 - [ ] Change loads chart to show only original loads, new appliances loads and total loads
+- [ ] Fix ancillary equipment selected list
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
+- [ ] Make battery min and max editable
+- [ ] Hook up Three/Four Point DC Motor Starter 
 
 - [ ] Columns to check for in HOMER import
 - [ ] Decide if I need to calculate

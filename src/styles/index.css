@@ -32,3 +32,8 @@
   border-left: 1px solid rgb(33, 133, 208) !important;
   border-right: 1px solid rgb(33, 133, 208) !important;
 }
+
+/* Remove all borders from tables */
+.ui.table.borderless tr td {
+  border-top: 0px !important;
+}

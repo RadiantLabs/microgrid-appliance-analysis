@@ -77,16 +77,21 @@ class InputField extends React.Component {
 
     if (labelLeft) {
       return (
-        <Form.Field width={8} error={error}>
-          <Input labelPosition="right" type="text" size={size || 'mini'} fluid>
+        <Form.Field error={error}>
+          <Input
+            labelPosition={labelRight ? 'right' : 'left'}
+            type="text"
+            size={size || 'mini'}
+            fluid>
             <Label basic>{labelLeft}</Label>
             <input
               value={value}
               onChange={e => this.handleChange(e, { value: e.target.value })}
               onBlur={this.handleBlur}
               disabled={disabled}
+              style={{ minWidth: '60px' }}
             />
-            <Label>{labelRight}</Label>
+            {labelRight && <Label>{labelRight}</Label>}
           </Input>
         </Form.Field>
       )
