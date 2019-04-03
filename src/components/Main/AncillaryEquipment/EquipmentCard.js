@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Label, Card, Form, Input, Checkbox, Grid, Header } from 'semantic-ui-react'
+import { Card, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
 import { AncillaryEquipmentDiagram } from './EquipmentDiagram'
 import InputField from '../../../components/Elements/InputField'
@@ -24,7 +24,7 @@ class EquipmentCard extends Component {
     if (_.isEmpty(this.props.equipment)) {
       return null
     }
-    const { equipment } = this.props
+    const { equipment, store } = this.props
     const {
       equipmentType,
       label,
@@ -32,8 +32,11 @@ class EquipmentCard extends Component {
       enabled,
       compatibilityMessage,
       compatibility,
-      // capex,
+      estimatedCapex,
+      estimatedEfficiency,
     } = equipment
+    const { viewedAppliance } = store
+    const { nominalPower } = viewedAppliance
     const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
@@ -73,7 +76,7 @@ class EquipmentCard extends Component {
                       labelRight={fieldDefinitions['equipmentSize'].units}
                       size="mini"
                     />
-                    <Form.Field style={estimatedValueStyles}>Estimated Cost: 90%</Form.Field>
+                    <Form.Field style={estimatedValueStyles}>Size: {nominalPower} kW</Form.Field>
                   </Form.Group>
 
                   <Form.Group>
@@ -84,7 +87,9 @@ class EquipmentCard extends Component {
                       labelRight="USD"
                       size="mini"
                     />
-                    <Form.Field style={estimatedValueStyles}>Estimated Cost: 90%</Form.Field>
+                    <Form.Field style={estimatedValueStyles}>
+                      Estimated Cost: ${estimatedCapex}
+                    </Form.Field>
                   </Form.Group>
 
                   <Form.Group>
@@ -95,7 +100,9 @@ class EquipmentCard extends Component {
                       labelRight="-"
                       size="mini"
                     />
-                    <Form.Field style={estimatedValueStyles}>Estimated Efficiency: 90%</Form.Field>
+                    <Form.Field style={estimatedValueStyles}>
+                      Estimated Efficiency: {_.round(estimatedEfficiency * 100, 1)}%
+                    </Form.Field>
                   </Form.Group>
 
                   <div>

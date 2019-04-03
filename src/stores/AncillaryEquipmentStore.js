@@ -74,6 +74,11 @@ export const AncillaryEquipmentStore = types
         self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
         self.capex = self.estimatedCapex
         self.efficiencyRating = self.estimatedEfficiency
+        self.modelInputValues = {
+          equipmentSize: ruleValues.applSize,
+          capex: self.estimatedCapex,
+          efficiencyRating: self.estimatedEfficiency,
+        }
         self.defaultsAreSet = true
       }
     },
