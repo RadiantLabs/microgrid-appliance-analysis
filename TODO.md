@@ -1,16 +1,17 @@
 Ancillary Equipment
 - [x] Add ancillary equipment efficiency to appliance loads
-- [ ] Sum appliance and ancillary equipment load
-- [ ] Make sure there are 3 separate loads:
-    - original HOMER load
-    - appliance loads
-    - ancillary equipment additional load
+- [x] Sum appliance and ancillary equipment load
+- [x] Make sure there are 3 separate loads:
+    - [x] original HOMER load
+    - [x] appliance loads
+    - [x] ancillary equipment additional load
+- [x] Fix load charts, using all 3 load values above    
+- [x] Add max load reference line (vertical and horizontal). Use first instance
 
 - [ ] Add ancillary equipment capex to summary calculations
 - [x] Hook up Three/Four Point DC Motor Starter
 
 Misc:
-- [ ] Change loads chart to show only original loads, new appliances loads and total loads
 - [ ] Fix Unmet load chart to exclude the additional piece
 - [ ] Fix battery charge charts
 - [ ] Make battery min and max editable

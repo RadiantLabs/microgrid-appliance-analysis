@@ -37,3 +37,10 @@
 .ui.table.borderless tr td {
   border-top: 0px !important;
 }
+
+/* Custom Recharts tooltip */
+.custom-tooltip {
+  border: 1px solid #cccccc;
+  background-color: #fff;
+  padding: 1rem;
+}

@@ -1,70 +1,97 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
+import { Grid, Table } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
   Brush,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
+  ReferenceLine,
 } from 'recharts'
-import { getChartColors, greyColors } from '../../../utils/constants'
+import { formatDateForTable } from '../../../utils/helpers'
 
-// TODO:
-// Reference Lines: http://recharts.org/en-US/examples/LineChartWithReferenceLines
-// Plot Load curve data: New Appliance Load, availableCapacity, Additional Unmet Load
 class LoadsByHour extends React.Component {
   render() {
-    const { hybridColumns } = this.props.store
-    if (_.isEmpty(hybridColumns)) {
+    const { combinedTable } = this.props.store
+    if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
+    const { maxLoadValue, maxLoadFirstHour } = this.props.store.maxApplianceLoad
     return (
       <div>
-        <h3>
-          Loads by hour of year <small style={{ color: greyColors[1] }}>kW for 1 hour</small>
-        </h3>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <h3>
+                Loads by hour of year <br />
+                <small style={{ fontWeight: '300' }}>
+                  Each data point unit is average kW for 1 hour (kW*h)
+                </small>
+              </h3>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Table basic="very" compact collapsing style={{ float: 'right' }}>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>Max Appliance Load</Table.Cell>
+                    <Table.Cell>{maxLoadValue} kW*h</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>First hour of max load</Table.Cell>
+                    <Table.Cell>{maxLoadFirstHour}</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-          <LineChart
-            // width={1400}
-            // height={400}
-            data={hybridColumns}
-            syncId="anyId"
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <AreaChart data={combinedTable} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />
             <YAxis />
-            <Tooltip />
-            <Line
+            <Tooltip content={<CustomToolTip />} />
+            <Area
+              type="monotone"
+              dataKey="Original Electrical Load Served"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+            <Area
               type="monotone"
               dataKey="newAppliancesLoad"
-              dot={false}
-              stroke={getChartColors('newAppliancesLoad')}
+              stackId="1"
+              stroke="#82ca9d"
+              fill="#82ca9d"
             />
-            <Line
+            <Area
               type="monotone"
-              dataKey="availableCapacity"
-              dot={false}
-              stroke={getChartColors('availableCapacity')}
+              dataKey="newAppliancesAncillaryLoad"
+              stackId="1"
+              stroke="#ffc658"
+              fill="#ffc658"
             />
-            <Line
-              type="monotone"
-              dataKey="availableCapacityAfterNewLoad"
-              dot={false}
-              stroke={getChartColors('availableCapacityAfterNewLoad')}
+            <ReferenceLine
+              x={maxLoadFirstHour}
+              stroke="red"
+              label="First Hour Max Load"
+              strokeDasharray="3 3"
             />
-            <Line
-              type="monotone"
-              dataKey="newApplianceBatteryConsumption"
-              dot={false}
-              stroke={getChartColors('newApplianceBatteryConsumption')}
+            <ReferenceLine
+              y={maxLoadValue}
+              label="Max Appliance Load"
+              stroke="red"
+              strokeDasharray="3 3"
             />
             <Legend />
             <Brush startIndex={0} endIndex={200} />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     )
@@ -72,3 +99,34 @@ class LoadsByHour extends React.Component {
 }
 
 export default inject('store')(observer(LoadsByHour))
+
+const CustomToolTip = ({ active, payload, label }) => {
+  if (!active || _.isEmpty(payload)) {
+    return null
+  }
+  const { datetime, totalElectricalLoadServed } = payload[0]['payload']
+  return (
+    <div className="custom-tooltip">
+      <p className="label">Hour of Year: {label}</p>
+      <p className="label">Date: {formatDateForTable(datetime)}</p>
+      <Table basic="very" compact>
+        <Table.Body>
+          {_.map(payload, element => {
+            return (
+              <Table.Row style={{ color: element.color }} key={element.dataKey}>
+                <Table.Cell>{element.dataKey}</Table.Cell>
+                <Table.Cell textAlign="right">{element.value} kW*h</Table.Cell>
+              </Table.Row>
+            )
+          })}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.HeaderCell>Combined Load</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">{totalElectricalLoadServed} kW*h</Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    </div>
+  )
+}

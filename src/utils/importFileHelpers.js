@@ -149,7 +149,7 @@ export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }
       if (key === 'Time') {
         return DateTime.fromFormat(val, homerParseFormat).toISO()
       }
-      return _.round(val, 5)
+      return _.round(val, 4)
     })
   })
   return addHourIndex(modifiedTable)

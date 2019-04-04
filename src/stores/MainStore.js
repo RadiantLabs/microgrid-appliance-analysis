@@ -16,9 +16,13 @@ import { combineTables } from '../utils/helpers'
 import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
+import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
-import { sampleGridFileInfos, sampleApplianceFiles } from '../utils/fileInfo'
-import { ancillaryEquipmentList } from '../utils/fileInfo'
+import {
+  sampleGridFileInfos,
+  sampleApplianceFiles,
+  ancillaryEquipmentList,
+} from '../utils/fileInfo'
 
 //
 // -----------------------------------------------------------------------------
@@ -220,6 +224,9 @@ export const MainStore = types
       }
       const labels = self.enabledAppliances[0].enabledAncillaryEquipmentLabels
       return _.isEmpty(labels) ? '-' : labels.join(', ')
+    },
+    get maxApplianceLoad() {
+      return calcMaxApplianceLoad(self.combinedTable)
     },
   }))
 
