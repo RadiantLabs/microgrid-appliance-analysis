@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Table } from 'semantic-ui-react'
+import { Grid, Table, Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
@@ -17,11 +17,19 @@ import {
 import { formatDateForTable } from '../../../utils/helpers'
 
 class LoadsByHour extends React.Component {
+  state = { stackOffset: 'none' }
+
+  handleStackClick = (value, e) => {
+    e.preventDefault()
+    this.setState({ stackOffset: value })
+  }
+
   render() {
     const { combinedTable } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
+    const { stackOffset } = this.state
     const { maxLoadValue, maxLoadFirstHour } = this.props.store.maxApplianceLoad
     return (
       <div>
@@ -36,7 +44,19 @@ class LoadsByHour extends React.Component {
               </h3>
             </Grid.Column>
             <Grid.Column width={8}>
-              <Table basic="very" compact collapsing style={{ float: 'right' }}>
+              <Button.Group basic compact style={{ float: 'right', marginTop: '8px' }}>
+                <Button
+                  onClick={this.handleStackClick.bind(null, 'none')}
+                  active={stackOffset === 'none'}>
+                  Normal Stacked
+                </Button>
+                <Button
+                  onClick={this.handleStackClick.bind(null, 'expand')}
+                  active={stackOffset === 'expand'}>
+                  100% Stacked
+                </Button>
+              </Button.Group>
+              <Table basic="very" compact collapsing style={{ marginTop: 0 }}>
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>Max Appliance Load</Table.Cell>
@@ -52,7 +72,10 @@ class LoadsByHour extends React.Component {
           </Grid.Row>
         </Grid>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-          <AreaChart data={combinedTable} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <AreaChart
+            data={combinedTable}
+            stackOffset={stackOffset}
+            margin={{ top: 40, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />
             <YAxis />
             <Tooltip content={<CustomToolTip />} />
