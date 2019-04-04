@@ -17,6 +17,8 @@ import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
+import { calcEnabledApplianceLabels } from '../utils/calcEnabledApplianceLabels'
+import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLabels'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import {
   sampleGridFileInfos,
@@ -205,25 +207,10 @@ export const MainStore = types
       return _.size(self.enabledAppliances) === 0
     },
     get enabledApplianceLabels() {
-      const labels = _.map(self.enabledAppliances, appliance => appliance.label)
-      const labelCount = _.size(labels)
-      if (labelCount === 0) {
-        return 'No Appliances Selected'
-      }
-      if (labelCount > 2) {
-        return `${labelCount} Appliances Selected`
-      }
-      return labels.join(', ')
+      return calcEnabledApplianceLabels(self.enabledAppliances)
     },
     get ancillaryEquipmentLabels() {
-      if (self.multipleAppliancesEnabled) {
-        return 'Multiple'
-      }
-      if (self.noAppliancesEnabled) {
-        return '-'
-      }
-      const labels = self.enabledAppliances[0].enabledAncillaryEquipmentLabels
-      return _.isEmpty(labels) ? '-' : labels.join(', ')
+      return calcAncillaryApplianceLabels(self.enabledAppliances)
     },
     get maxApplianceLoad() {
       return calcMaxApplianceLoad(self.combinedTable)
