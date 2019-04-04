@@ -27,7 +27,7 @@ export const homerHeaderUnits = [
   ['PV Power Output', 'kW'],
   ['AC Primary Load', 'kW'],
   ['AC Primary Load Served', 'kW'],
-  ['Total Electrical Load Served', 'kW'],
+  ['Original Electrical Load Served', 'kW'],
   ['Renewable Penetration', '%'],
   ['Original Excess Electrical Production', 'kW'],
   ['Capacity Shortage', 'kW'],

@@ -1,7 +1,11 @@
 Ancillary Equipment
 - [x] Add ancillary equipment efficiency to appliance loads
 - [ ] Sum appliance and ancillary equipment load
-- [ ] Sum original, appliance and ancillary equipment loads
+- [ ] Make sure there are 3 separate loads:
+    - original HOMER load
+    - appliance loads
+    - ancillary equipment additional load
+
 - [ ] Add ancillary equipment capex to summary calculations
 - [x] Hook up Three/Four Point DC Motor Starter
 
@@ -16,6 +20,7 @@ Misc:
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
 - [ ] Create FAQ in app and/or repo
+- [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
 
 Next steps:
 

@@ -31,7 +31,10 @@ export function calcHybridColumns(grid, summedAppliances) {
     // if the grid goes down, there is no load. We will assume there is a generator
     // on the grid, and then calculate economics based on unmet load costs/kWh
     // So adding newAppliancesLoad to a 'load served' value I think makes sense.
-    const totalElectricalLoadServed = homerRow['Total Electrical Load Served'] + newAppliancesLoad
+    const totalElectricalLoadServed =
+      homerRow['Original Electrical Load Served'] +
+      newAppliancesLoad +
+      applianceRow['newAppliancesAncillaryLoad']
 
     // This value is important for predicting the battery energy content based on new loads
     // It's positive if battery is charging, negative if battery is discharging

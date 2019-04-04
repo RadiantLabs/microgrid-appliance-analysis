@@ -95,6 +95,8 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
         return 'Original Unmet Electrical Load'
       case _.includes(key, 'Excess Electrical Production'):
         return 'Original Excess Electrical Production'
+      case _.includes(key, 'Total Electrical Load Served'):
+        return 'Original Electrical Load Served'
       default:
         return key
     }
@@ -116,7 +118,8 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
     // If excess (positive), `Inverter Power Input` kicks in
     // If deficit (negative), `Rectifier Power Input` kicks in
     const originalElectricalProductionLoadDiff =
-      totalElectricalProduction - row['Total Electrical Load Served']
+      totalElectricalProduction - row['Original Electrical Load Served']
+
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
     return {
