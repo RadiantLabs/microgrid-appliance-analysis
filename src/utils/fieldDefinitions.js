@@ -86,8 +86,7 @@ export const fieldDefinitions = {
     $schema: jsonSchemaStandard,
     title: 'Has Motor?',
     description: 'Does the appliance have a motor?',
-    type: 'enumeration',
-    enumerations: [true, false],
+    type: 'boolean',
     units: '-',
   },
   dutyCycleDerateFactor: {
