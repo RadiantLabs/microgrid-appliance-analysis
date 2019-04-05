@@ -61,87 +61,97 @@ function compatibilityDisplay(val) {
   }
 }
 
-export const GridCard = observer(({ grid }) => {
+export const GridCard = observer(({ grid, expanded }) => {
   return (
     <Card fluid href="/files/homer">
       <Card.Content header={grid.label} style={{ backgroundColor: '#F9FAFB' }} />
       <Card.Content description={grid.description} />
-      <Card.Content>
-        <Table basic="very" celled>
-          <Table.Body>
-            {_.map(gridFields, field => {
-              return (
-                <Table.Row key={field}>
-                  <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
-                  <Table.Cell>{grid[field]}</Table.Cell>
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
-        </Table>
-      </Card.Content>
-      <Card.Content extra>
-        File Type: {grid.fileInfo.fileType}
-        {grid.fileInfo.isSample ? ', Sample File' : ', Imported File'}
-      </Card.Content>
+      {expanded && (
+        <Card.Content>
+          <Table basic="very" celled>
+            <Table.Body>
+              {_.map(gridFields, field => {
+                return (
+                  <Table.Row key={field}>
+                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                    <Table.Cell>{grid[field]}</Table.Cell>
+                  </Table.Row>
+                )
+              })}
+            </Table.Body>
+          </Table>
+        </Card.Content>
+      )}
+      {expanded && (
+        <Card.Content extra>
+          File Type: {grid.fileInfo.fileType}
+          {grid.fileInfo.isSample ? ', Sample File' : ', Imported File'}
+        </Card.Content>
+      )}
     </Card>
   )
 })
 
-export const ApplianceCard = observer(({ appliance }) => {
+export const ApplianceCard = observer(({ appliance, expanded }) => {
   return (
     <Card fluid href="/files/appliance">
       <Card.Content header={appliance.label} style={{ backgroundColor: '#F9FAFB' }} />
       <Card.Content description={appliance.description} />
-      <Card.Content>
-        <Table basic="very" celled>
-          <Table.Body>
-            {_.map(applianceFields, field => {
-              return (
-                <Table.Row key={field}>
-                  <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
-                  <Table.Cell>
-                    {fieldDefinitions[field].type === 'boolean'
-                      ? booleanDisplay(appliance[field])
-                      : appliance[field]}
-                  </Table.Cell>
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
-        </Table>
-      </Card.Content>
-      <Card.Content extra>
-        File Type: {appliance.fileInfo.applianceType}
-        {appliance.fileInfo.isSample ? ', Sample File' : ', Imported File'}
-      </Card.Content>
+      {expanded && (
+        <Card.Content>
+          <Table basic="very" celled>
+            <Table.Body>
+              {_.map(applianceFields, field => {
+                return (
+                  <Table.Row key={field}>
+                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                    <Table.Cell>
+                      {fieldDefinitions[field].type === 'boolean'
+                        ? booleanDisplay(appliance[field])
+                        : appliance[field]}
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              })}
+            </Table.Body>
+          </Table>
+        </Card.Content>
+      )}
+      {expanded && (
+        <Card.Content extra>
+          File Type: {appliance.fileInfo.applianceType}
+          {appliance.fileInfo.isSample ? ', Sample File' : ', Imported File'}
+        </Card.Content>
+      )}
     </Card>
   )
 })
 
-export const AncillaryEquipmentCard = observer(({ equipment }) => {
+export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
   return (
     <Card fluid href="/tool/ancillary">
       <Card.Content header={equipment.label} style={{ backgroundColor: '#F9FAFB' }} />
       <Card.Content description={equipment.description} />
-      <Card.Content>
-        <Table basic="very" celled>
-          <Table.Body>
-            {_.map(ancillaryEquipmentFields, field => {
-              return (
-                <Table.Row key={field}>
-                  <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
-                  <Table.Cell>
-                    {field === 'compatibility'
-                      ? compatibilityDisplay(equipment[field])
-                      : equipment[field]}
-                  </Table.Cell>
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
-        </Table>
-      </Card.Content>
+      {expanded && (
+        <Card.Content>
+          <Table basic="very" celled>
+            <Table.Body>
+              {_.map(ancillaryEquipmentFields, field => {
+                return (
+                  <Table.Row key={field}>
+                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                    <Table.Cell>
+                      {field === 'compatibility'
+                        ? compatibilityDisplay(equipment[field])
+                        : equipment[field]}
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              })}
+            </Table.Body>
+          </Table>
+        </Card.Content>
+      )}
     </Card>
   )
 })
