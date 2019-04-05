@@ -7,6 +7,7 @@ import { setAncillaryEquipmentValues } from '../utils/setAncillaryEquipmentValue
 // Ancillary Equipment Store
 //------------------------------------------------------------------------------
 // There will be an array of these stores per appliance
+// TODO: Do these equipment require a unique id?
 export const AncillaryEquipmentStore = types
   .model({
     equipmentType: types.enumeration('equipmentType', [

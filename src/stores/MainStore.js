@@ -247,8 +247,10 @@ let initialMainState = {
   appliances: _.map(applianceFileInfos, applianceInfo => {
     return ApplianceStore.create({
       ...initialApplianceState,
-      enabled: applianceInfo.id === enabledApplianceFileId,
-      // enabled: true,
+
+      // enabled: applianceInfo.id === enabledApplianceFileId,
+      enabled: true,
+
       ...{ ...applianceInfo.attributes },
       ...{ modelInputValues: { ...applianceInfo.attributes } },
       ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
