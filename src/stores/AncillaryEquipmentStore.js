@@ -72,7 +72,8 @@ export const AncillaryEquipmentStore = types
       // This function will run on any change to it's arguments but we only want
       // defaults to be set once and then later can be overriden by user.
       if (self.readyToSetDefaults) {
-        self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
+        // self.enabled = self.compatibility === 'required' // Required equipment will be auto-enabled
+        self.enabled = true
         self.capex = self.estimatedCapex
         self.efficiencyRating = self.estimatedEfficiency
         self.modelInputValues = {

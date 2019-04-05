@@ -11,7 +11,7 @@ import DataTable from './DataTable'
 import Loads from './Loads'
 import UnmetLoads from './UnmetLoads'
 import BatteryEnergyContent from './BatteryEnergyContent'
-import { GridComponents } from './GridComponents'
+import GridComponents from './GridComponents'
 
 const Main = ({ match }) => {
   return (
