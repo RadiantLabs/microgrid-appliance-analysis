@@ -4,7 +4,7 @@ import { Grid, Header, Card, Icon } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 // import borderlessTableStyles from '../../../styles/borderlessTableStyles.module.css'
 
-export const GridDiagram = inject('store')(
+export const GridComponents = inject('store')(
   observer(({ store }) => {
     const { enabledAppliances } = store
     return (

@@ -11,7 +11,7 @@ import DataTable from './DataTable'
 import Loads from './Loads'
 import UnmetLoads from './UnmetLoads'
 import BatteryEnergyContent from './BatteryEnergyContent'
-import { GridDiagram } from './GridDiagram'
+import { GridComponents } from './GridComponents'
 
 const Main = ({ match }) => {
   return (
@@ -25,7 +25,7 @@ const Main = ({ match }) => {
         <Menu.Item as={NavItem} to={`/tool/loads`} name="Loads" />
         <Menu.Item as={NavItem} to={`/tool/unmet-loads`} name="Unmet Loads" />
         <Menu.Item as={NavItem} to={`/tool/battery-energy-content`} name="Battery Energy Content" />
-        <Menu.Item as={NavItem} to={`/tool/diagram`} name="Diagram" />
+        <Menu.Item as={NavItem} to={`/tool/components`} name="Grid Components" />
       </Menu>
 
       <div className="mainContent">
@@ -37,7 +37,7 @@ const Main = ({ match }) => {
         <Route path={`/tool/loads`} component={Loads} />
         <Route path={`/tool/unmet-loads`} component={UnmetLoads} />
         <Route path={`/tool/battery-energy-content`} component={BatteryEnergyContent} />
-        <Route path={`/tool/diagram`} component={GridDiagram} />
+        <Route path={`/tool/components`} component={GridComponents} />
       </div>
     </div>
   )

@@ -77,7 +77,7 @@ export const sampleApplianceFiles = [
       description: 'Rice mill usage profile from downloaded UTC file usage (Tanzania)',
       capex: 1200,
       capexAssignment: 'appliance',
-      powerType: 'AC',
+      powerType: 'DC',
       phase: 3,
       hasMotor: true,
       powerFactor: 0.8,

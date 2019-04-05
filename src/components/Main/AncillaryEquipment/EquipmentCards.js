@@ -11,7 +11,7 @@ const EquipmentRowsByStatus = ({ compatibility, header, isFirst }) => {
   }
   return (
     <div style={cardStyle}>
-      <Header as="h3" dividing>
+      <Header as="h2" dividing>
         {header}
       </Header>
       {_.map(compatibility, (card, cardIndex) => {
