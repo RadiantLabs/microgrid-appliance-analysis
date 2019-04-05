@@ -50,7 +50,7 @@ class EquipmentCard extends Component {
                     toggle
                     label={toggleLabel}
                     checked={enabled}
-                    disabled={isRequired ? true : null}
+                    // disabled={isRequired ? true : null}
                     onChange={this.handleToggleChange}
                   />
                 </div>
