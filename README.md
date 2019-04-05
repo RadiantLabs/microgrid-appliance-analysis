@@ -59,6 +59,13 @@ Rounding to 0 decimals filters out loads less than 1 kWh
 Amanda decided to filter out anything less than 100 watthours (1 decimal)
 This is set in constants as `unmetLoadRoundingDecimals`
 
+
+Values that depend on the battery energy content:
+- excess capacity
+- unmet load
+    - OPEX, ROI, Payback, Net revenue
+
+
 ### Definitions:
 ##### kw_factor
 is the number of minutes an appliance was fully utilized, summed over an hour. If it was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM.

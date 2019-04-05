@@ -1,15 +1,5 @@
 Ancillary Equipment
-- [x] Add ancillary equipment efficiency to appliance loads
-- [x] Sum appliance and ancillary equipment load
-- [x] Make sure there are 3 separate loads:
-    - [x] original HOMER load
-    - [x] appliance loads
-    - [x] ancillary equipment additional load
-- [x] Fix load charts, using all 3 load values above    
-- [x] Add max load reference line (vertical and horizontal). Use first instance
-
 - [ ] Add ancillary equipment capex to summary calculations
-- [x] Hook up Three/Four Point DC Motor Starter
 
 Misc:
 - [ ] Fix Unmet load chart to exclude the additional piece
@@ -22,44 +12,18 @@ Misc:
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
 - [ ] Create FAQ in app and/or repo
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
+- [ ] Hook up appliance upload section
+- [ ] Save files and bootstrap from local storage
 
-Next steps:
+Possible Future Features
+- [ ] TOU
+- [ ] Line losses
+- [ ] Appliance lifetime
+- [ ] User-input seasonality
+- [ ] Single and 3-phase
+- [ ] Show value to customer vs. their existing kit (electricity versus if a customer is using a diesel generator or engine)
 
-1. Pricing for ancillary equipment
-  - Give guidelines and let user put the cost in
-  - Calculate efficiency losses on the appliance load
-
-- Come up with estimate where clamping batter energy content is not a valid assumption
-  - let the user override min and max state of charge
-- Hook up appliance upload section
-- Save files and bootstrap from local storage
-
-- TOU
-- line losses
-- appliance lifetime
-- user-input seasonality
-- single and 3-phase
-- show value to customer vs. their existing kit (electricity versus if a customer is using a diesel generator or engine)
-
-What values depend on the battery energy content:
-
-- unmet load
-- unmet load hours
-- unmet load costs: OPEX, ROI, Payback, Net revenue
-
-Next steps for Appliances:
-- Finish overhaul of internal calculations with battery predictions.
-- Any original values should be calculated in the importFileHelpers file, hybrid calculations only depend on both appliances, ancillary equipment and homer
-
-  - [ ] originalAvailableCapacity
-  - [ ] availableCapacity
-  - [x] originalUnmetLoad
-  - [ ] unmetLoad
-  - [ ]
-
-
-- Meeting tomorrow (Tuesday) at 7:30am Mountain/8:30pm Thailand (send out same meeting link)
-- [ ] Fix changing grid file
+Notes from meeting:
 - [ ] Require filing out appliance attributes on file upload
 - [ ] Save appliance without enabling
 - [ ] Amanda will do basic sanity check calculations
@@ -68,48 +32,17 @@ Next steps for Appliances:
 - [ ] Document kw_factor
 - [ ] Research if battery min/max should be editable
 
-* cache as many calculations as possible so we don't have to run prediction models again
-
-  - electricalProductionLoadDiff
-    - [x] mainStore: Calculate summary values for newApplianceLoad (called summedApplianceColumns)
-    - [x] mainStore: Calculate totalElectricalLoadServed
-    - [x] mainStore: Calculate separately `totalElectricalProduction`
-    - [x] mainStore: Calculate electricalProductionLoadDiff
-    - [x] mainStore: battery starting energy content
-    - [x] mainStore: predictedBatteryEnergyContent (takes electricalProductionLoadDiff and starting battery content)
-    - [x] Comments on each of these calculate steps
-
-* [ ] **_ Calculate everything on an hourly basis for Appliances _**
-  - [x] Electricity Sales (from new appliances)
-  - [x] production units
-  - [ ] New appliance unmet load cost
-  - [x] New appliance net revenue
-  - [x] Appliance Electricity Cost
-  - [x] Appliance-Related Revenue
-  - [x] Net Revenue
-  - [x] Appliance Electricity Consumption
-  - [x] Units of Productivity (include unit label (kg, hr))
-* [ ] Confirm summary calculations using a spreadsheet
-* [x] Fix scale on predicted vs. actual chart
-
-- [ ] Fix case of zero appliances. It should revert to the original HOMER file values (set appliance loads to zero)
-
-- [ ] TODO: Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
-- [ ] for productionUnitType use semantic UI's "Allow Additions" dropdown
+Misc:
+- [ ] Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
+- [ ] For productionUnitType use semantic UI's "Allow Additions" dropdown
 - [ ] On next deploy, delete the NODE_PATH config var: https://dashboard.heroku.com/apps/microgrid-appliance-analysis/settings
-- [x] Fix broken ancillary equipment list
 - [ ] Keep appliance spinner going until it's actually clickable
-- [x] Calculate grid and appliance ROI
-- [x] Calculate grid and appliance Payback
-- [x] Assign appliance cost to either grid owner or grid operator
 - [ ] Add commas to results numbers
 - [ ] Find logging library that replaces 'throw'
-- [x] Use `label` and `description` all over the app. Then I can just use a spread operator
 - [ ] Add Appliance upload section
   - [ ] Input for cost for appliance
   - [ ] Require appliance file to have certain columns
 - [ ] Add app icon
-- [ ] Fix Re-Train Model button
 
 ## Upload HOMER files
 
