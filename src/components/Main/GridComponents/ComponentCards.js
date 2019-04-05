@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer } from 'mobx-react'
-import { Card, Table } from 'semantic-ui-react'
+import { Card, Table, Divider } from 'semantic-ui-react'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
 // -----------------------------------------------------------------------------
@@ -63,32 +63,35 @@ function compatibilityDisplay(val) {
 
 export const GridCard = observer(({ grid, expanded }) => {
   return (
-    <Card fluid href="/files/homer">
-      <Card.Content header={grid.label} style={{ backgroundColor: '#F9FAFB' }} />
-      <Card.Content description={grid.description} />
-      {expanded && (
-        <Card.Content>
-          <Table basic="very" celled>
-            <Table.Body>
-              {_.map(gridFields, field => {
-                return (
-                  <Table.Row key={field}>
-                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
-                    <Table.Cell>{grid[field]}</Table.Cell>
-                  </Table.Row>
-                )
-              })}
-            </Table.Body>
-          </Table>
-        </Card.Content>
-      )}
-      {expanded && (
-        <Card.Content extra>
-          File Type: {grid.fileInfo.fileType}
-          {grid.fileInfo.isSample ? ', Sample File' : ', Imported File'}
-        </Card.Content>
-      )}
-    </Card>
+    <div>
+      <Divider horizontal>Active Grid</Divider>
+      <Card fluid href="/files/homer">
+        <Card.Content header={grid.label} style={{ backgroundColor: '#F9FAFB' }} />
+        <Card.Content description={grid.description} />
+        {expanded && (
+          <Card.Content>
+            <Table basic="very" celled>
+              <Table.Body>
+                {_.map(gridFields, field => {
+                  return (
+                    <Table.Row key={field}>
+                      <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                      <Table.Cell>{grid[field]}</Table.Cell>
+                    </Table.Row>
+                  )
+                })}
+              </Table.Body>
+            </Table>
+          </Card.Content>
+        )}
+        {expanded && (
+          <Card.Content extra>
+            File Type: {grid.fileInfo.fileType}
+            {grid.fileInfo.isSample ? ', Sample File' : ', Imported File'}
+          </Card.Content>
+        )}
+      </Card>
+    </div>
   )
 })
 

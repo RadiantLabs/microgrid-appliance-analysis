@@ -1,6 +1,6 @@
 import * as React from 'react'
 import _ from 'lodash'
-import { Grid, Header, Button } from 'semantic-ui-react'
+import { Grid, Button, Divider } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { GridCard, ApplianceCard, AncillaryEquipmentCard } from './ComponentCards'
 import LoaderSpinner from '../../../components/Elements/Loader'
@@ -22,10 +22,7 @@ class GridComponents extends React.Component {
     return (
       <Grid>
         <Grid.Row>
-          <Grid.Column width={8}>
-            {/*<Header as="h4">Enabled Grid Components</Header>*/}
-          </Grid.Column>
-          <Grid.Column width={8}>
+          <Grid.Column width={16}>
             <Button.Group basic compact style={{ float: 'right' }}>
               <Button
                 onClick={this.handleExpandedClick.bind(null, false)}
@@ -43,32 +40,16 @@ class GridComponents extends React.Component {
 
         <Grid.Row>
           <Grid.Column width={6}>
-            <Header as="h3" textAlign="center">
-              Active Grid
-            </Header>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Header as="h3" textAlign="center">
-              Enabled Appliances
-            </Header>
-          </Grid.Column>
-          <Grid.Column width={5}>
-            <Header as="h3" textAlign="center">
-              Enabled Ancillary Equipment
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-
-        <Grid.Row>
-          <Grid.Column width={6}>
             <GridCard grid={activeGrid} expanded={expanded} />
           </Grid.Column>
+
           <Grid.Column width={10}>
-            {_.map(enabledAppliances, appliance => {
+            {_.map(enabledAppliances, (appliance, applianceIndex) => {
               return (
                 <ApplianceGrid
                   key={appliance.fileInfo.id}
                   appliance={appliance}
+                  applianceIndex={applianceIndex}
                   expanded={expanded}
                 />
               )
@@ -83,26 +64,29 @@ class GridComponents extends React.Component {
 export default inject('store')(observer(GridComponents))
 
 const ApplianceGrid = inject('store')(
-  observer(({ store, appliance, expanded }) => {
+  observer(({ store, appliance, applianceIndex, expanded }) => {
     return (
-      <Grid style={{ marginBottom: '30px' }}>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <ApplianceCard appliance={appliance} expanded={expanded} />
-          </Grid.Column>
-          <Grid.Column width={8}>
-            {_.map(appliance.enabledAncillaryEquipment, equipment => {
-              return (
-                <AncillaryEquipmentCard
-                  equipment={equipment}
-                  key={equipment.label}
-                  expanded={expanded}
-                />
-              )
-            })}
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div>
+        <Divider horizontal>Enabled Appliance {applianceIndex + 1} & Ancillary Equipment</Divider>
+        <Grid style={{ marginBottom: '30px' }}>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <ApplianceCard appliance={appliance} expanded={expanded} />
+            </Grid.Column>
+            <Grid.Column width={8}>
+              {_.map(appliance.enabledAncillaryEquipment, equipment => {
+                return (
+                  <AncillaryEquipmentCard
+                    equipment={equipment}
+                    key={equipment.label}
+                    expanded={expanded}
+                  />
+                )
+              })}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     )
   })
 )
