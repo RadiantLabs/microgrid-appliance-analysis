@@ -57,7 +57,6 @@ export function calcHybridColumns(grid, summedAppliances) {
     // == Calculate Unmet Load =================================================
     // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
     const originalUnmetLoad = _.round(homerRow['Original Unmet Electrical Load'], 6)
-    const additionalUnmetLoad = newUnmetLoad - originalUnmetLoad
 
     // =========================================================================
     result.push({
@@ -75,7 +74,6 @@ export function calcHybridColumns(grid, summedAppliances) {
 
       // See note in README.md about how many decimal places to round unmet load
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
-      additionalUnmetLoad: _.round(additionalUnmetLoad, 1),
       newUnmetLoad: _.round(newUnmetLoad, 1),
 
       newExcessProduction: _.round(newExcessProduction, 4),

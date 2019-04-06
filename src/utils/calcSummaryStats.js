@@ -25,20 +25,11 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     'originalUnmetLoad'
   )
 
-  // Unmet Loads: Additional Appliance
-  const additionalUnmetLoadCount = countGreaterThanZero(combinedTable, 'additionalUnmetLoad')
-  const additionalUnmetLoadCountPercent = percentOfYear(additionalUnmetLoadCount)
-  const additionalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'additionalUnmetLoad')
-  const additionalUnmetLoadHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hour_of_day',
-    'additionalUnmetLoad'
-  )
-
   // Unmet Loads: Total with new appliance
   const newUnmetLoadCount = countGreaterThanZero(combinedTable, 'newUnmetLoad')
   const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
   const newUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newUnmetLoad')
+
   const newUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
     'hour_of_day',
@@ -48,7 +39,6 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const allUnmetLoadHist = mergeArraysOfObjects(
     'hour_of_day',
     originalUnmetLoadHist,
-    additionalUnmetLoadHist,
     newUnmetLoadHist
   )
 
@@ -64,7 +54,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const newApplianceElectricityCost = newApplianceYearlyKwh * grid['wholesaleElectricityCost']
 
   // Cost to grid operator of new appliance's unmet load
-  const newApplianceUnmetLoadCost = additionalUnmetLoadSum * grid['unmetLoadCostPerKwh']
+  const newApplianceUnmetLoadCost = newUnmetLoadSum * grid['unmetLoadCostPerKwh']
 
   const newApplianceNetGridRevenue =
     newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
@@ -112,11 +102,6 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     originalUnmetLoadCountPercent,
     originalUnmetLoadSum: _.round(originalUnmetLoadSum),
     originalUnmetLoadHist,
-
-    additionalUnmetLoadCount,
-    additionalUnmetLoadCountPercent,
-    additionalUnmetLoadSum: _.round(additionalUnmetLoadSum),
-    additionalUnmetLoadHist,
 
     newUnmetLoadCount,
     newUnmetLoadCountPercent,

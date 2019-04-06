@@ -35,11 +35,6 @@ class UnmetLoads extends React.Component {
               dataKey="originalUnmetLoad"
               fill={getChartColors('originalUnmetLoad')}
             />
-            <Bar
-              stackId="a"
-              dataKey="additionalUnmetLoad"
-              fill={getChartColors('additionalUnmetLoad')}
-            />
             <Bar dataKey="newUnmetLoad" fill={getChartColors('newUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>

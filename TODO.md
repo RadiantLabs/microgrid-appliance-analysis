@@ -6,17 +6,16 @@ Before Launch:
 - Misc
 - [x] Put popover on Grid Components view that shows the internal variable
 - [x] Make battery min and max editable
-- [ ] Decide if I need to calculate
-  - [ ] availableCapacity
-  - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
+- [x] Decide if I need to calculate availableCapacity (answer: no - because it may be more misleading than useful)
 - [ ] Put blue outline around all boxes in the Grid Components view
 
 - Charts:
 - [ ] Fix Unmet load chart to exclude the additional piece
-- [ ] Show excess load in charts
+- [x] Show Excess Load in battery energy content charts
 - [ ] Sum excess load over year
-- [ ] Fix battery charge charts
+- [x] Fix battery charge charts
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
+- [ ] New color scheme for all charts
 
 - Loading HOMER files:
 - [ ] Columns to check for in HOMER import

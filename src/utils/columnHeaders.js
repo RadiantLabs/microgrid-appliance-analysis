@@ -13,7 +13,7 @@ export const hybridColumnHeaderUnits = [
   ['availableCapacityAfterNewLoad', 'kW'],
   ['batteryEnergyContent', 'kWh'],
   ['originalUnmetLoad', 'kW'],
-  ['additionalUnmetLoad', 'kW'],
+  // ['additionalUnmetLoad', 'kW'],
   ['newUnmetLoad', 'kW'],
   ['newExcessProduction', 'kW'],
 ]
