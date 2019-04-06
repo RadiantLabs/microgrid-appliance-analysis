@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Header } from 'semantic-ui-react'
+import { Header, Table } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
+import { formatDateForTable } from '../../../utils/helpers'
 import {
   XAxis,
   YAxis,
@@ -13,6 +14,7 @@ import {
   Area,
   ReferenceLine,
 } from 'recharts'
+import { chartColorsByKey } from '../../../utils/constants'
 
 class BatteryEnergyContent extends React.Component {
   render() {
@@ -24,10 +26,6 @@ class BatteryEnergyContent extends React.Component {
     const brushStartDomain = [0, 200]
     return (
       <div>
-        {/*<h3>
-          Battery Energy Content by hour of year <small style={{ color: greyColors[1] }}>kWh</small>
-        </h3>*/}
-
         <ChartHeader title="Excess Production" />
         <ResponsiveContainer minWidth={1000} minHeight={100} height="90%">
           <AreaChart
@@ -37,13 +35,14 @@ class BatteryEnergyContent extends React.Component {
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
-            <Tooltip />
+            <Tooltip content={<CustomToolTip field="newExcessProduction" />} />
             <Area
               type="monotone"
               dataKey="newExcessProduction"
               stroke={'rgb(102, 102, 102)'}
               strokeWidth={0.5}
-              fill="#82ca9d"
+              fill={chartColorsByKey['newExcessProduction']}
+              fillOpacity="1"
             />
             <Brush startIndex={brushStartDomain[0]} endIndex={brushStartDomain[1]} height={0} />
           </AreaChart>
@@ -59,24 +58,35 @@ class BatteryEnergyContent extends React.Component {
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />
             <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
-            <Tooltip />
+            <Tooltip content={<CustomToolTip field="batteryEnergyContent" />} />
             <Area
               type="monotone"
               dataKey="batteryEnergyContent"
               stroke={'rgb(102, 102, 102)'}
               strokeWidth={0.5}
-              fill="#8884d8"
-            />
-            <ReferenceLine
-              y={batteryMinEnergyContent}
-              stroke="red"
-              label={`Min Battery Energy Content: ${_.round(batteryMinEnergyContent, 2)}`}
-              strokeDasharray="3 3"
+              fill={chartColorsByKey['batteryEnergyContent']}
+              fillOpacity="1"
             />
             <ReferenceLine
               y={batteryMaxEnergyContent}
-              label={`Max Battery Energy Content: ${_.round(batteryMaxEnergyContent, 2)}`}
-              stroke="red"
+              label={{
+                position: 'top',
+                value: `Max Battery Energy Content: ${_.round(batteryMaxEnergyContent, 2)}`,
+                fontWeight: 500,
+                textStroke: '2px white',
+              }}
+              stroke={chartColorsByKey['newExcessProduction']}
+              strokeDasharray="3 3"
+            />
+            <ReferenceLine
+              y={batteryMinEnergyContent}
+              stroke={chartColorsByKey['newUnmetLoad']}
+              label={{
+                position: 'top',
+                value: `Min Battery Energy Content: ${_.round(batteryMinEnergyContent, 2)}`,
+                fontWeight: 500,
+                textStroke: '2px white',
+              }}
               strokeDasharray="3 3"
             />
             <Brush
@@ -97,13 +107,14 @@ class BatteryEnergyContent extends React.Component {
             syncId="anyId"
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
-            <Tooltip />
+            <Tooltip content={<CustomToolTip field="newUnmetLoad" />} />
             <Area
               type="monotone"
               dataKey="newUnmetLoad"
               stroke={'rgb(102, 102, 102)'}
               strokeWidth={0.5}
-              fill="#ffc658"
+              fill={chartColorsByKey['newUnmetLoad']}
+              fillOpacity="1"
             />
             <Brush startIndex={brushStartDomain[0]} endIndex={brushStartDomain[1]} gap={5} />
           </AreaChart>
@@ -115,6 +126,8 @@ class BatteryEnergyContent extends React.Component {
 
 export default inject('store')(observer(BatteryEnergyContent))
 
+//
+// -----------------------------------------------------------------------------
 const chartLabelStyle = {
   marginLeft: '60px',
   marginTop: '10px',
@@ -126,5 +139,30 @@ const ChartHeader = ({ title }) => {
     <Header as="h3" style={chartLabelStyle}>
       {title}
     </Header>
+  )
+}
+
+const CustomToolTip = ({ active, payload, label, field }) => {
+  if (!active || _.isEmpty(payload)) {
+    return null
+  }
+
+  const { datetime } = payload[0]['payload']
+  const val = payload[0]['payload'][field]
+  return (
+    <div className="custom-tooltip">
+      {field === 'newExcessProduction' && <p className="label">Hour of Year: {label}</p>}
+      {field === 'newExcessProduction' && (
+        <p className="label">Date: {formatDateForTable(datetime)}</p>
+      )}
+      <Table basic="very" compact>
+        <Table.Body>
+          <Table.Row>
+            <Table.HeaderCell>{field}</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">{val} kWh</Table.HeaderCell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    </div>
   )
 }
