@@ -4,8 +4,8 @@ Ancillary Equipment
 
 Before Launch:
 - Misc
-- [ ] Put popover on Grid Components view that shows the internal variable
-- [ ] Make battery min and max editable
+- [x] Put popover on Grid Components view that shows the internal variable
+- [x] Make battery min and max editable
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)

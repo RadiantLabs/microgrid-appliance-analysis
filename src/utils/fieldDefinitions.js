@@ -196,10 +196,28 @@ export const fieldDefinitions = {
   batteryMinEnergyContent: {
     $schema: jsonSchemaStandard,
     title: 'Battery Min Energy Content',
+    type: 'float',
+    units: 'kWh',
+  },
+  batteryEstimatedMinEnergyContent: {
+    $schema: jsonSchemaStandard,
+    title: 'Estimated Battery Min Energy Content',
+    description: 'Calculated by looking at average mininum values in the HOMER file.',
+    type: 'float',
+    units: 'kWh',
   },
   batteryMaxEnergyContent: {
     $schema: jsonSchemaStandard,
     title: 'Battery Max Energy Content',
+    type: 'float',
+    units: 'kWh',
+  },
+  batteryEstimatedMaxEnergyContent: {
+    $schema: jsonSchemaStandard,
+    title: 'Estimated Battery Max Energy Content',
+    description: 'Calculated by looking at average maximum values in the HOMER file.',
+    type: 'float',
+    units: 'kWh',
   },
   applianceType: {
     $schema: jsonSchemaStandard,

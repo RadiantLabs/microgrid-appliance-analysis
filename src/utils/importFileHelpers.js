@@ -201,15 +201,18 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   const unmetLoadHours = _.filter(fileData, row => {
     return _.round(row['Original Unmet Electrical Load'], 5) > 0
   })
-  const batteryMinEnergyContent = findColAverage(unmetLoadHours, 'Original Battery Energy Content')
-  const batteryMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
+  const batteryEstimatedMinEnergyContent = findColAverage(
+    unmetLoadHours,
+    'Original Battery Energy Content'
+  )
+  const batteryEstimatedMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
   const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
   const batteryMinSoC = findColMin(fileData, 'Original Battery State of Charge')
 
   const withCalculatedColumns = calculateNewHomerColumns({
     fileData,
-    batteryMinEnergyContent,
-    batteryMaxEnergyContent,
+    batteryMinEnergyContent: batteryEstimatedMinEnergyContent,
+    batteryMaxEnergyContent: batteryEstimatedMaxEnergyContent,
   })
   return {
     // TODO NEXT: See where this file returns to and integrate it into the gridmodel
@@ -223,8 +226,8 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
     generatorType,
     batteryMaxSoC: _.round(batteryMaxSoC, 2),
     batteryMinSoC: _.round(batteryMinSoC, 2),
-    batteryMaxEnergyContent: _.round(batteryMaxEnergyContent, 4),
-    batteryMinEnergyContent: _.round(batteryMinEnergyContent, 4),
+    batteryEstimatedMaxEnergyContent: _.round(batteryEstimatedMaxEnergyContent, 4),
+    batteryEstimatedMinEnergyContent: _.round(batteryEstimatedMinEnergyContent, 4),
   }
 }
 

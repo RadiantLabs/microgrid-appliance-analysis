@@ -37,6 +37,8 @@ export const GridStore = types
     batteryMaxSoC: types.maybeNull(types.number),
     batteryMinEnergyContent: types.maybeNull(types.number),
     batteryMaxEnergyContent: types.maybeNull(types.number),
+    batteryEstimatedMinEnergyContent: types.maybeNull(types.number),
+    batteryEstimatedMaxEnergyContent: types.maybeNull(types.number),
 
     // Temporary UI state variables. Maybe move into volatile state?
     fileIsSelected: types.boolean,
@@ -123,8 +125,17 @@ export const GridStore = types
         self.generatorType = analyzedFile.generatorType
         self.batteryMinSoC = analyzedFile.batteryMinSoC
         self.batteryMaxSoC = analyzedFile.batteryMaxSoC
-        self.batteryMinEnergyContent = analyzedFile.batteryMinEnergyContent
-        self.batteryMaxEnergyContent = analyzedFile.batteryMaxEnergyContent
+        self.batteryEstimatedMinEnergyContent = analyzedFile.batteryEstimatedMinEnergyContent
+        self.batteryEstimatedMaxEnergyContent = analyzedFile.batteryEstimatedMaxEnergyContent
+        self.batteryMinEnergyContent = analyzedFile.batteryEstimatedMinEnergyContent
+        self.batteryMaxEnergyContent = analyzedFile.batteryEstimatedMaxEnergyContent
+        self.modelInputValues = {
+          ...self.modelInputValues,
+          ...{
+            batteryMinEnergyContent: analyzedFile.batteryEstimatedMinEnergyContent,
+            batteryMaxEnergyContent: analyzedFile.batteryEstimatedMaxEnergyContent,
+          },
+        }
         self.isAnalyzingFile = false
       })
     },
@@ -186,6 +197,8 @@ export const initialGridState = {
   batteryMaxSoC: null,
   batteryMinEnergyContent: null,
   batteryMaxEnergyContent: null,
+  batteryEstimatedMinEnergyContent: null,
+  batteryEstimatedMaxEnergyContent: null,
   batteryModelSaved: false,
   fileIsSelected: false,
   isAnalyzingFile: false,

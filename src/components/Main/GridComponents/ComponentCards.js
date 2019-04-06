@@ -17,7 +17,9 @@ const gridFields = [
   'retailElectricityPrice',
   'unmetLoadCostPerKwh',
   'batteryMinEnergyContent',
+  'batteryEstimatedMinEnergyContent',
   'batteryMaxEnergyContent',
+  'batteryEstimatedMaxEnergyContent',
 ]
 
 const applianceFields = [

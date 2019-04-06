@@ -22,6 +22,7 @@ const HomerFormFields = ({ store }) => {
             <InputField fieldKey="label" modelInstance={viewedGrid} />
           </Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             {fieldDefinitions['description'].title}{' '}
@@ -34,11 +35,12 @@ const HomerFormFields = ({ store }) => {
             <InputField fieldKey="description" modelInstance={viewedGrid} />
           </Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             {fieldDefinitions['wholesaleElectricityCost'].title}{' '}
             <HelperPopup
-              content={fieldDefinitions['wholesaleElectricityCost'].wholesaleElectricityCost}
+              content={fieldDefinitions['wholesaleElectricityCost'].description}
               position="right center"
             />
           </Table.Cell>
@@ -46,12 +48,40 @@ const HomerFormFields = ({ store }) => {
             <InputField fieldKey="wholesaleElectricityCost" modelInstance={viewedGrid} />
           </Table.Cell>
         </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['batteryMinEnergyContent'].title}{' '}
+            <HelperPopup
+              content={fieldDefinitions['batteryMinEnergyContent'].description}
+              position="right center"
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="batteryMinEnergyContent" modelInstance={viewedGrid} />
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['batteryMaxEnergyContent'].title}{' '}
+            <HelperPopup
+              content={fieldDefinitions['batteryMaxEnergyContent'].description}
+              position="right center"
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="batteryMaxEnergyContent" modelInstance={viewedGrid} />
+          </Table.Cell>
+        </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             Power Type <HelperPopup content={'AC ⚡ DC'} position="right center" />
           </Table.Cell>
           <Table.Cell>{viewedGrid.powerType}</Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             Battery Type{' '}
@@ -64,6 +94,7 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>{viewedGrid.batteryType}</Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             PV Type{' '}
@@ -76,6 +107,7 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>{viewedGrid.pvType}</Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>
             Generator Type{' '}
@@ -88,12 +120,14 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>{viewedGrid.generatorType}</Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>File Upload Warnings </Table.Cell>
           <Table.Cell>
             <FileUploadErrors fileErrors={fileWarnings} />
           </Table.Cell>
         </Table.Row>
+
         <Table.Row>
           <Table.Cell>File Upload Errors </Table.Cell>
           <Table.Cell>
