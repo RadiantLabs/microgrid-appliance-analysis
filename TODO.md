@@ -1,6 +1,6 @@
 Ancillary Equipment
 - [x] Add ancillary equipment capex to summary calculations
-- [ ] Hook up capex assignment for ancillary equipment
+- [x] Hook up capex assignment for ancillary equipment
 
 Before Launch:
 - Misc

@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { observer } from 'mobx-react'
 import { Card, Table, Divider } from 'semantic-ui-react'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
+import { HelperPopup } from '../../../components/Elements/HelperPopup'
 
 // -----------------------------------------------------------------------------
 // Cards
@@ -61,6 +62,20 @@ function compatibilityDisplay(val) {
   }
 }
 
+const PopupContent = ({ field }) => {
+  const description = fieldDefinitions[field].description
+  return (
+    <div>
+      {description && <p>{description}</p>}
+      <p>
+        Internal Field Name:
+        <br />
+        <code>{field}</code>
+      </p>
+    </div>
+  )
+}
+
 export const GridCard = observer(({ grid, expanded }) => {
   return (
     <div>
@@ -75,7 +90,13 @@ export const GridCard = observer(({ grid, expanded }) => {
                 {_.map(gridFields, field => {
                   return (
                     <Table.Row key={field}>
-                      <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                      <Table.Cell>
+                        {fieldDefinitions[field].title}{' '}
+                        <HelperPopup
+                          content={<PopupContent field={field} />}
+                          position="right center"
+                        />
+                      </Table.Cell>
                       <Table.Cell>{grid[field]}</Table.Cell>
                     </Table.Row>
                   )
@@ -107,7 +128,13 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
               {_.map(applianceFields, field => {
                 return (
                   <Table.Row key={field}>
-                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                    <Table.Cell>
+                      {fieldDefinitions[field].title}{' '}
+                      <HelperPopup
+                        content={<PopupContent field={field} />}
+                        position="right center"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {fieldDefinitions[field].type === 'boolean'
                         ? booleanDisplay(appliance[field])
@@ -142,11 +169,17 @@ export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
               {_.map(ancillaryEquipmentFields, field => {
                 return (
                   <Table.Row key={field}>
-                    <Table.Cell>{fieldDefinitions[field].title}</Table.Cell>
+                    <Table.Cell>
+                      {fieldDefinitions[field].title}{' '}
+                      <HelperPopup
+                        content={<PopupContent field={field} />}
+                        position="right center"
+                      />
+                    </Table.Cell>
                     <Table.Cell>
                       {field === 'compatibility'
                         ? compatibilityDisplay(equipment[field])
-                        : equipment[field]}
+                        : equipment[field]}{' '}
                     </Table.Cell>
                   </Table.Row>
                 )
