@@ -1,22 +1,38 @@
 Ancillary Equipment
-- [ ] Add ancillary equipment capex to summary calculations
-- [ ] Hook up capex assignment for ancillary equipment 
+- [x] Add ancillary equipment capex to summary calculations
+- [ ] Hook up capex assignment for ancillary equipment
 
-Misc:
-- [ ] Fix Unmet load chart to exclude the additional piece
-- [ ] Fix battery charge charts
+Before Launch:
+- Misc
+- [ ] Put popover on Grid Components view that shows the internal variable
 - [ ] Make battery min and max editable
-
-- [ ] Columns to check for in HOMER import
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
-- [ ] Create FAQ in app and/or repo
+
+- Charts:
+- [ ] Fix Unmet load chart to exclude the additional piece
+- [ ] Show excess load in charts
+- [ ] Sum excess load over year
+- [ ] Fix battery charge charts
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
+
+- Loading HOMER files:
+- [ ] Columns to check for in HOMER import
+- [ ] Debug HOMER uploads
+- [ ] Save uploaded files to local forage
+- [ ] Bootstrap from local forage
+
+- Loading Appliance files:
 - [ ] Hook up appliance upload section
-- [ ] Save files and bootstrap from local storage
+- [ ] Require filing out appliance attributes on file upload
+- [ ] Save appliance without enabling
+- [ ] Document kw_factor
+
+
 
 Possible Future Features
+- [ ] Create FAQ in app and/or repo
 - [ ] TOU
 - [ ] Line losses
 - [ ] Appliance lifetime
@@ -25,13 +41,9 @@ Possible Future Features
 - [ ] Show value to customer vs. their existing kit (electricity versus if a customer is using a diesel generator or engine)
 
 Notes from meeting:
-- [ ] Require filing out appliance attributes on file upload
-- [ ] Save appliance without enabling
 - [ ] Amanda will do basic sanity check calculations
 - [ ] Amanda review question marks
 - [ ] Amanda: tell what min/max state of charge for each type of battery
-- [ ] Document kw_factor
-- [ ] Research if battery min/max should be editable
 
 Misc:
 - [ ] Document how onModelInputChange works. Include initialization step where modelInputValues need to be populated
