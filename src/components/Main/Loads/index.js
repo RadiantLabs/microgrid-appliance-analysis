@@ -31,6 +31,7 @@ class LoadsByHour extends React.Component {
     }
     const { stackOffset } = this.state
     const { maxLoadValue, maxLoadFirstHour } = this.props.store.maxApplianceLoad
+    const yAxisDomainMax = _.ceil(maxLoadValue + maxLoadValue * 0.05, 2)
     return (
       <div>
         <Grid>
@@ -77,7 +78,7 @@ class LoadsByHour extends React.Component {
             stackOffset={stackOffset}
             margin={{ top: 40, right: 30, left: 0, bottom: 0 }}>
             <XAxis dataKey="hour" />
-            <YAxis />
+            <YAxis domain={stackOffset === 'none' ? [0, yAxisDomainMax] : null} />
             <Tooltip content={<CustomToolTip />} />
             <Area
               type="monotone"
@@ -108,7 +109,7 @@ class LoadsByHour extends React.Component {
             />
             <ReferenceLine
               y={maxLoadValue}
-              label="Max Appliance Load"
+              label={`Max Appliance Load: ${_.round(maxLoadValue, 2)}`}
               stroke="red"
               strokeDasharray="3 3"
             />

@@ -9,6 +9,7 @@ Before Launch:
 - [ ] Decide if I need to calculate
   - [ ] availableCapacity
   - [ ] availableCapacityAfterNewLoads (can I do a 100% chart?)
+- [ ] Put blue outline around all boxes in the Grid Components view
 
 - Charts:
 - [ ] Fix Unmet load chart to exclude the additional piece
