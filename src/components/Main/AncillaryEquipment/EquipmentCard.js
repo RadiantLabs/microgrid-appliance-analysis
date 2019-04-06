@@ -8,10 +8,6 @@ import InputField from '../../../components/Elements/InputField'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
 class EquipmentCard extends Component {
-  handleToggleChange = () => {
-    this.props.equipment.toggleEnabled()
-  }
-
   render() {
     if (_.isEmpty(this.props.equipment)) {
       return null
@@ -27,6 +23,9 @@ class EquipmentCard extends Component {
       estimatedCapex,
       estimatedEfficiency,
       parentApplianceSize,
+      capexAssignment,
+      hangleEnabledToggle,
+      handleCapexAssignmentChange,
     } = equipment
     const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
@@ -51,7 +50,7 @@ class EquipmentCard extends Component {
                     label={toggleLabel}
                     checked={enabled}
                     // disabled={isRequired ? true : null}
-                    onChange={this.handleToggleChange}
+                    onChange={hangleEnabledToggle}
                   />
                 </div>
               </Grid.Column>
@@ -129,18 +128,18 @@ class EquipmentCard extends Component {
                                 <Form.Radio
                                   label="Appliance Owner"
                                   name="radioGroup"
-                                  value="this"
-                                  checked={true}
-                                  onChange={this.handleChange}
+                                  value="appliance"
+                                  checked={capexAssignment === 'appliance'}
+                                  onChange={handleCapexAssignmentChange}
                                 />
                               </Form.Field>
                               <Form.Field>
                                 <Form.Radio
                                   label="Grid Owner"
                                   name="radioGroup"
-                                  value="that"
-                                  checked={false}
-                                  onChange={this.handleChange}
+                                  value="grid"
+                                  checked={capexAssignment === 'grid'}
+                                  onChange={handleCapexAssignmentChange}
                                 />
                               </Form.Field>
                             </div>

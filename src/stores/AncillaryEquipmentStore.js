@@ -87,8 +87,13 @@ export const AncillaryEquipmentStore = types
     },
 
     // Set from checkboxes in UI
-    toggleEnabled() {
+    hangleEnabledToggle() {
       self.enabled = !self.enabled
+    },
+
+    handleCapexAssignmentChange(event, data) {
+      event.preventDefault()
+      self.capexAssignment = data.value
     },
   }))
   .views(self => ({
