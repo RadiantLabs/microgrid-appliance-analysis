@@ -8,7 +8,10 @@ export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
     const newApplianceGridRevenue = _.get(stats, 'newApplianceGridRevenue', '-')
+    const totalCapexAssignedToGrid = _.get(stats, 'totalCapexAssignedToGrid', '-')
     const applianceCapexAssignedToGrid = _.get(stats, 'applianceCapexAssignedToGrid', '-')
+    const ancillaryCapexAssignedToGrid = _.get(stats, 'ancillaryCapexAssignedToGrid', '-')
+
     const newApplianceElectricityCost = _.get(stats, 'newApplianceElectricityCost', '-')
     const newApplianceUnmetLoadCost = _.get(stats, 'newApplianceUnmetLoadCost', '-')
     const newApplianceNetGridRevenue = _.get(stats, 'newApplianceNetGridRevenue', '-')
@@ -20,8 +23,16 @@ export const GridOperatorEconomicSummary = inject('store')(
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>CAPEX costs (due to new appliance)</Table.Cell>
+              <Table.Cell>CAPEX (Combined appliance & ancillary)</Table.Cell>
+              <Table.Cell>$ {totalCapexAssignedToGrid}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>CAPEX (from appliance)</Table.Cell>
               <Table.Cell>$ {applianceCapexAssignedToGrid}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>CAPEX (from ancillary equipment)</Table.Cell>
+              <Table.Cell>$ {ancillaryCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>

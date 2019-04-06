@@ -8,6 +8,7 @@ import {
   calculateRoi,
   calculatePayback,
 } from './helpers'
+import { calcAncillaryEquipmentCosts } from '../utils/calcAncillaryEquipmentCosts'
 
 export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(combinedTable) || _.isEmpty(enabledAppliances)) {
@@ -75,8 +76,17 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const appliancesWithCapexAssignedToAppliance = _.filter(enabledAppliances, appliance => {
     return appliance.capexAssignment === 'appliance'
   })
+
   const applianceCapexAssignedToAppliance = _.sumBy(appliancesWithCapexAssignedToAppliance, 'capex')
   const applianceCapexAssignedToGrid = _.sumBy(appliancesWithCapexAssignedToGrid, 'capex')
+  const {
+    ancillaryCapexAssignedToAppliance,
+    ancillaryCapexAssignedToGrid,
+  } = calcAncillaryEquipmentCosts(enabledAppliances)
+
+  const totalCapexAssignedToAppliance =
+    applianceCapexAssignedToAppliance + ancillaryCapexAssignedToAppliance
+  const totalCapexAssignedToGrid = applianceCapexAssignedToGrid + ancillaryCapexAssignedToGrid
 
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
@@ -88,18 +98,16 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const productionUnitType = calcProductionUnitType(enabledAppliances)
 
   // ROI and Payback
-  const applianceOwnerRoi = calculateRoi(
-    netApplianceOwnerRevenue,
-    applianceCapexAssignedToAppliance
-  )
-  const gridOwnerRoi = calculateRoi(netGridOwnerRevenue, applianceCapexAssignedToGrid)
+  const applianceOwnerRoi = calculateRoi(netApplianceOwnerRevenue, totalCapexAssignedToAppliance)
+  const gridOwnerRoi = calculateRoi(netGridOwnerRevenue, totalCapexAssignedToGrid)
 
   const applianceOwnerPayback = calculatePayback(
     netApplianceOwnerRevenue,
-    applianceCapexAssignedToAppliance
+    totalCapexAssignedToAppliance
   )
-  const gridOwnerPayback = calculatePayback(netGridOwnerRevenue, applianceCapexAssignedToGrid)
+  const gridOwnerPayback = calculatePayback(netGridOwnerRevenue, totalCapexAssignedToGrid)
   return {
+    // Unmet Load
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
     originalUnmetLoadSum: _.round(originalUnmetLoadSum),
@@ -114,7 +122,6 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     newUnmetLoadCountPercent,
     newUnmetLoadSum: _.round(newUnmetLoadSum),
     newUnmetLoadHist,
-
     allUnmetLoadHist,
 
     newApplianceYearlyKwh: _.round(newApplianceYearlyKwh),
@@ -130,9 +137,16 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
 
     yearlyProductionUnitsRevenue: _.round(yearlyProductionUnitsRevenue),
     netApplianceOwnerRevenue: _.round(netApplianceOwnerRevenue),
-    applianceCapexAssignedToGrid: _.round(applianceCapexAssignedToGrid),
-    applianceCapexAssignedToAppliance: _.round(applianceCapexAssignedToAppliance),
 
+    // Capex
+    applianceCapexAssignedToAppliance: _.round(applianceCapexAssignedToAppliance),
+    applianceCapexAssignedToGrid: _.round(applianceCapexAssignedToGrid),
+    ancillaryCapexAssignedToAppliance: _.round(ancillaryCapexAssignedToAppliance),
+    ancillaryCapexAssignedToGrid: _.round(ancillaryCapexAssignedToGrid),
+    totalCapexAssignedToAppliance: _.round(totalCapexAssignedToAppliance),
+    totalCapexAssignedToGrid: _.round(totalCapexAssignedToGrid),
+
+    // ROI & Payback
     applianceOwnerRoi: _.round(applianceOwnerRoi),
     gridOwnerRoi: _.round(gridOwnerRoi),
     applianceOwnerPayback: _.round(applianceOwnerPayback, 2),

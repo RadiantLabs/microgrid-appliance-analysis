@@ -10,7 +10,9 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
     const newApplianceElectricityCost = _.get(stats, 'newApplianceGridRevenue', '-')
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
     const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
+    const totalCapexAssignedToAppliance = _.get(stats, 'totalCapexAssignedToAppliance', '-')
     const applianceCapexAssignedToAppliance = _.get(stats, 'applianceCapexAssignedToAppliance', '-')
+    const ancillaryCapexAssignedToAppliance = _.get(stats, 'ancillaryCapexAssignedToAppliance', '-')
     const applianceOwnerRoi = _.get(stats, 'applianceOwnerRoi', '-')
     const applianceOwnerPayback = _.get(stats, 'applianceOwnerPayback', '-')
     return (
@@ -19,9 +21,18 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>CAPEX</Table.Cell>
+              <Table.Cell>CAPEX (Combined)</Table.Cell>
+              <Table.Cell>$ {totalCapexAssignedToAppliance}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>CAPEX (Appliance)</Table.Cell>
               <Table.Cell>$ {applianceCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
+            <Table.Row>
+              <Table.Cell>CAPEX (Ancillary Equipment)</Table.Cell>
+              <Table.Cell>$ {ancillaryCapexAssignedToAppliance}</Table.Cell>
+            </Table.Row>
+
             <Table.Row>
               <Table.Cell>Appliance Electricity Cost</Table.Cell>
               <Table.Cell>$ {newApplianceElectricityCost}</Table.Cell>

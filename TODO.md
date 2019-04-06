@@ -1,5 +1,6 @@
 Ancillary Equipment
 - [ ] Add ancillary equipment capex to summary calculations
+- [ ] Hook up capex assignment for ancillary equipment 
 
 Misc:
 - [ ] Fix Unmet load chart to exclude the additional piece

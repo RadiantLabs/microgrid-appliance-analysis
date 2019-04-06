@@ -250,8 +250,8 @@ let initialMainState = {
     return ApplianceStore.create({
       ...initialApplianceState,
 
-      enabled: applianceInfo.id === enabledApplianceFileId,
-      // enabled: true,
+      // enabled: applianceInfo.id === enabledApplianceFileId,
+      enabled: true, // for debugging
 
       ...{ applianceType: applianceInfo.applianceType },
       ...{ ...applianceInfo.attributes },
