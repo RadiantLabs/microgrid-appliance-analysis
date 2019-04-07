@@ -21,6 +21,7 @@
 /* -----------------------------------------------------------------------------
  * Misc
  * -------------------------------------------------------------------------- */
+/* Active outline for multi-segment cards */
 .activeFileBorderNoBottom {
   border-top: 1px solid rgb(33, 133, 208) !important;
   border-left: 1px solid rgb(33, 133, 208) !important;
@@ -31,6 +32,11 @@
   border-bottom: 1px solid rgb(33, 133, 208) !important;
   border-left: 1px solid rgb(33, 133, 208) !important;
   border-right: 1px solid rgb(33, 133, 208) !important;
+}
+
+/* Active outline for single cards, like ancillary equipment */
+.activeCardBorder {
+  outline: 1px solid rgb(33, 133, 208);
 }
 
 /* Remove all borders from tables */

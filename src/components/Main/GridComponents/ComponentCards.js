@@ -82,7 +82,7 @@ export const GridCard = observer(({ grid, expanded }) => {
   return (
     <div>
       <Divider horizontal>Active Grid</Divider>
-      <Card fluid href="/files/homer">
+      <Card fluid href="/files/homer" className="activeCardBorder">
         <Card.Content header={grid.label} style={{ backgroundColor: '#F9FAFB' }} />
         <Card.Content description={grid.description} />
         {expanded && (
@@ -120,7 +120,7 @@ export const GridCard = observer(({ grid, expanded }) => {
 
 export const ApplianceCard = observer(({ appliance, expanded }) => {
   return (
-    <Card fluid href="/files/appliance">
+    <Card fluid href="/files/appliance" className="activeCardBorder">
       <Card.Content header={appliance.label} style={{ backgroundColor: '#F9FAFB' }} />
       <Card.Content description={appliance.description} />
       {expanded && (
@@ -161,7 +161,7 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
 
 export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
   return (
-    <Card fluid href="/tool/ancillary">
+    <Card fluid href="/tool/ancillary" className="activeCardBorder">
       <Card.Content header={equipment.label} style={{ backgroundColor: '#F9FAFB' }} />
       <Card.Content description={equipment.description} />
       {expanded && (

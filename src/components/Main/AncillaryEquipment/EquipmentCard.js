@@ -30,7 +30,7 @@ class EquipmentCard extends Component {
     const isRequired = compatibility === 'required'
     const toggleLabel = isRequired ? 'Required' : enabled ? 'Enabled' : 'Enable'
     return (
-      <Card fluid style={enabled ? cardBorderStyles : {}}>
+      <Card fluid className={enabled ? 'activeCardBorder' : ''}>
         <Card.Content>
           <Grid>
             <Grid.Row>
@@ -161,9 +161,6 @@ class EquipmentCard extends Component {
 
 export default inject('store')(observer(EquipmentCard))
 
-const cardBorderStyles = {
-  outline: '1px solid #2185d0',
-}
 const estimatedValueStyles = {
   marginTop: '4px',
   fontStyle: 'italic',
