@@ -39,6 +39,7 @@ export const arrayInsert = (arr, item, index) => {
 
 export const checkKey = (table, key) => {
   if (!_.has(_.first(table), key)) {
+    // debugger
     throw new Error(`Can't find key: ${key}: Check calling function`)
   }
 }

@@ -1,16 +1,22 @@
 Before Launch:
 - Loading HOMER files:
 - [ ] Successfully upload and parse all example HOMER files
-  - [ ] biogas-PV-battery
-  - [ ] Wind-generator-PV-battery
-  - [ ] 2-2-13 Optimized AC LA-gen Output
-  - [ ] 5-11 Optimized AC Li-ion Output
-  - [ ] 4-26 Optimized DC Output
+  - [ ] biogas-PV-battery (± 28.92 %)
+  - [ ] Wind-generator-PV-battery [error: getPvType]
+  - [ ] 2-2-13 Optimized AC LA-gen Output [error: getPvType]
+  - [ ] 5-11 Optimized AC Li-ion Output [error: getPvType]
+  - [ ] 4-26 Optimized DC Output [error: getPvType]
   - [x] 12-50 Undersize 20 (± 4.31 %, skewed)
   - [x] 12-50 Oversize 20 App Default (± 2.75 %)
   - [x] Working Test Oversize 20 (± 2.75 %)
   - [x] 12-50 Baseline (± 3.15 %)
 
+- [ ] Look for `genset` to identify generator
+  - [ ] biogas-PV-battery
+
+- [ ] Add editable fields to grid file import
+  - [ ] Unmet Load Electricity Cost
+  - [ ] Retail Electricity Price
 - [ ] Make list of columns to check for when uploading HOMER import
 - [ ] Rerun battery error and chart data when uploading
 - [ ] Save uploaded files to local forage

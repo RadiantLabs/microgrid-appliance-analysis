@@ -2,71 +2,28 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import { findColMax, findColMin, findColAverage } from './helpers'
+import { findColMax, findColMin } from './helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
-export const csvOptions = { header: true, dynamicTyping: true, skipEmptyLines: true }
+import {
+  hasColumnHeaders,
+  getGridPowerType,
+  getPvType,
+  getBatteryType,
+  getGeneratorType,
+} from './columnDetectors'
+export const csvOptions = {
+  header: true,
+  dynamicTyping: true,
+  skipEmptyLines: true,
+  comments: 'sep=',
+}
 
 /**
  * Process files on import
  */
 function isFileCsv(fileType) {
   return fileType === 'text/csv'
-}
-
-function hasColumnHeaders(headers) {
-  const header4 = parseFloat(headers[3])
-  const header5 = parseFloat(headers[4])
-  return !_.isFinite(header4) && !_.isFinite(header5)
-}
-
-function getGridPowerType(headers) {
-  const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
-  const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))
-  if (hasDC && hasAC) {
-    // TODO: log errors for monitoring
-  }
-  return {
-    powerType: hasDC ? 'DC' : 'AC',
-    powerTypeErrors:
-      hasDC && hasAC
-        ? "This grid appears to have both AC and DC power types, which we don't currently support. Please contact support."
-        : null,
-  }
-}
-
-function getPvType(headers) {
-  const pvColumn = 'Angle of Incidence'
-  const header = _.find(headers, header => _.includes(header, pvColumn))
-  const pvType = _.trim(header.split(pvColumn)[0])
-  return {
-    pvType,
-    pvTypeErrors: _.isString(pvType)
-      ? null
-      : `Cannot determine PV type. Looking for a column called '___ ${pvColumn}'`,
-  }
-}
-
-function getBatteryType(headers) {
-  const batteryColumn = 'State of Charge'
-  const header = _.find(headers, header => _.includes(header, batteryColumn))
-  const batteryType = _.trim(header.split(batteryColumn)[0])
-  return {
-    batteryType,
-    batteryTypeErrors: _.isString(batteryType)
-      ? null
-      : `Cannot determine battery type. Looking for a column called '___ ${batteryColumn}'`,
-  }
-}
-
-function getGeneratorType(headers) {
-  const generatorColumn = 'Genset Power Output'
-  const header = _.find(headers, header => _.includes(header, generatorColumn))
-  const generatorType = header ? _.trim(header.split(generatorColumn)[0]) : 'Not Found'
-  return {
-    generatorType,
-    generatorTypeErrors: null,
-  }
 }
 
 /**
@@ -201,13 +158,18 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   // This seems to slowly lower over a year by about 1 kWh. So take all unmet load
   // hours and average the battery energy content over the course of a year.
   // That gets us within +/- 0.5 kWh.
-  const unmetLoadHours = _.filter(fileData, row => {
-    return _.round(row['Original Unmet Electrical Load'], 5) > 0
-  })
-  const batteryEstimatedMinEnergyContent = findColAverage(
-    unmetLoadHours,
-    'Original Battery Energy Content'
-  )
+
+  // const unmetLoadHours = _.filter(fileData, row => {
+  //   return _.round(row['Original Unmet Electrical Load'], 5) > 0
+  // })
+  // const batteryEstimatedMinEnergyContent = findColAverage(
+  //   unmetLoadHours,
+  //   'Original Battery Energy Content'
+  // )
+
+  // However, if we never have an unmet load, then the above calculation will fail.
+  // Going with simplest right now
+  const batteryEstimatedMinEnergyContent = findColMin(fileData, 'Original Battery Energy Content')
   const batteryEstimatedMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
   const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
   const batteryMinSoC = findColMin(fileData, 'Original Battery State of Charge')
