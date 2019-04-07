@@ -53,12 +53,12 @@ describe('predicts battery energy content given previous content and difference 
 
   test('Middle of the battery capacity with no chance of hitting the min or max of battery, so clamping wont take effect', () => {
     expect(predictBatteryEnergyContent(middleBoundsCharging)).toStrictEqual({
-      batteryEnergyContent: 79.3,
+      batteryEnergyContent: 79.2,
       newExcessProduction: 0,
       newUnmetLoad: 0,
     })
     expect(predictBatteryEnergyContent(middleBoundsDischarging)).toStrictEqual({
-      batteryEnergyContent: 59.3,
+      batteryEnergyContent: 59.4,
       newExcessProduction: 0,
       newUnmetLoad: 0,
     })
@@ -70,11 +70,11 @@ describe('predicts battery energy content given previous content and difference 
     expect(predictBatteryEnergyContent(lowerClamping)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMinEnergyContent,
       newExcessProduction: 0,
-      newUnmetLoad: 10.6,
+      newUnmetLoad: 10,
     })
     expect(predictBatteryEnergyContent(upperClamping)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMaxEnergyContent,
-      newExcessProduction: 9.1,
+      newExcessProduction: 10,
       newUnmetLoad: 0,
     })
   })

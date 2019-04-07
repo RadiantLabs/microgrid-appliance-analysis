@@ -1,6 +1,7 @@
 Before Launch:
 - Misc
-- [ ] Figure out newUnmetLoad and originalUnmetLoad
+- [ ] Figure out problem with newUnmetLoad and originalUnmetLoad
+  - [ ] Figure out what inputs HOMER uses to calculate it
   - [ ] What to keep (unmet load hours?)
   - [ ] Why is newUnmetLoad less than originalUnmetLoad
 
