@@ -21,20 +21,12 @@ class UnmetLoads extends React.Component {
           Unmet Loads by Hour of Day <small style={headerStyle}>kW for 1 hour</small>
         </h3>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-          <BarChart
-            // width={900}
-            // height={400}
-            data={allUnmetLoadHist}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <XAxis dataKey="hour_of_day" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar
-              stackId="a"
-              dataKey="originalUnmetLoad"
-              fill={getChartColors('originalUnmetLoad')}
-            />
+            <Bar dataKey="originalUnmetLoad" fill={greyColors[1]} />
             <Bar dataKey="newUnmetLoad" fill={getChartColors('newUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
