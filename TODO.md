@@ -1,16 +1,13 @@
-Ancillary Equipment
-- [x] Add ancillary equipment capex to summary calculations
-- [x] Hook up capex assignment for ancillary equipment
-
 Before Launch:
 - Misc
-- [x] Put popover on Grid Components view that shows the internal variable
-- [x] Make battery min and max editable
-- [x] Decide if I need to calculate availableCapacity (answer: no - because it may be more misleading than useful)
+- [ ] Figure out newUnmetLoad and originalUnmetLoad
+  - [ ] What to keep (unmet load hours?)
+  - [ ] Why is newUnmetLoad less than originalUnmetLoad
+
 - [ ] Put blue outline around all boxes in the Grid Components view
 
 - Charts:
-- [ ] Fix Unmet load chart to exclude the additional piece
+- [x] Fix Unmet load chart to exclude the additional piece
 - [x] Show Excess Load in battery energy content charts
 - [ ] Sum excess load over year
 - [x] Fix battery charge charts
