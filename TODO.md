@@ -1,20 +1,4 @@
 Before Launch:
-- Misc
-- [ ] Figure out problem with newUnmetLoad and originalUnmetLoad
-  - [ ] Figure out what inputs HOMER uses to calculate it
-  - [ ] What to keep (unmet load hours?)
-  - [ ] Why is newUnmetLoad less than originalUnmetLoad
-
-- [ ] Put blue outline around all boxes in the Grid Components view
-
-- Charts:
-- [x] Fix Unmet load chart to exclude the additional piece
-- [x] Show Excess Load in battery energy content charts
-- [ ] Sum excess load over year
-- [x] Fix battery charge charts
-- [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
-- [ ] New color scheme for all charts
-
 - Loading HOMER files:
 - [ ] Columns to check for in HOMER import
 - [ ] Debug HOMER uploads
@@ -27,6 +11,20 @@ Before Launch:
 - [ ] Save appliance without enabling
 - [ ] Document kw_factor
 
+- Unmet Load Problem:
+  - [ ] Make sure the prediction function is getting all of the combined load
+  - [ ] Figure out what inputs HOMER uses to calculate it
+  - [ ] What to keep (unmet load hours?)
+  - [ ] Why is newUnmetLoad less than originalUnmetLoad
+
+
+- Charts:
+- [ ] Sum excess load over year
+- [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
+- [ ] New color scheme for all charts
+- [ ] Make nicer legend for Loads chart
+- [ ] Do custom tooltip for Unmet Loads
+- [ ] Make hour and date be on 1 line for custom tooltip
 
 
 Possible Future Features

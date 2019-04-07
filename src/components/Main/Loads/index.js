@@ -15,6 +15,7 @@ import {
   ReferenceLine,
 } from 'recharts'
 import { formatDateForTable } from '../../../utils/helpers'
+import { chartColorsByKey } from '../../../utils/constants'
 
 class LoadsByHour extends React.Component {
   state = { stackOffset: 'none' }
@@ -84,33 +85,36 @@ class LoadsByHour extends React.Component {
               type="monotone"
               dataKey="Original Electrical Load Served"
               stackId="1"
-              stroke="#8884d8"
-              fill="#8884d8"
+              stroke={chartColorsByKey['Original Electrical Load Served']}
+              fill={chartColorsByKey['Original Electrical Load Served']}
+              fillOpacity="1"
             />
             <Area
               type="monotone"
               dataKey="newAppliancesLoad"
               stackId="1"
-              stroke="#82ca9d"
-              fill="#82ca9d"
+              stroke={chartColorsByKey['newAppliancesLoad']}
+              fill={chartColorsByKey['newAppliancesLoad']}
+              fillOpacity="1"
             />
             <Area
               type="monotone"
               dataKey="newAppliancesAncillaryLoad"
               stackId="1"
-              stroke="#ffc658"
-              fill="#ffc658"
+              stroke={chartColorsByKey['newAppliancesAncillaryLoad']}
+              fill={chartColorsByKey['newAppliancesAncillaryLoad']}
+              fillOpacity="1"
             />
             <ReferenceLine
               x={maxLoadFirstHour}
-              stroke="red"
+              stroke={chartColorsByKey['newAppliancesAncillaryLoad']}
               label="First Hour Max Load"
               strokeDasharray="3 3"
             />
             <ReferenceLine
               y={maxLoadValue}
               label={`Max Appliance Load: ${_.round(maxLoadValue, 2)}`}
-              stroke="red"
+              stroke={chartColorsByKey['newAppliancesAncillaryLoad']}
               strokeDasharray="3 3"
             />
             <Legend />
