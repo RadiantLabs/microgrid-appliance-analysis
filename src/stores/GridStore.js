@@ -92,8 +92,10 @@ export const GridStore = types
         ...csvOptions,
         complete: parsedFile => {
           const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
+          const label = removeFileExtension(name)
           self.runInAction(() => {
-            self.label = removeFileExtension(name)
+            self.label = label
+            self.modelInputValues = { ...self.modelInputValues, label }
             self.updateModel({ ...gridAttrs })
           })
         },

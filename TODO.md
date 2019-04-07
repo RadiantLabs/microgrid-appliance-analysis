@@ -1,7 +1,7 @@
 Before Launch:
 - Loading HOMER files:
 - [ ] Columns to check for in HOMER import
-- [ ] Debug HOMER uploads
+- [ ] Successfully upload and parse all example HOMER files
 - [ ] Save uploaded files to local forage
 - [ ] Bootstrap from local forage
 
@@ -25,7 +25,7 @@ Before Launch:
 - [ ] Make nicer legend for Loads chart
 - [ ] Do custom tooltip for Unmet Loads
 - [ ] Make hour and date be on 1 line for custom tooltip
-
+- [ ] Tooltips: Look up field name in fieldDefinitions to display title 
 
 Possible Future Features
 - [ ] Create FAQ in app and/or repo

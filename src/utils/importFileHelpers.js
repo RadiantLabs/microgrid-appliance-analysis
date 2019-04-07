@@ -163,6 +163,9 @@ function addHourIndex(rows) {
 }
 
 export function analyzeHomerFile(parsedFile, fileInfo) {
+  console.log('_____ analyzeHomerFile ________')
+  console.log('parsedFile: ', parsedFile)
+  console.log('fileInfo: ', fileInfo)
   const { isSample, fileType, size, mimeType } = fileInfo
   let errors = []
   const fileIsCsv = isSample ? true : isFileCsv(mimeType)
