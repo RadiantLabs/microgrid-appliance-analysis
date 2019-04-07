@@ -9,7 +9,7 @@ import BatteryModel from './BatteryModel'
 
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
-    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, batteryIsTrained } = viewedGrid
+    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, fileReadyToSave } = viewedGrid
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
@@ -32,7 +32,7 @@ const StagedFileHeader = inject('store')(
               size="tiny"
               color="blue"
               floated="right"
-              disabled={!batteryIsTrained}
+              disabled={!fileReadyToSave}
               onClick={saveStagedGrid}
               basic
             />

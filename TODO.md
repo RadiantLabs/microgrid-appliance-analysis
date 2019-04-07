@@ -1,7 +1,18 @@
 Before Launch:
 - Loading HOMER files:
-- [ ] Columns to check for in HOMER import
 - [ ] Successfully upload and parse all example HOMER files
+  - [ ] biogas-PV-battery
+  - [ ] Wind-generator-PV-battery
+  - [ ] 2-2-13 Optimized AC LA-gen Output
+  - [ ] 5-11 Optimized AC Li-ion Output
+  - [ ] 4-26 Optimized DC Output
+  - [x] 12-50 Undersize 20 (± 4.31 %, skewed)
+  - [x] 12-50 Oversize 20 App Default (± 2.75 %)
+  - [x] Working Test Oversize 20 (± 2.75 %)
+  - [x] 12-50 Baseline (± 3.15 %)
+
+- [ ] Make list of columns to check for when uploading HOMER import
+- [ ] Rerun battery error and chart data when uploading
 - [ ] Save uploaded files to local forage
 - [ ] Bootstrap from local forage
 
@@ -17,6 +28,9 @@ Before Launch:
   - [ ] What to keep (unmet load hours?)
   - [ ] Why is newUnmetLoad less than originalUnmetLoad
 
+- Misc:
+  - [ ] Remove available capacity from data grid
+  - [ ] Fix or remove missing 'day' column from data grid
 
 - Charts:
 - [ ] Sum excess load over year
@@ -25,7 +39,7 @@ Before Launch:
 - [ ] Make nicer legend for Loads chart
 - [ ] Do custom tooltip for Unmet Loads
 - [ ] Make hour and date be on 1 line for custom tooltip
-- [ ] Tooltips: Look up field name in fieldDefinitions to display title 
+- [ ] Tooltips: Look up field name in fieldDefinitions to display title
 
 Possible Future Features
 - [ ] Create FAQ in app and/or repo

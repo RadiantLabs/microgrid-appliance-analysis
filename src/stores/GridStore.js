@@ -173,6 +173,9 @@ export const GridStore = types
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
     },
+    get fileReadyToSave() {
+      return _.every([self.label, _.isFinite(self.wholesaleElectricityCost)])
+    },
   }))
 
 //
