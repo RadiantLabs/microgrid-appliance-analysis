@@ -10,7 +10,10 @@ export function getGridPowerType(headers) {
   const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
   const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))
   if (hasDC && hasAC) {
-    // TODO: log errors for monitoring
+    throw new Error(`Detecting both AC and DC Loads`)
+  }
+  if (!hasDC && !hasAC) {
+    throw new Error(`Detecting neiter AC nor DC Loads`)
   }
   return {
     powerType: hasDC ? 'DC' : 'AC',

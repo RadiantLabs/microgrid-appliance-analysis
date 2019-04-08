@@ -14,6 +14,9 @@ Before Launch:
 - [ ] Look for `genset` to identify generator
   - [ ] biogas-PV-battery
 
+- [ ] Identify whether it's AC or DC grid. Then define a new variable called originalElectricalLoad. Create a function that determines if it's AC or DC grid. Then unmetLoad and excessLoad shouldn't need to be passed in
+- [ ] Check load charts: load should show load served
+
 - [ ] Add editable fields to grid file import
   - [ ] Unmet Load Electricity Cost
   - [ ] Retail Electricity Price
@@ -29,6 +32,7 @@ Before Launch:
 - [ ] Document kw_factor
 
 - Unmet Load Problem:
+  - [ ] Make sure I'm using total electrical load, not load served
   - [ ] Make sure the prediction function is getting all of the combined load
   - [ ] Figure out what inputs HOMER uses to calculate it
   - [ ] What to keep (unmet load hours?)

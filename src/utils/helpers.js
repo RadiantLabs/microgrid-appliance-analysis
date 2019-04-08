@@ -7,7 +7,6 @@ window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------
-
 export function calculateRoi(netProfit, capex) {
   return capex > 0 ? (100 * netProfit) / capex : Infinity
 }

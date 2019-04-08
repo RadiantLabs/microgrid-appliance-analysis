@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { predictBatteryEnergyContent } from './predictBatteryEnergyContent'
+import { getGridPowerType } from './columnDetectors'
 
 /**
  * Pass in the merged table that includes Homer and summed appliance calculated columnms.
@@ -24,17 +25,20 @@ export function calcHybridColumns(grid, summedAppliances) {
     // Calculated (summed) loads from new enabled appliances
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
     const totalElectricalProduction = homerRow['Total Renewable Power Output']
+    const { powerType: gridPowerType } = getGridPowerType(_.keys(homerRow))
 
-    // 'Load Served' implies it was actually served, instead of just load demand.
-    // We want to calculate the battery energy content. Then, from that, the unmet load.
-    // In reality, there is no difference between 'load served' and just 'load' because
-    // if the grid goes down, there is no load. We will assume there is a generator
-    // on the grid, and then calculate economics based on unmet load costs/kWh
-    // So adding newAppliancesLoad to a 'load served' value I think makes sense.
+    // 'Load Served' implies it was actually served, instead of load demand.
+    // We want to predict the battery energy content and unmet load.
+    // Unmet load implies what would have been served if there was either production
+    // or battery energy content. In reality, there is no difference between
+    // 'load served' and just 'load' because if the grid goes down, there is no load.
+    // However, the prediction function calculates battery energy content, excess
+    // production and unmet load at the same time.
+    const originalElectricLoad =
+      gridPowerType === 'AC' ? homerRow['AC Primary Load'] : homerRow['DC Primary Load']
+
     const totalElectricalLoadServed =
-      homerRow['Original Electrical Load Served'] +
-      newAppliancesLoad +
-      applianceRow['newAppliancesAncillaryLoad']
+      originalElectricLoad + newAppliancesLoad + applianceRow['newAppliancesAncillaryLoad']
 
     // This value is important for predicting the battery energy content based on new loads
     // It's positive if battery is charging, negative if battery is discharging

@@ -49,4 +49,5 @@
   border: 1px solid #cccccc;
   background-color: #fff;
   padding: 1rem;
+  min-width: 280px;
 }

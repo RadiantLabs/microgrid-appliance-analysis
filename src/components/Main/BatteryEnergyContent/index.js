@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Header, Table } from 'semantic-ui-react'
+import { Header, Table, Grid } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { formatDateForTable } from '../../../utils/helpers'
+import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import {
   XAxis,
   YAxis,
@@ -24,17 +25,30 @@ class BatteryEnergyContent extends React.Component {
     }
     const { batteryMinEnergyContent, batteryMaxEnergyContent } = activeGrid
     const brushStartDomain = [0, 200]
+
+    // Calculate domain and heights of charts so that they have the same scale relative to each other
+    const becMax = _.maxBy(hybridColumns, 'batteryEnergyContent')['batteryEnergyContent']
+    const becDomainMax = _.ceil(becMax + becMax * 0.1)
+    const becHeight = 400
+    const heightDomainRatio = becHeight / becDomainMax
+
+    const excessMax = _.maxBy(hybridColumns, 'newExcessProduction')['newExcessProduction']
+    const excessDomainMax = _.ceil(excessMax + excessMax * 0.1)
+    const excessHeight = heightDomainRatio * excessDomainMax
+
+    const unmetMax = _.maxBy(hybridColumns, 'newUnmetLoad')['newUnmetLoad']
+    const unmetDomainMax = _.ceil(unmetMax + unmetMax * 0.1)
+    const unmetHeight = heightDomainRatio * unmetDomainMax
+
     return (
-      <div>
+      <div style={{ paddingTop: '16px' }}>
         <ChartHeader title="Excess Production" />
-        <ResponsiveContainer minWidth={1000} minHeight={100} height="90%">
+        <ResponsiveContainer minWidth={1000} minHeight={60}>
           <AreaChart
-            width={600}
-            height={100}
+            height={excessHeight}
             data={hybridColumns}
             syncId="anyId"
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
+            margin={{ top: 0, right: 30, left: 60, bottom: 0 }}>
             <Tooltip content={<CustomToolTip field="newExcessProduction" />} />
             <Area
               type="monotone"
@@ -49,15 +63,18 @@ class BatteryEnergyContent extends React.Component {
         </ResponsiveContainer>
 
         <ChartHeader title="Battery Energy Content" />
-        <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
+        <ResponsiveContainer minWidth={1000} minHeight={400}>
           <AreaChart
-            width={600}
-            height={400}
+            height={becHeight}
             data={hybridColumns}
             syncId="anyId"
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            margin={{ top: 0, right: 30, left: 0, bottom: -20 }}>
             <XAxis dataKey="hour" />
-            <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
+            <YAxis
+              label={{ value: 'kWh', angle: -90, position: 'insideLeft' }}
+              domain={[0, becDomainMax]}
+              allowDataOverflow={true}
+            />
             <Tooltip content={<CustomToolTip field="batteryEnergyContent" />} />
             <Area
               type="monotone"
@@ -99,14 +116,12 @@ class BatteryEnergyContent extends React.Component {
         </ResponsiveContainer>
 
         <ChartHeader title="Unmet Load" />
-        <ResponsiveContainer minWidth={1000} minHeight={100} height="90%">
+        <ResponsiveContainer minWidth={1000} minHeight={60}>
           <AreaChart
-            width={600}
-            height={100}
+            height={unmetHeight}
             data={hybridColumns}
             syncId="anyId"
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <YAxis label={{ value: 'kWh', angle: -90, position: 'insideLeft' }} />
+            margin={{ top: 0, right: 30, left: 60, bottom: 0 }}>
             <Tooltip content={<CustomToolTip field="newUnmetLoad" />} />
             <Area
               type="monotone"
@@ -129,9 +144,9 @@ export default inject('store')(observer(BatteryEnergyContent))
 //
 // -----------------------------------------------------------------------------
 const chartLabelStyle = {
-  marginLeft: '60px',
   marginTop: '10px',
-  marginBottom: 0,
+  marginBottom: '10px',
+  marginLeft: '60px',
 }
 
 const ChartHeader = ({ title }) => {
@@ -146,20 +161,25 @@ const CustomToolTip = ({ active, payload, label, field }) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
-
   const { datetime } = payload[0]['payload']
   const val = payload[0]['payload'][field]
   return (
     <div className="custom-tooltip">
-      {field === 'newExcessProduction' && <p className="label">Hour of Year: {label}</p>}
       {field === 'newExcessProduction' && (
-        <p className="label">Date: {formatDateForTable(datetime)}</p>
+        <Grid>
+          <Grid.Column width={8}>Hour of Year: {label}</Grid.Column>
+          <Grid.Column width={8} textAlign="right">
+            {formatDateForTable(datetime)}
+          </Grid.Column>
+        </Grid>
       )}
       <Table basic="very" compact>
         <Table.Body>
           <Table.Row>
-            <Table.HeaderCell>{field}</Table.HeaderCell>
-            <Table.HeaderCell textAlign="right">{val} kWh</Table.HeaderCell>
+            <Table.HeaderCell>{fieldDefinitions[field].title}</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">
+              {val} {fieldDefinitions[field].units}
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Body>
       </Table>
