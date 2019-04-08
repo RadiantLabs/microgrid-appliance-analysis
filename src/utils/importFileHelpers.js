@@ -280,10 +280,10 @@ export async function fetchSnapshotApplianceFile(fileInfo) {
  */
 export async function fetchSampleFile(fileInfo, urlLocation) {
   const filePath = filePathLookup(fileInfo.name, fileInfo.fileType, urlLocation)
-  console.log('_____________________')
-  console.log('urlLocation: ', JSON.stringify(urlLocation))
-  console.log('window.location: ', JSON.stringify(window.location))
-  console.log('filePath: ', filePath)
+  // console.log('_____________________')
+  // console.log('urlLocation: ', JSON.stringify(urlLocation))
+  // console.log('window.location: ', JSON.stringify(window.location))
+  // console.log('filePath: ', filePath)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()

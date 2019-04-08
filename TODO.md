@@ -14,8 +14,8 @@ Before Launch:
 - [ ] Look for `genset` to identify generator
   - [ ] biogas-PV-battery
 
-- [ ] Identify whether it's AC or DC grid. Then define a new variable called originalElectricalLoad. Create a function that determines if it's AC or DC grid. Then unmetLoad and excessLoad shouldn't need to be passed in
-- [ ] Check load charts: load should show load served
+- [x] Identify whether it's AC or DC grid. Then define a new variable called originalElectricalLoad. Create a function that determines if it's AC or DC grid. Then unmetLoad and excessLoad shouldn't need to be passed in
+- [x] Check load charts: load should show load served
 
 - [ ] Add editable fields to grid file import
   - [ ] Unmet Load Electricity Cost
