@@ -1,10 +1,11 @@
+import 'react-app-polyfill/ie11'
+import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 // import * as Sentry from '@sentry/browser'
 import * as serviceWorker from './serviceWorker'
 import App from './App'
 import 'semantic-ui-css/semantic.min.css'
-// import 'src/styles/semantic.css'
 import './styles/index.css'
 import 'react-virtualized/styles.css'
 
