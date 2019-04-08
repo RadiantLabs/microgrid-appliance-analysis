@@ -120,9 +120,6 @@ function addHourIndex(rows) {
 }
 
 export function analyzeHomerFile(parsedFile, fileInfo) {
-  console.log('_____ analyzeHomerFile ________')
-  console.log('parsedFile: ', parsedFile)
-  console.log('fileInfo: ', fileInfo)
   const { isSample, fileType, size, mimeType } = fileInfo
   let errors = []
   const fileIsCsv = isSample ? true : isFileCsv(mimeType)
@@ -158,7 +155,6 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   // This seems to slowly lower over a year by about 1 kWh. So take all unmet load
   // hours and average the battery energy content over the course of a year.
   // That gets us within +/- 0.5 kWh.
-
   // const unmetLoadHours = _.filter(fileData, row => {
   //   return _.round(row['Original Unmet Electrical Load'], 5) > 0
   // })
@@ -284,6 +280,10 @@ export async function fetchSnapshotApplianceFile(fileInfo) {
  */
 export async function fetchSampleFile(fileInfo, urlLocation) {
   const filePath = filePathLookup(fileInfo.name, fileInfo.fileType, urlLocation)
+  console.log('_____________________')
+  console.log('urlLocation: ', JSON.stringify(urlLocation))
+  console.log('window.location: ', JSON.stringify(window.location))
+  console.log('filePath: ', filePath)
   try {
     const res = await window.fetch(filePath)
     const csv = await res.text()
@@ -311,36 +311,33 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
   }
 }
 
-/**
- * Fetch Homer or Usage profile files from samples.
- * @param {*} fileInfo
- */
-export async function fetchFile(fileInfo, urlLocation) {
-  if (_.isEmpty(fileInfo)) {
-    throw new Error(`fileInfo not found in fetchSampleFile`)
-  }
-  const { fileName, fileType } = fileInfo
-  const filePath = filePathLookup(fileName, fileType, urlLocation)
-  try {
-    const res = await window.fetch(filePath)
-    const csv = await res.text()
-    const parsedFile = Papa.parse(csv, csvOptions)
-    const { data, errors } = parsedFile
-    if (!_.isEmpty(errors)) {
-      throw new Error(`Problem parsing CSV: ${JSON.stringify(errors)}`)
-    }
-    switch (fileType) {
-      case 'homer':
-        return parsedFile
-      case 'appliance':
-        return processApplianceFile(data, fileInfo)
-      default:
-        throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
-    }
-  } catch (error) {
-    console.error(
-      `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,
-      error
-    )
-  }
-}
+// Not currently used
+// export async function fetchFile(fileInfo, urlLocation) {
+//   if (_.isEmpty(fileInfo)) {
+//     throw new Error(`fileInfo not found in fetchSampleFile`)
+//   }
+//   const { fileName, fileType } = fileInfo
+//   const filePath = filePathLookup(fileName, fileType, urlLocation)
+//   try {
+//     const res = await window.fetch(filePath)
+//     const csv = await res.text()
+//     const parsedFile = Papa.parse(csv, csvOptions)
+//     const { data, errors } = parsedFile
+//     if (!_.isEmpty(errors)) {
+//       throw new Error(`Problem parsing CSV: ${JSON.stringify(errors)}`)
+//     }
+//     switch (fileType) {
+//       case 'homer':
+//         return parsedFile
+//       case 'appliance':
+//         return processApplianceFile(data, fileInfo)
+//       default:
+//         throw new Error(`File fetched does not have a known type: ${JSON.stringify(fileInfo)}`)
+//     }
+//   } catch (error) {
+//     console.error(
+//       `File load fail for : ${filePath}. Make sure appliance CSV has all headers.`,
+//       error
+//     )
+//   }
+// }
