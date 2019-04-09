@@ -1,42 +1,13 @@
 Before Launch:
-- Loading HOMER files:
-- [x] Successfully upload and parse all example HOMER files
-  - [x] biogas-PV-battery (± 28.92 %)
-  - [x] Wind-generator-PV-battery [error: getPvType]
-  - [x] 2-2-13 Optimized AC LA-gen Output [error: getPvType]
-  - [x] 5-11 Optimized AC Li-ion Output [error: getPvType]
-  - [x] 4-26 Optimized DC Output [error: getPvType]
-  - [x] 12-50 Undersize 20 (± 4.31 %, skewed)
-  - [x] 12-50 Oversize 20 App Default (± 2.75 %)
-  - [x] Working Test Oversize 20 (± 2.75 %)
-  - [x] 12-50 Baseline (± 3.15 %)
-
-- [x] Look for `genset` to identify generator
-  - [x] biogas-PV-battery
-
-- [x] Identify whether it's AC or DC grid. Then define a new variable called originalElectricalLoad. Create a function that determines if it's AC or DC grid. Then unmetLoad and excessLoad shouldn't need to be passed in
-- [x] Check load charts: load should show load served
-
-- [ ] Add editable fields to grid file import
-  - [ ] Unmet Load Electricity Cost
-  - [ ] Retail Electricity Price
-- [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Rerun battery error and chart data when uploading
 - [ ] Save uploaded files to local forage
 - [ ] Bootstrap from local forage
+- [ ] Make list of columns to check for when uploading HOMER import
 
 - Loading Appliance files:
 - [ ] Hook up appliance upload section
 - [ ] Require filing out appliance attributes on file upload
 - [ ] Save appliance without enabling
 - [ ] Document kw_factor
-
-- Unmet Load Problem:
-  - [ ] Make sure I'm using total electrical load, not load served
-  - [ ] Make sure the prediction function is getting all of the combined load
-  - [ ] Figure out what inputs HOMER uses to calculate it
-  - [ ] What to keep (unmet load hours?)
-  - [ ] Why is newUnmetLoad less than originalUnmetLoad
 
 - Misc:
   - [ ] Remove available capacity from data grid
