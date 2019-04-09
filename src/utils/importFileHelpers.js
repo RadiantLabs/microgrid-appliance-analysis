@@ -153,20 +153,6 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
 
-  // Calculate battery minimum by looking at when HOMER decides we have unmet loads
-  // This seems to slowly lower over a year by about 1 kWh. So take all unmet load
-  // hours and average the battery energy content over the course of a year.
-  // That gets us within +/- 0.5 kWh.
-  // const unmetLoadHours = _.filter(fileData, row => {
-  //   return _.round(row['Original Unmet Electrical Load'], 5) > 0
-  // })
-  // const batteryEstimatedMinEnergyContent = findColAverage(
-  //   unmetLoadHours,
-  //   'Original Battery Energy Content'
-  // )
-
-  // However, if we never have an unmet load, then the above calculation will fail.
-  // Going with simplest right now
   const batteryEstimatedMinEnergyContent = findColMin(fileData, 'Original Battery Energy Content')
   const batteryEstimatedMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
   const batteryMaxSoC = findColMax(fileData, 'Original Battery State of Charge')
@@ -178,7 +164,6 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
     batteryMaxEnergyContent: batteryEstimatedMaxEnergyContent,
   })
   return {
-    // TODO NEXT: See where this file returns to and integrate it into the gridmodel
     fileInfo,
     fileData: withCalculatedColumns,
     fileErrors: _.compact(errors),
