@@ -14,6 +14,7 @@ import {
 } from './columnDetectors'
 export const csvOptions = {
   header: true,
+  delimiter: ',',
   dynamicTyping: true,
   skipEmptyLines: true,
   comments: 'sep=',
@@ -79,6 +80,7 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
 
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
+    // console.log('dateObject: ', dateObject)
     return {
       datetime,
       hour_of_day: dateObject.hour,
@@ -289,7 +291,9 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
     }
     switch (fileInfo.fileType) {
       case 'homer':
-        return analyzeHomerFile(parsedFile, fileInfo)
+        const abc = analyzeHomerFile(parsedFile, fileInfo)
+        console.log('analyzeHomerFile: ', _.cloneDeep(abc))
+        return abc
       case 'appliance':
         return analyzeApplianceFile(parsedFile, fileInfo)
       default:

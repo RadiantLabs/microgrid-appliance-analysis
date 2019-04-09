@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import path from 'path-browserify'
 import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
-window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
+// window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
