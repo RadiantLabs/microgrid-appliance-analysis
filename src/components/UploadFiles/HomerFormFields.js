@@ -51,6 +51,32 @@ const HomerFormFields = ({ store }) => {
 
         <Table.Row>
           <Table.Cell>
+            {fieldDefinitions['retailElectricityPrice'].title}{' '}
+            <HelperPopup
+              content={fieldDefinitions['retailElectricityPrice'].description}
+              position="right center"
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="retailElectricityPrice" modelInstance={viewedGrid} />
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            {fieldDefinitions['unmetLoadCostPerKwh'].title}{' '}
+            <HelperPopup
+              content={fieldDefinitions['unmetLoadCostPerKwh'].description}
+              position="right center"
+            />
+          </Table.Cell>
+          <Table.Cell>
+            <InputField fieldKey="unmetLoadCostPerKwh" modelInstance={viewedGrid} />
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
             {fieldDefinitions['batteryMinEnergyContent'].title}{' '}
             <HelperPopup
               content={fieldDefinitions['batteryMinEnergyContent'].description}

@@ -23,20 +23,20 @@ export const EconomicInputs = inject('store')(
           </Table.Row>
           <Table.Row>
             <Table.Cell>
-              {fieldDefinitions['unmetLoadCostPerKwh'].title}{' '}
-              <HelperPopup content={fieldDefinitions['unmetLoadCostPerKwh'].description} />
-            </Table.Cell>
-            <Table.Cell>
-              <InputField fieldKey="unmetLoadCostPerKwh" modelInstance={activeGrid} />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>
               {fieldDefinitions['retailElectricityPrice'].title}{' '}
               <HelperPopup content={fieldDefinitions['retailElectricityPrice'].description} />
             </Table.Cell>
             <Table.Cell>
               <InputField fieldKey="retailElectricityPrice" modelInstance={activeGrid} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>
+              {fieldDefinitions['unmetLoadCostPerKwh'].title}{' '}
+              <HelperPopup content={fieldDefinitions['unmetLoadCostPerKwh'].description} />
+            </Table.Cell>
+            <Table.Cell>
+              <InputField fieldKey="unmetLoadCostPerKwh" modelInstance={activeGrid} />
             </Table.Cell>
           </Table.Row>
           <Table.Row>

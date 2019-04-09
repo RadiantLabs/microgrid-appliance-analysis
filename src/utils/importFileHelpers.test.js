@@ -45,7 +45,8 @@ function commonExpectations(result) {
   expect(_.isEmpty(result.fileWarnings)).toBe(true)
 
   // Currently there is a difference in how node.js and the browser parses dates.
-  // It may be fixed in an upgrade
+  // This sounds like a pain to fix. May want to just switch to Moment.js
+  // http://moment.github.io/luxon/docs/manual/install.html#node
   // const { datetime } = result.fileData[0]
   // console.log('result.fileData: ', result.fileData[0])
   // console.log(DateTime.fromISO(datetime))
