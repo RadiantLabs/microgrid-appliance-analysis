@@ -276,9 +276,7 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
     }
     switch (fileInfo.fileType) {
       case 'homer':
-        const abc = analyzeHomerFile(parsedFile, fileInfo)
-        console.log('analyzeHomerFile: ', _.cloneDeep(abc))
-        return abc
+        return analyzeHomerFile(parsedFile, fileInfo)
       case 'appliance':
         return analyzeApplianceFile(parsedFile, fileInfo)
       default:
