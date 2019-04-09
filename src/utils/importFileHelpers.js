@@ -285,7 +285,7 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
   // console.log('window.location: ', JSON.stringify(window.location))
   // console.log('filePath: ', filePath)
   try {
-    const res = await window.fetch(filePath)
+    const res = await fetch(filePath)
     const csv = await res.text()
     const parsedFile = Papa.parse(csv, csvOptions)
     if (!_.isEmpty(parsedFile.errors)) {

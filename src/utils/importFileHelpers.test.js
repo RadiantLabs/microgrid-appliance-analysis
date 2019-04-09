@@ -1,6 +1,7 @@
-// import _ from 'lodash'
-import 'isomorphic-fetch'
-import { fetchSampleFile } from './importFileHelpers'
+import fs from 'fs'
+import path from 'path'
+import Papa from 'papaparse'
+import { csvOptions, analyzeHomerFile } from './importFileHelpers'
 
 const fileInfo = {
   fileType: 'homer',
@@ -10,27 +11,14 @@ const fileInfo = {
   size: 2108574,
   timestamp: '2019-02-16T20:34:53.869-07:00',
 }
-const windowLocation = {
-  href: 'http://localhost:3000/files/homer',
-  ancestorOrigins: {},
-  origin: 'http://localhost:3000',
-  protocol: 'http:',
-  host: 'localhost:3000',
-  hostname: 'localhost',
-  port: '3000',
-  pathname: '/files/homer',
-  search: '',
-  hash: '',
-}
-
-// const mimeType = "text/csv"
-// const oversize = '12-50 Oversize 20.csv'
+const csv = fs.readFileSync(path.resolve(__dirname, 'testcsv.txt'), 'utf8')
+const parsedFile = Papa.parse(csv, csvOptions)
 
 describe('Parsing and detect columns in example HOMER files', () => {
-  test('fetchSampleFile on HOMER', async () => {
+  test('fetchSampleFile on HOMER', () => {
     expect.assertions(1)
-    const analyzedFile = await fetchSampleFile(fileInfo, windowLocation)
-    console.log('____________analyzedFile: ', analyzedFile)
+    const analyzedFile = analyzeHomerFile(parsedFile, fileInfo)
+    console.log('analyzedFile: ', analyzedFile)
     expect(1).toBe(1)
     // expect(analyzedFile).toStrictEqual({
     //   batteryEnergyContent: 79.2,
@@ -39,27 +27,3 @@ describe('Parsing and detect columns in example HOMER files', () => {
     // })
   })
 })
-
-// const app = {
-//   href: 'http://localhost:3000/files/homer',
-//   ancestorOrigins: {},
-//   origin: 'http://localhost:3000',
-//   protocol: 'http:',
-//   host: 'localhost:3000',
-//   hostname: 'localhost',
-//   port: '3000',
-//   pathname: '/files/homer',
-//   search: '',
-//   hash: '',
-// }
-// const tst = {
-//   href: 'http://localhost/',
-//   origin: 'http://localhost',
-//   protocol: 'http:',
-//   host: 'localhost',
-//   hostname: 'localhost',
-//   port: '',
-//   pathname: '/',
-//   search: '',
-//   hash: '',
-// }
