@@ -47,7 +47,7 @@ function commonExpectations(result) {
   // Currently there is a difference in how node.js and the browser parses dates.
   // It may be fixed in an upgrade
   // const { datetime } = result.fileData[0]
-  // console.log('result.fileData: ', result.fileData)
+  // console.log('result.fileData: ', result.fileData[0])
   // console.log(DateTime.fromISO(datetime))
 }
 
