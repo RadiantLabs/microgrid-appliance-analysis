@@ -32,6 +32,7 @@
     "mobx-localstorage": "^2.0.0-alpha.1",
     "mobx-react": "^5.3.6",
     "mobx-state-tree": "^3.13.0",
+    "moment": "^2.24.0",
     "mst-react-router": "^2.3.1",
     "papaparse": "^4.6.1",
     "path": "^0.12.7",

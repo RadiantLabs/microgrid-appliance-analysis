@@ -23,7 +23,7 @@ import './App.css'
 
 const TopMenu = inject('store')(
   observer(({ store }) => {
-    const { saveAppState, appIsSavedTimestamp } = store
+    const { saveAppState, lastSavedTimeAgo } = store
     return (
       <Menu>
         <Menu.Item header as={NavItem} to="/">
@@ -41,7 +41,7 @@ const TopMenu = inject('store')(
           </Menu.Item> */}
           <div style={{ paddingTop: '8px', paddingRight: '8px' }}>
             <Popup
-              content={appIsSavedTimestamp}
+              content={`Last Saved: ${lastSavedTimeAgo}`}
               position="bottom center"
               inverted
               trigger={

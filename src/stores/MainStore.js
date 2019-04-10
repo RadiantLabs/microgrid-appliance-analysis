@@ -5,6 +5,7 @@ import { keepAlive } from 'mobx-utils'
 import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import { createBrowserHistory } from 'history'
 import localforage from 'localforage'
+import moment from 'moment'
 
 // Import Other Stores:
 import { GridStore, initialGridState } from './GridStore'
@@ -12,7 +13,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
 
 // Import Helpers and domain data
-import { combineTables, getIsoTimestamp } from '../utils/helpers'
+import { combineTables } from '../utils/helpers'
 import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
@@ -25,6 +26,8 @@ import {
   sampleApplianceFiles,
   ancillaryEquipmentList,
 } from '../utils/fileInfo'
+
+window.moment = moment
 
 // -----------------------------------------------------------------------------
 // Configure local forage
@@ -62,7 +65,7 @@ export const MainStore = types
     router: RouterModel,
 
     appIsSaved: types.boolean,
-    appIsSavedTimestamp: types.string,
+    appIsSavedTimestamp: types.Date,
   })
   .actions(self => ({
     afterCreate() {
@@ -147,7 +150,8 @@ export const MainStore = types
 
     setAppSavedState() {
       self.appIsSaved = true
-      self.appIsSavedTimestamp = getIsoTimestamp()
+      self.appIsSavedTimestamp = Date.now()
+      console.log('app saved')
     },
 
     saveAppState() {
@@ -236,6 +240,9 @@ export const MainStore = types
     get maxApplianceLoad() {
       return calcMaxApplianceLoad(self.combinedTable)
     },
+    get lastSavedTimeAgo() {
+      return moment(self.appIsSavedTimestamp).fromNow()
+    },
   }))
 
 //
@@ -292,7 +299,7 @@ let initialMainState = {
   excludedTableColumns: [],
   router: routerModel,
   appIsSaved: true,
-  appIsSavedTimestamp: getIsoTimestamp(),
+  appIsSavedTimestamp: Date.now(),
 }
 
 //

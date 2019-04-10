@@ -25,6 +25,7 @@ Before Launch:
   - [ ] Add legend to Loads chart
   - [ ] Figure out why biogas doesn't have solar angle of incidence
   - [ ] Hook up external logging
+  - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 
 - Charts:
 - [ ] Sum excess load over year
