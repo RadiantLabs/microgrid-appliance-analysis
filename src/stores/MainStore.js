@@ -26,6 +26,14 @@ import {
   ancillaryEquipmentList,
 } from '../utils/fileInfo'
 
+// -----------------------------------------------------------------------------
+// Configure local forage
+// -----------------------------------------------------------------------------
+localforage.config({
+  name: 'factore_microgrid_analysis_tool',
+  storeName: 'savedState',
+})
+
 //
 // -----------------------------------------------------------------------------
 // Primary Store
@@ -52,6 +60,8 @@ export const MainStore = types
 
     excludedTableColumns: types.optional(types.array(types.string), []),
     router: RouterModel,
+
+    appIsSaved: types.boolean,
   })
   .actions(self => ({
     afterCreate() {
@@ -127,23 +137,28 @@ export const MainStore = types
       self.availableGrids.push(GridStore.create(stagedGridSnapshot))
       self.viewedGridId = stagedGridId
       self.setActiveGridFile(stagedGridId)
+      self.saveAppState()
     },
 
     setViewedApplianceId(applianceId) {
       self.viewedApplianceId = applianceId
     },
 
-    // -------------------------------------------------------------------------
-    // -- Store history undo
-    // -------------------------------------------------------------------------
-    saveSnapshot() {
-      const snapshot = _.omit(getSnapshot(self), ['grid'])
-      console.log('snapshot: ', snapshot)
-      // localStorage.setItem('microgridAppliances_testing', JSON.stringify(snapshot))
-      localforage.setItem('microgridAppliances_testing', snapshot).then(() => {
+    saveAppState() {
+      localforage.setItem('latest', getSnapshot(self)).then(() => {
         console.log('value set')
       })
     },
+
+    // Store history undo, WIP
+    // saveSnapshot() {
+    //   const snapshot = _.omit(getSnapshot(self), ['grid'])
+    //   console.log('snapshot: ', snapshot)
+    //   // localStorage.setItem('microgridAppliances_testing', JSON.stringify(snapshot))
+    //   localforage.setItem('microgridAppliances_testing', snapshot).then(() => {
+    //     console.log('value set')
+    //   })
+    // },
   }))
   .views(self => ({
     get activeGrid() {
@@ -270,6 +285,7 @@ let initialMainState = {
   viewedApplianceId: enabledApplianceFileId,
   excludedTableColumns: [],
   router: routerModel,
+  appIsSaved: true,
 }
 
 //
@@ -301,7 +317,7 @@ let mainStore = MainStore.create(initialMainState)
 window.mainStore = mainStore // inspect the store in console for debugging
 
 // -----------------------------------------------------------------------------
-// keepAlivve
+// keepAlive computed values (views)
 // -----------------------------------------------------------------------------
 // Keep computed views alive even when they aren't being observed so they still
 // stay up-to-date but not disposed of when they aren't observed anymore
@@ -311,9 +327,9 @@ _.forEach(mainStore.appliances, appliance => {
   keepAlive(appliance, 'applianceSummaryStats')
 })
 
-/**
- * Watch for snapshot changes
- */
+// -----------------------------------------------------------------------------
+// Watch for snapshot changes
+// -----------------------------------------------------------------------------
 onSnapshot(mainStore, snapshot => {
   // localStorage.setItem('microgridAppliances', JSON.stringify(snapshot))
   localStorage.setItem(

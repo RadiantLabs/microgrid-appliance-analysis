@@ -1,7 +1,15 @@
 Before Launch:
 - [ ] Save uploaded files to local forage
+  - [ ] On snapshot change (onSnapshot is already setup in MainStore), make save button enabled
+  - [ ] Fix styling of save button
+  - [ ] On appliance or grid upload, autosave app
+  - [ ] On column change, autosave app state
+  - [ ] Create route that exposes a delete store option
+  - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Bootstrap from local forage
-- [ ] Make list of columns to check for when uploading HOMER import
+  - [ ] Check to see if app matches saved snapshot (read mobx docs)
+  - [ ] If so and a latest saved state exists, bootstrap with latest, otherwise load samples
+
 
 - Loading Appliance files:
 - [ ] Hook up appliance upload section
@@ -10,8 +18,12 @@ Before Launch:
 - [ ] Document kw_factor
 
 - Misc:
+  - [ ] Make list of columns to check for when uploading HOMER import
   - [ ] Remove available capacity from data grid
   - [ ] Fix or remove missing 'day' column from data grid
+  - [ ] Add legend to Loads chart
+  - [ ] Figure out why biogas doesn't have solar angle of incidence
+  - [ ] Hook up external logging
 
 - Charts:
 - [ ] Sum excess load over year

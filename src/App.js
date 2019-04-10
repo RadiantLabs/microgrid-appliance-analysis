@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
+import { observer, inject } from 'mobx-react'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import { mainStore, history } from './stores/MainStore'
-import { Menu, Icon } from 'semantic-ui-react'
+import { Menu, Icon, Button } from 'semantic-ui-react'
 import { NavItem } from './components/Elements/NavItem'
 import shortLogo from './images/factore-short-logo-20x26.png'
 
@@ -20,37 +21,54 @@ import FourOhFour from './components/FourOhFour'
 // import TodoExample from 'componentsTodo'
 import './App.css'
 
+const TopMenu = inject('store')(
+  observer(({ store }) => {
+    const { saveAppState, appIsSaved } = store
+    return (
+      <Menu>
+        <Menu.Item header as={NavItem} to="/">
+          <img
+            src={shortLogo}
+            style={{ width: '20px', marginRight: '5px' }}
+            alt="Factor[e] Microgrid Appliance Tool"
+          />
+          Microgrid Appliance Analysis Tool
+        </Menu.Item>
+        <Menu.Menu position="right">
+          {/* <Menu.Item as={NavItem} to="/snapshots">
+            <Icon name="photo" />
+            Snapshots
+          </Menu.Item> */}
+          <Button
+            content="Save"
+            icon="save"
+            size="mini"
+            color="blue"
+            floated="right"
+            disabled={appIsSaved}
+            onClick={saveAppState}
+            // onClick={console.log('this: ', this)}
+            basic
+          />
+          <Menu.Item as={NavItem} to="/files/homer">
+            <Icon name="file" />
+            Files
+          </Menu.Item>
+          <Menu.Item as={NavItem} to="/about">
+            <Icon name="info circle" />
+            About
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
+    )
+  })
+)
+
 const App = () => (
   <Provider store={mainStore}>
     <Router history={history}>
       <ApolloProvider client={Client}>
-        <Menu>
-          <Menu.Item header as={NavItem} to="/">
-            <img
-              src={shortLogo}
-              style={{ width: '20px', marginRight: '5px' }}
-              alt="Factor[e] Microgrid Appliance Tool"
-            />
-            Microgrid Appliance Analysis Tool
-          </Menu.Item>
-          <Menu.Menu position="right">
-            {/* <Menu.Item as={NavItem} to="/snapshots">
-              <Icon name="photo" />
-              Snapshots
-            </Menu.Item> */}
-            <Menu.Item as={NavItem} to="/files/homer">
-              <Icon name="file" />
-              Files
-            </Menu.Item>
-            <Menu.Item as={NavItem} to="/about">
-              <Icon name="info circle" />
-              About
-            </Menu.Item>
-            {/*<Menu.Item as={NavItem} to="/about" name="About" />*/}
-            {/*<Menu.Item as={NavItem} to="/profile" name="Logout" />*/}
-          </Menu.Menu>
-        </Menu>
-
+        <TopMenu />
         <div className="main-wrapper">
           <Switch>
             <Route path="/" exact component={Main} />
@@ -62,7 +80,6 @@ const App = () => (
             <Route component={FourOhFour} />
           </Switch>
         </div>
-
         {/* <DevTools /> */}
       </ApolloProvider>
     </Router>

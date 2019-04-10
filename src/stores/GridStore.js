@@ -91,12 +91,12 @@ export const GridStore = types
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const gridAttrs = analyzeHomerFile(parsedFile, fileInfo, mimeType)
+          const analyzedFile = analyzeHomerFile(parsedFile, fileInfo, mimeType)
           const label = removeFileExtension(name)
           self.runInAction(() => {
             self.label = label
             self.modelInputValues = { ...self.modelInputValues, label }
-            self.updateModel({ ...gridAttrs })
+            self.updateModel(analyzedFile)
           })
         },
         error: error => {
@@ -143,7 +143,7 @@ export const GridStore = types
     },
 
     saveGridSnapshot() {
-      const gridSnapshot = _.omit(getSnapshot(self), ['batteryModel'])
+      const gridSnapshot = getSnapshot(self)
       localforage.setItem('microgridAppliances.stagedGrid', gridSnapshot).then(() => {
         self.runInAction(() => {
           self.gridSaved = true
