@@ -1,5 +1,5 @@
 Before Launch:
-- [ ] Save uploaded files to local forage
+- [x] Save uploaded files to local forage
   - [x] Fix styling of save button
   - [ ] Autosave app on
     - [ ] appliance upload
@@ -7,11 +7,12 @@ Before Launch:
     - [x] column exclusion
   - [x] Create timeago last saved popover
   - [x] Create route that exposes a delete store option
-  - [ ] Link to debug page from main app, as well as an independent route
-- [ ] Bootstrap from local forage
-  - [ ] Check to see if app matches saved snapshot (read mobx docs)
-  - [ ] If so and a latest saved state exists, bootstrap with latest, otherwise load samples
 
+- [x] Bootstrap from local forage
+  - [zx] Find out if saving a snapshot saves types.frozen()
+  - [x] Check to see if app matches saved snapshot (read mobx docs)
+  - [x] If so and a latest saved state exists, bootstrap with latest, otherwise load samples
+  - [x] Figure out history module
 
 - Loading Appliance files:
 - [ ] Hook up appliance upload section
@@ -20,6 +21,9 @@ Before Launch:
 - [ ] Document kw_factor
 
 - Misc:
+  - [ ] Fix ROI and Payback
+  - [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
+    - [ ] Link to debug page from main app, as well as an independent route
   - [ ] Make list of columns to check for when uploading HOMER import
   - [ ] Remove available capacity from data grid
   - [ ] Fix or remove missing 'day' column from data grid

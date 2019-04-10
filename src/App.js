@@ -3,7 +3,8 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
-import { mainStore, history } from './stores/MainStore'
+import { mainStore } from './stores/MainStore'
+import { history } from './stores/initialize'
 import { TopMenu } from './components/TopMenu'
 
 // Route Pages

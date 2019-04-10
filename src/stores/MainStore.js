@@ -1,16 +1,15 @@
 import _ from 'lodash'
 import { autorun, runInAction } from 'mobx'
-import { types, flow, onSnapshot, getSnapshot, destroy } from 'mobx-state-tree'
+import { types, flow, getSnapshot, applySnapshot, destroy } from 'mobx-state-tree'
 import { keepAlive } from 'mobx-utils'
-import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
-import { createBrowserHistory } from 'history'
+import { RouterModel } from 'mst-react-router'
 import localforage from 'localforage'
 import moment from 'moment'
 
 // Import Other Stores:
+import { getInitialState } from './initialize'
 import { GridStore, initialGridState } from './GridStore'
-import { ApplianceStore, initialApplianceState } from './ApplianceStore'
-import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
+import { ApplianceStore } from './ApplianceStore'
 
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
@@ -21,11 +20,7 @@ import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
 import { calcEnabledApplianceLabels } from '../utils/calcEnabledApplianceLabels'
 import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLabels'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
-import {
-  sampleGridFileInfos,
-  sampleApplianceFiles,
-  ancillaryEquipmentList,
-} from '../utils/fileInfo'
+import { ancillaryEquipmentList } from '../utils/fileInfo'
 
 window.moment = moment
 
@@ -69,10 +64,17 @@ export const MainStore = types
   })
   .actions(self => ({
     afterCreate() {
-      // self.loadActiveGrid() // will call loadAvailableGrids() after activeGrid loads
-      self.loadAvailableGrids()
-      self.loadAppliances()
+      self.initializeMainStore()
     },
+
+    initializeMainStore: flow(function* initializeMainStore() {
+      const { initialState, isFreshState } = yield getInitialState()
+      applySnapshot(self, initialState)
+      if (isFreshState) {
+        self.loadAvailableGrids()
+        self.loadAppliances()
+      }
+    }),
 
     loadActiveGrid: flow(function* loadActiveGrid() {
       self.activeGridIsLoading = true
@@ -260,79 +262,27 @@ export const MainStore = types
 // -----------------------------------------------------------------------------
 // Initialize Mobx State Tree Store
 // -----------------------------------------------------------------------------
-//Hook React Router up to Store
-const routerModel = RouterModel.create()
-//Hook up router model to browser history object
-const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
-
-const initGridFileId = '12-50 Oversize 20_2019-02-16T20:34:25.937-07:00' // TODO: Check localforage
-const allGridFileInfos = sampleGridFileInfos.concat([]) // TODO: concat fileInfos from localforage
-const enabledApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00' // TODO: Check localforage
-// const enabledApplianceFileId = 'maize_mill_usage_profile_1_20_2019-02-16T20:34:25.937-07:00'
-
-const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
-
 let initialMainState = {
-  availableGrids: _.map(allGridFileInfos, gridInfo => {
-    return GridStore.create({
-      ...initialGridState,
-      ...{ isActive: gridInfo.id === initGridFileId },
-      ...{ ...gridInfo.attributes },
-      ...{ modelInputValues: { ...gridInfo.attributes } },
-      ...{ fileInfo: _.omit(gridInfo, ['attributes']) },
-    })
-  }),
+  availableGrids: [],
   stagedGrid: null,
-  viewedGridId: initGridFileId,
+  viewedGridId: null,
   appliancesAreLoading: true,
-  appliances: _.map(applianceFileInfos, applianceInfo => {
-    return ApplianceStore.create({
-      ...initialApplianceState,
-
-      // enabled: applianceInfo.id === enabledApplianceFileId,
-      enabled: true, // for debugging
-
-      ...{ applianceType: applianceInfo.applianceType },
-      ...{ ...applianceInfo.attributes },
-      ...{ modelInputValues: { ...applianceInfo.attributes } },
-      ...{ fileInfo: _.omit(applianceInfo, ['attributes']) },
-      ...{
-        ancillaryEquipment: _.map(ancillaryEquipmentList, ancillaryEquip => {
-          return AncillaryEquipmentStore.create({
-            ...ancillaryEquip,
-            ...initialAncillaryEquipmentState,
-          })
-        }),
-      },
-    })
-  }),
-  viewedApplianceId: enabledApplianceFileId,
+  appliances: [],
+  viewedApplianceId: null,
   excludedTableColumns: [],
-  router: routerModel,
+  router: RouterModel.create(),
   appIsSaved: true,
   appIsSavedTimestamp: null,
 }
 
 //
 // -----------------------------------------------------------------------------
-// Store state snapshots in localForage
-// -----------------------------------------------------------------------------
-
-// Load entire state fromm local storage as long as the model shape are this same
-// This allows the developer to modify the model and get a fresh state
-// if (localStorage.getItem('microgridAppliances')) {
-//   const json = JSON.parse(localStorage.getItem('microgridAppliances'))
-//   if (MainStore.is(json)) {
-//     initialMainState = json
-//   }
-// }
-
-// -----------------------------------------------------------------------------
 // Instantiate Primary Store
 // -----------------------------------------------------------------------------
 let mainStore = MainStore.create(initialMainState)
 window.mainStore = mainStore // inspect the store in console for debugging
 
+//
 // -----------------------------------------------------------------------------
 // keepAlive computed values (views)
 // -----------------------------------------------------------------------------
@@ -344,17 +294,12 @@ _.forEach(mainStore.appliances, appliance => {
   keepAlive(appliance, 'applianceSummaryStats')
 })
 
+//
 // -----------------------------------------------------------------------------
 // Watch for snapshot changes
 // -----------------------------------------------------------------------------
-onSnapshot(mainStore, snapshot => {
-  // localStorage.setItem('microgridAppliances', JSON.stringify(snapshot))
-  // localStorage.setItem(
-  //   'microgridAppliances_excludedTableColumns',
-  //   JSON.stringify(snapshot.excludedTableColumns)
-  // )
-  // mainStore.setAppSavedState(false)
-})
+// onSnapshot(mainStore, snapshot => {
+// })
 
 //
 // -----------------------------------------------------------------------------
@@ -386,4 +331,4 @@ autorun(() => {
   })
 })
 
-export { mainStore, history }
+export { mainStore }

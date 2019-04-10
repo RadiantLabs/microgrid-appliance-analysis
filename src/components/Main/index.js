@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
+import { observer, inject } from 'mobx-react'
+import _ from 'lodash'
 import { Menu } from 'semantic-ui-react'
 import { NavItem } from '../../components/Elements/NavItem'
 import FileChooser from '../../components/Main/FileChooser'
+import EmptyState from '../../components/Main/EmptyState'
 
 // Route Pages
 import Summary from './Summary'
@@ -13,7 +16,11 @@ import UnmetLoads from './UnmetLoads'
 import BatteryEnergyContent from './BatteryEnergyContent'
 import GridComponents from './GridComponents'
 
-const Main = ({ match }) => {
+const Main = ({ match, store }) => {
+  const { activeGrid } = store
+  if (_.isEmpty(activeGrid)) {
+    return <EmptyState />
+  }
   return (
     <div>
       <FileChooser />
@@ -43,4 +50,4 @@ const Main = ({ match }) => {
   )
 }
 
-export default Main
+export default inject('store')(observer(Main))
