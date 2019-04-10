@@ -21,7 +21,7 @@ Before Launch:
 - [ ] Document kw_factor
 
 - Misc:
-  - [ ] Fix ROI and Payback
+  - [ ] Fix ROI and Payback. It has something to do with newApplianceNetGridRevenue
   - [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
     - [ ] Link to debug page from main app, as well as an independent route
   - [ ] Make list of columns to check for when uploading HOMER import

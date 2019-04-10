@@ -91,6 +91,20 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const applianceOwnerRoi = calculateRoi(netApplianceOwnerRevenue, totalCapexAssignedToAppliance)
   const gridOwnerRoi = calculateRoi(netGridOwnerRevenue, totalCapexAssignedToGrid)
 
+  // console.log('__ ROI _________________')
+  // console.log(
+  //   'applianceOwnerRoi, netApplianceOwnerRevenue, totalCapexAssignedToAppliance',
+  //   applianceOwnerRoi,
+  //   netApplianceOwnerRevenue,
+  //   totalCapexAssignedToAppliance
+  // )
+  // console.log(
+  //   'gridOwnerRoi, calculateRoi(netGridOwnerRevenue, totalCapexAssignedToGrid',
+  //   gridOwnerRoi,
+  //   netGridOwnerRevenue,
+  //   totalCapexAssignedToGrid
+  // )
+
   const applianceOwnerPayback = calculatePayback(
     netApplianceOwnerRevenue,
     totalCapexAssignedToAppliance

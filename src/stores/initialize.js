@@ -47,8 +47,8 @@ function freshInitialization() {
       return ApplianceStore.create({
         ...initialApplianceState,
 
-        // enabled: applianceInfo.id === enabledApplianceFileId,
-        enabled: true, // for debugging
+        enabled: applianceInfo.id === enabledApplianceFileId,
+        // enabled: true, // for debugging
 
         ...{ applianceType: applianceInfo.applianceType },
         ...{ ...applianceInfo.attributes },

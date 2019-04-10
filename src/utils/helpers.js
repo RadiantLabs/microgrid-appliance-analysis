@@ -14,7 +14,7 @@ export function lastSavedTimeAgo(appIsSavedTimestamp) {
 }
 
 export function calculateRoi(netProfit, capex) {
-  return capex > 0 ? (100 * netProfit) / capex : Infinity
+  return (100 * netProfit) / capex
 }
 
 export function calculatePayback(netProfit, capex) {
