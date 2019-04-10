@@ -81,6 +81,7 @@ export const ApplianceStore = types
       self.fileIsSelected = true
       self.isAnalyzingFile = true
       const { name: fileName, size: fileSize, type: fileMimeType } = rawFile
+      // debugger
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {

@@ -15,12 +15,6 @@ const labelStyle = {
 }
 
 class ApplianceFiles extends React.Component {
-  handleAddFileClick = (event, data) => {
-    event.preventDefault()
-    this.props.store.createStagedGrid()
-    this.props.store.setViewedApplianceId('staged')
-  }
-
   handleFileNavClick = (fileId, event) => {
     event.preventDefault()
     this.props.store.setViewedApplianceId(fileId)

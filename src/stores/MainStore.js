@@ -9,7 +9,7 @@ import moment from 'moment'
 // Import Other Stores:
 import { getInitialState } from './initialize'
 import { GridStore, initialGridState } from './GridStore'
-import { ApplianceStore } from './ApplianceStore'
+import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
@@ -144,6 +144,24 @@ export const MainStore = types
       self.availableGrids.push(GridStore.create(stagedGridSnapshot))
       self.viewedGridId = stagedGridId
       self.setActiveGridFile(stagedGridId)
+      self.saveAppState()
+    },
+
+    createStagedAppliance() {
+      self.stagedAppliance = ApplianceStore.create(initialApplianceState)
+    },
+
+    cancelStagedAppliance() {
+      destroy(self.stagedAppliance)
+      self.viewedApplianceId = null
+    },
+
+    saveStagedAppliance() {
+      const stagedApplianceId = self.stagedAppliance.fileInfo.id
+      const stagedApplianceSnapshot = getSnapshot(self.stagedAppliance)
+      destroy(self.stagedAppliance)
+      self.appliances.push(ApplianceStore.create(stagedApplianceSnapshot))
+      self.viewedApplianceId = stagedApplianceId
       self.saveAppState()
     },
 

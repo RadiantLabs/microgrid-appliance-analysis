@@ -28,46 +28,41 @@ const ApplianceEnabler = inject('store')(
 
 const StagedFileHeader = inject('store')(
   observer(({ store }) => {
-    const {
-      fileIsSelected,
-      isAnalyzingFile,
-      handleGridFileUpload,
-      batteryIsTrained,
-    } = store.viewedAppliance
-    const { cancelStagedGrid, saveStagedGrid } = store
+    const { fileIsSelected, isAnalyzingFile, handleApplianceFileUpload } = store.viewedAppliance
+    const { saveStagedAppliance, cancelStagedAppliance } = store
     return (
       <div>
         <Header as="h2" attached="top" style={{ paddingBottom: '18px' }}>
           {!fileIsSelected && (
             <FileButton
-              content="Upload & Analyze HOMER File"
+              content="Upload & Analyze Appliance File"
               icon="upload"
               size="tiny"
               color="blue"
               floated="right"
-              onSelect={handleGridFileUpload}
+              onSelect={handleApplianceFileUpload}
               basic
             />
           )}
           {fileIsSelected && (
             <Button
-              content="Save HOMER File"
+              content="Save Appliance File"
               icon="save"
               size="tiny"
               color="blue"
               floated="right"
-              disabled={!batteryIsTrained}
-              onClick={saveStagedGrid}
+              disabled={false}
+              onClick={saveStagedAppliance}
               basic
             />
           )}
           {fileIsSelected && (
-            <Button floated="right" basic size="tiny" onClick={cancelStagedGrid}>
+            <Button floated="right" basic size="tiny" onClick={cancelStagedAppliance}>
               <Icon name="cancel" />
               Cancel
             </Button>
           )}
-          Add HOMER File
+          Add Appliance File
           {isAnalyzingFile && (
             <Header.Subheader style={{ display: 'inline-block', marginLeft: '1rem' }}>
               Analyzing File <Loader active inline size="tiny" />
