@@ -1,9 +1,10 @@
 Before Launch:
 - [ ] Save uploaded files to local forage
-  - [ ] On snapshot change (onSnapshot is already setup in MainStore), make save button enabled
-  - [ ] Fix styling of save button
-  - [ ] On appliance or grid upload, autosave app
-  - [ ] On column change, autosave app state
+  - [x] Fix styling of save button
+  - [ ] Autosave app on
+    - [ ] appliance upload
+    - [ ] grid upload
+    - [ ] column exclusion
   - [ ] Create route that exposes a delete store option
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Bootstrap from local forage

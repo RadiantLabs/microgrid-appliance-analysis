@@ -12,7 +12,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
 
 // Import Helpers and domain data
-import { combineTables } from '../utils/helpers'
+import { combineTables, getIsoTimestamp } from '../utils/helpers'
 import { calcSummaryStats } from '../utils/calcSummaryStats'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
@@ -62,6 +62,7 @@ export const MainStore = types
     router: RouterModel,
 
     appIsSaved: types.boolean,
+    appIsSavedTimestamp: types.string,
   })
   .actions(self => ({
     afterCreate() {
@@ -144,9 +145,14 @@ export const MainStore = types
       self.viewedApplianceId = applianceId
     },
 
+    setAppSavedState() {
+      self.appIsSaved = true
+      self.appIsSavedTimestamp = getIsoTimestamp()
+    },
+
     saveAppState() {
       localforage.setItem('latest', getSnapshot(self)).then(() => {
-        console.log('value set')
+        self.setAppSavedState(true)
       })
     },
 
@@ -286,6 +292,7 @@ let initialMainState = {
   excludedTableColumns: [],
   router: routerModel,
   appIsSaved: true,
+  appIsSavedTimestamp: getIsoTimestamp(),
 }
 
 //
@@ -332,10 +339,11 @@ _.forEach(mainStore.appliances, appliance => {
 // -----------------------------------------------------------------------------
 onSnapshot(mainStore, snapshot => {
   // localStorage.setItem('microgridAppliances', JSON.stringify(snapshot))
-  localStorage.setItem(
-    'microgridAppliances_excludedTableColumns',
-    JSON.stringify(snapshot.excludedTableColumns)
-  )
+  // localStorage.setItem(
+  //   'microgridAppliances_excludedTableColumns',
+  //   JSON.stringify(snapshot.excludedTableColumns)
+  // )
+  // mainStore.setAppSavedState(false)
 })
 
 //

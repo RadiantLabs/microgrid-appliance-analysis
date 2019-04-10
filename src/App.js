@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
 import { Client } from './Client'
 import { mainStore, history } from './stores/MainStore'
-import { Menu, Icon, Button } from 'semantic-ui-react'
+import { Menu, Icon, Button, Popup } from 'semantic-ui-react'
 import { NavItem } from './components/Elements/NavItem'
 import shortLogo from './images/factore-short-logo-20x26.png'
 
@@ -23,7 +23,7 @@ import './App.css'
 
 const TopMenu = inject('store')(
   observer(({ store }) => {
-    const { saveAppState, appIsSaved } = store
+    const { saveAppState, appIsSavedTimestamp } = store
     return (
       <Menu>
         <Menu.Item header as={NavItem} to="/">
@@ -39,17 +39,24 @@ const TopMenu = inject('store')(
             <Icon name="photo" />
             Snapshots
           </Menu.Item> */}
-          <Button
-            content="Save"
-            icon="save"
-            size="mini"
-            color="blue"
-            floated="right"
-            disabled={appIsSaved}
-            onClick={saveAppState}
-            // onClick={console.log('this: ', this)}
-            basic
-          />
+          <div style={{ paddingTop: '8px', paddingRight: '8px' }}>
+            <Popup
+              content={appIsSavedTimestamp}
+              position="bottom center"
+              inverted
+              trigger={
+                <Button
+                  content="Save"
+                  icon="save"
+                  size="tiny"
+                  color="blue"
+                  compact
+                  onClick={saveAppState}
+                  basic
+                />
+              }
+            />
+          </div>
           <Menu.Item as={NavItem} to="/files/homer">
             <Icon name="file" />
             Files
