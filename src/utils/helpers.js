@@ -1,12 +1,18 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import path from 'path-browserify'
+import moment from 'moment'
 import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
 // window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------
+export function lastSavedTimeAgo(appIsSavedTimestamp) {
+  const mDate = moment(appIsSavedTimestamp)
+  return mDate.isValid() ? `Last Saved: ${mDate.fromNow()}` : 'No found versions'
+}
+
 export function calculateRoi(netProfit, capex) {
   return capex > 0 ? (100 * netProfit) / capex : Infinity
 }

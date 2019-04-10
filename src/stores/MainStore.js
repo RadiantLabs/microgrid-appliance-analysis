@@ -65,7 +65,7 @@ export const MainStore = types
     router: RouterModel,
 
     appIsSaved: types.boolean,
-    appIsSavedTimestamp: types.Date,
+    appIsSavedTimestamp: types.maybeNull(types.Date),
   })
   .actions(self => ({
     afterCreate() {
@@ -159,6 +159,19 @@ export const MainStore = types
       localforage.setItem('latest', getSnapshot(self)).then(() => {
         self.setAppSavedState(true)
       })
+    },
+
+    clearAppState() {
+      localforage
+        .clear()
+        .then(function() {
+          // Run this code once the database has been entirely deleted.
+          console.log('Database is now empty.')
+        })
+        .catch(function(err) {
+          // This code runs if there were any errors
+          console.log(err)
+        })
     },
 
     // Store history undo, WIP
@@ -297,7 +310,7 @@ let initialMainState = {
   excludedTableColumns: [],
   router: routerModel,
   appIsSaved: true,
-  appIsSavedTimestamp: Date.now(),
+  appIsSavedTimestamp: null,
 }
 
 //

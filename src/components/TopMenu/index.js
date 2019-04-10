@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import moment from 'moment'
 import { Menu, Icon, Button, Popup } from 'semantic-ui-react'
+import { lastSavedTimeAgo } from '../../utils/helpers'
 import { NavItem } from '../../components/Elements/NavItem'
 import shortLogo from '../../images/factore-short-logo-20x26.png'
 
@@ -28,7 +28,7 @@ export const TopMenu = inject('store')(
               position="bottom center"
               inverted
               // Keep content as a callback function so it will be updated every hover
-              content={() => `Last Saved: ${moment(appIsSavedTimestamp).fromNow()}`}
+              content={() => lastSavedTimeAgo(appIsSavedTimestamp)}
               trigger={
                 <Button
                   content="Save"
