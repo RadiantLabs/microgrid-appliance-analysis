@@ -3,8 +3,9 @@ Before Launch:
   - [x] Fix styling of save button
   - [ ] Autosave app on
     - [ ] appliance upload
-    - [ ] grid upload
-    - [ ] column exclusion
+    - [x] grid upload
+    - [x] column exclusion
+  - [x] Create timeago last saved popover
   - [ ] Create route that exposes a delete store option
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Bootstrap from local forage

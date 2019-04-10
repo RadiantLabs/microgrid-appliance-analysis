@@ -114,6 +114,7 @@ export const MainStore = types
       } else {
         self.excludedTableColumns.push(columnName)
       }
+      self.saveAppState()
     },
 
     // -------------------------------------------------------------------------
@@ -240,9 +241,6 @@ export const MainStore = types
     get maxApplianceLoad() {
       return calcMaxApplianceLoad(self.combinedTable)
     },
-    get lastSavedTimeAgo() {
-      return moment(self.appIsSavedTimestamp).fromNow()
-    },
   }))
 
 //
@@ -315,14 +313,6 @@ let initialMainState = {
 //     initialMainState = json
 //   }
 // }
-
-// Only load selective pieces of the state for now
-if (localStorage.getItem('microgridAppliances_excludedTableColumns')) {
-  const excludedTableColumns = JSON.parse(
-    localStorage.getItem('microgridAppliances_excludedTableColumns')
-  )
-  initialMainState = { ...initialMainState, ...{ excludedTableColumns } }
-}
 
 // -----------------------------------------------------------------------------
 // Instantiate Primary Store

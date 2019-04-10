@@ -3,6 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { observer, inject } from 'mobx-react'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
+import moment from 'moment'
 import { Client } from './Client'
 import { mainStore, history } from './stores/MainStore'
 import { Menu, Icon, Button, Popup } from 'semantic-ui-react'
@@ -18,12 +19,11 @@ import Snapshots from './components/Snapshots'
 import FourOhFour from './components/FourOhFour'
 
 // import DevTools from 'mobx-react-devtools'
-// import TodoExample from 'componentsTodo'
 import './App.css'
 
 const TopMenu = inject('store')(
   observer(({ store }) => {
-    const { saveAppState, lastSavedTimeAgo } = store
+    const { saveAppState, appIsSavedTimestamp } = store
     return (
       <Menu>
         <Menu.Item header as={NavItem} to="/">
@@ -41,9 +41,10 @@ const TopMenu = inject('store')(
           </Menu.Item> */}
           <div style={{ paddingTop: '8px', paddingRight: '8px' }}>
             <Popup
-              content={`Last Saved: ${lastSavedTimeAgo}`}
               position="bottom center"
               inverted
+              // Keep content as a callback function so it will be updated every hover
+              content={() => `Last Saved: ${moment(appIsSavedTimestamp).fromNow()}`}
               trigger={
                 <Button
                   content="Save"
