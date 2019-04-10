@@ -6,7 +6,7 @@ Before Launch:
     - [x] grid upload
     - [x] column exclusion
   - [x] Create timeago last saved popover
-  - [ ] Create route that exposes a delete store option
+  - [x] Create route that exposes a delete store option
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Bootstrap from local forage
   - [ ] Check to see if app matches saved snapshot (read mobx docs)
