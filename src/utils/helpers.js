@@ -5,6 +5,8 @@ import moment from 'moment'
 import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
 // window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
 
+export const momentApplianceParseFormats = ['YYYY-MM-DD hh:mm:ss']
+
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------

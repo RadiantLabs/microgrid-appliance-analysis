@@ -1,4 +1,15 @@
 Before Launch:
+- Loading Appliance files:
+- [ ] Appliance AC/DC should have a blank option so you're required to choose something.
+- [ ] Add dropdown of appliance types to file upload section
+- [ ] Disable save until required fields are completed
+- [ ] Autosave when adding appliance
+- [ ] Require filing out appliance attributes on file upload
+- [ ] Save appliance without enabling
+- [ ] Document kw_factor
+- [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
+- [x] Switch to using moment to parse dates
+
 - [x] Save uploaded files to local forage
   - [x] Fix styling of save button
   - [ ] Autosave app on
@@ -9,16 +20,12 @@ Before Launch:
   - [x] Create route that exposes a delete store option
 
 - [x] Bootstrap from local forage
-  - [zx] Find out if saving a snapshot saves types.frozen()
+  - [x] Find out if saving a snapshot saves types.frozen()
   - [x] Check to see if app matches saved snapshot (read mobx docs)
   - [x] If so and a latest saved state exists, bootstrap with latest, otherwise load samples
   - [x] Figure out history module
 
-- Loading Appliance files:
-- [ ] Hook up appliance upload section
-- [ ] Require filing out appliance attributes on file upload
-- [ ] Save appliance without enabling
-- [ ] Document kw_factor
+
 
 - Misc:
   - [ ] Fix ROI and Payback. It has something to do with newApplianceNetGridRevenue
@@ -31,6 +38,7 @@ Before Launch:
   - [ ] Figure out why biogas doesn't have solar angle of incidence
   - [ ] Hook up external logging
   - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
+  - [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
 
 - Charts:
 - [ ] Sum excess load over year

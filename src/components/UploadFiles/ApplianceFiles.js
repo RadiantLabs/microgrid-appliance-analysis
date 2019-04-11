@@ -35,10 +35,10 @@ class ApplianceFiles extends React.Component {
           <Grid.Column width={4}>
             <Menu vertical fluid>
               <Menu.Item
-                name="Add New Appliance Usage File"
+                name="Add Appliance Usage File"
                 active={viewedApplianceIsStaged}
                 onClick={this.handleAddFileClick}>
-                Add New Appliance Usage File
+                Add Appliance Usage File
                 <Button
                   icon
                   floated="right"

@@ -9,7 +9,8 @@ export const unmetLoadRoundingDecimals = 1
 // HOMER's date format looks like '1/12/07 9:00'
 export const homerParseFormat = 'L/d/yy H:mm'
 
-// Appliance date format: "2018-01-01 01:00:00"
+// TODO: Switch over to using moment. The parse formats are in helpers
+// Appliance date format: "2018-01-01 01:00:00" for Luxon:
 export const applianceParseFormat = 'yyyy-LL-dd HH:mm:ss'
 
 // export const tableDateFormat = 'yyyy-MM-dd HH:mm'

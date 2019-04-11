@@ -80,12 +80,12 @@ class ApplianceFile extends React.Component {
     if (_.isEmpty(viewedAppliance)) {
       return <h3>Empty Viewed Appliance</h3> // log this
     }
-    const { label, description, enabled } = viewedAppliance
+    const { label, description, enabled, showAnalyzedResults } = viewedAppliance
     return (
       <div>
         {viewedApplianceIsStaged && <StagedFileHeader />}
-        <Segment attached="top" className={enabled ? 'activeFileBorderNoBottom' : null}>
-          {!viewedApplianceIsStaged && (
+        {!viewedApplianceIsStaged && (
+          <Segment attached="top" className={enabled ? 'activeFileBorderNoBottom' : null}>
             <Grid>
               <Grid.Column floated="left" width={12}>
                 <Header as="h2">
@@ -97,9 +97,9 @@ class ApplianceFile extends React.Component {
                 <ApplianceEnabler />
               </Grid.Column>
             </Grid>
-          )}
-        </Segment>
-        {viewedApplianceIsStaged && (
+          </Segment>
+        )}
+        {!showAnalyzedResults && (
           <Message warning>
             <p>
               This app is in beta. You may have to re-upload files in the future when we update this
@@ -107,10 +107,14 @@ class ApplianceFile extends React.Component {
             </p>
           </Message>
         )}
-        <Segment attached className={enabled ? 'activeFileBorderNoTop' : null}>
-          <ApplianceFormFields />
-        </Segment>
-        <ApplianceDataTable />
+        {showAnalyzedResults && (
+          <div>
+            <Segment attached className={enabled ? 'activeFileBorderNoTop' : null}>
+              <ApplianceFormFields />
+            </Segment>
+            <ApplianceDataTable />
+          </div>
+        )}
       </div>
     )
   }

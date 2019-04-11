@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow } from 'mobx-state-tree'
+import { types, flow, getParent } from 'mobx-state-tree'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import {
@@ -8,6 +8,7 @@ import {
   analyzeApplianceFile,
   csvOptions,
 } from '../utils/importFileHelpers'
+import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
@@ -80,26 +81,32 @@ export const ApplianceStore = types
     handleApplianceFileUpload(rawFile) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
-      const { name: fileName, size: fileSize, type: fileMimeType } = rawFile
-      // debugger
+      const { name, size, type: mimeType } = rawFile
+      const timeStamp = getIsoTimestamp()
+      const fileInfo = {
+        id: `${name}_${timeStamp}`,
+        timeStamp,
+        fileType: 'appliance',
+        name,
+        size,
+        isSample: false,
+        mimeType,
+      }
       Papa.parse(rawFile, {
         ...csvOptions,
         complete: parsedFile => {
-          const applianceAttrs = analyzeApplianceFile({
-            parsedFile,
-            fileName,
-            fileSize,
-            fileType: 'appliance',
-            fileMimeType,
-            isSamplefile: false,
+          const analyzedFile = analyzeApplianceFile(parsedFile, fileInfo)
+          const label = removeFileExtension(name)
+          self.runInAction(() => {
+            self.label = label
+            self.modelInputValues = { ...self.modelInputValues, label }
+            self.updateModel(analyzedFile)
           })
-          self.updateAppliance(applianceAttrs)
         },
-        error: error => {
-          console.log('error: ', error)
-        },
+        error: error => console.log('error: ', error),
       })
     },
+
     // These files come in from either samples or previously uploaded user files
     loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
@@ -109,6 +116,7 @@ export const ApplianceStore = types
       self.updateModel(analyzedFile)
       self.isAnalyzingFile = false
     }),
+
     updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
@@ -147,7 +155,10 @@ export const ApplianceStore = types
   }))
   .views(self => ({
     get showAnalyzedResults() {
-      return self.fileIsSelected && !self.isAnalyzingFile
+      if (getParent(self).viewedApplianceIsStaged) {
+        return self.fileIsSelected && !self.isAnalyzingFile
+      }
+      return true
     },
     get calculatedApplianceColumns() {
       return calcApplianceColumns(self)

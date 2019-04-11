@@ -99,9 +99,7 @@ export const GridStore = types
             self.updateModel(analyzedFile)
           })
         },
-        error: error => {
-          console.log('error: ', error)
-        },
+        error: error => console.log('error: ', error),
       })
     },
 

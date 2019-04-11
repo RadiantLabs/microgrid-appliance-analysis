@@ -2,7 +2,8 @@ import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import { findColMax, findColMin } from './helpers'
+import moment from 'moment'
+import { findColMax, findColMin, momentApplianceParseFormats } from './helpers'
 import { homerParseFormat, applianceParseFormat } from './constants'
 import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
 import {
@@ -180,8 +181,7 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
 }
 
 export function analyzeApplianceFile(parsedFile, fileInfo) {
-  const { isSample, fileType, size } = fileInfo
-  const mimeType = 'TODO'
+  const { isSample, fileType, size, mimeType } = fileInfo
   let fileErrors = []
   let fileWarnings = []
   const fileIsCsv = isSample ? true : isFileCsv(mimeType)
@@ -200,6 +200,12 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   // 5MB limit
   if (size > 1048576 * 5) {
     fileErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
+  }
+  const dateExample = parsedFile.data[0].datetime
+  if (!moment(dateExample, momentApplianceParseFormats).isValid()) {
+    fileErrors.push(
+      `Appliance date format is incorrect. It should be of the format 'YYYY-MM-DD hh:mm:ss'. For exmaple, 2018-01-01 00:00:00`
+    )
   }
   const processedData = _.map(parsedFile.data, row => {
     const trimmedRow = _.omit(row, ['production_factor'])
