@@ -30,8 +30,13 @@ export const ApplianceStore = types
     fileWarnings: types.array(types.string),
     applianceType: types.enumeration('applianceType', fieldDefinitions.applianceType.enumerations), // applianceType is not currently used
     capex: types.number,
-    capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
-    powerType: types.enumeration('powerType', ['AC', 'DC', '']),
+    capexAssignment: types.enumeration(
+      'capexAssignment',
+      fieldDefinitions.capexAssignment.enumerations
+    ),
+    powerType: types.maybeNull(
+      types.enumeration('powerType', fieldDefinitions.powerType.enumerations)
+    ),
     phase: types.maybeNull(types.number),
     hasMotor: types.maybeNull(types.boolean),
     powerFactor: types.maybeNull(types.number),
@@ -184,6 +189,20 @@ export const ApplianceStore = types
     get ancillaryEquipmentEfficiency() {
       return calcCombinedEfficiency(self.enabledAncillaryEquipment)
     },
+    get fileReadyToSave() {
+      return _.every([
+        self.label,
+        self.powerType,
+        self.hasMotor,
+        self.phase,
+        self.productionUnitType,
+        _.isFinite(self.nominalPower),
+        _.isFinite(self.productionUnitsPerKwh),
+        _.isFinite(self.revenuePerProductionUnits),
+        _.isFinite(self.powerFactor),
+        _.isFinite(self.dutyCycleDerateFactor),
+      ])
+    },
   }))
 
 //
@@ -203,7 +222,7 @@ export const initialApplianceState = {
   capexTempValue: '',
   capexInputError: false,
   capexAssignment: 'appliance',
-  powerType: 'AC',
+  powerType: null,
   phase: null,
   hasMotor: null,
   powerFactor: null,

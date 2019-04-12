@@ -15,6 +15,19 @@ export function lastSavedTimeAgo(appIsSavedTimestamp) {
   return mDate.isValid() ? `Last Saved: ${mDate.fromNow()}` : 'No found versions'
 }
 
+export function booleanDisplay(item) {
+  switch (true) {
+    case _.isNull(item):
+      return ''
+    case item === true:
+      return 'Yes'
+    case item === false:
+      return 'No'
+    default:
+      return ''
+  }
+}
+
 export function calculateRoi(netProfit, capex) {
   return (100 * netProfit) / capex
 }

@@ -28,7 +28,12 @@ const ApplianceEnabler = inject('store')(
 
 const StagedFileHeader = inject('store')(
   observer(({ store }) => {
-    const { fileIsSelected, isAnalyzingFile, handleApplianceFileUpload } = store.viewedAppliance
+    const {
+      fileIsSelected,
+      isAnalyzingFile,
+      handleApplianceFileUpload,
+      fileReadyToSave,
+    } = store.viewedAppliance
     const { saveStagedAppliance, cancelStagedAppliance } = store
     return (
       <div>
@@ -51,7 +56,7 @@ const StagedFileHeader = inject('store')(
               size="tiny"
               color="blue"
               floated="right"
-              disabled={false}
+              disabled={!fileReadyToSave}
               onClick={saveStagedAppliance}
               basic
             />

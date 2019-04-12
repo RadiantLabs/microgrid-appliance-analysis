@@ -6,6 +6,7 @@ import { HelperPopup } from '../../components/Elements/HelperPopup'
 import { ApplianceSummaryStats } from './ApplianceSummaryStats'
 import InputField from '../../components/Elements/InputField'
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
+import { booleanDisplay } from '../../utils/helpers'
 
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
@@ -20,8 +21,6 @@ const ApplianceFormFields = ({ store }) => {
     fileWarnings,
   } = viewedAppliance
 
-  // TODO: At some point we may want to disable these fields for sample files.
-  const fieldDisabled = false
   return (
     <Grid>
       <Grid.Row>
@@ -40,7 +39,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <Dropdown text={powerType} disabled={fieldDisabled}>
+          <Dropdown text={powerType}>
             <Dropdown.Menu>
               {_.map(fieldDefinitions['powerType'].enumerations, item => (
                 <Dropdown.Item
@@ -72,7 +71,7 @@ const ApplianceFormFields = ({ store }) => {
           <HelperPopup position="right center" content={fieldDefinitions['phase'].description} />
         </Grid.Column>
         <Grid.Column width={4}>
-          <Dropdown text={String(phase)} disabled={fieldDisabled}>
+          <Dropdown text={phase ? String(phase) : ''}>
             <Dropdown.Menu>
               {_.map(fieldDefinitions['phase'].enumerations, item => (
                 <Dropdown.Item text={item} value={item} key={item} onClick={handlePhaseChange} />
@@ -91,11 +90,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="nominalPower"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="nominalPower" modelInstance={viewedAppliance} />
         </Grid.Column>
 
         <Grid.Column width={4}>
@@ -103,11 +98,11 @@ const ApplianceFormFields = ({ store }) => {
           <HelperPopup position="right center" content={fieldDefinitions['hasMotor'].description} />{' '}
         </Grid.Column>
         <Grid.Column width={4}>
-          <Dropdown text={hasMotor ? 'Yes' : 'No'} disabled={fieldDisabled}>
+          <Dropdown text={booleanDisplay(hasMotor)}>
             <Dropdown.Menu>
               {_.map(fieldDefinitions['hasMotor'].enumerations, item => (
                 <Dropdown.Item
-                  text={item ? 'Yes' : 'No'}
+                  text={booleanDisplay(item)}
                   value={item}
                   key={item}
                   onClick={handleHasMotorChange}
@@ -127,11 +122,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="productionUnitType"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="productionUnitType" modelInstance={viewedAppliance} />
         </Grid.Column>
 
         <Grid.Column width={4}>
@@ -142,11 +133,7 @@ const ApplianceFormFields = ({ store }) => {
           />{' '}
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="powerFactor"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="powerFactor" modelInstance={viewedAppliance} />
         </Grid.Column>
       </Grid.Row>
 
@@ -159,11 +146,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="productionUnitsPerKwh"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
         </Grid.Column>
 
         <Grid.Column width={4}>
@@ -174,11 +157,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="dutyCycleDerateFactor"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="dutyCycleDerateFactor" modelInstance={viewedAppliance} />
         </Grid.Column>
       </Grid.Row>
 
@@ -191,11 +170,7 @@ const ApplianceFormFields = ({ store }) => {
           />
         </Grid.Column>
         <Grid.Column width={4}>
-          <InputField
-            fieldKey="revenuePerProductionUnits"
-            modelInstance={viewedAppliance}
-            disabled={fieldDisabled}
-          />
+          <InputField fieldKey="revenuePerProductionUnits" modelInstance={viewedAppliance} />
         </Grid.Column>
 
         <Grid.Column width={4} />

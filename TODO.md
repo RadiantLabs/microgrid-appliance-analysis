@@ -2,17 +2,20 @@ Before Launch:
 
 Loading Appliance files:
 - [x] Appliance AC/DC should have a blank option so you're required to choose something.
-- [ ] Disable save until required fields are completed
-- [ ] Autosave when adding appliance
-- [ ] Save appliance without enabling
+- [x] Disable save until required fields are completed
+- [x] Fix hasMotor dropdown
+- [ ] Tab order
+- [x] Autosave when adding appliance
+- [x] Save appliance without enabling
 - [ ] Document kw_factor
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [x] Switch to using moment to parse dates
+- [ ] Delete uploaded appliance (with autosave)
 
 - [x] Save uploaded files to local forage
   - [x] Fix styling of save button
-  - [ ] Autosave app on
-    - [ ] appliance upload
+  - [x] Autosave app on
+    - [x] appliance upload
     - [x] grid upload
     - [x] column exclusion
   - [x] Create timeago last saved popover
