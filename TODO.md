@@ -1,10 +1,9 @@
 Before Launch:
-- Loading Appliance files:
-- [ ] Appliance AC/DC should have a blank option so you're required to choose something.
-- [ ] Add dropdown of appliance types to file upload section
+
+Loading Appliance files:
+- [x] Appliance AC/DC should have a blank option so you're required to choose something.
 - [ ] Disable save until required fields are completed
 - [ ] Autosave when adding appliance
-- [ ] Require filing out appliance attributes on file upload
 - [ ] Save appliance without enabling
 - [ ] Document kw_factor
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)

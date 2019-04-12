@@ -9,6 +9,7 @@ import {
   csvOptions,
 } from '../utils/importFileHelpers'
 import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
+import { fieldDefinitions } from '../utils/fieldDefinitions'
 import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
 import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
@@ -27,14 +28,7 @@ export const ApplianceStore = types
     description: types.string,
     fileErrors: types.array(types.string),
     fileWarnings: types.array(types.string),
-    applianceType: types.enumeration('applianceType', [
-      'rice_mill',
-      'maize_mill',
-      'water_pump',
-      'welder',
-      'other',
-      '',
-    ]),
+    applianceType: types.enumeration('applianceType', fieldDefinitions.applianceType.enumerations), // applianceType is not currently used
     capex: types.number,
     capexAssignment: types.enumeration('capexAssignment', ['grid', 'appliance']),
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
@@ -214,7 +208,7 @@ export const initialApplianceState = {
   hasMotor: null,
   powerFactor: null,
   nominalPower: null,
-  dutyCycleDerateFactor: null,
+  dutyCycleDerateFactor: 1,
   seasonalDerateFactor: null,
   productionUnitType: null,
   productionUnitsPerKwh: null,

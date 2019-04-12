@@ -222,6 +222,10 @@ export const fieldDefinitions = {
   applianceType: {
     $schema: jsonSchemaStandard,
     title: 'Appliance Type',
+    description:
+      'Simple, broad classification of the type of appliance this is. Use existing classifications or add your own.',
+    type: 'enumeration',
+    enumerations: ['rice_mill', 'maize_mill', 'water_pump', 'welder', 'other', ''],
   },
   equipmentType: {
     $schema: jsonSchemaStandard,
