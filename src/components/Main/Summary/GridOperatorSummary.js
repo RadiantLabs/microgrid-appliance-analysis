@@ -7,14 +7,18 @@ import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/U
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-    const newApplianceGridRevenue = _.get(stats, 'newApplianceGridRevenue', '-')
+    const newAppliancesGridRevenue = _.get(stats, 'newAppliancesGridRevenue', '-')
     const totalCapexAssignedToGrid = _.get(stats, 'totalCapexAssignedToGrid', '-')
     const applianceCapexAssignedToGrid = _.get(stats, 'applianceCapexAssignedToGrid', '-')
     const ancillaryCapexAssignedToGrid = _.get(stats, 'ancillaryCapexAssignedToGrid', '-')
 
-    const newApplianceElectricityCost = _.get(stats, 'newApplianceElectricityCost', '-')
-    const newApplianceUnmetLoadCost = _.get(stats, 'newApplianceUnmetLoadCost', '-')
-    const newApplianceNetGridRevenue = _.get(stats, 'newApplianceNetGridRevenue', '-')
+    const newAppliancesWholesaleElectricityCost = _.get(
+      stats,
+      'newAppliancesWholesaleElectricityCost',
+      '-'
+    )
+    const newUnmetLoadCost = _.get(stats, 'newUnmetLoadCost', '-')
+    const newAppliancesGridNetIncome = _.get(stats, 'newAppliancesGridNetIncome', '-')
     const gridOwnerRoi = _.get(stats, 'gridOwnerRoi', '-')
     const gridOwnerPayback = _.get(stats, 'gridOwnerPayback', '-')
     return (
@@ -36,11 +40,11 @@ export const GridOperatorEconomicSummary = inject('store')(
             </Table.Row>
             <Table.Row>
               <Table.Cell>OPEX costs (due to new appliance)</Table.Cell>
-              <Table.Cell>$ {newApplianceElectricityCost}</Table.Cell>
+              <Table.Cell>$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Electricity Sales (from new appliance)</Table.Cell>
-              <Table.Cell>$ {newApplianceGridRevenue}</Table.Cell>
+              <Table.Cell>$ {newAppliancesGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Grid ROI</Table.Cell>
@@ -55,12 +59,16 @@ export const GridOperatorEconomicSummary = inject('store')(
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>New appliance unmet load cost</Table.Cell>
-              <Table.Cell>$ {newApplianceUnmetLoadCost}</Table.Cell>
+              <Table.Cell>
+                Total unmet load cost
+                <br />
+                (new appliances + original)
+              </Table.Cell>
+              <Table.Cell>$ {newUnmetLoadCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>New appliance net revenue</Table.Cell>
-              <Table.Cell>$ {newApplianceNetGridRevenue}</Table.Cell>
+              <Table.Cell>Net Income for New Appliances</Table.Cell>
+              <Table.Cell>$ {newAppliancesGridNetIncome}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -74,7 +82,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
     const { summaryStats: stats } = store
 
     // Financials
-    const newApplianceYearlyKwh = _.get(stats, 'newApplianceYearlyKwh', '-')
+    const newAppliancesYearlyKwh = _.get(stats, 'newAppliancesYearlyKwh', '-')
 
     // Original unmet loads
     const originalUnmetLoadCount = _.get(stats, 'originalUnmetLoadCount', '-')
@@ -93,7 +101,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Appliance Energy Consumption</Table.Cell>
-              <Table.Cell>{newApplianceYearlyKwh} kWh</Table.Cell>
+              <Table.Cell>{newAppliancesYearlyKwh} kWh</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

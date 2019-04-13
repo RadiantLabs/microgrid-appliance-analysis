@@ -7,7 +7,7 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
     // Note: this is a cost for the appliance operator, but revenue for grid operator
-    const newApplianceElectricityCost = _.get(stats, 'newApplianceGridRevenue', '-')
+    const newAppliancesWholesaleElectricityCost = _.get(stats, 'newAppliancesGridRevenue', '-')
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
     const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
     const totalCapexAssignedToAppliance = _.get(stats, 'totalCapexAssignedToAppliance', '-')
@@ -35,7 +35,7 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
 
             <Table.Row>
               <Table.Cell>Appliance Electricity Cost</Table.Cell>
-              <Table.Cell>$ {newApplianceElectricityCost}</Table.Cell>
+              <Table.Cell>$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance-Related Revenue</Table.Cell>
@@ -65,7 +65,7 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
 export const ApplianceOperatorTechnicalSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats } = store
-    const { yearlyProductionUnits, productionUnitType, newApplianceYearlyKwh } = summaryStats
+    const { yearlyProductionUnits, productionUnitType, newAppliancesYearlyKwh } = summaryStats
     return (
       <div>
         <Header as="h4">Technical Outputs</Header>
@@ -73,7 +73,7 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Appliance Electricity Consumption</Table.Cell>
-              <Table.Cell>{newApplianceYearlyKwh || 0} kWh</Table.Cell>
+              <Table.Cell>{newAppliancesYearlyKwh || 0} kWh</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Units Produced</Table.Cell>

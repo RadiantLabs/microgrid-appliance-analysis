@@ -2,14 +2,26 @@
 Before Launch:
 --------------------------------------------------------------------------------
 Loading Appliance files:
-- [ ] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
-- [ ] Delete uploaded appliance (with autosave). Keep at least 1 sample file 
-- [ ] Appliance file import tests
+- [x] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
+- [ ] Delete uploaded appliance (with autosave). Keep at least 1 sample file
+- [ ] Write appliance file import tests
 
 ROI & Payback
-- [ ] identify naming scheme in calculations and make consistent, document in README
+- [ ] Identify naming scheme in calculations and make consistent (such as newAppliance -> newAppliances)
+- [ ] Document naming scheme in README
+- [ ] Replace newAppliancesGridRevenue with newAppliancesApplianceOwnerOpex in view
+- [ ] Fix line 10 & 38 of ApplianceOperatorSummary.js
+- [ ] Review all summary views and make sure they are hooked up to the correct variable
+- [ ] Make sure grid opex includes unmet load costs. Create new variable for opex.
+- [ ] Review calculation for appliance opex. Create new variable for opex.
+- [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> newUnmetLoadCost
+- [ ] Change original to orig in all variable names?
 - [ ] Trace ROI, fix
 - [ ] Trace payback, fix
+
+Prefix:
+- new appliances + original = new (?)
+
 
 Test Deploy
 - [ ] Deploy and rollback on Heroku

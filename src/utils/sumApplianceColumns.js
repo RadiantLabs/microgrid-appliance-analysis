@@ -1,8 +1,7 @@
 import _ from 'lodash'
 
-// Someone can deselect all appliances. When they do, the grid should behave as
-// the original HOMER file modeled it. So pass in an empty array of objects so
-// subsequent checks and calculations still work.
+// Sum, on an hourly basis, values from enabled appliances and their enabled
+// ancillary equipment
 
 // Note: kw_factor only makes sense for a single appliance type, so we are not
 // summing it here. kw_factor is the number of minutes an appliance was fully
@@ -28,6 +27,9 @@ export function sumApplianceColumns(enabledAppliances) {
   })
 }
 
+// Someone can deselect all appliances. When they do, the grid should behave as
+// the original HOMER file modeled it. So pass in an empty array of objects so
+// subsequent checks and calculations still work.
 const emptyApplianceRows = _.map(_.range(0, 8760), hour => {
   return {
     hour,

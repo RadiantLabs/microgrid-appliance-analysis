@@ -73,8 +73,34 @@ originalElectricalProductionLoadDiff
 electricalProductionLoadDiff
 
 newAppliancesLoad: load due to new appliances only
-newApplianceYearlyKwh: yearly load due to new appliances only
-newApplianceGridRevenue: revenue for grid operator due to new appliances only
+newAppliancesYearlyKwh: yearly load due to new appliances only
+newAppliancesGridRevenue: revenue for grid operator due to new appliances only
+
+
+### Chain of derived values
+
+#### Hourly Calculations:
+`calcApplianceColumns.js`:
+
+** For Review**: Important calculations that many other calculations are built on (Each calculation is done on an hour-by-hour basis):
+```
+newApplianceLoad = kw_factor * nominalPower * dutyCycleDerateFactor
+
+newApplianceAncillaryLoad =
+  newApplianceLoad / ancillaryEquipmentEfficiency - newApplianceLoad
+
+productionUnits = newApplianceLoad * productionUnitsPerKwh
+
+productionUnitsRevenue = revenuePerProductionUnits * productionUnits
+```
+
+`sumApplianceColumns.js`: Sum, on an hourly basis, the following values for enabled appliances and enabled ancillary equipment
+* `newAppliancesLoad`
+* `newAppliancesAncillaryLoad`
+* `productionUnitsRevenue`
+
+Note: It doesn't make sense to sum kw_factor, however, we can sum derived values, such as load and revenue.
+
 
 
 

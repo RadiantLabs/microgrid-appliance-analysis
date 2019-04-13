@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { calcAncillaryEquipmentCosts } from '../utils/calcAncillaryEquipmentCosts'
 import {
   countGreaterThanZero,
   percentOfYear,
@@ -8,14 +9,19 @@ import {
   calculateRoi,
   calculatePayback,
 } from './helpers'
-import { calcAncillaryEquipmentCosts } from '../utils/calcAncillaryEquipmentCosts'
 
+// This is the final yearly summary stats calculation, incorporating:
+// * all enabled appliances
+// * all enabled ancillary equipment
+// * active grid
 export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(combinedTable) || _.isEmpty(enabledAppliances)) {
     return {}
   }
 
-  // Unmet Loads: Original without new appliance
+  // == Unmet load histograms ==================================================
+  // Unmet Loads: Original without new appliance. Output values into a histogram
+  // data object for charts
   const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
   const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalUnmetLoad')
@@ -25,41 +31,47 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     'originalUnmetLoad'
   )
 
-  // Unmet Loads: Total with new appliance
+  // Unmet Loads: Total (original + new appliance)
   const newUnmetLoadCount = countGreaterThanZero(combinedTable, 'newUnmetLoad')
   const newUnmetLoadCountPercent = percentOfYear(newUnmetLoadCount)
   const newUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newUnmetLoad')
-
   const newUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
     'hour_of_day',
     'newUnmetLoad'
   )
 
+  // Create a histogram object that combined both originalUnmetLoadCount and newUnmetLoadCount
   const allUnmetLoadHist = mergeArraysOfObjects(
     'hour_of_day',
     originalUnmetLoadHist,
     newUnmetLoadHist
   )
 
-  // Yearly kWh and Financial Calculations
-  // New Appliance kWh for the year
-  const newApplianceYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
+  // == Yearly kWh & Financial Calculations ====================================
+  // Sum yearly kWh for only new appliances added, not including original HOMER load
+  const newAppliancesYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
 
   // Revenue for grid operator due to new appliances
-  // *This is the appliance owner cost*
-  const newApplianceGridRevenue = newApplianceYearlyKwh * grid['retailElectricityPrice']
+  // This is the appliance owner's operating costs.
+  // For clarity, create a new variable for the appliance owner's opex
+  const newAppliancesGridRevenue = newAppliancesYearlyKwh * grid['retailElectricityPrice']
+  const newAppliancesApplianceOwnerOpex = newAppliancesGridRevenue
 
-  // Electricity cost to grid operator due to new appliances
-  const newApplianceElectricityCost = newApplianceYearlyKwh * grid['wholesaleElectricityCost']
+  // Electricity cost to grid operator due to new appliances. This is not opex,
+  // which may include other costs, such as unmet load.
+  const newAppliancesWholesaleElectricityCost =
+    newAppliancesYearlyKwh * grid['wholesaleElectricityCost']
 
-  // Cost to grid operator of new appliance's unmet load
-  const newApplianceUnmetLoadCost = newUnmetLoadSum * grid['unmetLoadCostPerKwh']
+  // Yearly unmet load costs. `newUnmetLoadCost` includes original and the new appliances
+  // unmet load. So `newAppliancesUnmetLoadCost` should always be positive.
+  const originalUnmetLoadCost = originalUnmetLoadSum * grid['unmetLoadCostPerKwh']
+  const newUnmetLoadCost = newUnmetLoadSum * grid['unmetLoadCostPerKwh']
+  const newAppliancesUnmetLoadCost = newUnmetLoadCost - originalUnmetLoadCost
 
-  // TODO: Should we change this to profit or Net Income? The ROI calcs use netProfit
-  // Maybe I should change that to netIncome?
-  const newApplianceNetGridRevenue =
-    newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
+  // Net income for grid operator due to new appliances.
+  const newAppliancesGridNetIncome =
+    newAppliancesGridRevenue - newAppliancesWholesaleElectricityCost - newUnmetLoadCost
 
   // Calculate Capex for appliances
   const appliancesWithCapexAssignedToGrid = _.filter(enabledAppliances, appliance => {
@@ -83,10 +95,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // Production units makes sense when we are calculating results from a single appliance
   // Otherwise you might have kg rice, kg maize and hours of welding
   const yearlyProductionUnitsRevenue = _.sumBy(combinedTable, 'productionUnitsRevenue')
-  const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceGridRevenue
+  const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newAppliancesGridRevenue
 
-  // TODO (Error): newApplianceNetGridRevenue already takes into account newApplianceElectricityCost
-  const netGridOwnerRevenue = newApplianceNetGridRevenue - newApplianceElectricityCost
+  // TODO (Error): newAppliancesGridNetIncome already takes into account newAppliancesWholesaleElectricityCost
+  const netGridOwnerRevenue = newAppliancesGridNetIncome - newAppliancesWholesaleElectricityCost
 
   const yearlyProductionUnits = calcYearlyProductionUnits(enabledAppliances)
   const productionUnitType = calcProductionUnitType(enabledAppliances)
@@ -127,11 +139,16 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     newUnmetLoadHist,
     allUnmetLoadHist,
 
-    newApplianceYearlyKwh: _.round(newApplianceYearlyKwh),
-    newApplianceGridRevenue: _.round(newApplianceGridRevenue),
-    newApplianceElectricityCost: _.round(newApplianceElectricityCost),
-    newApplianceUnmetLoadCost: _.round(newApplianceUnmetLoadCost),
-    newApplianceNetGridRevenue: _.round(newApplianceNetGridRevenue),
+    newAppliancesYearlyKwh: _.round(newAppliancesYearlyKwh),
+    newAppliancesGridRevenue: _.round(newAppliancesGridRevenue),
+    newAppliancesApplianceOwnerOpex: _.round(newAppliancesApplianceOwnerOpex),
+    newAppliancesWholesaleElectricityCost: _.round(newAppliancesWholesaleElectricityCost),
+
+    originalUnmetLoadCost: _.round(originalUnmetLoadCost),
+    newUnmetLoadCost: _.round(newUnmetLoadCost),
+    newAppliancesUnmetLoadCost: _.round(newAppliancesUnmetLoadCost),
+
+    newAppliancesGridNetIncome: _.round(newAppliancesGridNetIncome),
 
     // yearlyProductionUnits and productionUnitType only makes sense for a single
     // appliance enabled

@@ -2,11 +2,9 @@ import _ from 'lodash'
 import { predictBatteryEnergyContent } from './predictBatteryEnergyContent'
 import { getGridPowerType } from './columnDetectors'
 
-/**
- * Pass in the merged table that includes Homer and summed appliance calculated columnms.
- * Also pass in adjustable fields from store that are required
- * to do the calculations
- */
+// Pass in the merged table that includes Homer and summed appliance calculated columnms.
+// Also pass in adjustable fields from store that are required
+// to do the calculations
 export function calcHybridColumns(grid, summedAppliances) {
   if (_.isEmpty(grid) || _.isEmpty(grid.fileData) || _.isEmpty(summedAppliances)) {
     return []
@@ -28,8 +26,8 @@ export function calcHybridColumns(grid, summedAppliances) {
     const { powerType: gridPowerType } = getGridPowerType(_.keys(homerRow))
 
     // 'Load Served' implies it was actually served, instead of load demand.
-    // We want to predict the battery energy content and unmet load.
-    // Unmet load implies what would have been served if there was either production
+    // We want to predict the battery energy content, unmet load and excess production.
+    // Unmet load implies what would have been served if there was available production
     // or battery energy content. In reality, there is no difference between
     // 'load served' and just 'load' because if the grid goes down, there is no load.
     // However, the prediction function calculates battery energy content, excess
@@ -44,7 +42,11 @@ export function calcHybridColumns(grid, summedAppliances) {
     // It's positive if battery is charging, negative if battery is discharging
     const electricalProductionLoadDiff = totalElectricalProduction - totalElectricalLoadServed
 
-    // Predict battery energy content. From that we can calculate new unmet load
+    // == Predict Battery Energy Content =======================================
+    // Predict battery energy content based on new appliance loads.
+    // During prediction, we can calculate new unmet load and new excess production.
+    // Prediction depends on electricalProductionLoadDiff and the previous battery
+    // energy content. Battery content is clamped by the min and max of the battery.
     const prevBatteryEnergyContent =
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
@@ -58,11 +60,16 @@ export function calcHybridColumns(grid, summedAppliances) {
       }
     )
 
-    // == Calculate Unmet Load =================================================
+    // == Get Original HOMER Unmet Load ========================================
     // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
     const originalUnmetLoad = _.round(homerRow['Original Unmet Electrical Load'], 6)
 
-    // =========================================================================
+    // == Output Results =======================================================
+    // I am thinking availableCapacity doesn't make sense to calculate or display.
+    // Available capacity is used to charge the battery, so you can never really
+    // know if it's actuall available, unless you had a much better model of the
+    // battery. Excess production is clear though - the battery is fully charged
+    // and there is still excess production that could be used.
     result.push({
       hour: homerRow['hour'],
       datetime: homerRow['Time'],
@@ -79,7 +86,6 @@ export function calcHybridColumns(grid, summedAppliances) {
       // See note in README.md about how many decimal places to round unmet load
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
       newUnmetLoad: _.round(newUnmetLoad, 1),
-
       newExcessProduction: _.round(newExcessProduction, 4),
     })
     return result
