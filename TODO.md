@@ -3,10 +3,9 @@ Before Launch:
 --------------------------------------------------------------------------------
 Loading Appliance files:
 - [x] Appliance AC/DC should have a blank option so you're required to choose something.
-- [ ] Disable save until required fields are completed
+- [x] Disable save until required fields are completed
 - [x] Tab order
 - [ ] Document kw_factor
-- [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [ ] Delete uploaded appliance (with autosave)
 
 ROI & Payback
@@ -49,6 +48,7 @@ Misc:
 
 Post launch
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
+- [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 
 --------------------------------------------------------------------------------
 Future Features

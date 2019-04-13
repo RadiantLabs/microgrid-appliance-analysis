@@ -39,9 +39,8 @@ localforage.config({
 export const MainStore = types
   .model({
     // Homer Data
-    // List of all available grids. The app doesn't use this directly - it uses
-    // a computted view of the `activeGrid` and `inactiveGrids`, identified by
-    // isActive on the grid model
+    // List of all available grids. Mostly we use `activeGrid` which is
+    // identified as a computed view by isActive field on the grid model
     availableGrids: types.optional(types.array(GridStore), []),
 
     // For uploading and viewing different HOMER files
@@ -241,12 +240,12 @@ export const MainStore = types
       return self.viewedGridId === 'staged'
     },
     get viewedGrid() {
+      if (_.isEmpty(self.availableGrids)) {
+        return null
+      }
       return self.viewedGridIsStaged
         ? self.stagedGrid
-        : _.find(
-            self.availableGrids.concat(self.activeGrid),
-            grid => grid.fileInfo.id === self.viewedGridId
-          )
+        : _.find(self.availableGrids, grid => grid.fileInfo.id === self.viewedGridId)
     },
     get viewedApplianceIsStaged() {
       return self.viewedApplianceId === 'staged'
