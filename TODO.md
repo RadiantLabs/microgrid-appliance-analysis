@@ -3,7 +3,7 @@ Before Launch:
 --------------------------------------------------------------------------------
 Loading Appliance files:
 - [ ] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
-- [ ] Delete uploaded appliance (with autosave)
+- [ ] Delete uploaded appliance (with autosave). Keep at least 1 sample file 
 - [ ] Appliance file import tests
 
 ROI & Payback

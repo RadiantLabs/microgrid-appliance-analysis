@@ -16,6 +16,8 @@ export const applianceParseFormat = 'yyyy-LL-dd HH:mm:ss'
 // export const tableDateFormat = 'yyyy-MM-dd HH:mm'
 export const tableDateFormat = 'MMM dd H:mm'
 
+export const undeletableApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00'
+
 // Color palettes:
 // https://semantic-ui.com/usage/theming.html
 // https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283

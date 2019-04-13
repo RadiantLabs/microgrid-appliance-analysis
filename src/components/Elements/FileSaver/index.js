@@ -7,7 +7,9 @@ export const FileSaver = inject('store')(
   observer(({ store }) => {
     const { combinedTable } = store
     return (
-      <div style={{ cursor: 'pointer' }} onClick={saveFile.bind(null, combinedTable)}>
+      <div
+        style={{ cursor: 'pointer' }}
+        onClick={saveFile.bind(null, combinedTable, 'grid_with_appliances.csv')}>
         Download CSV
         <br />
         <Icon.Group size="large">

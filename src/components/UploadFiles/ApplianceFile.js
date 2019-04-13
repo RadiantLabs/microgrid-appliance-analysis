@@ -127,7 +127,7 @@ class ApplianceFile extends React.Component {
             <ApplianceDataTable />
           </>
         )}
-        <ApplianceFileInstructions />
+        {!showAnalyzedResults && <ApplianceFileInstructions />}
       </div>
     )
   }
