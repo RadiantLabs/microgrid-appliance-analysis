@@ -24,6 +24,9 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
+- [ ] Fix mainStore viewedGrid(): is this correct? self.availableGrids.concat(self.activeGrid)
+    - Also have fallback in case nothing is found
+    - Access the error here: http://localhost:3000/files/homer
 - [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Make list of columns to check for when uploading HOMER import

@@ -189,9 +189,14 @@ export const ApplianceStore = types
     get ancillaryEquipmentEfficiency() {
       return calcCombinedEfficiency(self.enabledAncillaryEquipment)
     },
+    get inputErrorList() {
+      return _.compact(_.values(self.modelInputErrors))
+    },
     get fileReadyToSave() {
+      const hasNoErrors = _.size(self.inputErrorList) === 0
       return _.every([
         self.label,
+        self.description,
         self.powerType,
         self.hasMotor,
         self.phase,
@@ -201,6 +206,7 @@ export const ApplianceStore = types
         _.isFinite(self.revenuePerProductionUnits),
         _.isFinite(self.powerFactor),
         _.isFinite(self.dutyCycleDerateFactor),
+        hasNoErrors,
       ])
     },
   }))

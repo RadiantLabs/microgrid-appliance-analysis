@@ -26,22 +26,28 @@ const StagedFileHeader = inject('store')(
             />
           )}
           {fileIsSelected && (
-            <Button
-              content="Save HOMER File"
-              icon="save"
-              size="tiny"
-              color="blue"
-              floated="right"
-              disabled={!fileReadyToSave}
-              onClick={saveStagedGrid}
-              basic
-            />
-          )}
-          {fileIsSelected && (
-            <Button floated="right" basic size="tiny" onClick={cancelStagedGrid}>
-              <Icon name="cancel" />
-              Cancel
-            </Button>
+            <>
+              <Button
+                content="Save HOMER File"
+                icon="save"
+                size="tiny"
+                color="blue"
+                floated="right"
+                disabled={!fileReadyToSave}
+                onClick={saveStagedGrid}
+                basic
+              />
+              <Button floated="right" basic size="tiny" onClick={cancelStagedGrid}>
+                <Icon name="cancel" />
+                Cancel
+              </Button>
+              {!fileReadyToSave && (
+                <div
+                  style={{ float: 'right', fontSize: '12px', fontWeight: 300, marginRight: '4px' }}>
+                  Fill out all fields before saving file
+                </div>
+              )}
+            </>
           )}
           Add HOMER File
           {isAnalyzingFile && (

@@ -50,22 +50,28 @@ const StagedFileHeader = inject('store')(
             />
           )}
           {fileIsSelected && (
-            <Button
-              content="Save Appliance File"
-              icon="save"
-              size="tiny"
-              color="blue"
-              floated="right"
-              disabled={!fileReadyToSave}
-              onClick={saveStagedAppliance}
-              basic
-            />
-          )}
-          {fileIsSelected && (
-            <Button floated="right" basic size="tiny" onClick={cancelStagedAppliance}>
-              <Icon name="cancel" />
-              Cancel
-            </Button>
+            <>
+              <Button
+                content="Save Appliance File"
+                icon="save"
+                size="tiny"
+                color="blue"
+                floated="right"
+                disabled={!fileReadyToSave}
+                onClick={saveStagedAppliance}
+                basic
+              />
+              <Button floated="right" basic size="tiny" onClick={cancelStagedAppliance}>
+                <Icon name="cancel" />
+                Cancel
+              </Button>
+              {!fileReadyToSave && (
+                <div
+                  style={{ float: 'right', fontSize: '12px', fontWeight: 300, marginRight: '4px' }}>
+                  Fill out all fields before saving file
+                </div>
+              )}
+            </>
           )}
           Add Appliance File
           {isAnalyzingFile && (
