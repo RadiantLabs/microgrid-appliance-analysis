@@ -24,170 +24,54 @@ const ApplianceFormFields = ({ store }) => {
   return (
     <Grid>
       <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['label'].title}{' '}
-          <HelperPopup position="right center" content={fieldDefinitions['label'].description} />
+        <Grid.Column width={8}>
+          <FieldLabelInput fieldKey="label" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="description" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="nominalPower" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="productionUnitType" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="revenuePerProductionUnits" modelInstance={viewedAppliance} />
         </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="label" modelInstance={viewedAppliance} />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          {fieldDefinitions['powerType'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['powerType'].description}
+
+        <Grid.Column width={8}>
+          <FieldLabelDropdown
+            fieldKey="powerType"
+            currentValue={powerType}
+            items={fieldDefinitions['powerType'].enumerations}
+            clickHandler={handlePowerTypeChange}
           />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Dropdown text={powerType}>
-            <Dropdown.Menu>
-              {_.map(fieldDefinitions['powerType'].enumerations, item => (
-                <Dropdown.Item
-                  text={item}
-                  value={item}
-                  key={item}
-                  onClick={handlePowerTypeChange}
-                />
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+          <FieldLabelDropdown
+            fieldKey="phase"
+            currentValue={phase}
+            items={fieldDefinitions['phase'].enumerations}
+            clickHandler={handlePhaseChange}
+          />
+          <FieldLabelDropdown
+            fieldKey="hasMotor"
+            currentValue={hasMotor}
+            items={fieldDefinitions['hasMotor'].enumerations}
+            itemDisplayFn={booleanDisplay}
+            clickHandler={handleHasMotorChange}
+          />
+          <FieldLabelInput fieldKey="powerFactor" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="dutyCycleDerateFactor" modelInstance={viewedAppliance} />
         </Grid.Column>
       </Grid.Row>
 
-      <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['description'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['description'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="description" modelInstance={viewedAppliance} />
-        </Grid.Column>
-
-        <Grid.Column width={4}>
-          {fieldDefinitions['phase'].title}{' '}
-          <HelperPopup position="right center" content={fieldDefinitions['phase'].description} />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Dropdown text={phase ? String(phase) : ''}>
-            <Dropdown.Menu>
-              {_.map(fieldDefinitions['phase'].enumerations, item => (
-                <Dropdown.Item text={item} value={item} key={item} onClick={handlePhaseChange} />
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Grid.Column>
-      </Grid.Row>
-
-      <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['nominalPower'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['nominalPower'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="nominalPower" modelInstance={viewedAppliance} />
-        </Grid.Column>
-
-        <Grid.Column width={4}>
-          {fieldDefinitions['hasMotor'].title}{' '}
-          <HelperPopup position="right center" content={fieldDefinitions['hasMotor'].description} />{' '}
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Dropdown text={booleanDisplay(hasMotor)}>
-            <Dropdown.Menu>
-              {_.map(fieldDefinitions['hasMotor'].enumerations, item => (
-                <Dropdown.Item
-                  text={booleanDisplay(item)}
-                  value={item}
-                  key={item}
-                  onClick={handleHasMotorChange}
-                />
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Grid.Column>
-      </Grid.Row>
-
-      <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['productionUnitType'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['productionUnitType'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="productionUnitType" modelInstance={viewedAppliance} />
-        </Grid.Column>
-
-        <Grid.Column width={4}>
-          {fieldDefinitions['powerFactor'].title}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['powerFactor'].description}
-          />{' '}
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="powerFactor" modelInstance={viewedAppliance} />
-        </Grid.Column>
-      </Grid.Row>
-
-      <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['productionUnitsPerKwh'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['productionUnitsPerKwh'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
-        </Grid.Column>
-
-        <Grid.Column width={4}>
-          {fieldDefinitions['dutyCycleDerateFactor'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['dutyCycleDerateFactor'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="dutyCycleDerateFactor" modelInstance={viewedAppliance} />
-        </Grid.Column>
-      </Grid.Row>
-
-      <Grid.Row>
-        <Grid.Column width={4}>
-          {fieldDefinitions['revenuePerProductionUnits'].title}{' '}
-          <HelperPopup
-            position="right center"
-            content={fieldDefinitions['revenuePerProductionUnits'].description}
-          />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <InputField fieldKey="revenuePerProductionUnits" modelInstance={viewedAppliance} />
-        </Grid.Column>
-
-        <Grid.Column width={4} />
-        <Grid.Column width={4} />
-      </Grid.Row>
       <Grid.Row>
         <Grid.Column width={4}>File Upload Warnings</Grid.Column>
         <Grid.Column width={12}>
           <FileUploadErrors fileErrors={fileWarnings} />
         </Grid.Column>
       </Grid.Row>
+
       <Grid.Row>
         <Grid.Column width={4}>File Upload Errors</Grid.Column>
         <Grid.Column width={12}>
           <FileUploadErrors fileErrors={fileErrors} />
         </Grid.Column>
       </Grid.Row>
+
       <Grid.Row>
         <Grid.Column width={16}>
           <ApplianceSummaryStats />
@@ -198,6 +82,46 @@ const ApplianceFormFields = ({ store }) => {
 }
 
 export default inject('store')(observer(ApplianceFormFields))
+
+const FieldLabelInput = ({ fieldKey, modelInstance }) => {
+  return (
+    <Grid>
+      <Grid.Column width={8}>
+        {fieldDefinitions[fieldKey].title}{' '}
+        <HelperPopup position="right center" content={fieldDefinitions[fieldKey].description} />
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <InputField fieldKey={fieldKey} modelInstance={modelInstance} />
+      </Grid.Column>
+    </Grid>
+  )
+}
+
+const FieldLabelDropdown = ({ fieldKey, currentValue, itemDisplayFn, items, clickHandler }) => {
+  return (
+    <Grid>
+      <Grid.Column width={8}>
+        {fieldDefinitions[fieldKey].title}{' '}
+        <HelperPopup position="right center" content={fieldDefinitions[fieldKey].description} />
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <Dropdown
+          text={itemDisplayFn ? String(itemDisplayFn(currentValue)) : String(currentValue || '')}>
+          <Dropdown.Menu>
+            {_.map(items, item => (
+              <Dropdown.Item
+                text={itemDisplayFn ? itemDisplayFn(item) : item}
+                value={item}
+                key={item}
+                onClick={clickHandler}
+              />
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Grid.Column>
+    </Grid>
+  )
+}
 
 const FileUploadErrors = ({ fileErrors }) => {
   if (_.isEmpty(fileErrors)) {

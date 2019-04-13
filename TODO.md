@@ -1,46 +1,38 @@
+--------------------------------------------------------------------------------
 Before Launch:
-
+--------------------------------------------------------------------------------
 Loading Appliance files:
 - [x] Appliance AC/DC should have a blank option so you're required to choose something.
-- [x] Disable save until required fields are completed
-- [x] Fix hasMotor dropdown
-- [ ] Tab order
-- [x] Autosave when adding appliance
-- [x] Save appliance without enabling
+- [ ] Disable save until required fields are completed
+- [x] Tab order
 - [ ] Document kw_factor
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
-- [x] Switch to using moment to parse dates
 - [ ] Delete uploaded appliance (with autosave)
 
-- [x] Save uploaded files to local forage
-  - [x] Fix styling of save button
-  - [x] Autosave app on
-    - [x] appliance upload
-    - [x] grid upload
-    - [x] column exclusion
-  - [x] Create timeago last saved popover
-  - [x] Create route that exposes a delete store option
+ROI & Payback
+- [ ] identify naming scheme in calculations and make consistent
+- [ ] Trace ROI, fix
+- [ ] Trace payback, fix
 
-- [x] Bootstrap from local forage
-  - [x] Find out if saving a snapshot saves types.frozen()
-  - [x] Check to see if app matches saved snapshot (read mobx docs)
-  - [x] If so and a latest saved state exists, bootstrap with latest, otherwise load samples
-  - [x] Figure out history module
+Test Deploy
+- [ ] Deploy and rollback on Heroku
 
+Logging
+- [ ] Find better indicator of prod vs. dev (including URL)
+- [ ] Hook up Sentry for test dev, confirm error logging
+- [ ] Hook up Sentry for prod dev, confirm error logging
+- [ ] Add more logs for possible problems around the app
 
-
-- Misc:
-  - [ ] Fix ROI and Payback. It has something to do with newApplianceNetGridRevenue
-  - [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
-    - [ ] Link to debug page from main app, as well as an independent route
-  - [ ] Make list of columns to check for when uploading HOMER import
-  - [ ] Remove available capacity from data grid
-  - [ ] Fix or remove missing 'day' column from data grid
-  - [ ] Add legend to Loads chart
-  - [ ] Figure out why biogas doesn't have solar angle of incidence
-  - [ ] Hook up external logging
-  - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
-  - [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
+Misc:
+- [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
+  - [ ] Link to debug page from main app, as well as an independent route
+- [ ] Make list of columns to check for when uploading HOMER import
+- [ ] Remove available capacity from data grid
+- [ ] Fix or remove missing 'day' column from data grid
+- [ ] Add legend to Loads chart
+- [ ] Figure out why biogas doesn't have solar angle of incidence
+- [ ] Hook up external logging
+- [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
 
 - Charts:
 - [ ] Sum excess load over year
@@ -51,7 +43,13 @@ Loading Appliance files:
 - [ ] Make hour and date be on 1 line for custom tooltip
 - [ ] Tooltips: Look up field name in fieldDefinitions to display title
 
-Possible Future Features
+
+Post launch
+- [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
+
+--------------------------------------------------------------------------------
+Future Features
+--------------------------------------------------------------------------------
 - [ ] Create FAQ in app and/or repo
 - [ ] TOU
 - [ ] Line losses
