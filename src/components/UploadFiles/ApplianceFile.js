@@ -5,6 +5,7 @@ import { Grid, Header, Segment, Button, Icon, Loader, Message, Checkbox } from '
 import FileButton from '../../components/Elements/FileButton'
 import ApplianceFormFields from './ApplianceFormFields'
 import ApplianceDataTable from './ApplianceDataTable'
+import { ApplianceFileInstructions } from './ApplianceFileInstructions'
 
 const ApplianceEnabler = inject('store')(
   observer(({ store }) => {
@@ -119,13 +120,14 @@ class ApplianceFile extends React.Component {
           </Message>
         )}
         {showAnalyzedResults && (
-          <div>
+          <>
             <Segment attached className={enabled ? 'activeFileBorderNoTop' : null}>
               <ApplianceFormFields />
             </Segment>
             <ApplianceDataTable />
-          </div>
+          </>
         )}
+        <ApplianceFileInstructions />
       </div>
     )
   }

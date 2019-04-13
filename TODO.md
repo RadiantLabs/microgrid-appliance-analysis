@@ -7,6 +7,7 @@ Loading Appliance files:
 - [x] Tab order
 - [ ] Document kw_factor
 - [ ] Delete uploaded appliance (with autosave)
+- [ ] Appliance file import tests
 
 ROI & Payback
 - [ ] identify naming scheme in calculations and make consistent
@@ -23,7 +24,7 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
-- [ ] Fix mainStore viewedGrid(): is this correct? self.availableGrids.concat(self.activeGrid)
+- [x] Fix mainStore viewedGrid(): is this correct? self.availableGrids.concat(self.activeGrid)
     - Also have fallback in case nothing is found
     - Access the error here: http://localhost:3000/files/homer
 - [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
