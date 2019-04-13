@@ -2,15 +2,12 @@
 Before Launch:
 --------------------------------------------------------------------------------
 Loading Appliance files:
-- [x] Appliance AC/DC should have a blank option so you're required to choose something.
-- [x] Disable save until required fields are completed
-- [x] Tab order
-- [ ] Document kw_factor
+- [ ] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
 - [ ] Delete uploaded appliance (with autosave)
 - [ ] Appliance file import tests
 
 ROI & Payback
-- [ ] identify naming scheme in calculations and make consistent
+- [ ] identify naming scheme in calculations and make consistent, document in README
 - [ ] Trace ROI, fix
 - [ ] Trace payback, fix
 
@@ -24,18 +21,10 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
-- [x] Fix mainStore viewedGrid(): is this correct? self.availableGrids.concat(self.activeGrid)
-    - Also have fallback in case nothing is found
-    - Access the error here: http://localhost:3000/files/homer
-- [ ] Uncomment profile page. Include name and email that is saved and logged, along with clear cache button
+- [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Remove available capacity from data grid
-- [ ] Fix or remove missing 'day' column from data grid
-- [ ] Add legend to Loads chart
-- [ ] Figure out why biogas doesn't have solar angle of incidence
-- [ ] Hook up external logging
-- [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
+- [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
 
 - Charts:
 - [ ] Sum excess load over year
@@ -46,10 +35,18 @@ Misc:
 - [ ] Make hour and date be on 1 line for custom tooltip
 - [ ] Tooltips: Look up field name in fieldDefinitions to display title
 
+Battery Model
+- [ ] Find 2 variable linear regression library (check d3 observables)
+- [ ] Test with all HOMER files
 
+
+--------------------------------------------------------------------------------
 Post launch
+--------------------------------------------------------------------------------
+- [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
+
 
 --------------------------------------------------------------------------------
 Future Features

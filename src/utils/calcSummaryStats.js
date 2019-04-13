@@ -46,16 +46,18 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // New Appliance kWh for the year
   const newApplianceYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
 
-  // New Appliance kWh revenue for grid operator (cost for appliance owner)
-  // This is the appliance owner cost
+  // Revenue for grid operator due to new appliances
+  // *This is the appliance owner cost*
   const newApplianceGridRevenue = newApplianceYearlyKwh * grid['retailElectricityPrice']
 
-  // Electricity cost to grid operator
+  // Electricity cost to grid operator due to new appliances
   const newApplianceElectricityCost = newApplianceYearlyKwh * grid['wholesaleElectricityCost']
 
   // Cost to grid operator of new appliance's unmet load
   const newApplianceUnmetLoadCost = newUnmetLoadSum * grid['unmetLoadCostPerKwh']
 
+  // TODO: Should we change this to profit or Net Income? The ROI calcs use netProfit
+  // Maybe I should change that to netIncome?
   const newApplianceNetGridRevenue =
     newApplianceGridRevenue - newApplianceElectricityCost - newApplianceUnmetLoadCost
 
@@ -82,6 +84,8 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // Otherwise you might have kg rice, kg maize and hours of welding
   const yearlyProductionUnitsRevenue = _.sumBy(combinedTable, 'productionUnitsRevenue')
   const netApplianceOwnerRevenue = yearlyProductionUnitsRevenue - newApplianceGridRevenue
+
+  // TODO (Error): newApplianceNetGridRevenue already takes into account newApplianceElectricityCost
   const netGridOwnerRevenue = newApplianceNetGridRevenue - newApplianceElectricityCost
 
   const yearlyProductionUnits = calcYearlyProductionUnits(enabledAppliances)

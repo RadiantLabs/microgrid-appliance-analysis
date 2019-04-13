@@ -6,7 +6,7 @@ import _ from 'lodash'
 // These efficiencies should multiply in the commutative way.
 export function calcCombinedEfficiency(enabledAncillaryEquipment) {
   if (_.isEmpty(enabledAncillaryEquipment)) {
-    return 1
+    return 1 // No ancillary equipment, no change in load (efficiency is 1)
   }
 
   const efficiencies = _(enabledAncillaryEquipment)

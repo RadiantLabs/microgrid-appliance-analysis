@@ -27,12 +27,6 @@ For the project to build, **these files must exist with exact filenames**:
 We can't use a static server, since we have client-side routing. Using a simple express server set up like this: https://medium.com/jeremy-gottfrieds-tech-blog/tutorial-how-to-deploy-a-production-react-app-to-heroku-c4831dfcfa08
 
 
-## Absolute Module Imports
-In order to get absolute imports (`components/FileChooser` instead of `../../../components/FileChooser`), Create React App doesn't yet support them. Here is a workaround using typescript compilation:
-https://github.com/facebook/create-react-app/issues/5118#issuecomment-439865778
-
-Note: This requires setting NODE_PATH=./ in the Heroku environment variables (Config Vars)
-
 
 ## App Design
 
@@ -59,22 +53,33 @@ Rounding to 0 decimals filters out loads less than 1 kWh
 Amanda decided to filter out anything less than 100 watthours (1 decimal)
 This is set in constants as `unmetLoadRoundingDecimals`
 
-
 Values that depend on the battery energy content:
 - excess capacity
 - unmet load
     - OPEX, ROI, Payback, Net revenue
 
 
-### Definitions:
-##### kw_factor
-is the number of minutes an appliance was fully utilized, summed over an hour. If it was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM.
-Link to other repo.
+### Definitions
 
-Explain why we don't display kw_factor for multiple appliances
+**kw_factor** is the number of minutes an appliance was fully utilized, summed over an hour. If it was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM. Here is the code that is used to produce the sample appliance files that includes the kw_factor: [microgrid-appliance-usage-profile-generators](https://github.com/RadiantLabs/microgrid-appliance-usage-profile-generators)
+
+We don't display kw_factor for multiple appliances in the app because each kw_factor is unique for each appliance, so adding them or other math operation doesn't make sense. When appliance load or revenue is calculated from kw_factor, then we can
+sum them or use those in calculations. kw_factor for a single appliance is displayed when looking in the table for the individual appliance file.
+
+### Naming conventions
+newAppliancesAncillaryLoad
+
+originalElectricalProductionLoadDiff
+electricalProductionLoadDiff
+
+newAppliancesLoad: load due to new appliances only
+newApplianceYearlyKwh: yearly load due to new appliances only
+newApplianceGridRevenue: revenue for grid operator due to new appliances only
+
+
 
 ### Battery Model Prediction
-How does this simple equation predict the kinetic batttery model so well?
+How does this simple equation predict the kinetic battery model so well?
 In my tests, I see:
 +/-2% average error
 14% max error
@@ -96,7 +101,7 @@ So to calculate energy content, take last hour's energy content and add the
 extra capacity of the system or subtract the load above what generation provides.
 `electricalProductionLoadDiff` the difference between production and battery load
 for every hour. It's positive if there is extra capacity (charging) or negative
-if the load is greater than generation (discharging batttery).
+if the load is greater than generation (discharging battery).
 There are losses between charging and discharging the battery. This will likely
 be nonlinear near the boundaries (battery min/max).
 
@@ -114,3 +119,12 @@ is cyclical and has a min/max. So once the batttery is charged, it can't go abov
 the max. If half a charge cycle is 12 hours in a day, then we only have 12
 prediction errors to compound.
 If a system never fully charged or discharged it's battteries, or when hundreds of cycles without hitting max or min, then this prediction model may be inaccurate.
+
+
+## Absolute Module Imports
+In order to get absolute imports (`components/FileChooser` instead of `../../../components/FileChooser`), Create React App doesn't yet support them. Here is a workaround using typescript compilation:
+https://github.com/facebook/create-react-app/issues/5118#issuecomment-439865778
+
+This requires setting NODE_PATH=./ in the Heroku environment variables (Config Vars)
+
+*Note*: I had to revert back to using relative imports because it was too buggy.
