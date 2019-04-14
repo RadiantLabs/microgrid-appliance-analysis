@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react'
 export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
-    // Note: this is a cost for the appliance operator, but revenue for grid operator
+
     const newAppliancesApplianceOwnerOpex = _.get(stats, 'newAppliancesApplianceOwnerOpex', '-')
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
     const applianceOperatorNewAppliancesNetIncome = _.get(
@@ -76,7 +76,7 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Appliance Electricity Consumption</Table.Cell>
+              <Table.Cell>New Appliances Electricity Consumption</Table.Cell>
               <Table.Cell>{newAppliancesYearlyKwh || 0} kWh</Table.Cell>
             </Table.Row>
             <Table.Row>

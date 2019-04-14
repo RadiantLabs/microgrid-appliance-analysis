@@ -88,12 +88,10 @@ export const GridOperatorTechnicalSummary = inject('store')(
     // Financials
     const newAppliancesYearlyKwh = _.get(stats, 'newAppliancesYearlyKwh', '-')
 
-    // Original unmet loads
+    // Unmet loads
     const originalUnmetLoadCount = _.get(stats, 'originalUnmetLoadCount', '-')
     const originalUnmetLoadCountPercent = _.get(stats, 'originalUnmetLoadCountPercent', '-')
     const originalUnmetLoadSum = _.get(stats, 'originalUnmetLoadSum', '-')
-
-    // New Appliances Unmet Loads
     const newAppliancesUnmetLoadCount = _.get(stats, 'newAppliancesUnmetLoadCount', '-')
     const newAppliancesUnmetLoadSum = _.get(stats, 'newAppliancesUnmetLoadSum', '-')
     const newAppliancesUnmetLoadCountPercent = _.get(
@@ -101,10 +99,32 @@ export const GridOperatorTechnicalSummary = inject('store')(
       'newAppliancesUnmetLoadCountPercent',
       '-'
     )
-    // Total unmet loads
     const totalUnmetLoadCount = _.get(stats, 'totalUnmetLoadCount', '-')
     const totalUnmetLoadCountPercent = _.get(stats, 'totalUnmetLoadCountPercent', '-')
     const totalUnmetLoadSum = _.get(stats, 'totalUnmetLoadSum', '-')
+
+    // Excess Production
+    const originalExcessProductionCount = _.get(stats, 'originalExcessProductionCount', '-')
+    const originalExcessProductionCountPercent = _.get(
+      stats,
+      'originalExcessProductionCountPercent',
+      '-'
+    )
+    const originalExcessProductionSum = _.get(stats, 'originalExcessProductionSum', '-')
+    const newAppliancesExcessProductionCount = _.get(
+      stats,
+      'newAppliancesExcessProductionCount',
+      '-'
+    )
+    const newAppliancesExcessProductionSum = _.get(stats, 'newAppliancesExcessProductionSum', '-')
+    const newAppliancesExcessProductionCountPercent = _.get(
+      stats,
+      'newAppliancesExcessProductionCountPercent',
+      '-'
+    )
+    const totalExcessProductionCount = _.get(stats, 'totalExcessProductionCount', '-')
+    const totalExcessProductionCountPercent = _.get(stats, 'totalExcessProductionCountPercent', '-')
+    const totalExcessProductionSum = _.get(stats, 'totalExcessProductionSum', '-')
 
     return (
       <div>
@@ -112,7 +132,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Appliance Energy Consumption</Table.Cell>
+              <Table.Cell>New Appliances Energy Consumption</Table.Cell>
               <Table.Cell>{newAppliancesYearlyKwh} kWh</Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -151,6 +171,43 @@ export const GridOperatorTechnicalSummary = inject('store')(
               <Table.Cell>{totalUnmetLoadCount}</Table.Cell>
               <Table.Cell>{totalUnmetLoadSum}</Table.Cell>
               <Table.Cell>{totalUnmetLoadCountPercent}%</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+
+        {/* Excess Production Table */}
+        <Table definition basic compact>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell />
+              <Table.HeaderCell>
+                Count <em>hrs/year</em> <UnmetLoadHelperPopup />
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                Sum <em>kWh</em>
+              </Table.HeaderCell>
+              <Table.HeaderCell>Percent of Year</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>Original Excess Production</Table.Cell>
+              <Table.Cell>{originalExcessProductionCount}</Table.Cell>
+              <Table.Cell>{originalExcessProductionSum}</Table.Cell>
+              <Table.Cell>{originalExcessProductionCountPercent}%</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>New Appliances Excess Production</Table.Cell>
+              <Table.Cell>{newAppliancesExcessProductionCount}</Table.Cell>
+              <Table.Cell>{newAppliancesExcessProductionSum}</Table.Cell>
+              <Table.Cell>{newAppliancesExcessProductionCountPercent}%</Table.Cell>
+            </Table.Row>
+
+            <Table.Row>
+              <Table.Cell>Total Excess Production</Table.Cell>
+              <Table.Cell>{totalExcessProductionCount}</Table.Cell>
+              <Table.Cell>{totalExcessProductionSum}</Table.Cell>
+              <Table.Cell>{totalExcessProductionCountPercent}%</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

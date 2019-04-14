@@ -20,7 +20,7 @@ ROI & Payback
 - [x] Trace back yearlyProductionUnitsRevenue to make sure it's displaying correctly
 - [x] Trace ROI, fix
 - [x] Trace payback, fix
-- [ ] Change name of newExcessProduction, check other uses
+- [x] Calculate newAppliancesExcessProduction like we did for unmet load
 - [x] Calculate newAppliancesUnmetLoad on hourly basis, clamp to zero if negative
 
 Prefix:

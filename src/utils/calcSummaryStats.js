@@ -57,7 +57,54 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     totalUnmetLoadHist
   )
 
-  // Yearly unmet load costs. `totalUnmetLoadCost` includes original and the new appliances
+  // __ Excess Production ______________________________________________________
+  // Unmet Loads: Original without new appliance. Output values into a histogram
+  const originalExcessProductionCount = countGreaterThanZero(
+    combinedTable,
+    'originalExcessProduction'
+  )
+  const originalExcessProductionCountPercent = percentOfYear(originalExcessProductionCount)
+  const originalExcessProductionSum = sumGreaterThanZero(combinedTable, 'originalExcessProduction')
+  const originalExcessProductionHist = createGreaterThanZeroHistogram(
+    combinedTable,
+    'hour_of_day',
+    'originalExcessProduction'
+  )
+
+  const newAppliancesExcessProductionCount = countGreaterThanZero(
+    combinedTable,
+    'newAppliancesUnmetLoad'
+  )
+  const newAppliancesExcessProductionCountPercent = percentOfYear(
+    newAppliancesExcessProductionCount
+  )
+  const newAppliancesExcessProductionSum = sumGreaterThanZero(
+    combinedTable,
+    'newAppliancesExcessProduction'
+  )
+  const newAppliancesExcessProductionHist = createGreaterThanZeroHistogram(
+    combinedTable,
+    'hour_of_day',
+    'newAppliancesExcessProduction'
+  )
+
+  const totalExcessProductionCount = countGreaterThanZero(combinedTable, 'totalExcessProduction')
+  const totalExcessProductionCountPercent = percentOfYear(totalExcessProductionCount)
+  const totalExcessProductionSum = sumGreaterThanZero(combinedTable, 'totalExcessProduction')
+  const totalExcessProductionHist = createGreaterThanZeroHistogram(
+    combinedTable,
+    'hour_of_day',
+    'totalExcessProduction'
+  )
+
+  const allExcessProductionHist = mergeArraysOfObjects(
+    'hour_of_day',
+    originalUnmetLoadHist,
+    totalUnmetLoadHist
+  )
+
+  // __ Yearly unmet load costs ________________________________________________
+  // `totalUnmetLoadCost` includes original and the new appliances
   // unmet load. So `newAppliancesUnmetLoadCost` should always be positive.
   const originalUnmetLoadCost = originalUnmetLoadSum * grid['unmetLoadCostPerKwh']
   const totalUnmetLoadCost = totalUnmetLoadSum * grid['unmetLoadCostPerKwh']
@@ -148,6 +195,21 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     originalUnmetLoadCost: _.round(originalUnmetLoadCost),
     totalUnmetLoadCost: _.round(totalUnmetLoadCost),
     newAppliancesUnmetLoadCost: _.round(newAppliancesUnmetLoadCost),
+
+    // Excess Production
+    originalExcessProductionCount,
+    originalExcessProductionCountPercent,
+    originalExcessProductionSum: _.round(originalExcessProductionSum),
+    originalExcessProductionHist,
+    newAppliancesExcessProductionCount,
+    newAppliancesExcessProductionCountPercent,
+    newAppliancesExcessProductionSum: _.round(newAppliancesExcessProductionSum),
+    newAppliancesExcessProductionHist,
+    totalExcessProductionCount,
+    totalExcessProductionCountPercent,
+    totalExcessProductionSum: _.round(totalExcessProductionSum),
+    totalExcessProductionHist,
+    allExcessProductionHist,
 
     newAppliancesYearlyKwh: _.round(newAppliancesYearlyKwh),
     newAppliancesGridRevenue: _.round(newAppliancesGridRevenue),
