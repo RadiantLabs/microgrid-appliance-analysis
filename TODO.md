@@ -12,14 +12,16 @@ ROI & Payback
 - [ ] Replace newAppliancesGridRevenue with newAppliancesApplianceOwnerOpex in view
 - [ ] Fix line 10 & 38 of ApplianceOperatorSummary.js
 - [ ] Review all summary views and make sure they are hooked up to the correct variable
-- [ ] Make sure grid opex includes unmet load costs. Create new variable for opex.
-- [ ] Review calculation for appliance opex. Create new variable for opex.
+- [x] Make sure grid opex includes unmet load costs. Create new variable for opex.
+- [x] Review calculation for appliance opex. Create new variable for opex.
 - [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> totalUnmetLoadCost
-- [ ] Show new appliances unmet load cost in Grid Operator summary
-- [ ] Change original to orig in all variable names?
-- [ ] Trace back yearlyProductionUnitsRevenue to make sure it's displaying correctly
-- [ ] Trace ROI, fix
-- [ ] Trace payback, fix
+- [x] Show new appliances unmet load cost in Grid Operator summary
+- [x] Change original to orig in all variable names? (changed my mind)
+- [x] Trace back yearlyProductionUnitsRevenue to make sure it's displaying correctly
+- [x] Trace ROI, fix
+- [x] Trace payback, fix
+- [ ] Change name of newExcessProduction, check other uses
+- [x] Calculate newAppliancesUnmetLoad on hourly basis, clamp to zero if negative
 
 Prefix:
 - new appliances + original = new (or total?)
@@ -43,9 +45,9 @@ Misc:
 - [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
 - [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
 - [ ] Grid Components: fix error when expanding
-- [ ] Grid Componetns: Change 'Appliance CapEx' to be 'Equipment CapEx'
-
-
+- [ ] Grid Components: Change 'Appliance CapEx' to be 'Equipment CapEx'
+- [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
+- [ ] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
 
 - Charts:
 - [ ] Sum excess load over year

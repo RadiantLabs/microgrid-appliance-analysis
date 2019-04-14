@@ -93,6 +93,14 @@ export const GridOperatorTechnicalSummary = inject('store')(
     const originalUnmetLoadCountPercent = _.get(stats, 'originalUnmetLoadCountPercent', '-')
     const originalUnmetLoadSum = _.get(stats, 'originalUnmetLoadSum', '-')
 
+    // New Appliances Unmet Loads
+    const newAppliancesUnmetLoadCount = _.get(stats, 'newAppliancesUnmetLoadCount', '-')
+    const newAppliancesUnmetLoadSum = _.get(stats, 'newAppliancesUnmetLoadSum', '-')
+    const newAppliancesUnmetLoadCountPercent = _.get(
+      stats,
+      'newAppliancesUnmetLoadCountPercent',
+      '-'
+    )
     // Total unmet loads
     const totalUnmetLoadCount = _.get(stats, 'totalUnmetLoadCount', '-')
     const totalUnmetLoadCountPercent = _.get(stats, 'totalUnmetLoadCountPercent', '-')
@@ -131,6 +139,13 @@ export const GridOperatorTechnicalSummary = inject('store')(
               <Table.Cell>{originalUnmetLoadSum}</Table.Cell>
               <Table.Cell>{originalUnmetLoadCountPercent}%</Table.Cell>
             </Table.Row>
+            <Table.Row>
+              <Table.Cell>New Appliances Unmet Load</Table.Cell>
+              <Table.Cell>{newAppliancesUnmetLoadCount}</Table.Cell>
+              <Table.Cell>{newAppliancesUnmetLoadSum}</Table.Cell>
+              <Table.Cell>{newAppliancesUnmetLoadCountPercent}%</Table.Cell>
+            </Table.Row>
+
             <Table.Row>
               <Table.Cell>Total Unmet Load</Table.Cell>
               <Table.Cell>{totalUnmetLoadCount}</Table.Cell>

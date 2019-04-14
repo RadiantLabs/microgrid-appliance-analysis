@@ -31,6 +31,15 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     'originalUnmetLoad'
   )
 
+  const newAppliancesUnmetLoadCount = countGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
+  const newAppliancesUnmetLoadCountPercent = percentOfYear(newAppliancesUnmetLoadCount)
+  const newAppliancesUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
+  const newAppliancesUnmetLoadHist = createGreaterThanZeroHistogram(
+    combinedTable,
+    'hour_of_day',
+    'newAppliancesUnmetLoad'
+  )
+
   // Unmet Loads: Total (original + new appliance)
   const totalUnmetLoadCount = countGreaterThanZero(combinedTable, 'totalUnmetLoad')
   const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
@@ -52,7 +61,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // unmet load. So `newAppliancesUnmetLoadCost` should always be positive.
   const originalUnmetLoadCost = originalUnmetLoadSum * grid['unmetLoadCostPerKwh']
   const totalUnmetLoadCost = totalUnmetLoadSum * grid['unmetLoadCostPerKwh']
-  const newAppliancesUnmetLoadCost = totalUnmetLoadCost - originalUnmetLoadCost
+  const newAppliancesUnmetLoadCost = newAppliancesUnmetLoadSum * grid['unmetLoadCostPerKwh']
 
   // __ Yearly kWh & Financial Calculations ____________________________________
   // Sum yearly kWh for only new appliances added, not including original HOMER load
@@ -70,10 +79,6 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     newAppliancesYearlyKwh * grid['wholesaleElectricityCost']
   const gridOperatorNewAppliancesOpex =
     newAppliancesWholesaleElectricityCost + newAppliancesUnmetLoadCost
-
-  // TODO:
-  // applianceOperatorOpex. But we already have newAppliancesApplianceOwnerOpex
-  // Problem is in Appliance Operator Summary Electricity Cost (line 41)
 
   // __ CapEx __________________________________________________________________
   // First filter by capexAssignment (grid or appliance). Then add up their costs
@@ -131,6 +136,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     originalUnmetLoadCountPercent,
     originalUnmetLoadSum: _.round(originalUnmetLoadSum),
     originalUnmetLoadHist,
+    newAppliancesUnmetLoadCount,
+    newAppliancesUnmetLoadCountPercent,
+    newAppliancesUnmetLoadSum: _.round(newAppliancesUnmetLoadSum),
+    newAppliancesUnmetLoadHist,
     totalUnmetLoadCount,
     totalUnmetLoadCountPercent,
     totalUnmetLoadSum: _.round(totalUnmetLoadSum),

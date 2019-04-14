@@ -82,7 +82,9 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
             <Table.Row>
               <Table.Cell>Units Produced</Table.Cell>
               <Table.Cell>
-                {yearlyProductionUnits} {productionUnitType}
+                {yearlyProductionUnits === 'Multiple'
+                  ? 'Multiple'
+                  : `${yearlyProductionUnits} ${productionUnitType}`}
               </Table.Cell>
             </Table.Row>
           </Table.Body>

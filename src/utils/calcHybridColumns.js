@@ -50,19 +50,29 @@ export function calcHybridColumns(grid, summedAppliances) {
     const prevBatteryEnergyContent =
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
-    const { batteryEnergyContent, newExcessProduction, totalUnmetLoad } = predictBatteryEnergyContent(
-      {
-        rowIndex,
-        prevBatteryEnergyContent,
-        electricalProductionLoadDiff,
-        batteryMinEnergyContent,
-        batteryMaxEnergyContent,
-      }
-    )
+    const {
+      batteryEnergyContent,
+      newExcessProduction,
+      totalUnmetLoad,
+    } = predictBatteryEnergyContent({
+      rowIndex,
+      prevBatteryEnergyContent,
+      electricalProductionLoadDiff,
+      batteryMinEnergyContent,
+      batteryMaxEnergyContent,
+    })
 
-    // == Get Original HOMER Unmet Load ========================================
+    // == New Appliances Unmet Load ========================================
     // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
     const originalUnmetLoad = _.round(homerRow['Original Unmet Electrical Load'], 6)
+
+    // Given the same production capacity, the unmet load with a new appliance should
+    // always be higher than the original unmet load. Due to imperfect battery model,
+    // occasionally total unmet load is slightly less than our original unmet load,
+    // which should never happen in real life. That gives us a negative
+    // newAppliancesUnmetLoad. So clamp it to zero if negative
+    const newAppliancesUnmetLoad =
+      totalUnmetLoad - originalUnmetLoad < 0 ? 0 : totalUnmetLoad - originalUnmetLoad
 
     // == Output Results =======================================================
     // I am thinking availableCapacity doesn't make sense to calculate or display.
@@ -86,6 +96,7 @@ export function calcHybridColumns(grid, summedAppliances) {
       // See note in README.md about how many decimal places to round unmet load
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
       totalUnmetLoad: _.round(totalUnmetLoad, 1),
+      newAppliancesUnmetLoad: _.round(newAppliancesUnmetLoad, 1),
       newExcessProduction: _.round(newExcessProduction, 4),
     })
     return result
