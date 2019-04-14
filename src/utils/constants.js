@@ -55,7 +55,7 @@ export const chartColorsByKey = {
   additionalUnmetLoad: '#FF6E54',
 
   // Battery Energy Content
-  newExcessProduction: '#FFA601',
+  totalExcessProduction: '#FFA601',
   batteryEnergyContent: '#444e86',
   totalUnmetLoad: '#DD5182',
 }

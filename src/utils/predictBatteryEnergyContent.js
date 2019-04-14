@@ -22,7 +22,7 @@ export function predictOriginalBatteryEnergyContent(
 
     const {
       batteryEnergyContent: originalModeledBatteryEnergyContent,
-      newExcessProduction,
+      totalExcessProduction,
       totalUnmetLoad,
     } = predictBatteryEnergyContent({
       rowIndex,
@@ -35,7 +35,7 @@ export function predictOriginalBatteryEnergyContent(
       ...row,
       ...{
         originalModeledBatteryEnergyContent: _.round(originalModeledBatteryEnergyContent, 4),
-        originalModeledExcessProduction: _.round(newExcessProduction, 4),
+        originalModeledExcessProduction: _.round(totalExcessProduction, 4),
         originalModeledUnmetLoad: _.round(totalUnmetLoad, 1),
       },
     })
@@ -62,7 +62,7 @@ export function predictBatteryEnergyContent({
   if (rowIndex === 0) {
     return {
       batteryEnergyContent: prevBatteryEnergyContent,
-      newExcessProduction: 0,
+      totalExcessProduction: 0,
       totalUnmetLoad: 0,
     }
   }
@@ -74,11 +74,11 @@ export function predictBatteryEnergyContent({
 
   const clamped = _.clamp(unclamped, batteryMinEnergyContent, batteryMaxEnergyContent)
 
-  const newExcessProduction = unclamped - clamped > 0 ? unLossed - clamped : 0
+  const totalExcessProduction = unclamped - clamped > 0 ? unLossed - clamped : 0
   const totalUnmetLoad = unclamped - clamped < 0 ? Math.abs(unLossed - clamped) : 0
   return {
     batteryEnergyContent: clamped,
-    newExcessProduction: _.round(newExcessProduction, 4),
+    totalExcessProduction: _.round(totalExcessProduction, 4),
     totalUnmetLoad: _.round(totalUnmetLoad, 4),
   }
 }

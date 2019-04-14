@@ -47,19 +47,21 @@ const atMax = {
 describe('predicts battery energy content given previous content and difference between production and load', () => {
   test('should return an object with batteryEnergyContent', () => {
     expect(predictBatteryEnergyContent(middleBoundsCharging)).toHaveProperty('batteryEnergyContent')
-    expect(predictBatteryEnergyContent(middleBoundsCharging)).toHaveProperty('newExcessProduction')
+    expect(predictBatteryEnergyContent(middleBoundsCharging)).toHaveProperty(
+      'totalExcessProduction'
+    )
     expect(predictBatteryEnergyContent(middleBoundsCharging)).toHaveProperty('totalUnmetLoad')
   })
 
   test('Middle of the battery capacity with no chance of hitting the min or max of battery, so clamping wont take effect', () => {
     expect(predictBatteryEnergyContent(middleBoundsCharging)).toStrictEqual({
       batteryEnergyContent: 79.2,
-      newExcessProduction: 0,
+      totalExcessProduction: 0,
       totalUnmetLoad: 0,
     })
     expect(predictBatteryEnergyContent(middleBoundsDischarging)).toStrictEqual({
       batteryEnergyContent: 59.4,
-      newExcessProduction: 0,
+      totalExcessProduction: 0,
       totalUnmetLoad: 0,
     })
   })
@@ -69,12 +71,12 @@ describe('predicts battery energy content given previous content and difference 
   test('should clamp predicted based on min and max battery energy content', () => {
     expect(predictBatteryEnergyContent(lowerClamping)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMinEnergyContent,
-      newExcessProduction: 0,
+      totalExcessProduction: 0,
       totalUnmetLoad: 10,
     })
     expect(predictBatteryEnergyContent(upperClamping)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMaxEnergyContent,
-      newExcessProduction: 10,
+      totalExcessProduction: 10,
       totalUnmetLoad: 0,
     })
   })
@@ -84,15 +86,15 @@ describe('predicts battery energy content given previous content and difference 
   test('battery at its min, all load not met by production goes to totalUnmetLoad', () => {
     expect(predictBatteryEnergyContent(atMin)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMinEnergyContent,
-      newExcessProduction: 0,
+      totalExcessProduction: 0,
       totalUnmetLoad: Math.abs(atMin.electricalProductionLoadDiff), // expected 10, recieved 10.5
     })
   })
 
-  test('battery at its max, all extra loads go to newExcessProduction', () => {
+  test('battery at its max, all extra loads go to totalExcessProduction', () => {
     expect(predictBatteryEnergyContent(atMax)).toStrictEqual({
       batteryEnergyContent: baseBattery.batteryMaxEnergyContent,
-      newExcessProduction: atMax.electricalProductionLoadDiff, // expected 10, recieved 9
+      totalExcessProduction: atMax.electricalProductionLoadDiff, // expected 10, recieved 9
       totalUnmetLoad: 0,
     })
   })

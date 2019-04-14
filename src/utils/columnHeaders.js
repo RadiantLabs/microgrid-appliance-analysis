@@ -8,14 +8,15 @@ export const hybridColumnHeaderUnits = [
   // ['day_hour', '-'],
   ['totalElectricalLoadServed', 'kW'],
   ['electricalProductionLoadDiff', 'kW'],
-  // ['newAppliancesLoad', 'kW'],
-  // ['availableCapacity', 'kW'],
-  // ['availableCapacityAfterNewLoad', 'kW'],
   ['batteryEnergyContent', 'kWh'],
+
   ['originalUnmetLoad', 'kW'],
-  // ['additionalUnmetLoad', 'kW'],
   ['totalUnmetLoad', 'kW'],
-  ['newExcessProduction', 'kW'],
+  ['newAppliancesUnmetLoad', 'kW'],
+
+  ['originalExcessProduction', 'kW'],
+  ['totalExcessProduction', 'kW'],
+  ['newAppliancesExcessProduction', 'kW'],
 ]
 
 export const homerHeaderUnits = [
@@ -29,7 +30,7 @@ export const homerHeaderUnits = [
   ['AC Primary Load Served', 'kW'],
   ['Original Electrical Load Served', 'kW'],
   ['Renewable Penetration', '%'],
-  ['Original Excess Electrical Production', 'kW'],
+  // ['Original Excess Electrical Production', 'kW'],
   ['Capacity Shortage', 'kW'],
   ['Total Renewable Power Output', 'kW'],
   ['totalElectricalProduction', 'kW'],

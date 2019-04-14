@@ -32,7 +32,7 @@ class BatteryEnergyContent extends React.Component {
     const becHeight = 400
     const heightDomainRatio = becHeight / becDomainMax
 
-    const excessMax = _.maxBy(hybridColumns, 'newExcessProduction')['newExcessProduction']
+    const excessMax = _.maxBy(hybridColumns, 'totalExcessProduction')['totalExcessProduction']
     const excessDomainMax = _.ceil(excessMax + excessMax * 0.1)
     const excessHeight = heightDomainRatio * excessDomainMax
 
@@ -49,13 +49,13 @@ class BatteryEnergyContent extends React.Component {
             data={hybridColumns}
             syncId="anyId"
             margin={{ top: 0, right: 30, left: 60, bottom: 0 }}>
-            <Tooltip content={<CustomToolTip field="newExcessProduction" />} />
+            <Tooltip content={<CustomToolTip field="totalExcessProduction" />} />
             <Area
               type="monotone"
-              dataKey="newExcessProduction"
+              dataKey="totalExcessProduction"
               stroke={'rgb(102, 102, 102)'}
               strokeWidth={0.5}
-              fill={chartColorsByKey['newExcessProduction']}
+              fill={chartColorsByKey['totalExcessProduction']}
               fillOpacity="1"
             />
             <Brush startIndex={brushStartDomain[0]} endIndex={brushStartDomain[1]} height={0} />
@@ -92,7 +92,7 @@ class BatteryEnergyContent extends React.Component {
                 fontWeight: 500,
                 textStroke: '2px white',
               }}
-              stroke={chartColorsByKey['newExcessProduction']}
+              stroke={chartColorsByKey['totalExcessProduction']}
               strokeDasharray="3 3"
             />
             <ReferenceLine
@@ -165,7 +165,7 @@ const CustomToolTip = ({ active, payload, label, field }) => {
   const val = payload[0]['payload'][field]
   return (
     <div className="custom-tooltip">
-      {field === 'newExcessProduction' && (
+      {field === 'totalExcessProduction' && (
         <Grid>
           <Grid.Column width={8}>Hour of Year: {label}</Grid.Column>
           <Grid.Column width={8} textAlign="right">
