@@ -6,25 +6,6 @@ Loading Appliance files:
 - [ ] Delete uploaded appliance (with autosave). Keep at least 1 sample file
 - [ ] Write appliance file import tests
 
-ROI & Payback
-- [x] Identify naming scheme in calculations and make consistent (such as newAppliance -> newAppliances)
-- [x] Replace newAppliancesGridRevenue with newAppliancesApplianceOwnerOpex in view
-- [x] Fix line 10 & 38 of ApplianceOperatorSummary.js
-- [x] Review all summary views and make sure they are hooked up to the correct variable
-- [x] Make sure grid opex includes unmet load costs. Create new variable for opex.
-- [x] Review calculation for appliance opex. Create new variable for opex.
-- [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> totalUnmetLoadCost
-- [x] Show new appliances unmet load cost in Grid Operator summary
-- [x] Change original to orig in all variable names? (changed my mind)
-- [x] Trace back yearlyProductionUnitsRevenue to make sure it's displaying correctly
-- [x] Trace ROI, fix
-- [x] Trace payback, fix
-- [x] Calculate newAppliancesExcessProduction like we did for unmet load
-- [x] Calculate newAppliancesUnmetLoad on hourly basis, clamp to zero if negative
-
-Test Deploy
-- [ ] Deploy and rollback on Heroku
-
 Logging
 - [ ] Find better indicator of prod vs. dev (including URL)
 - [ ] Hook up Sentry for test dev, confirm error logging
@@ -44,7 +25,7 @@ Misc:
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
 - [ ] Add commas to number outputs in summary view (or localized versions?)
-- [ ] Make sure tests pass 
+- [ ] Make sure tests pass
 
 - Charts:
 - [ ] Sum excess load over year
