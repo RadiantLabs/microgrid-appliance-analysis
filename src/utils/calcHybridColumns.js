@@ -50,7 +50,7 @@ export function calcHybridColumns(grid, summedAppliances) {
     const prevBatteryEnergyContent =
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
-    const { batteryEnergyContent, newExcessProduction, newUnmetLoad } = predictBatteryEnergyContent(
+    const { batteryEnergyContent, newExcessProduction, totalUnmetLoad } = predictBatteryEnergyContent(
       {
         rowIndex,
         prevBatteryEnergyContent,
@@ -85,7 +85,7 @@ export function calcHybridColumns(grid, summedAppliances) {
 
       // See note in README.md about how many decimal places to round unmet load
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
-      newUnmetLoad: _.round(newUnmetLoad, 1),
+      totalUnmetLoad: _.round(totalUnmetLoad, 1),
       newExcessProduction: _.round(newExcessProduction, 4),
     })
     return result

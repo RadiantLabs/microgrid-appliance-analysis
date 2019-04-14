@@ -27,7 +27,7 @@ class UnmetLoads extends React.Component {
             <Tooltip />
             <Legend />
             <Bar dataKey="originalUnmetLoad" fill={getChartColors('originalUnmetLoad')} />
-            <Bar dataKey="newUnmetLoad" fill={getChartColors('newUnmetLoad')} />
+            <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -57,7 +57,7 @@ export const chartColorsByKey = {
   // Battery Energy Content
   newExcessProduction: '#FFA601',
   batteryEnergyContent: '#444e86',
-  newUnmetLoad: '#DD5182',
+  totalUnmetLoad: '#DD5182',
 }
 
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])

@@ -7,9 +7,13 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats: stats } = store
     // Note: this is a cost for the appliance operator, but revenue for grid operator
-    const newAppliancesWholesaleElectricityCost = _.get(stats, 'newAppliancesGridRevenue', '-')
+    const newAppliancesApplianceOwnerOpex = _.get(stats, 'newAppliancesApplianceOwnerOpex', '-')
     const yearlyProductionUnitsRevenue = _.get(stats, 'yearlyProductionUnitsRevenue', '-')
-    const netApplianceOwnerRevenue = _.get(stats, 'netApplianceOwnerRevenue', '-')
+    const applianceOperatorNewAppliancesNetIncome = _.get(
+      stats,
+      'applianceOperatorNewAppliancesNetIncome',
+      '-'
+    )
     const totalCapexAssignedToAppliance = _.get(stats, 'totalCapexAssignedToAppliance', '-')
     const applianceCapexAssignedToAppliance = _.get(stats, 'applianceCapexAssignedToAppliance', '-')
     const ancillaryCapexAssignedToAppliance = _.get(stats, 'ancillaryCapexAssignedToAppliance', '-')
@@ -21,29 +25,29 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
         <Table basic="very" celled collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>CAPEX (Combined)</Table.Cell>
-              <Table.Cell>$ {totalCapexAssignedToAppliance}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>CAPEX (Appliance)</Table.Cell>
+              <Table.Cell>CapEx - New Appliances</Table.Cell>
               <Table.Cell>$ {applianceCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>CAPEX (Ancillary Equipment)</Table.Cell>
+              <Table.Cell>CapEx - Ancillary Equipment</Table.Cell>
               <Table.Cell>$ {ancillaryCapexAssignedToAppliance}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>CapEx - New Appliances & Ancillary</Table.Cell>
+              <Table.Cell>$ {totalCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
-              <Table.Cell>Appliance Electricity Cost</Table.Cell>
-              <Table.Cell>$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
+              <Table.Cell>Electricity Costs</Table.Cell>
+              <Table.Cell>$ {newAppliancesApplianceOwnerOpex}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance-Related Revenue</Table.Cell>
               <Table.Cell>$ {yearlyProductionUnitsRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Net Revenue</Table.Cell>
-              <Table.Cell>$ {netApplianceOwnerRevenue}</Table.Cell>
+              <Table.Cell>Net Income</Table.Cell>
+              <Table.Cell>$ {applianceOperatorNewAppliancesNetIncome}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Appliance ROI</Table.Cell>

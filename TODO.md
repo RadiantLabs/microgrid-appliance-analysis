@@ -14,13 +14,15 @@ ROI & Payback
 - [ ] Review all summary views and make sure they are hooked up to the correct variable
 - [ ] Make sure grid opex includes unmet load costs. Create new variable for opex.
 - [ ] Review calculation for appliance opex. Create new variable for opex.
-- [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> newUnmetLoadCost
+- [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> totalUnmetLoadCost
+- [ ] Show new appliances unmet load cost in Grid Operator summary
 - [ ] Change original to orig in all variable names?
+- [ ] Trace back yearlyProductionUnitsRevenue to make sure it's displaying correctly
 - [ ] Trace ROI, fix
 - [ ] Trace payback, fix
 
 Prefix:
-- new appliances + original = new (?)
+- new appliances + original = new (or total?)
 
 
 Test Deploy
@@ -37,6 +39,13 @@ Misc:
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Make list of columns to check for when uploading HOMER import
 - [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
+- [ ] Make Appliance -> Appliances consistent throughout the app
+- [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
+- [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
+- [ ] Grid Components: fix error when expanding
+- [ ] Grid Componetns: Change 'Appliance CapEx' to be 'Equipment CapEx'
+
+
 
 - Charts:
 - [ ] Sum excess load over year

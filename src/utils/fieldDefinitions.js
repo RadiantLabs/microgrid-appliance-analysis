@@ -274,7 +274,7 @@ export const fieldDefinitions = {
     type: 'float',
     units: 'kWh',
   },
-  newUnmetLoad: {
+  totalUnmetLoad: {
     $schema: jsonSchemaStandard,
     title: 'New Unmet Load',
     description:

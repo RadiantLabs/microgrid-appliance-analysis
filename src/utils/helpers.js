@@ -28,12 +28,13 @@ export function booleanDisplay(item) {
   }
 }
 
-export function calculateRoi(netProfit, capex) {
-  return (100 * netProfit) / capex
+export function calculateRoi(netIncome, capex) {
+  return (100 * netIncome) / capex
 }
 
-export function calculatePayback(netProfit, capex) {
-  return netProfit > 0 ? capex / netProfit : Infinity
+export function calculatePayback(netIncome, capex) {
+  // return netIncome > 0 ? capex / netIncome : Infinity
+  return capex / netIncome
 }
 
 export function calcAvgError(table, key) {

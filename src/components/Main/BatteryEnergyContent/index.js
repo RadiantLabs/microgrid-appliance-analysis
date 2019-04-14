@@ -36,7 +36,7 @@ class BatteryEnergyContent extends React.Component {
     const excessDomainMax = _.ceil(excessMax + excessMax * 0.1)
     const excessHeight = heightDomainRatio * excessDomainMax
 
-    const unmetMax = _.maxBy(hybridColumns, 'newUnmetLoad')['newUnmetLoad']
+    const unmetMax = _.maxBy(hybridColumns, 'totalUnmetLoad')['totalUnmetLoad']
     const unmetDomainMax = _.ceil(unmetMax + unmetMax * 0.1)
     const unmetHeight = heightDomainRatio * unmetDomainMax
 
@@ -97,7 +97,7 @@ class BatteryEnergyContent extends React.Component {
             />
             <ReferenceLine
               y={batteryMinEnergyContent}
-              stroke={chartColorsByKey['newUnmetLoad']}
+              stroke={chartColorsByKey['totalUnmetLoad']}
               label={{
                 position: 'top',
                 value: `Min Battery Energy Content: ${_.round(batteryMinEnergyContent, 2)}`,
@@ -122,13 +122,13 @@ class BatteryEnergyContent extends React.Component {
             data={hybridColumns}
             syncId="anyId"
             margin={{ top: 0, right: 30, left: 60, bottom: 0 }}>
-            <Tooltip content={<CustomToolTip field="newUnmetLoad" />} />
+            <Tooltip content={<CustomToolTip field="totalUnmetLoad" />} />
             <Area
               type="monotone"
-              dataKey="newUnmetLoad"
+              dataKey="totalUnmetLoad"
               stroke={'rgb(102, 102, 102)'}
               strokeWidth={0.5}
-              fill={chartColorsByKey['newUnmetLoad']}
+              fill={chartColorsByKey['totalUnmetLoad']}
               fillOpacity="1"
             />
             <Brush startIndex={brushStartDomain[0]} endIndex={brushStartDomain[1]} gap={5} />
