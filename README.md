@@ -66,16 +66,6 @@ Values that depend on the battery energy content:
 We don't display kw_factor for multiple appliances in the app because each kw_factor is unique for each appliance, so adding them or other math operation doesn't make sense. When appliance load or revenue is calculated from kw_factor, then we can
 sum them or use those in calculations. kw_factor for a single appliance is displayed when looking in the table for the individual appliance file.
 
-### Naming conventions
-newAppliancesAncillaryLoad
-
-originalElectricalProductionLoadDiff
-electricalProductionLoadDiff
-
-newAppliancesLoad: load due to new appliances only
-newAppliancesYearlyKwh: yearly load due to new appliances only
-newAppliancesGridRevenue: revenue for grid operator due to new appliances only
-
 
 ### Chain of derived values
 
@@ -93,13 +83,6 @@ productionUnits = newApplianceLoad * productionUnitsPerKwh
 
 productionUnitsRevenue = revenuePerProductionUnits * productionUnits
 ```
-
-`sumApplianceColumns.js`: Sum, on an hourly basis, the following values for enabled appliances and enabled ancillary equipment
-* `newAppliancesLoad`
-* `newAppliancesAncillaryLoad`
-* `productionUnitsRevenue`
-
-Note: It doesn't make sense to sum kw_factor, however, we can sum derived values, such as load and revenue.
 
 
 

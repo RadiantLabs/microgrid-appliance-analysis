@@ -7,11 +7,10 @@ Loading Appliance files:
 - [ ] Write appliance file import tests
 
 ROI & Payback
-- [ ] Identify naming scheme in calculations and make consistent (such as newAppliance -> newAppliances)
-- [ ] Document naming scheme in README
-- [ ] Replace newAppliancesGridRevenue with newAppliancesApplianceOwnerOpex in view
-- [ ] Fix line 10 & 38 of ApplianceOperatorSummary.js
-- [ ] Review all summary views and make sure they are hooked up to the correct variable
+- [x] Identify naming scheme in calculations and make consistent (such as newAppliance -> newAppliances)
+- [x] Replace newAppliancesGridRevenue with newAppliancesApplianceOwnerOpex in view
+- [x] Fix line 10 & 38 of ApplianceOperatorSummary.js
+- [x] Review all summary views and make sure they are hooked up to the correct variable
 - [x] Make sure grid opex includes unmet load costs. Create new variable for opex.
 - [x] Review calculation for appliance opex. Create new variable for opex.
 - [x] Make sure I get any uses of newAppliancesUnmetLoadCost -> totalUnmetLoadCost
@@ -22,10 +21,6 @@ ROI & Payback
 - [x] Trace payback, fix
 - [x] Calculate newAppliancesExcessProduction like we did for unmet load
 - [x] Calculate newAppliancesUnmetLoad on hourly basis, clamp to zero if negative
-
-Prefix:
-- new appliances + original = new (or total?)
-
 
 Test Deploy
 - [ ] Deploy and rollback on Heroku
@@ -48,6 +43,8 @@ Misc:
 - [ ] Grid Components: Change 'Appliance CapEx' to be 'Equipment CapEx'
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
+- [ ] Add commas to number outputs in summary view (or localized versions?)
+- [ ] Make sure tests pass 
 
 - Charts:
 - [ ] Sum excess load over year
