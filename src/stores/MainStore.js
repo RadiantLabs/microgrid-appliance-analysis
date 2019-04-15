@@ -179,6 +179,22 @@ export const MainStore = types
       self.saveAppState()
     },
 
+    deleteGridFile(gridId) {
+      const gridToDelete = _.find(self.availableGrids, grid => {
+        return grid.fileInfo.id === gridId
+      })
+      const undeletedGrids = _.filter(self.availableGrids, grid => {
+        return grid.fileInfo.id !== gridId
+      })
+      const newViewedGridId = undeletedGrids[0].fileInfo.id
+      runInAction(() => {
+        self.setActiveGridFile(newViewedGridId)
+        self.viewedGridId = newViewedGridId
+        destroy(gridToDelete)
+      })
+      self.saveAppState()
+    },
+
     setViewedApplianceId(applianceId) {
       self.viewedApplianceId = applianceId
     },

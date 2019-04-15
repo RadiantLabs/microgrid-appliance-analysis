@@ -7,6 +7,31 @@ import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
 
+const DeleteGrid = inject('store')(
+  observer(({ store }) => {
+    const { viewedGrid, deleteGridFile } = store
+    const { fileInfo, label } = viewedGrid
+    const { isSample, id } = fileInfo
+    return (
+      <Segment>
+        <Header>Danger Zone</Header>
+        {isSample && 'This is a sample HOMER file, which cannot be deleted.'}
+        {!isSample && 'Delete this HOMER file. There will be no confirmation.'}
+        <Button
+          basic
+          compact
+          color="red"
+          disabled={isSample}
+          floated="right"
+          style={{ marginTop: '-8px' }}
+          onClick={deleteGridFile.bind(null, id)}>
+          Delete {label}
+        </Button>
+      </Segment>
+    )
+  })
+)
+
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
     const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, fileReadyToSave } = viewedGrid
@@ -102,23 +127,26 @@ class HomerFile extends React.Component {
           </Message>
         )}
         {showAnalyzedResults && (
-          <Segment attached className={isActive ? 'activeFileBorderNoTop' : null}>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={8}>
-                  <HomerFormFields />
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <BatteryChargeTable grid={viewedGrid} />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column>
-                  <BatteryModel grid={viewedGrid} />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
+          <>
+            <Segment attached className={isActive ? 'activeFileBorderNoTop' : null}>
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={8}>
+                    <HomerFormFields />
+                  </Grid.Column>
+                  <Grid.Column width={8}>
+                    <BatteryChargeTable grid={viewedGrid} />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <Grid.Column>
+                    <BatteryModel grid={viewedGrid} />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Segment>
+            <DeleteGrid />
+          </>
         )}
       </div>
     )
