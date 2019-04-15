@@ -7,8 +7,11 @@ Loading Appliance files:
 - [ ] Write appliance file import tests
 
 File Importing
-- [ ] Manually test all HOMER files
+- [x] Manually test all HOMER files
 - [ ] Manually test all appliance files
+- [ ] Make list of columns to check for when uploading HOMER import
+- [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
+- [ ] Don't show Danger zone for staged files
 
 Logging
 - [ ] Find better indicator of prod vs. dev (including URL)
@@ -17,18 +20,16 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
+- [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
 - [ ] Create function that returns units attached to value from fieldDefinitions
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
-- [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
-- [ ] Make Appliance -> Appliances consistent throughout the app
-- [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
+- [x] Make Appliance -> Appliances consistent throughout the app
 - [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
 - [ ] Grid Components: fix error when expanding
 - [ ] Grid Components: Change 'Appliance CapEx' to be 'Equipment CapEx'
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
-- [ ] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
+- [x] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
 - [ ] Add commas to number outputs in summary view (or localized versions?)
 - [ ] Make sure tests pass
 

@@ -16,7 +16,7 @@ const BatteryChargeTable = ({ grid }) => {
   const minSocIsValid = batteryMinEnergyContent === batteryEstimatedMinEnergyContent
 
   return (
-    <Table basic="very">
+    <Table basic="very" compact>
       <Table.Body>
         <Table.Row>
           <Table.Cell>Battery Max Energy Content</Table.Cell>
