@@ -61,7 +61,6 @@ describe('Parsing and detect columns in example HOMER files', () => {
     expect(result).toHaveProperty('pvType', 'Sunerg Solar')
     expect(result).toHaveProperty('batteryType', 'Generic 1kWh Lead Acid [ASM]')
   })
-
   test('analyzedFile for test_files/4-26 Optimized DC Output (HOMER)', () => {
     const result = loadAndAnalyzeFile('homer/test_files/4-26 Optimized DC Output.csv')
     commonExpectations(result)
@@ -124,7 +123,6 @@ describe('Parsing and detect columns in example HOMER files', () => {
     expect(result).toHaveProperty('pvType', 'Sunerg Solar')
     expect(result).toHaveProperty('batteryType', 'Generic 1kWh Lead Acid [ASM]')
   })
-
   test('analyzedFile for Working Test Oversize 20 (HOMER)', () => {
     const result = loadAndAnalyzeFile('homer/test_files/Working Test Oversize 20.csv')
     commonExpectations(result)
