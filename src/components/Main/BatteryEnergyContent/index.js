@@ -178,7 +178,7 @@ const CustomToolTip = ({ active, payload, label, field }) => {
           <Table.Row>
             <Table.HeaderCell>{fieldDefinitions[field].title}</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">
-              {val} {fieldDefinitions[field].units}
+              {_.round(val, 2)} {fieldDefinitions[field].units}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Body>

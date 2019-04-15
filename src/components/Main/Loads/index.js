@@ -16,6 +16,7 @@ import {
 } from 'recharts'
 import { formatDateForTable } from '../../../utils/helpers'
 import { chartColorsByKey } from '../../../utils/constants'
+import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
 class LoadsByHour extends React.Component {
   state = { stackOffset: 'none' }
@@ -142,8 +143,10 @@ const CustomToolTip = ({ active, payload, label }) => {
           {_.map(payload, element => {
             return (
               <Table.Row style={{ color: element.color }} key={element.dataKey}>
-                <Table.Cell>{element.dataKey}</Table.Cell>
-                <Table.Cell textAlign="right">{element.value} kW*h</Table.Cell>
+                <Table.Cell>{fieldDefinitions[element.dataKey].title}</Table.Cell>
+                <Table.Cell textAlign="right">
+                  {_.round(element.value, 2)} {fieldDefinitions[element.dataKey].units}
+                </Table.Cell>
               </Table.Row>
             )
           })}
@@ -151,7 +154,10 @@ const CustomToolTip = ({ active, payload, label }) => {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell>Combined Load</Table.HeaderCell>
-            <Table.HeaderCell textAlign="right">{totalElectricalLoadServed} kW*h</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">
+              {_.round(totalElectricalLoadServed, 2)}{' '}
+              {fieldDefinitions['totalElectricalLoadServed'].units}
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>
       </Table>

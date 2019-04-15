@@ -17,19 +17,17 @@ Misc:
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
 - [ ] Grid Components: fix error when expanding
-- [ ] Grid Components: Change 'Appliance CapEx' to be 'Equipment CapEx'
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
-- [ ] Add commas to number outputs in summary view (or localized versions?)
 - [ ] Create function that returns units attached to value from fieldDefinitions
 
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
-- [ ] New color scheme for all charts
+- [x] New color scheme for all charts
 - [ ] Make nicer legend for Loads chart
-- [ ] Do custom tooltip for Unmet Loads
-- [ ] Make hour and date be on 1 line for custom tooltip
-- [ ] Tooltips: Look up field name in fieldDefinitions to display title
+- [x] Do custom tooltip for Unmet Loads
+- [x] Make hour and date be on 1 line for custom tooltip
+- [x] Tooltips: Look up field name in fieldDefinitions to display title
 
 Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
@@ -42,6 +40,7 @@ Post launch
 - [ ] Remove mimeType from analyzeHomerFile(parsedFile, fileInfo, mimeType)
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
+- [ ] Add commas to number outputs in summary view (or localized versions?)
 
 
 --------------------------------------------------------------------------------

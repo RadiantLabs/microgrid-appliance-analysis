@@ -274,11 +274,47 @@ export const fieldDefinitions = {
     type: 'float',
     units: 'kWh',
   },
+  originalUnmetLoad: {
+    $schema: jsonSchemaStandard,
+    title: 'Original Unmet Load',
+    description: 'Unmet load from the original HOMER.',
+    type: 'float',
+    units: 'kWh',
+  },
   totalUnmetLoad: {
     $schema: jsonSchemaStandard,
     title: 'New Unmet Load',
     description:
       'Unmet load, which includes the original HOMER unmet loads and additional unmet loads due to new appliances.',
+    type: 'float',
+    units: 'kWh',
+  },
+  'Original Electrical Load Served': {
+    $schema: jsonSchemaStandard,
+    title: 'Original Electrical Load Served',
+    description: 'Original electrical load served without new appliances based on the HOMER file',
+    type: 'float',
+    units: 'kWh',
+  },
+  newAppliancesLoad: {
+    $schema: jsonSchemaStandard,
+    title: 'New Appliances Load',
+    description: 'Load from all new enabled appliances.',
+    type: 'float',
+    units: 'kWh',
+  },
+  newAppliancesAncillaryLoad: {
+    $schema: jsonSchemaStandard,
+    title: 'New Ancillary Equipment Load',
+    description: 'Additional lodas from enabled ancillary equipment.',
+    type: 'float',
+    units: 'kWh',
+  },
+  totalElectricalLoadServed: {
+    $schema: jsonSchemaStandard,
+    title: 'Total Electrical Load Served',
+    description:
+      'Load served based on original appliances in HOMER file and all new enabled appliances.',
     type: 'float',
     units: 'kWh',
   },
