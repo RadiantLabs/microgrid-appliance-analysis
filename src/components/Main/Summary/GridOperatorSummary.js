@@ -2,6 +2,7 @@ import * as React from 'react'
 import _ from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
+import { HelperPopup } from '../../../components/Elements/HelperPopup'
 import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/UnmetLoadHelperPopup'
 
 export const GridOperatorEconomicSummary = inject('store')(
@@ -31,45 +32,75 @@ export const GridOperatorEconomicSummary = inject('store')(
         <Table basic="very" collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>CapEx - New Appliances</Table.Cell>
+              <Table.Cell>
+                CapEx - New Appliances{' '}
+                <HelperPopup content="Upfront investment for all enabled appliances assigned to the grid operator. This does not include appliances that were represented in the original HOMER file." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {applianceCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>CapEx - Ancillary Equipment</Table.Cell>
+              <Table.Cell>
+                CapEx - Ancillary Equipment{' '}
+                <HelperPopup content="Upfront investment for all ancillary equipment assigned to the grid operator. Only enabled ancillary equipment is counted." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {ancillaryCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>CapEx - New Appliances & Ancillary</Table.Cell>
+              <Table.Cell>
+                CapEx - New Appliances & Ancillary{' '}
+                <HelperPopup content="Upfront investment for all enabled appliances and ancillary equipment assigned to grid operator." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {totalCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Electricity Revenue - New Appliances</Table.Cell>
+              <Table.Cell>
+                Electricity Revenue{' '}
+                <HelperPopup content="Grid operator's electricity revenue from all enabled appliances and any enabled ancillary equipment. This does not take into account revenue from loads represented in the original HOMER file." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {newAppliancesGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Wholesale Electricity Costs - New Appliances</Table.Cell>
+              <Table.Cell>
+                Wholesale Electricity Costs{' '}
+                <HelperPopup content="Grid operator's wholesale electricity cost from all enabled appliances and any enabled ancillary equipment. This does not take into account costs from loads represented in the original HOMER file." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Unmet Load Cost - New Appliances</Table.Cell>
+              <Table.Cell>
+                Unmet Load Cost{' '}
+                <HelperPopup content="Grid operator's cost to cover the unmet load. This can happen when the battery is empty and production can't keep up with demand. Unmet load could be met by a generator, for example, and may have different costs than normal production." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {newAppliancesUnmetLoadCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>OpEx - New Appliances</Table.Cell>
+              <Table.Cell>
+                OpEx{' '}
+                <HelperPopup content="Grid operator's operating expenses to cover any new enabled appliances and ancillary equipment. It is calculated by adding up the wholesale electricity costs and the unmet load costs." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {gridOperatorNewAppliancesOpex}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Net Income - New Appliances</Table.Cell>
+              <Table.Cell>
+                Net Income{' '}
+                <HelperPopup content="Grid operator's net income from enabled appliances and ancillary equipment. It is calculated by subtracting the OpEx from the revenue from the new appliances." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {gridOperatorNewAppliancesNetIncome}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>ROI - New Appliances</Table.Cell>
+              <Table.Cell>
+                ROI{' '}
+                <HelperPopup content="Grid operator's return on investment from enabled appliances and ancillary equipment. It is calculated by dividing the net income by the total CapEx for the appliances and ancillary equipment." />
+              </Table.Cell>
               <Table.Cell textAlign="right">
                 {gridOwnerRoi} {_.isFinite(gridOwnerRoi) ? '%' : ''}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Payback - New Appliances</Table.Cell>
+              <Table.Cell>
+                Payback{' '}
+                <HelperPopup content="Grid operator's payback, in years, from enabled appliances and ancillary equipment. It is calculated by dividing the CapEx by the net income." />
+              </Table.Cell>
               <Table.Cell textAlign="right">{gridOwnerPayback} yrs</Table.Cell>
             </Table.Row>
           </Table.Body>

@@ -2,6 +2,7 @@ import * as React from 'react'
 import _ from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
+import { HelperPopup } from '../../../components/Elements/HelperPopup'
 
 export const ApplianceOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
@@ -25,37 +26,68 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
         <Table basic="very" collapsing compact>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>CapEx - New Appliances</Table.Cell>
+              <Table.Cell>
+                CapEx - New Appliances{' '}
+                <HelperPopup content="Upfront investment for all enabled appliances assigned to the appliance operator. This does not include appliances that were represented in the original HOMER file." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {applianceCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>CapEx - Ancillary Equipment</Table.Cell>
+              <Table.Cell>
+                CapEx - Ancillary Equipment{' '}
+                <HelperPopup content="Upfront investment for all ancillary equipment assigned to the appliance operator. Only enabled ancillary equipment is counted." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {ancillaryCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>CapEx - New Appliances & Ancillary</Table.Cell>
+              <Table.Cell>
+                CapEx - New Appliances & Ancillary{' '}
+                <HelperPopup content="Upfront investment for all enabled appliances and ancillary equipment assigned to the appliance operator." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {totalCapexAssignedToAppliance}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Electricity Costs</Table.Cell>
+              <Table.Cell>
+                Electricity Costs{' '}
+                <HelperPopup content="Appliance operator's electricity cost from all enabled appliances and any enabled ancillary equipment. This does not take into account cost from loads represented in the original HOMER file." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {newAppliancesApplianceOwnerOpex}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Appliance-Related Revenue</Table.Cell>
+              <Table.Cell>
+                Appliance-Related Revenue{' '}
+                <HelperPopup content="Appliance operator's revenue from enabled appliances." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {yearlyProductionUnitsRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Net Income</Table.Cell>
+              <Table.Cell>
+                OpEx{' '}
+                <HelperPopup content="Appliance operator's operating expenses to cover any new enabled appliances and ancillary equipment. This is the same as the electricity cost for the appliances." />
+              </Table.Cell>
+              <Table.Cell textAlign="right">$ {newAppliancesApplianceOwnerOpex}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>
+                Net Income{' '}
+                <HelperPopup content="Appliance operator's net income from enabled appliances. It is calculated by subtracting the OpEx from the yearly revenue from the appliances." />
+              </Table.Cell>
               <Table.Cell textAlign="right">$ {applianceOperatorNewAppliancesNetIncome}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Appliance ROI</Table.Cell>
+              <Table.Cell>
+                ROI{' '}
+                <HelperPopup content="Appliance operator's return on investment from enabled appliances and ancillary equipment. It is calculated by dividing the net income by the total CapEx." />
+              </Table.Cell>
               <Table.Cell textAlign="right">
                 {applianceOwnerRoi} {_.isFinite(applianceOwnerRoi) ? '%' : ''}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Appliance Payback</Table.Cell>
+              <Table.Cell>
+                Payback{' '}
+                <HelperPopup content="Appliance operator's payback, in years, from enabled appliances and ancillary equipment. It is calculated by dividing the total CapEx by the net income." />
+              </Table.Cell>
               <Table.Cell textAlign="right">{applianceOwnerPayback} yrs</Table.Cell>
             </Table.Row>
           </Table.Body>

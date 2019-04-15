@@ -1,17 +1,13 @@
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
-Loading Appliance files:
-- [x] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
-- [x] Delete uploaded appliance (with autosave). Keep at least 1 sample file
-- [x] Write appliance file import tests
+Ancillary Equipment
+- [ ] Test ancillary equipment rules now that we can upload appliances with different characteristics
+- [ ] Make sure to disable auto-enabling appliances and equipment that I had on for testing
 
 File Importing
-- [x] Manually test all HOMER files
-- [x] Manually test all appliance files
 - [ ] Make list of columns to check for when uploading HOMER import
 - [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
-- [x] Don't show Danger zone for staged files
 
 Logging
 - [ ] Find better indicator of prod vs. dev (including URL)
@@ -19,20 +15,17 @@ Logging
 - [ ] Hook up Sentry for prod dev, confirm error logging
 - [ ] Add more logs for possible problems around the app
 
+
 Misc:
-- [ ] Test ancillary equipment rules now that we can upload appliances with different characteristics
 - [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
-- [ ] Create function that returns units attached to value from fieldDefinitions
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
-- [x] Make Appliance -> Appliances consistent throughout the app
 - [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
 - [ ] Grid Components: fix error when expanding
 - [ ] Grid Components: Change 'Appliance CapEx' to be 'Equipment CapEx'
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
-- [x] Remove vertical divider in grid operator and appliance operator summary tables, text-align right for the numbers
 - [ ] Add commas to number outputs in summary view (or localized versions?)
-- [ ] Make sure tests pass
+- [ ] Create function that returns units attached to value from fieldDefinitions
 
 - Charts:
 - [ ] Sum excess load over year
