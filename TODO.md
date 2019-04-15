@@ -4,14 +4,14 @@ Before Launch:
 Loading Appliance files:
 - [x] Appliance upload instructions (including documenting kw_factor: see amandas email and readme)
 - [x] Delete uploaded appliance (with autosave). Keep at least 1 sample file
-- [ ] Write appliance file import tests
+- [x] Write appliance file import tests
 
 File Importing
 - [x] Manually test all HOMER files
-- [ ] Manually test all appliance files
+- [x] Manually test all appliance files
 - [ ] Make list of columns to check for when uploading HOMER import
 - [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
-- [ ] Don't show Danger zone for staged files
+- [x] Don't show Danger zone for staged files
 
 Logging
 - [ ] Find better indicator of prod vs. dev (including URL)
@@ -20,6 +20,7 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
+- [ ] Test ancillary equipment rules now that we can upload appliances with different characteristics
 - [ ] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
 - [ ] Create function that returns units attached to value from fieldDefinitions
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button

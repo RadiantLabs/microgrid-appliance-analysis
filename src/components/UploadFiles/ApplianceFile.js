@@ -150,7 +150,7 @@ class ApplianceFile extends React.Component {
               <ApplianceFormFields />
             </Segment>
             <ApplianceDataTable />
-            <DeleteAppliance />
+            {!viewedApplianceIsStaged && <DeleteAppliance />}
           </>
         )}
         {!showAnalyzedResults && <ApplianceFileInstructions />}

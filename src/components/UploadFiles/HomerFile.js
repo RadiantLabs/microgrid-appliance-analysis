@@ -145,7 +145,7 @@ class HomerFile extends React.Component {
                 </Grid.Row>
               </Grid>
             </Segment>
-            <DeleteGrid />
+            {!viewedGridIsStaged && <DeleteGrid />}
           </>
         )}
       </div>
