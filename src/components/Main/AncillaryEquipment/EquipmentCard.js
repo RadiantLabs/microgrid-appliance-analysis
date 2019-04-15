@@ -24,7 +24,7 @@ class EquipmentCard extends Component {
       estimatedEfficiency,
       parentApplianceSize,
       capexAssignment,
-      hangleEnabledToggle,
+      handleEnabledToggle,
       handleCapexAssignmentChange,
     } = equipment
     const isRequired = compatibility === 'required'
@@ -50,7 +50,7 @@ class EquipmentCard extends Component {
                     label={toggleLabel}
                     checked={enabled}
                     // disabled={isRequired ? true : null}
-                    onChange={hangleEnabledToggle}
+                    onChange={handleEnabledToggle}
                   />
                 </div>
               </Grid.Column>

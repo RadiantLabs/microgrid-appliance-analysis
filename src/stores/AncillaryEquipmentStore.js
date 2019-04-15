@@ -87,7 +87,7 @@ export const AncillaryEquipmentStore = types
     },
 
     // Set from checkboxes in UI
-    hangleEnabledToggle() {
+    handleEnabledToggle() {
       self.enabled = !self.enabled
     },
 
