@@ -10,10 +10,11 @@ import {
 } from '../utils/importFileHelpers'
 import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
 import { fieldDefinitions } from '../utils/fieldDefinitions'
-import { AncillaryEquipmentStore } from './AncillaryEquipmentStore'
+import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
 import { calcApplianceColumns } from '../utils/calcApplianceColumns'
 import { calcApplianceSummaryStats } from '../utils/calcApplianceSummaryStats'
 import { calcCombinedEfficiency } from '../utils/calcCombinedEfficiency'
+import { ancillaryEquipmentList } from '../utils/fileInfo'
 
 //
 // -----------------------------------------------------------------------------
@@ -100,6 +101,17 @@ export const ApplianceStore = types
             self.label = label
             self.modelInputValues = { ...self.modelInputValues, label }
             self.updateModel(analyzedFile)
+
+            // Initialize all ancillary equipment on the imported appliances.
+            // For sample files, this is done during app initialization.
+            // This ensures the autorun that watches for changes in appliance
+            // or grid characteristics reruns the equip.updateValues() function
+            self.ancillaryEquipment = _.map(ancillaryEquipmentList, ancillaryEquip => {
+              return AncillaryEquipmentStore.create({
+                ...ancillaryEquip,
+                ...initialAncillaryEquipmentState,
+              })
+            })
           })
         },
         error: error => console.log('error: ', error),
