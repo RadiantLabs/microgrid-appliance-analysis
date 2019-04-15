@@ -22,7 +22,7 @@ export const fieldDefinitions = {
   },
   capex: {
     $schema: jsonSchemaStandard,
-    title: 'Appliance CapEx',
+    title: 'CapEx',
     description: 'Capital expenditure for the appliance',
     type: 'integer',
     units: '$',

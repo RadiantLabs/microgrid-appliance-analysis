@@ -1,10 +1,6 @@
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
-Ancillary Equipment
-- [ ] Test ancillary equipment rules now that we can upload appliances with different characteristics
-- [ ] Make sure to disable auto-enabling appliances and equipment that I had on for testing
-
 File Importing
 - [ ] Make list of columns to check for when uploading HOMER import
 - [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
@@ -17,7 +13,6 @@ Logging
 
 
 Misc:
-- [x] Clarify Grid Operator Summary and Appliance Operator Summary using helper popovers
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
