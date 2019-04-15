@@ -23,11 +23,7 @@ Misc:
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
-- [x] New color scheme for all charts
 - [ ] Make nicer legend for Loads chart
-- [x] Do custom tooltip for Unmet Loads
-- [x] Make hour and date be on 1 line for custom tooltip
-- [x] Tooltips: Look up field name in fieldDefinitions to display title
 
 Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
