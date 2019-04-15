@@ -4,28 +4,30 @@ import { Table } from 'semantic-ui-react'
 
 const FilePopupContent = ({ file }) => {
   return (
-    <Table basic="very" celled inverted>
+    <Table basic="very" inverted>
       <Table.Body>
         <Table.Row>
           <Table.Cell width={7}>File Size</Table.Cell>
-          <Table.Cell width={9}>{file.prettyFileSize}</Table.Cell>
+          <Table.Cell width={9} textAlign="right">
+            {file.prettyFileSize}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>File Warnings</Table.Cell>
-          <Table.Cell>
+          <Table.Cell textAlign="right">
             {_.isEmpty(file.fileWarnings) ? 'None' : file.fileWarnings.join(', ')}
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>PV Type</Table.Cell>
+          <Table.Cell textAlign="right">PV Type</Table.Cell>
           <Table.Cell>{file.pvType}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Battery Type</Table.Cell>
+          <Table.Cell textAlign="right">Battery Type</Table.Cell>
           <Table.Cell>{file.batteryType}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Generator Type</Table.Cell>
+          <Table.Cell textAlign="right">Generator Type</Table.Cell>
           <Table.Cell>{file.generatorType}</Table.Cell>
         </Table.Row>
       </Table.Body>

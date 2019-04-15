@@ -22,21 +22,23 @@ export const ApplianceSummaryStats = inject('store')(
         <Table.Body>
           <Table.Row>
             <Table.Cell>Yearly Appliance Load</Table.Cell>
-            <Table.Cell>{_.round(yearlyApplianceLoad) || ''} kWh</Table.Cell>
+            <Table.Cell textAlign="right">{_.round(yearlyApplianceLoad) || ''} kWh</Table.Cell>
             <Table.Cell>
               kW Factor * Nominal Power * Duty Cycle Derate Factor (summed over year)
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Yearly Production Units</Table.Cell>
-            <Table.Cell>{_.round(yearlyProductionUnits) || ''}</Table.Cell>
+            <Table.Cell textAlign="right">{_.round(yearlyProductionUnits) || ''}</Table.Cell>
             <Table.Cell>
               Appliance Load * Appliance Units of Production per kWh (summed over year)
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Yearly Production Units Revenue</Table.Cell>
-            <Table.Cell>${_.round(yearlyProductionUnitsRevenue) || ''}</Table.Cell>
+            <Table.Cell textAlign="right">
+              ${_.round(yearlyProductionUnitsRevenue) || ''}
+            </Table.Cell>
             <Table.Cell>
               Revenue Per Production Units * Production Units (summed over year)
             </Table.Cell>

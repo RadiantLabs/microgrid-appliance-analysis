@@ -6,6 +6,10 @@ Loading Appliance files:
 - [x] Delete uploaded appliance (with autosave). Keep at least 1 sample file
 - [ ] Write appliance file import tests
 
+File Importing
+- [ ] Manually test all HOMER files
+- [ ] Manually test all appliance files
+
 Logging
 - [ ] Find better indicator of prod vs. dev (including URL)
 - [ ] Hook up Sentry for test dev, confirm error logging
@@ -13,6 +17,7 @@ Logging
 - [ ] Add more logs for possible problems around the app
 
 Misc:
+- [ ] Create function that returns units attached to value from fieldDefinitions
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
 - [ ] Make list of columns to check for when uploading HOMER import

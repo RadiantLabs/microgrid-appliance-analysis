@@ -87,7 +87,7 @@ export const GridCard = observer(({ grid, expanded }) => {
         <Card.Content description={grid.description} />
         {expanded && (
           <Card.Content>
-            <Table basic="very" celled>
+            <Table basic="very" compact>
               <Table.Body>
                 {_.map(gridFields, field => {
                   return (
@@ -99,7 +99,7 @@ export const GridCard = observer(({ grid, expanded }) => {
                           position="right center"
                         />
                       </Table.Cell>
-                      <Table.Cell>{grid[field]}</Table.Cell>
+                      <Table.Cell textAlign="right">{grid[field]}</Table.Cell>
                     </Table.Row>
                   )
                 })}
@@ -125,7 +125,7 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
       <Card.Content description={appliance.description} />
       {expanded && (
         <Card.Content>
-          <Table basic="very" celled>
+          <Table basic="very" compact>
             <Table.Body>
               {_.map(applianceFields, field => {
                 return (
@@ -137,7 +137,7 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
                         position="right center"
                       />
                     </Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell textAlign="right">
                       {fieldDefinitions[field].type === 'boolean'
                         ? booleanDisplay(appliance[field])
                         : appliance[field]}
@@ -166,7 +166,7 @@ export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
       <Card.Content description={equipment.description} />
       {expanded && (
         <Card.Content>
-          <Table basic="very" celled>
+          <Table basic="very" compact>
             <Table.Body>
               {_.map(ancillaryEquipmentFields, field => {
                 return (
@@ -178,7 +178,7 @@ export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
                         position="right center"
                       />
                     </Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell textAlign="right">
                       {field === 'compatibility'
                         ? compatibilityDisplay(equipment[field])
                         : equipment[field]}{' '}

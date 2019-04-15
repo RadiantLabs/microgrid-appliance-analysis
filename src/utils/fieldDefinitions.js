@@ -22,23 +22,23 @@ export const fieldDefinitions = {
   },
   capex: {
     $schema: jsonSchemaStandard,
-    title: 'Appliance Capex',
+    title: 'Appliance CapEx',
     description: 'Capital expenditure for the appliance',
     type: 'integer',
     units: '$',
   },
   capexAssignment: {
     $schema: jsonSchemaStandard,
-    title: 'Capex Assignment',
+    title: 'CapEx Assignment',
     description:
-      'This determines who (grid owner or appliance owner) pays for the up-front capex investment.',
+      'This determines who (grid owner or appliance owner) pays for the up-front CapEx investment.',
     type: 'enumeration',
     enumerations: ['grid', 'appliance'],
     units: '-',
   },
   estimatedCapex: {
     $schema: jsonSchemaStandard,
-    title: 'Estimated Capex',
+    title: 'Estimated CapEx',
     description:
       'Estimated cost of equipment based on appliance size and other attributes. This is overridable by the user.',
     type: 'integer',

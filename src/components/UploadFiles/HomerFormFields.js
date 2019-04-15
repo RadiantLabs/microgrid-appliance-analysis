@@ -11,7 +11,7 @@ const HomerFormFields = ({ store }) => {
   const { viewedGrid } = store
   const { fileErrors, fileWarnings } = viewedGrid
   return (
-    <Table basic="very" celled collapsing compact className={borderlessTableStyles.borderless}>
+    <Table basic="very" collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
         <Table.Row>
           <Table.Cell>

@@ -37,7 +37,7 @@ class LoadsByHour extends React.Component {
       <div>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={8}>
+            <Grid.Column width={7}>
               <h3>
                 Loads by hour of year <br />
                 <small style={{ fontWeight: '300' }}>
@@ -45,7 +45,7 @@ class LoadsByHour extends React.Component {
                 </small>
               </h3>
             </Grid.Column>
-            <Grid.Column width={8}>
+            <Grid.Column width={9}>
               <Button.Group basic compact style={{ float: 'right', marginTop: '8px' }}>
                 <Button
                   onClick={this.handleStackClick.bind(null, 'none')}
@@ -62,11 +62,11 @@ class LoadsByHour extends React.Component {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>Max Appliance Load</Table.Cell>
-                    <Table.Cell>{maxLoadValue} kW*h</Table.Cell>
+                    <Table.Cell textAlign="right">{_.round(maxLoadValue, 2)} kW*h</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>First hour of max load</Table.Cell>
-                    <Table.Cell>{maxLoadFirstHour}</Table.Cell>
+                    <Table.Cell>First hour of year hitting max load</Table.Cell>
+                    <Table.Cell textAlign="right">{maxLoadFirstHour}</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>

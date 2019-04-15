@@ -28,51 +28,49 @@ export const GridOperatorEconomicSummary = inject('store')(
     return (
       <div>
         <Header as="h4">Economic Outputs</Header>
-        <Table basic="very" celled collapsing compact>
+        <Table basic="very" collapsing compact>
           <Table.Body>
             <Table.Row>
               <Table.Cell>CapEx - New Appliances</Table.Cell>
-              <Table.Cell>$ {applianceCapexAssignedToGrid}</Table.Cell>
+              <Table.Cell textAlign="right">$ {applianceCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>CapEx - Ancillary Equipment</Table.Cell>
-              <Table.Cell>$ {ancillaryCapexAssignedToGrid}</Table.Cell>
+              <Table.Cell textAlign="right">$ {ancillaryCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>CapEx - New Appliances & Ancillary</Table.Cell>
-              <Table.Cell>$ {totalCapexAssignedToGrid}</Table.Cell>
+              <Table.Cell textAlign="right">$ {totalCapexAssignedToGrid}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Electricity Revenue - New Appliances</Table.Cell>
-              <Table.Cell>$ {newAppliancesGridRevenue}</Table.Cell>
+              <Table.Cell textAlign="right">$ {newAppliancesGridRevenue}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Wholesale Electricity Costs - New Appliances</Table.Cell>
-              <Table.Cell>$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
+              <Table.Cell textAlign="right">$ {newAppliancesWholesaleElectricityCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Unmet Load Cost - New Appliances</Table.Cell>
-              <Table.Cell>$ {newAppliancesUnmetLoadCost}</Table.Cell>
+              <Table.Cell textAlign="right">$ {newAppliancesUnmetLoadCost}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>OpEx - New Appliances</Table.Cell>
-              <Table.Cell>$ {gridOperatorNewAppliancesOpex}</Table.Cell>
+              <Table.Cell textAlign="right">$ {gridOperatorNewAppliancesOpex}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Net Income - New Appliances</Table.Cell>
-              <Table.Cell>$ {gridOperatorNewAppliancesNetIncome}</Table.Cell>
+              <Table.Cell textAlign="right">$ {gridOperatorNewAppliancesNetIncome}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>ROI - New Appliances</Table.Cell>
-              <Table.Cell>
+              <Table.Cell textAlign="right">
                 {gridOwnerRoi} {_.isFinite(gridOwnerRoi) ? '%' : ''}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Payback - New Appliances</Table.Cell>
-              <Table.Cell>
-                {gridOwnerPayback} {_.isFinite(gridOwnerPayback) ? 'yrs' : ''}
-              </Table.Cell>
+              <Table.Cell textAlign="right">{gridOwnerPayback} yrs</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -155,22 +153,22 @@ export const GridOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Original Unmet Load</Table.Cell>
-              <Table.Cell>{originalUnmetLoadCount}</Table.Cell>
-              <Table.Cell>{originalUnmetLoadSum}</Table.Cell>
-              <Table.Cell>{originalUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{originalUnmetLoadCount}</Table.Cell>
+              <Table.Cell textAlign="right">{originalUnmetLoadSum}</Table.Cell>
+              <Table.Cell textAlign="right">{originalUnmetLoadCountPercent}%</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New Appliances Unmet Load</Table.Cell>
-              <Table.Cell>{newAppliancesUnmetLoadCount}</Table.Cell>
-              <Table.Cell>{newAppliancesUnmetLoadSum}</Table.Cell>
-              <Table.Cell>{newAppliancesUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesUnmetLoadCount}</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesUnmetLoadSum}</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesUnmetLoadCountPercent}%</Table.Cell>
             </Table.Row>
 
             <Table.Row>
               <Table.Cell>Total Unmet Load</Table.Cell>
-              <Table.Cell>{totalUnmetLoadCount}</Table.Cell>
-              <Table.Cell>{totalUnmetLoadSum}</Table.Cell>
-              <Table.Cell>{totalUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{totalUnmetLoadCount}</Table.Cell>
+              <Table.Cell textAlign="right">{totalUnmetLoadSum}</Table.Cell>
+              <Table.Cell textAlign="right">{totalUnmetLoadCountPercent}%</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -192,22 +190,24 @@ export const GridOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>Original Excess Production</Table.Cell>
-              <Table.Cell>{originalExcessProductionCount}</Table.Cell>
-              <Table.Cell>{originalExcessProductionSum}</Table.Cell>
-              <Table.Cell>{originalExcessProductionCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{originalExcessProductionCount}</Table.Cell>
+              <Table.Cell textAlign="right">{originalExcessProductionSum}</Table.Cell>
+              <Table.Cell textAlign="right">{originalExcessProductionCountPercent}%</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New Appliances Excess Production</Table.Cell>
-              <Table.Cell>{newAppliancesExcessProductionCount}</Table.Cell>
-              <Table.Cell>{newAppliancesExcessProductionSum}</Table.Cell>
-              <Table.Cell>{newAppliancesExcessProductionCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesExcessProductionCount}</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesExcessProductionSum}</Table.Cell>
+              <Table.Cell textAlign="right">
+                {newAppliancesExcessProductionCountPercent}%
+              </Table.Cell>
             </Table.Row>
 
             <Table.Row>
               <Table.Cell>Total Excess Production</Table.Cell>
-              <Table.Cell>{totalExcessProductionCount}</Table.Cell>
-              <Table.Cell>{totalExcessProductionSum}</Table.Cell>
-              <Table.Cell>{totalExcessProductionCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{totalExcessProductionCount}</Table.Cell>
+              <Table.Cell textAlign="right">{totalExcessProductionSum}</Table.Cell>
+              <Table.Cell textAlign="right">{totalExcessProductionCountPercent}%</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

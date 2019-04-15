@@ -48,15 +48,19 @@ export const BatteryErrorTable = inject('store')(
   observer(({ store }) => {
     const { batteryAvgErrorPct, batteryMaxErrorPct } = store.viewedGrid
     return (
-      <Table compact="very" celled size="small" basic="very" style={{ marginTop: '40px' }}>
+      <Table compact="very" size="small" basic="very" style={{ marginTop: '40px' }}>
         <Table.Body>
           <Table.Row>
             <Table.Cell>Battery Model Average Error</Table.Cell>
-            <Table.Cell>{batteryAvgErrorPct ? `± ${batteryAvgErrorPct} %` : '...'}</Table.Cell>
+            <Table.Cell textAlign="right">
+              {batteryAvgErrorPct ? `± ${batteryAvgErrorPct} %` : '...'}
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Battery Model Max Error</Table.Cell>
-            <Table.Cell>{batteryMaxErrorPct ? `${batteryMaxErrorPct} %` : '...'}</Table.Cell>
+            <Table.Cell textAlign="right">
+              {batteryMaxErrorPct ? `${batteryMaxErrorPct} %` : '...'}
+            </Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>

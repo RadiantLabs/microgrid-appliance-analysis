@@ -11,23 +11,23 @@ export const FinalLossTable = inject('store')(
       batteryTestSetLoss,
     } = grid
     return (
-      <Table compact="very" celled size="small" basic="very">
+      <Table compact="very" size="small" basic="very">
         <Table.Body>
           <Table.Row>
             <Table.Cell>Final train-set loss</Table.Cell>
-            <Table.Cell>
+            <Table.Cell textAlign="right">
               {batteryIsTrained ? batteryFinalTrainSetLoss : <Loader active inline size="mini" />}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Final validation-set loss</Table.Cell>
-            <Table.Cell>
+            <Table.Cell textAlign="right">
               {batteryIsTrained ? batteryValidationSetLoss : <Loader active inline size="mini" />}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Test-set loss</Table.Cell>
-            <Table.Cell>
+            <Table.Cell textAlign="right">
               {batteryIsTrained ? batteryTestSetLoss : <Loader active inline size="mini" />}
             </Table.Cell>
           </Table.Row>
