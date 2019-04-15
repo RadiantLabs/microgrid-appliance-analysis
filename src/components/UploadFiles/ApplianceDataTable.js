@@ -82,34 +82,36 @@ class ApplianceDataTable extends React.Component {
     const rowCount = _.size(calculatedApplianceColumns)
     const columnCount = _.size(applianceHeaders)
     return (
-      <Grid style={{ marginTop: '10px' }}>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <AutoSizer>
-              {({ height, width }) => (
-                <MultiGrid
-                  ref={c => (this.multigrid = c)}
-                  cellRenderer={this._cellRenderer.bind(
-                    null,
-                    applianceHeaders,
-                    applianceHeadersUnits
-                  )}
-                  columnCount={columnCount}
-                  columnWidth={100}
-                  fixedColumnCount={2}
-                  fixedRowCount={2}
-                  height={1200}
-                  rowCount={rowCount}
-                  rowHeight={this._rowHeight}
-                  estimatedRowSize={26}
-                  width={width}
-                  style={{ border: '1px solid #d4d4d5' }}
-                />
-              )}
-            </AutoSizer>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div style={{ height: '420px' }}>
+        <Grid style={{ marginTop: '10px' }}>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <AutoSizer>
+                {({ height, width }) => (
+                  <MultiGrid
+                    ref={c => (this.multigrid = c)}
+                    cellRenderer={this._cellRenderer.bind(
+                      null,
+                      applianceHeaders,
+                      applianceHeadersUnits
+                    )}
+                    columnCount={columnCount}
+                    columnWidth={100}
+                    fixedColumnCount={2}
+                    fixedRowCount={2}
+                    height={400}
+                    rowCount={rowCount}
+                    rowHeight={this._rowHeight}
+                    estimatedRowSize={26}
+                    width={width}
+                    style={{ border: '1px solid #d4d4d5' }}
+                  />
+                )}
+              </AutoSizer>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     )
   }
 }

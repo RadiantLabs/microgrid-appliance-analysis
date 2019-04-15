@@ -37,7 +37,7 @@ Misc:
 - [ ] Tooltips: Look up field name in fieldDefinitions to display title
 
 Battery Model
-- [ ] Find 2 variable linear regression library (check d3 observables)
+- [ ] Find multivariate linear regression library (check d3 observables)
 - [ ] Test with all HOMER files
 
 

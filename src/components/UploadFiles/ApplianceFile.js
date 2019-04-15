@@ -27,6 +27,31 @@ const ApplianceEnabler = inject('store')(
   })
 )
 
+const DeleteAppliance = inject('store')(
+  observer(({ store }) => {
+    const { viewedAppliance, deleteApplianceFile } = store
+    const { fileInfo, label } = viewedAppliance
+    const { isSample, id } = fileInfo
+    return (
+      <Segment>
+        <Header>Danger Zone</Header>
+        {isSample && 'This is a sample appliance file, which cannot be deleted.'}
+        {!isSample && 'Delete this appliance file. There will be no confirmation.'}
+        <Button
+          basic
+          compact
+          color="red"
+          disabled={isSample}
+          floated="right"
+          style={{ marginTop: '-8px' }}
+          onClick={deleteApplianceFile.bind(null, id)}>
+          Delete {label}
+        </Button>
+      </Segment>
+    )
+  })
+)
+
 const StagedFileHeader = inject('store')(
   observer(({ store }) => {
     const {
@@ -125,6 +150,7 @@ class ApplianceFile extends React.Component {
               <ApplianceFormFields />
             </Segment>
             <ApplianceDataTable />
+            <DeleteAppliance />
           </>
         )}
         {!showAnalyzedResults && <ApplianceFileInstructions />}

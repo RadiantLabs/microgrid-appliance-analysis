@@ -164,6 +164,21 @@ export const MainStore = types
       self.saveAppState()
     },
 
+    deleteApplianceFile(applianceId) {
+      const applianceToDelete = _.find(self.appliances, appliance => {
+        return appliance.fileInfo.id === applianceId
+      })
+      const undeletedAppliances = _.filter(self.appliances, appliance => {
+        return appliance.fileInfo.id !== applianceId
+      })
+      const newViewedApplianceId = undeletedAppliances[0].fileInfo.id
+      runInAction(() => {
+        self.viewedApplianceId = newViewedApplianceId
+        destroy(applianceToDelete)
+      })
+      self.saveAppState()
+    },
+
     setViewedApplianceId(applianceId) {
       self.viewedApplianceId = applianceId
     },
