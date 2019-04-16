@@ -27,6 +27,14 @@ Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
 - [ ] Test with all HOMER files
 
+Server:
+Steps to remove server:
+  - remove node.js buildpack
+  - remove server.js (rename)
+  + Add create react app buildpack
+  + Deploy
+- [ ] Switch to static server bc of memory problems
+- Currently using node.js buildpack (see buildpacks in Heroku settings). Switch to https://github.com/mars/create-react-app-buildpack#usage
 
 --------------------------------------------------------------------------------
 Post launch
@@ -35,8 +43,6 @@ Post launch
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [ ] Add commas to number outputs in summary view (or localized versions?)
-- [ ] Switch to static server bc of memory problems
-  - Currently using node.js buildpack (see buildpacks in Heroku settings). Switch to https://github.com/mars/create-react-app-buildpack#usage
 
 
 --------------------------------------------------------------------------------
