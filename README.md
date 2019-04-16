@@ -10,21 +10,29 @@ yarn eject    // Unpack create-react-app presets. Once you `eject`, you can’t 
 ```
 
 ## Deploy
+This is setup as a static site with no server yet. Deployment is to Heroku using the [create-react-app-buildpack](https://github.com/mars/create-react-app-buildpack#user-content-requires).
+
+Setup:
+```
+nvm use 11     // use Node.js version 11
+heroku login   // login to to Heroku CLI to access Radiant Labs apps on Heroku (must be invited to the app)
+```
 
 ```
 nvm use 11
 yarn build
-git push heroku master  // Deploy master branch to production heroku instance (need to be logged in and have authorization)
+git push heroku master  // Deploy master branch to production Heroku instance (need to be logged in and have authorization)
 ```
 
-If you get errors when deploying, make sure you are logged into the radiantlabs probject in Heroku `heroku login`.
+If you get errors when deploying, make sure you are logged into Heroku and invited to the radiantlabs project using  `heroku login`.
 
 For the project to build, **these files must exist with exact filenames**:
 
 - `public/index.html` is the page template;
 - `src/index.js` is the JavaScript entry point.
 
-We can't use a static server, since we have client-side routing. Using a simple express server set up like this: https://medium.com/jeremy-gottfrieds-tech-blog/tutorial-how-to-deploy-a-production-react-app-to-heroku-c4831dfcfa08
+Older versions of deploy that I switched from (ignore unless I need to recreate it):
+> We can't use a static server, since we have client-side routing. Using a simple express server set up like this: https://medium.com/jeremy-gottfrieds-tech-blog/tutorial-how-to-deploy-a-production-react-app-to-heroku-c4831dfcfa08
 
 
 
