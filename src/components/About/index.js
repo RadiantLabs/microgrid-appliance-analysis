@@ -24,20 +24,14 @@ const About = () => (
           <Header as="h3">Contact</Header>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={3}>
-                <Image src="https://react.semantic-ui.com/src/images/avatar/large/jenny.jpg" />
-              </Grid.Column>
-              <Grid.Column width={13}>
+              <Grid.Column width={16}>
                 For general questions and comments about this app, contact{' '}
                 <a href="http://#.com">Amanda DelCore</a> at{' '}
                 <a href="http://www.factore.com">Factor[e]</a>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column width={3}>
-                <Image src="https://react.semantic-ui.com/src/images/avatar/large/justen.jpg" />
-              </Grid.Column>
-              <Grid.Column width={13}>
+              <Grid.Column width={16}>
                 For technical problems with this app, contact{' '}
                 <a href="http://#.com">Jeff Friesen</a> at{' '}
                 <a href="http://www.radiantlabs.co">Radiant Labs</a>

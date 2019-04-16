@@ -14,13 +14,12 @@ This is setup as a static site with no server yet. Deployment is to Heroku using
 
 Setup:
 ```
-nvm use 11     // use Node.js version 11
 heroku login   // login to to Heroku CLI to access Radiant Labs apps on Heroku (must be invited to the app)
 ```
 
 ```
 nvm use 11
-yarn build
+// yarn build           // I don't think I need this now that we are doing static deploys through the buildpack
 git push heroku master  // Deploy master branch to production Heroku instance (need to be logged in and have authorization)
 ```
 
@@ -31,8 +30,14 @@ For the project to build, **these files must exist with exact filenames**:
 - `public/index.html` is the page template;
 - `src/index.js` is the JavaScript entry point.
 
+##### Old deploy instructions
 Older versions of deploy that I switched from (ignore unless I need to recreate it):
 > We can't use a static server, since we have client-side routing. Using a simple express server set up like this: https://medium.com/jeremy-gottfrieds-tech-blog/tutorial-how-to-deploy-a-production-react-app-to-heroku-c4831dfcfa08
+If I need to revert back to that node.js type deploy, do these 2 steps:
+1. Rename server_unused.js to server.js
+2. Remove mars create react app from Heroku (can be done in Heroku UI)
+3. Add Heroku's node.js buildpack
+4. `yarn build` and `git push heroku master`
 
 
 

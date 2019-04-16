@@ -8,7 +8,6 @@ File Importing
 Logging
 - [ ] Add more logs for possible problems around the app
 
-
 Misc:
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
@@ -16,7 +15,7 @@ Misc:
 - [ ] Grid Components: fix error when expanding
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
-- [ ] Remove avatars from about page
+- [x] Remove avatars from about page
 
 - Charts:
 - [ ] Sum excess load over year
@@ -27,14 +26,6 @@ Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
 - [ ] Test with all HOMER files
 
-Server:
-Steps to remove server:
-  - remove node.js buildpack
-  - remove server.js (rename)
-  + Add create react app buildpack
-  + Deploy
-- [ ] Switch to static server bc of memory problems
-- Currently using node.js buildpack (see buildpacks in Heroku settings). Switch to https://github.com/mars/create-react-app-buildpack#usage
 
 --------------------------------------------------------------------------------
 Post launch
