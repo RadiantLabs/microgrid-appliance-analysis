@@ -16,6 +16,10 @@ import 'react-virtualized/styles.css'
 //   })
 // }
 
+// if (process.env.NODE_ENV === 'production') {
+// }
+console.log('from index.js: NODE_ENV: ', process.env.NODE_ENV)
+
 ReactDOM.render(<App />, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change
