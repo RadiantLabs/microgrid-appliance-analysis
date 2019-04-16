@@ -6,9 +6,6 @@ File Importing
 - [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
 
 Logging
-- [ ] Find better indicator of prod vs. dev (including URL)
-- [ ] Hook up Sentry for test dev, confirm error logging
-- [ ] Hook up Sentry for prod dev, confirm error logging
 - [ ] Add more logs for possible problems around the app
 
 
@@ -19,6 +16,7 @@ Misc:
 - [ ] Grid Components: fix error when expanding
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
+- [ ] Remove avatars from about page
 
 - Charts:
 - [ ] Sum excess load over year
@@ -37,6 +35,8 @@ Post launch
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [ ] Add commas to number outputs in summary view (or localized versions?)
+- [ ] Switch to static server bc of memory problems
+  - Currently using node.js buildpack (see buildpacks in Heroku settings). Switch to https://github.com/mars/create-react-app-buildpack#usage
 
 
 --------------------------------------------------------------------------------
