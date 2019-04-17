@@ -15,6 +15,11 @@ export function lastSavedTimeAgo(appIsSavedTimestamp) {
   return mDate.isValid() ? `Last Saved: ${mDate.fromNow()}` : 'No found versions'
 }
 
+// Where credit is due: https://stackoverflow.com/a/14053282/1884101
+export function stripDuplicateWhitespace(str) {
+  return String(str).replace(/\s{2,}/g, ' ')
+}
+
 export function booleanDisplay(item) {
   switch (true) {
     case _.isNull(item):

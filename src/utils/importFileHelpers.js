@@ -8,6 +8,7 @@ import {
   findColMin,
   momentApplianceParseFormats,
   parseHomerDateFormats,
+  stripDuplicateWhitespace,
 } from './helpers'
 import { applianceParseFormat } from './constants'
 import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
@@ -46,15 +47,18 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
     switch (true) {
       // Replace names of all battery columns
       case _.includes(key, batteryType):
-        return _.replace(key, batteryType, 'Original Battery')
+        return stripDuplicateWhitespace(_.replace(key, batteryType, 'Original Battery'))
+
       // Replace names of all PV columns
       // TODO: PV Solar Altitude won't necessarily start with PV
       case _.includes(key, pvType):
-        return _.replace(key, `${pvType} `, 'PV ')
+        return stripDuplicateWhitespace(_.replace(key, `${pvType} `, 'PV '))
+
       // Replace names of all generator columns
       // TODO: get more examples of generators
       case _.includes(key, generatorType):
-        return _.replace(key, `${generatorType} `, 'Generator')
+        return stripDuplicateWhitespace(_.replace(key, `${generatorType} `, 'Generator'))
+
       case _.includes(key, 'Unmet Electrical Load'):
         return 'Original Unmet Electrical Load'
       case _.includes(key, 'Excess Electrical Production'):
@@ -86,7 +90,6 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
 
     const datetime = row['Time']
     const dateObject = DateTime.fromISO(datetime)
-    // console.log('dateObject: ', dateObject)
     return {
       datetime,
       hour_of_day: dateObject.hour,
