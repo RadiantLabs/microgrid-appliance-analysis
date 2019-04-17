@@ -69,6 +69,23 @@ export const getIsoTimestamp = () => {
   return DateTime.local().toISO()
 }
 
+export function parseHomerDateFormats(val) {
+  switch (true) {
+    // 1/1/07 0:00 am
+    case _.includes(val, 'am') || _.includes(val, 'pm'):
+      return moment(val, 'M/D/YYYY H:mm a').format()
+
+    // 1/1/07 0:00 AM
+    case _.includes(val, 'AM') || _.includes(val, 'PM'):
+      return moment(val, 'M/D/YYYY H:mm A').format()
+    default:
+      // 1/1/07 0:00  (notice this has a 2 digit year)
+      return moment(val, 'M/D/YY H:mm').format()
+    // throw new Error(`Cannot parse HOMER file dateformat: `, val)
+  }
+}
+// window.parseHomerDateFormats = parseHomerDateFormats
+
 export const removeFileExtension = fileName => {
   return path.parse(fileName).name
 }

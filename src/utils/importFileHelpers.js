@@ -3,8 +3,13 @@ import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import moment from 'moment'
-import { findColMax, findColMin, momentApplianceParseFormats } from './helpers'
-import { homerParseFormat, applianceParseFormat } from './constants'
+import {
+  findColMax,
+  findColMin,
+  momentApplianceParseFormats,
+  parseHomerDateFormats,
+} from './helpers'
+import { applianceParseFormat } from './constants'
 import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
 import {
   hasColumnHeaders,
@@ -107,7 +112,8 @@ export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }
   const modifiedTable = _.map(renamedRows, (row, rowIndex) => {
     return _.mapValues(row, (val, key) => {
       if (key === 'Time') {
-        return DateTime.fromFormat(val, homerParseFormat).toISO()
+        // return DateTime.fromFormat(val, homerParseFormat).toISO()
+        return parseHomerDateFormats(val)
       }
       return _.round(val, 4)
     })

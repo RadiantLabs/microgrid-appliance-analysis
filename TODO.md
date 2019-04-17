@@ -1,3 +1,7 @@
+Launch considerations
+* Changing model will make people's uploaded files need to be re-Uploaded
+
+
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
@@ -15,7 +19,6 @@ Misc:
 - [ ] Grid Components: fix error when expanding
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
-- [x] Remove avatars from about page
 
 - Charts:
 - [ ] Sum excess load over year
