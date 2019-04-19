@@ -1,5 +1,27 @@
 Launch considerations
 * Changing model will make people's uploaded files need to be re-Uploaded
+* Logging with name and email
+
+
+Jeff
+- Check for essential HOMER columns and throw up a modal
+  - If there are errors, allow downloading a template
+- Get longer version of description
+- label x axis hour of year
+- Summary of enabled appliance files in case they are below the fold:
+  - Currently enabled equipment for this appliance
+- Send Amanda ancillary equipment file
+- Sum hours up to the $9K limit
+
+
+Amanda:
+  - Describe sample HOMER files
+
+
+Old Notes from meeting:
+- Amanda will do basic sanity check calculations
+- Amanda review question marks
+- Amanda: tell what min/max state of charge for each type of battery
 
 
 --------------------------------------------------------------------------------
@@ -7,7 +29,8 @@ Before Launch:
 --------------------------------------------------------------------------------
 File Importing
 - [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Figure out why biogas doesn't have solar angle of incidence and datetime is wrong
+  - Remove columns from columnHeaders that don't exist in the upload
+- [ ] Guard against DomException errors with no stack trace when saving too much data
 
 Logging
 - [ ] Add more logs for possible problems around the app
@@ -23,7 +46,6 @@ Misc:
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
-- [ ] Make nicer legend for Loads chart
 
 Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
@@ -42,6 +64,7 @@ Post launch
 --------------------------------------------------------------------------------
 Future Features
 --------------------------------------------------------------------------------
+- [ ] Household current limit ...
 - [ ] Create FAQ in app and/or repo
 - [ ] TOU
 - [ ] Line losses
