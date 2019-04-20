@@ -19,16 +19,16 @@ const FilePopupContent = ({ file }) => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell textAlign="right">PV Type</Table.Cell>
-          <Table.Cell>{file.pvType}</Table.Cell>
+          <Table.Cell>PV Type</Table.Cell>
+          <Table.Cell textAlign="right">{file.pvType}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell textAlign="right">Battery Type</Table.Cell>
-          <Table.Cell>{file.batteryType}</Table.Cell>
+          <Table.Cell>Battery Type</Table.Cell>
+          <Table.Cell textAlign="right">{file.batteryType}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell textAlign="right">Generator Type</Table.Cell>
-          <Table.Cell>{file.generatorType}</Table.Cell>
+          <Table.Cell>Generator Type</Table.Cell>
+          <Table.Cell textAlign="right">{file.generatorType}</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
