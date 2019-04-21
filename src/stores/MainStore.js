@@ -208,6 +208,14 @@ export const MainStore = types
       self.fileImportWarningIsActive = false
     },
 
+    handleCardExpansion(toggleState) {
+      self.activeGrid.toggleCard(toggleState)
+      _.forEach(self.enabledAppliances, appliance => {
+        appliance.toggleCard(toggleState)
+        _.forEach(appliance.enabledAncillaryEquipment, equip => equip.toggleCard(toggleState))
+      })
+    },
+
     // Functions below related to saving the application state to localforage
     setAppSavedState() {
       self.appIsSaved = true

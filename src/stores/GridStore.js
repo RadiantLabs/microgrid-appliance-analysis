@@ -40,7 +40,7 @@ export const GridStore = types
     batteryEstimatedMinEnergyContent: types.maybeNull(types.number),
     batteryEstimatedMaxEnergyContent: types.maybeNull(types.number),
 
-    // Temporary UI state variables. Maybe move into volatile state?
+    cardIsOpen: types.maybeNull(types.boolean),
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
     gridSaved: types.boolean,
@@ -53,7 +53,6 @@ export const GridStore = types
     runInAction(fn) {
       return fn()
     },
-
     // onModelInputChange depends on inputs being validated by the InputField
     // before saving to the model. InputField uses fieldDefinitions for validation
     onModelInputChange(fieldKey, value, error) {
@@ -64,7 +63,6 @@ export const GridStore = types
       self.modelInputValues = newModelInputValues
       self.modelInputErrors = newModelInputErrors
     },
-
     onModelInputBlur(fieldKey, value, error) {
       if (!Boolean(error)) {
         self[fieldKey] = value === 0 ? 0 : value || ''
@@ -72,7 +70,6 @@ export const GridStore = types
         console.log('Value not saved to store')
       }
     },
-
     // These files come in through the file upload button
     handleGridFileUpload(rawFile) {
       self.fileIsSelected = true
@@ -102,7 +99,6 @@ export const GridStore = types
         error: error => console.log('error: ', error),
       })
     },
-
     // These files come in from either samples or previously uploaded user files
     loadFile: flow(function* loadFile(fileInfo) {
       self.isAnalyzingFile = true
@@ -112,7 +108,6 @@ export const GridStore = types
       self.updateModel(analyzedFile)
       self.isAnalyzingFile = false
     }),
-
     updateModel(analyzedFile) {
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
@@ -139,7 +134,13 @@ export const GridStore = types
         self.isAnalyzingFile = false
       })
     },
-
+    toggleCard(toggleState) {
+      if (_.isBoolean(toggleState)) {
+        self.cardIsOpen = toggleState
+      } else {
+        self.cardIsOpen = !Boolean(self.cardIsOpen)
+      }
+    },
     saveGridSnapshot() {
       const gridSnapshot = getSnapshot(self)
       localforage.setItem('microgridAppliances.stagedGrid', gridSnapshot).then(() => {
@@ -215,6 +216,7 @@ export const initialGridState = {
   batteryEstimatedMinEnergyContent: null,
   batteryEstimatedMaxEnergyContent: null,
   batteryModelSaved: false,
+  cardIsOpen: false,
   fileIsSelected: false,
   isAnalyzingFile: false,
   gridSaved: false,

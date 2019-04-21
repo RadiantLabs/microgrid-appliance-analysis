@@ -1,7 +1,8 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer } from 'mobx-react'
-import { Card, Table, Divider } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
+import { Card, Table, Divider, Header, Button, Grid } from 'semantic-ui-react'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
 
@@ -78,14 +79,40 @@ const PopupContent = ({ field }) => {
   )
 }
 
-export const GridCard = observer(({ grid, expanded }) => {
+export const GridCard = observer(({ grid }) => {
+  const { cardIsOpen, toggleCard } = grid
   return (
     <div>
       <Divider horizontal>Active Grid</Divider>
-      <Card fluid href="/files/homer" className="activeCardBorder">
-        <Card.Content header={grid.label} style={{ backgroundColor: '#F9FAFB' }} />
+      <Card fluid className="activeCardBorder" onClick={toggleCard}>
+        <Card.Content style={{ backgroundColor: '#F9FAFB' }}>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={14}>
+                <Header>{grid.label}</Header>
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Route
+                  render={({ history }) => (
+                    <Button
+                      basic
+                      circular
+                      icon="right arrow"
+                      floated="right"
+                      size="tiny"
+                      style={{ marginTop: '-6px' }}
+                      onClick={() => {
+                        history.push('/files/homer')
+                      }}
+                    />
+                  )}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Card.Content>
         <Card.Content description={grid.description} />
-        {expanded && (
+        {cardIsOpen && (
           <Card.Content>
             <Table basic="very" compact>
               <Table.Body>
@@ -107,7 +134,7 @@ export const GridCard = observer(({ grid, expanded }) => {
             </Table>
           </Card.Content>
         )}
-        {expanded && (
+        {cardIsOpen && (
           <Card.Content extra>
             File Type: {grid.fileInfo.fileType}
             {grid.fileInfo.isSample ? ', Sample File' : ', Imported File'}
@@ -118,12 +145,38 @@ export const GridCard = observer(({ grid, expanded }) => {
   )
 })
 
-export const ApplianceCard = observer(({ appliance, expanded }) => {
+export const ApplianceCard = observer(({ appliance }) => {
+  const { cardIsOpen, toggleCard } = appliance
   return (
-    <Card fluid href="/files/appliance" className="activeCardBorder">
-      <Card.Content header={appliance.label} style={{ backgroundColor: '#F9FAFB' }} />
+    <Card fluid className="activeCardBorder" onClick={toggleCard}>
+      <Card.Content style={{ backgroundColor: '#F9FAFB' }}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={14}>
+              <Header>{appliance.label}</Header>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Route
+                render={({ history }) => (
+                  <Button
+                    basic
+                    circular
+                    icon="right arrow"
+                    floated="right"
+                    size="tiny"
+                    style={{ marginTop: '-6px' }}
+                    onClick={() => {
+                      history.push('/files/appliance')
+                    }}
+                  />
+                )}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Card.Content>
       <Card.Content description={appliance.description} />
-      {expanded && (
+      {cardIsOpen && (
         <Card.Content>
           <Table basic="very" compact>
             <Table.Body>
@@ -138,7 +191,7 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
                       />
                     </Table.Cell>
                     <Table.Cell textAlign="right">
-                      {fieldDefinitions[field].type === 'boolean'
+                      {_.isBoolean(appliance[field])
                         ? booleanDisplay(appliance[field])
                         : appliance[field]}
                     </Table.Cell>
@@ -149,7 +202,7 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
           </Table>
         </Card.Content>
       )}
-      {expanded && (
+      {cardIsOpen && (
         <Card.Content extra>
           File Type: {appliance.fileInfo.applianceType}
           {appliance.fileInfo.isSample ? ', Sample File' : ', Imported File'}
@@ -159,12 +212,38 @@ export const ApplianceCard = observer(({ appliance, expanded }) => {
   )
 })
 
-export const AncillaryEquipmentCard = observer(({ equipment, expanded }) => {
+export const AncillaryEquipmentCard = observer(({ equipment }) => {
+  const { cardIsOpen, toggleCard } = equipment
   return (
-    <Card fluid href="/tool/ancillary" className="activeCardBorder">
-      <Card.Content header={equipment.label} style={{ backgroundColor: '#F9FAFB' }} />
+    <Card fluid className="activeCardBorder" onClick={toggleCard}>
+      <Card.Content style={{ backgroundColor: '#F9FAFB' }}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={14}>
+              <Header>{equipment.label}</Header>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Route
+                render={({ history }) => (
+                  <Button
+                    basic
+                    circular
+                    icon="right arrow"
+                    floated="right"
+                    size="tiny"
+                    style={{ marginTop: '-6px' }}
+                    onClick={() => {
+                      history.push('/tool/ancillary')
+                    }}
+                  />
+                )}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Card.Content>
       <Card.Content description={equipment.description} />
-      {expanded && (
+      {cardIsOpen && (
         <Card.Content>
           <Table basic="very" compact>
             <Table.Body>

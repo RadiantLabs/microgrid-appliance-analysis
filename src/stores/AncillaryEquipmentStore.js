@@ -37,6 +37,7 @@ export const AncillaryEquipmentStore = types
     efficiencyRating: types.maybeNull(types.number),
     estimatedEfficiency: types.maybeNull(types.number),
     defaultsAreSet: types.boolean,
+    cardIsOpen: types.maybeNull(types.boolean),
     modelInputValues: types.frozen(),
     modelInputErrors: types.frozen(),
   })
@@ -58,7 +59,6 @@ export const AncillaryEquipmentStore = types
         console.log('Value not saved to store')
       }
     },
-
     // Called from an autorun, which will update this whenever activeGrid or
     // appliance attributes change
     updateValues(ruleValues) {
@@ -85,15 +85,20 @@ export const AncillaryEquipmentStore = types
         self.defaultsAreSet = true
       }
     },
-
     // Set from checkboxes in UI
     handleEnabledToggle() {
       self.enabled = !self.enabled
     },
-
     handleCapexAssignmentChange(event, data) {
       event.preventDefault()
       self.capexAssignment = data.value
+    },
+    toggleCard(toggleState) {
+      if (_.isBoolean(toggleState)) {
+        self.cardIsOpen = toggleState
+      } else {
+        self.cardIsOpen = !Boolean(self.cardIsOpen)
+      }
     },
   }))
   .views(self => ({
@@ -122,6 +127,7 @@ export const initialAncillaryEquipmentState = {
   efficiencyRating: null,
   estimatedEfficiency: null,
   defaultsAreSet: false,
+  cardIsOpen: false,
   modelInputValues: {},
   modelInputErrors: {},
 }

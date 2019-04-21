@@ -49,7 +49,7 @@ export const ApplianceStore = types
     revenuePerProductionUnits: types.maybeNull(types.number),
     ancillaryEquipment: types.array(AncillaryEquipmentStore),
 
-    // Temporary UI state variables. May be moved into volatile state
+    cardIsOpen: types.maybeNull(types.boolean),
     fileIsSelected: types.boolean,
     isAnalyzingFile: types.boolean,
     applianceSaved: types.boolean,
@@ -163,6 +163,13 @@ export const ApplianceStore = types
     handleFileSave() {
       self.saveGridSnapshot()
     },
+    toggleCard(toggleState) {
+      if (_.isBoolean(toggleState)) {
+        self.cardIsOpen = toggleState
+      } else {
+        self.cardIsOpen = !Boolean(self.cardIsOpen)
+      }
+    },
   }))
   .views(self => ({
     get showAnalyzedResults() {
@@ -250,6 +257,7 @@ export const initialApplianceState = {
   productionUnitType: null,
   productionUnitsPerKwh: null,
   revenuePerProductionUnits: null,
+  cardIsOpen: false,
   fileIsSelected: false,
   isAnalyzingFile: false,
   applianceSaved: false,
