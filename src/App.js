@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
-import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'mobx-react'
-import { Client } from './Client'
 import { mainStore } from './stores/MainStore'
 import { history } from './stores/initialize'
 import { TopMenu } from './components/TopMenu'
@@ -22,22 +20,20 @@ import './App.css'
 const App = () => (
   <Provider store={mainStore}>
     <Router history={history}>
-      <ApolloProvider client={Client}>
-        <TopMenu />
-        <div className="main-wrapper">
-          <Switch>
-            <Route path="/" exact component={Main} />
-            <Route path="/tool" component={Main} />
-            <Route path="/snapshots" component={Snapshots} />
-            <Route path="/files" component={UploadFiles} />
-            <Route path="/about" component={About} />
-            <Route path="/debug" component={Debug} />
-            {/*<Route path="/profile" component={Profile} />*/}
-            <Route component={FourOhFour} />
-          </Switch>
-        </div>
-        {/* <DevTools /> */}
-      </ApolloProvider>
+      <TopMenu />
+      <div className="main-wrapper">
+        <Switch>
+          <Route path="/" exact component={Main} />
+          <Route path="/tool" component={Main} />
+          <Route path="/snapshots" component={Snapshots} />
+          <Route path="/files" component={UploadFiles} />
+          <Route path="/about" component={About} />
+          <Route path="/debug" component={Debug} />
+          {/*<Route path="/profile" component={Profile} />*/}
+          <Route component={FourOhFour} />
+        </Switch>
+      </div>
+      {/* <DevTools /> */}
     </Router>
   </Provider>
 )
