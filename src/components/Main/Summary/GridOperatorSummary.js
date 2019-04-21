@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Table, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { HelperPopup } from '../../../components/Elements/HelperPopup'
-import { UnmetLoadHelperPopup } from '../../../components/Elements/HelperPopup/UnmetLoadHelperPopup'
+import { UnmetLoadHelperModal } from '../../../components/Elements/UnmetLoadHelperModal'
 
 export const GridOperatorEconomicSummary = inject('store')(
   observer(({ store }) => {
@@ -173,7 +173,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
             <Table.Row>
               <Table.HeaderCell />
               <Table.HeaderCell>
-                Count <em>hrs/year</em> <UnmetLoadHelperPopup />
+                Count <em>hrs/year</em> <UnmetLoadHelperModal />
               </Table.HeaderCell>
               <Table.HeaderCell>
                 Sum <em>kWh</em>
@@ -210,7 +210,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
             <Table.Row>
               <Table.HeaderCell />
               <Table.HeaderCell>
-                Count <em>hrs/year</em> <UnmetLoadHelperPopup />
+                Count <em>hrs/year</em> <UnmetLoadHelperModal />
               </Table.HeaderCell>
               <Table.HeaderCell>
                 Sum <em>kWh</em>

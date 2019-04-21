@@ -31,10 +31,13 @@ File Importing
 - [ ] Make list of columns to check for when uploading HOMER import
   - Remove columns from columnHeaders that don't exist in the upload
 - [ ] Guard against DomException errors with no stack trace when saving too much data
+- [ ] Test deleting sample files
+
 
 Logging
 - [ ] Add more logs for possible problems around the app
-
+  - search for 'catch'
+  
 Misc:
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route

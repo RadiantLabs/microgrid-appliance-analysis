@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { HelperPopup } from './index'
+import { UnmetLoadHelperModal } from './UnmetLoadHelperModal'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
-  ReactDOM.render(<HelperPopup />, div)
+  ReactDOM.render(<UnmetLoadHelperModal />, div)
   ReactDOM.unmountComponentAtNode(div)
 })

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Icon, Table, Modal } from 'semantic-ui-react'
 
-export const UnmetLoadHelperPopup = content => (
+export const UnmetLoadHelperModal = content => (
   <Modal
     trigger={
       <Icon

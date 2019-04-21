@@ -4,10 +4,12 @@ import { Menu } from 'semantic-ui-react'
 import { NavItem } from '../../components/Elements/NavItem'
 import HomerFiles from '../../components/UploadFiles/HomerFiles'
 import ApplianceFiles from '../../components/UploadFiles/ApplianceFiles'
+import { FileImportWarning } from '../../components/Elements/FileImportWarning'
 
 const UploadFiles = () => {
   return (
     <div>
+      <FileImportWarning />
       <Menu secondary pointing>
         <Menu.Item as={NavItem} to={`/files/homer`} name="HOMER Grid Files" />
         <Menu.Item as={NavItem} to={`/files/appliance`} name="Appliance Files" />

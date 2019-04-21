@@ -60,6 +60,7 @@ export const MainStore = types
 
     appIsSaved: types.boolean,
     appIsSavedTimestamp: types.maybeNull(types.Date),
+    fileImportWarningIsActive: types.maybeNull(types.boolean),
   })
   .actions(self => ({
     afterCreate() {
@@ -199,16 +200,30 @@ export const MainStore = types
       self.viewedApplianceId = applianceId
     },
 
+    openFileImportWarningModal() {
+      self.fileImportWarningIsActive = true
+    },
+
+    closeFileImportWarningModal() {
+      self.fileImportWarningIsActive = false
+    },
+
+    // Functions below related to saving the application state to localforage
     setAppSavedState() {
       self.appIsSaved = true
       self.appIsSavedTimestamp = Date.now()
       console.log('app saved')
     },
 
+    // There are no warnings before hitting localforage limits. But you can catch
+    // the error. If there is an error saving, cancel the save, throw up a modal
+    // and let the user delete other files.
+    // Another possible source of errors is chrome has a 127MB hard limit per key/value
     saveAppState() {
-      localforage.setItem('latest', getSnapshot(self)).then(() => {
-        self.setAppSavedState(true)
-      })
+      localforage
+        .setItem('latest', getSnapshot(self))
+        .then(() => self.setAppSavedState(true))
+        .catch(e => self.openFileImportWarningModal())
     },
 
     clearAppState() {
@@ -217,6 +232,7 @@ export const MainStore = types
         .then(function() {
           // Run this code once the database has been entirely deleted.
           console.log('Database is now empty.')
+          self.closeFileImportWarningModal()
         })
         .catch(function(err) {
           // This code runs if there were any errors
@@ -321,6 +337,7 @@ let initialMainState = {
   router: RouterModel.create(),
   appIsSaved: true,
   appIsSavedTimestamp: null,
+  fileImportWarningIsActive: false,
 }
 
 //
