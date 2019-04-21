@@ -33,7 +33,7 @@ File Importing
 - [ ] Make list of columns to check for when uploading HOMER import
   - Remove columns from columnHeaders that don't exist in the upload
 - [x] Guard against DomException errors with no stack trace when saving too much data
-- [ ] Test deleting sample files
+- [x] Test deleting sample files
 
 
 Logging
@@ -43,6 +43,7 @@ Logging
 Misc:
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
+- [ ] After deleting all data, refresh the app and navigate to root directory
 - [x] Grid Components: Create open button and go to link. Clicking on the whole thing should open it. Open state should live on the ancillary equipment store?
 - [x] Grid Components: fix error when expanding
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)

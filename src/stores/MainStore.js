@@ -187,6 +187,7 @@ export const MainStore = types
       const undeletedGrids = _.filter(self.availableGrids, grid => {
         return grid.fileInfo.id !== gridId
       })
+      // Switch active to first undeleted grid
       const newViewedGridId = undeletedGrids[0].fileInfo.id
       runInAction(() => {
         self.setActiveGridFile(newViewedGridId)

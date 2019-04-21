@@ -1,6 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getSnapshot, getParent } from 'mobx-state-tree'
-import localforage from 'localforage'
+import { types, flow, getParent } from 'mobx-state-tree'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
 import { getIsoTimestamp, removeFileExtension, calcAvgError, calcMaxError } from '../utils/helpers'
@@ -140,14 +139,6 @@ export const GridStore = types
       } else {
         self.cardIsOpen = !Boolean(self.cardIsOpen)
       }
-    },
-    saveGridSnapshot() {
-      const gridSnapshot = getSnapshot(self)
-      localforage.setItem('microgridAppliances.stagedGrid', gridSnapshot).then(() => {
-        self.runInAction(() => {
-          self.gridSaved = true
-        })
-      })
     },
   }))
   .views(self => ({

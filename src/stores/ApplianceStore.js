@@ -160,9 +160,6 @@ export const ApplianceStore = types
     handleCancelUpload() {
       console.log('TODO: handleCancelUpload')
     },
-    handleFileSave() {
-      self.saveGridSnapshot()
-    },
     toggleCard(toggleState) {
       if (_.isBoolean(toggleState)) {
         self.cardIsOpen = toggleState

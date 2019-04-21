@@ -35,18 +35,26 @@ const DeleteAppliance = inject('store')(
     return (
       <Segment>
         <Header>Danger Zone</Header>
-        {isSample && 'This is a sample appliance file, which cannot be deleted.'}
-        {!isSample && 'Delete this appliance file. There will be no confirmation.'}
-        <Button
-          basic
-          compact
-          color="red"
-          disabled={isSample}
-          floated="right"
-          style={{ marginTop: '-8px' }}
-          onClick={deleteApplianceFile.bind(null, id)}>
-          Delete {label}
-        </Button>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={12}>
+              {isSample &&
+                'Delete this sample appliance file. The only way to retrieve this file in the future is delete all data to reset the app. There will be no confirmation.'}
+              {!isSample && 'Delete this appliance file. There will be no confirmation.'}
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Button
+                basic
+                compact
+                color="red"
+                floated="right"
+                style={{ marginTop: '-8px' }}
+                onClick={deleteApplianceFile.bind(null, id)}>
+                Delete {label}
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Segment>
     )
   })
