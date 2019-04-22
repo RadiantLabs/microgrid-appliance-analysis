@@ -238,15 +238,8 @@ export const MainStore = types
     clearAppState() {
       localforage
         .clear()
-        .then(function() {
-          // Run this code once the database has been entirely deleted.
-          console.log('Database is now empty.')
-          self.closeFileImportWarningModal()
-        })
-        .catch(function(err) {
-          // This code runs if there were any errors
-          console.log(err)
-        })
+        .then(() => self.closeFileImportWarningModal())
+        .catch(err => console.log(err))
     },
 
     // Store history undo, WIP
