@@ -39,10 +39,9 @@ Logging
 
 Misc:
 - [ ] When deleting all data, redirect to home and refresh (history.push)
-- [ ] Ancillary Equipment summary of what's enabled on the viewed appliance
+- [x] Ancillary Equipment summary of what's enabled on the viewed appliance
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
   - [ ] Link to debug page from main app, as well as an independent route
-- [ ] After deleting all data, refresh the app and navigate to root directory
 - [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
 
