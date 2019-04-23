@@ -4,6 +4,7 @@ import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
 import { getIsoTimestamp, removeFileExtension, calcAvgError, calcMaxError } from '../utils/helpers'
 import { calcPredictedVsActual, calcReferenceLine } from '../utils/calcPredictedVsActual'
+import { calcBatteryDebugData } from '../utils/calcBatteryDebugData'
 import {
   csvOptions,
   analyzeHomerFile,
@@ -148,16 +149,6 @@ export const GridStore = types
       }
       return true
     },
-    // TODO: Get rid of this. When plotting the predicted vs actual chart,
-    // pass in the whole table (combinedTable or grid.fileData) and the props:
-    // actual='originalBatteryEnergyContent' predicted='mlr'
-    get predictedVsActualBatteryValues() {
-      return calcPredictedVsActual(self.fileData)
-    },
-    // TODO: calculate this from the chart, using dynamic keys instead of 'actual' vs 'predicted'
-    get predictedVsActualReferenceLine() {
-      return calcReferenceLine(self.batteryMinEnergyContent, self.batteryMaxEnergyContent)
-    },
     get batteryAvgErrorPct() {
       return calcAvgError(self.predictedVsActualBatteryValues, 'error')
     },
@@ -181,6 +172,23 @@ export const GridStore = types
         _.isFinite(self.batteryMaxEnergyContent),
         hasNoErrors,
       ])
+    },
+    // TODO: Get rid of this. When plotting the predicted vs actual chart,
+    // pass in the whole table (combinedTable or grid.fileData) and the props:
+    // actual='originalBatteryEnergyContent' predicted='mlr'
+    get predictedVsActualBatteryValues() {
+      return calcPredictedVsActual(self.fileData)
+    },
+    // TODO: calculate this from the chart, using dynamic keys instead of 'actual' vs 'predicted'
+    get predictedVsActualReferenceLine() {
+      return calcReferenceLine(self.batteryMinEnergyContent, self.batteryMaxEnergyContent)
+    },
+    get batteryDebugData() {
+      return calcBatteryDebugData(
+        self.fileData,
+        self.batteryMinEnergyContent,
+        self.batteryMaxEnergyContent
+      )
     },
   }))
 

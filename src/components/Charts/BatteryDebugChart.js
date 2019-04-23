@@ -6,7 +6,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   Brush,
   ReferenceLine,
@@ -15,7 +14,8 @@ import { observer, inject } from 'mobx-react'
 import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
 import BatteryDebugPredictedVsActual from '../Charts/BatteryDebugPredictedVsActual'
-const chartLines = ['homerOriginal', 'naive', 'naiveClamped', 'mlr']
+
+const chartLines = ['homerOriginal', 'naiveClamped', 'mlr']
 
 class BatteryDebugChart extends Component {
   state = {
@@ -43,9 +43,10 @@ class BatteryDebugChart extends Component {
 
   render() {
     const { checkedItems, radioSelection } = this.state
-    const { viewedGrid, batteryDebugData } = this.props.store
-    const { batteryMinEnergyContent, batteryMaxEnergyContent } = viewedGrid
+    const { viewedGrid } = this.props.store
+    const { batteryDebugData, batteryMinEnergyContent, batteryMaxEnergyContent } = viewedGrid
     const yMin = _.floor(batteryMinEnergyContent - batteryMinEnergyContent * 0.2)
+    // TODO: Is it possible that using local state has caused problems with rendering?
 
     return (
       <div>
@@ -67,16 +68,6 @@ class BatteryDebugChart extends Component {
                     name="checkboxRadioGroup"
                     value="homerOriginal"
                     checked={radioSelection === 'homerOriginal'}
-                    onChange={this.handleRadioChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    radio
-                    label="naive"
-                    name="checkboxRadioGroup"
-                    value="naive"
-                    checked={radioSelection === 'naive'}
                     onChange={this.handleRadioChange}
                   />
                 </Form.Field>
@@ -111,15 +102,6 @@ class BatteryDebugChart extends Component {
                     name="checkboxGroup"
                     value="homerOriginal"
                     checked={checkedItems.has('homerOriginal')}
-                    onChange={this.handleCheckedChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    label="naive"
-                    name="checkboxGroup"
-                    value="naive"
-                    checked={checkedItems.has('naive')}
                     onChange={this.handleCheckedChange}
                   />
                 </Form.Field>
