@@ -68,7 +68,11 @@ Battery Model
 - debugBatteryPrediction will need to train mlr based on fileData for that viewed grid,
     so do it inside the computed view
 - naiveClamped should not have a loss applied during clamping
-
+- The whole reason for getting an accurate battery model is estimating unmet load
+  and excess production (right? Are there other reasons?). If so, then metrics
+  I should use to test the battery model should focus on those. Put those metrics
+  next to the naive, naiveClamped, mlr, ...
+- Make sure I only train MLR once in the production app.
 
 --------------------------------------------------------------------------------
 Post launch

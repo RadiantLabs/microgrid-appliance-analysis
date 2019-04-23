@@ -14,6 +14,7 @@ import {
 import { observer, inject } from 'mobx-react'
 import { Table, Form, Checkbox } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
+import BatteryDebugPredictedVsActual from '../Charts/BatteryDebugPredictedVsActual'
 
 const chartLines = ['homerOriginal', 'naive', 'naiveClamped', 'mlr']
 
@@ -44,6 +45,7 @@ class BatteryDebugChart extends Component {
     const yMin = _.floor(batteryMinEnergyContent - batteryMinEnergyContent * 0.2)
     return (
       <div>
+        <BatteryDebugPredictedVsActual yAccessor="mlr" />
         <Form>
           <Form.Group inline>
             <Form.Field>

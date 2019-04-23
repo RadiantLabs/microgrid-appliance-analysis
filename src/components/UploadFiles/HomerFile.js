@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader, Message } from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Message, Divider } from 'semantic-ui-react'
 import FileButton from '../../components/Elements/FileButton'
 import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
@@ -154,6 +154,7 @@ class HomerFile extends React.Component {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
+              <Divider />
               <BatteryDebugChart />
             </Segment>
             {!viewedGridIsStaged && <DeleteGrid />}
