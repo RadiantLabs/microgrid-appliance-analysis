@@ -21,7 +21,7 @@ import { calcEnabledApplianceLabels } from '../utils/calcEnabledApplianceLabels'
 import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLabels'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
-
+import { calcBatteryDebugData } from '../utils/calcBatteryDebugData'
 window.moment = moment
 
 // -----------------------------------------------------------------------------
@@ -321,6 +321,13 @@ export const MainStore = types
     },
     get maxApplianceLoad() {
       return calcMaxApplianceLoad(self.combinedTable)
+    },
+    get batteryDebugData() {
+      return calcBatteryDebugData(
+        self.combinedTable,
+        self.viewedGrid.batteryMinEnergyContent,
+        self.viewedGrid.batteryMaxEnergyContent
+      )
     },
   }))
 

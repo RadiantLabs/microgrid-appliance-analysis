@@ -54,6 +54,21 @@ Battery Model
 - [ ] Find multivariate linear regression library (check d3 observables)
 - [ ] Test with all HOMER files
 
+- Doing the original battery prediction in analyzeHomerFile works with importing files
+  or bootstrapping a new app. But it doesn't help me when debugging
+- Can I create a computed value that drives all of these predicted values? Then
+  it's reactive to the grid I'm viewing and works with existing uploaded files.
+- If I'm calculating this for the viewed grid only, then I need to run the computed
+  view on the mainStore, because a grid doesn't know if it's viewed
+- debugBatteryPrediction() takes viewedGrid data & creates the data structure needed to plot
+    - naive
+    - naiveClamped (current way it's calculated, so pull it from fileData)
+    - originalHomer (pull from fileData)
+    - mlr
+- debugBatteryPrediction will need to train mlr based on fileData for that viewed grid,
+    so do it inside the computed view
+- naiveClamped should not have a loss applied during clamping
+
 
 --------------------------------------------------------------------------------
 Post launch

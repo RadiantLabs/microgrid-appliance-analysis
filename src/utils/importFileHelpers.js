@@ -72,7 +72,7 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
 }
 
 function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMaxEnergyContent }) {
-  const newColumns = _.map(fileData, (row, rowIndex, rows) => {
+  return _.map(fileData, (row, rowIndex, rows) => {
     // Get existing values from the current row we are iterating over:
     // Excess electrical production:  Original energy production minus original load (not new
     // appliances) when the battery is charging as fast as possible
@@ -99,12 +99,6 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
       ..._.omit(row, ['Unmet Electrical Load', 'Original Battery Energy Content']),
     }
   })
-  const withBatteryPredictions = predictOriginalBatteryEnergyContent(
-    newColumns,
-    batteryMinEnergyContent,
-    batteryMaxEnergyContent
-  )
-  return withBatteryPredictions
 }
 
 export function prepHomerData({ parsedFile, pvType, batteryType, generatorType }) {
@@ -173,9 +167,16 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
     batteryMinEnergyContent: batteryEstimatedMinEnergyContent,
     batteryMaxEnergyContent: batteryEstimatedMaxEnergyContent,
   })
+
+  const withBatteryPredictions = predictOriginalBatteryEnergyContent(
+    withCalculatedColumns,
+    batteryEstimatedMinEnergyContent,
+    batteryEstimatedMaxEnergyContent
+  )
+
   return {
     fileInfo,
-    fileData: withCalculatedColumns,
+    fileData: withBatteryPredictions,
     fileErrors: _.compact(errors),
     fileWarnings: parsedFile.errors,
     powerType,

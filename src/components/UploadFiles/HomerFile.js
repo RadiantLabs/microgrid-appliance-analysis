@@ -6,6 +6,7 @@ import FileButton from '../../components/Elements/FileButton'
 import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
+import BatteryDebugChart from '../Charts/BatteryDebugChart'
 
 const DeleteGrid = inject('store')(
   observer(({ store }) => {
@@ -153,6 +154,7 @@ class HomerFile extends React.Component {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
+              <BatteryDebugChart />
             </Segment>
             {!viewedGridIsStaged && <DeleteGrid />}
           </>
