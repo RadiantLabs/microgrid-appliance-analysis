@@ -148,9 +148,13 @@ export const GridStore = types
       }
       return true
     },
+    // TODO: Get rid of this. When plotting the predicted vs actual chart,
+    // pass in the whole table (combinedTable or grid.fileData) and the props:
+    // actual='originalBatteryEnergyContent' predicted='mlr'
     get predictedVsActualBatteryValues() {
       return calcPredictedVsActual(self.fileData)
     },
+    // TODO: calculate this from the chart, using dynamic keys instead of 'actual' vs 'predicted'
     get predictedVsActualReferenceLine() {
       return calcReferenceLine(self.batteryMinEnergyContent, self.batteryMaxEnergyContent)
     },

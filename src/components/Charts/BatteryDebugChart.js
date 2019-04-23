@@ -12,15 +12,15 @@ import {
   ReferenceLine,
 } from 'recharts'
 import { observer, inject } from 'mobx-react'
-import { Table, Form, Checkbox } from 'semantic-ui-react'
+import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
 import BatteryDebugPredictedVsActual from '../Charts/BatteryDebugPredictedVsActual'
-
 const chartLines = ['homerOriginal', 'naive', 'naiveClamped', 'mlr']
 
 class BatteryDebugChart extends Component {
   state = {
     checkedItems: new Set(chartLines),
+    radioSelection: 'naiveClamped',
   }
 
   handleCheckedChange = (e, { value }) => {
@@ -33,61 +33,120 @@ class BatteryDebugChart extends Component {
     })
   }
 
+  handleRadioChange = (e, { value }) => {
+    this.setState(state => {
+      return {
+        radioSelection: value,
+      }
+    })
+  }
+
   render() {
-    const { checkedItems } = this.state
+    const { checkedItems, radioSelection } = this.state
     const { viewedGrid, batteryDebugData } = this.props.store
-    const {
-      batteryMinEnergyContent,
-      batteryMaxEnergyContent,
-      // batteryMinSoC,
-      // batteryMaxSoC,
-    } = viewedGrid
+    const { batteryMinEnergyContent, batteryMaxEnergyContent } = viewedGrid
     const yMin = _.floor(batteryMinEnergyContent - batteryMinEnergyContent * 0.2)
+
     return (
       <div>
-        <BatteryDebugPredictedVsActual yAccessor="mlr" />
-        <Form>
-          <Form.Group inline>
-            <Form.Field>
-              <Checkbox
-                label="homerOriginal"
-                name="checkboxRadioGroup"
-                value="homerOriginal"
-                checked={checkedItems.has('homerOriginal')}
-                onChange={this.handleCheckedChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox
-                label="naive"
-                name="checkboxRadioGroup"
-                value="naive"
-                checked={checkedItems.has('naive')}
-                onChange={this.handleCheckedChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox
-                label="naiveClamped"
-                name="checkboxRadioGroup"
-                value="naiveClamped"
-                checked={checkedItems.has('naiveClamped')}
-                onChange={this.handleCheckedChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox
-                label="mlr"
-                name="checkboxRadioGroup"
-                value="mlr"
-                checked={checkedItems.has('mlr')}
-                onChange={this.handleCheckedChange}
-              />
-            </Form.Field>
-          </Form.Group>
-        </Form>
+        <Header as="h3">Battery Predictions vs. Actual</Header>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              <BatteryDebugPredictedVsActual actual="homerOriginal" predicted="naive" />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <Form style={{ marginTop: '40px' }}>
+                <Form.Field>
+                  <Header as="h4">Select battery model version</Header>
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    radio
+                    label="homerOriginal"
+                    name="checkboxRadioGroup"
+                    value="homerOriginal"
+                    checked={radioSelection === 'homerOriginal'}
+                    onChange={this.handleRadioChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    radio
+                    label="naive"
+                    name="checkboxRadioGroup"
+                    value="naive"
+                    checked={radioSelection === 'naive'}
+                    onChange={this.handleRadioChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    radio
+                    label="naiveClamped"
+                    name="checkboxRadioGroup"
+                    value="naiveClamped"
+                    checked={radioSelection === 'naiveClamped'}
+                    onChange={this.handleRadioChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    radio
+                    label="mlr"
+                    name="checkboxRadioGroup"
+                    value="mlr"
+                    checked={radioSelection === 'mlr'}
+                    onChange={this.handleRadioChange}
+                  />
+                </Form.Field>
+              </Form>
+              <Form style={{ marginTop: '40px' }}>
+                <Form.Field>
+                  <Header as="h4">Select battery model versions (hourly)</Header>
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    label="homerOriginal"
+                    name="checkboxGroup"
+                    value="homerOriginal"
+                    checked={checkedItems.has('homerOriginal')}
+                    onChange={this.handleCheckedChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    label="naive"
+                    name="checkboxGroup"
+                    value="naive"
+                    checked={checkedItems.has('naive')}
+                    onChange={this.handleCheckedChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    label="naiveClamped"
+                    name="checkboxGroup"
+                    value="naiveClamped"
+                    checked={checkedItems.has('naiveClamped')}
+                    onChange={this.handleCheckedChange}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    label="mlr"
+                    name="checkboxGroup"
+                    value="mlr"
+                    checked={checkedItems.has('mlr')}
+                    onChange={this.handleCheckedChange}
+                  />
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
-        <ResponsiveContainer height={600}>
+        <ResponsiveContainer height={500}>
           <LineChart
             key={Math.random()} // Force rerendering every time the data changes
             data={batteryDebugData}
@@ -105,7 +164,6 @@ class BatteryDebugChart extends Component {
               domain={[yMin, 'auto']}
             />
             <Tooltip content={<CustomToolTip />} />
-            <Legend verticalAlign="top" align="right" iconType="line" />
 
             {_.map(chartLines, (chartName, index) => {
               if (checkedItems.has(chartName)) {

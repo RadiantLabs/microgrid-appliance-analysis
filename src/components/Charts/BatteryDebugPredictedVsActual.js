@@ -2,6 +2,7 @@ import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Loader } from 'semantic-ui-react'
+import { calcReferenceLineFlexible } from '../../utils/calcReferenceLineFlexible'
 import {
   CartesianGrid,
   XAxis,
@@ -14,9 +15,8 @@ import {
   Dot,
 } from 'recharts'
 
-const BatteryDebugPredictedVsActual = ({ store, xAccessor = 'homerOriginal', yAccessor }) => {
-  const { viewedGrid, batteryDebugData } = store
-  const { predictedVsActualReferenceLine } = viewedGrid
+const BatteryDebugPredictedVsActual = ({ store, actual = 'homerOriginal', predicted }) => {
+  const { batteryDebugData } = store
   if (_.isEmpty(batteryDebugData)) {
     return (
       <Loader
@@ -30,27 +30,28 @@ const BatteryDebugPredictedVsActual = ({ store, xAccessor = 'homerOriginal', yAc
       />
     )
   }
-  const dataMin = _.minBy(batteryDebugData, yAccessor)[yAccessor]
-  const dataMax = _.maxBy(batteryDebugData, yAccessor)[yAccessor]
+  const dataMin = _.minBy(batteryDebugData, predicted)[predicted]
+  const dataMax = _.maxBy(batteryDebugData, predicted)[predicted]
   const data = _.sampleSize(batteryDebugData, 2000)
+  const refLineData = calcReferenceLineFlexible(batteryDebugData, actual, predicted)
   return (
     <ResponsiveContainer height={500}>
       <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 40 }}>
         <XAxis
           type="number"
-          dataKey={xAccessor}
+          dataKey={actual}
           domain={[dataMin, dataMax]}
           label={{
-            value: xAccessor,
+            value: actual,
             offset: -10,
             position: 'insideBottom',
           }}
         />
         <YAxis
           type="number"
-          dataKey={yAccessor}
+          dataKey={predicted}
           domain={[dataMin, dataMax]}
-          label={{ value: yAccessor, angle: -90 }}
+          label={{ value: predicted, angle: -90 }}
         />
         <CartesianGrid />
         <Tooltip cursor={{ strokeDasharray: '3 3' }} />
@@ -58,7 +59,7 @@ const BatteryDebugPredictedVsActual = ({ store, xAccessor = 'homerOriginal', yAc
         <Scatter name="Training data" data={data} fill="#83A1C3" shape={<Dot r={1} />} />
         <Scatter
           name="Reference Line"
-          data={predictedVsActualReferenceLine}
+          data={refLineData}
           fill="#E20000"
           line={{ strokeDasharray: '5 5' }}
           legendType="line"
