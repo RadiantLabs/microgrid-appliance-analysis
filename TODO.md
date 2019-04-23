@@ -38,6 +38,7 @@ Logging
 - [ ] Add more logs for possible problems around the app (search for 'catch')
 
 Misc:
+- [ ] Make file description a textarea
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [ ] Ancillary Equipment summary of what's enabled on the viewed appliance
 - [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
