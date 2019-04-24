@@ -14,15 +14,8 @@ import {
   Dot,
 } from 'recharts'
 
-const PredictedVsActual = ({ store }) => {
-  const { viewedGrid } = store
-  const {
-    predictedVsActualBatteryValues,
-    predictedVsActualReferenceLine,
-    xAccessor = 'actual',
-    yAccessor = 'predicted',
-  } = viewedGrid
-  if (_.isEmpty(predictedVsActualBatteryValues)) {
+const PredictedVsActual = ({ data, predicted, actual }) => {
+  if (_.isEmpty(data)) {
     return (
       <Loader
         active={true}
@@ -35,35 +28,37 @@ const PredictedVsActual = ({ store }) => {
       />
     )
   }
-  const dataMin = _.minBy(predictedVsActualBatteryValues, 'actual')['actual']
-  const dataMax = _.maxBy(predictedVsActualBatteryValues, 'actual')['actual']
-  const data = _.sampleSize(predictedVsActualBatteryValues, 2000)
+  const dataMin = _.floor(_.minBy(data, predicted)[predicted])
+  const dataMax = _.ceil(_.maxBy(data, predicted)[predicted])
+  const range = _.range(dataMin, dataMax)
+  const refData = _.map(range, val => ({ [actual]: val, [predicted]: val }))
+  const sampledData = _.sampleSize(data, 2000)
   return (
     <ResponsiveContainer height={500}>
       <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 40 }}>
         <XAxis
           type="number"
-          dataKey={xAccessor}
+          dataKey={actual}
           domain={[dataMin, dataMax]}
           label={{
-            value: xAccessor,
+            value: actual,
             offset: -10,
             position: 'insideBottom',
           }}
         />
         <YAxis
           type="number"
-          dataKey={yAccessor}
+          dataKey={predicted}
           domain={[dataMin, dataMax]}
-          label={{ value: yAccessor, angle: -90 }}
+          label={{ value: predicted, angle: -90 }}
         />
         <CartesianGrid />
         <Tooltip cursor={{ strokeDasharray: '3 3' }} />
         <Legend verticalAlign="top" align="right" />
-        <Scatter name="Training data" data={data} fill="#83A1C3" shape={<Dot r={1} />} />
+        <Scatter name="Trained data" data={sampledData} fill="#83A1C3" shape={<Dot r={1} />} />
         <Scatter
           name="Reference Line"
-          data={predictedVsActualReferenceLine}
+          data={refData}
           fill="#E20000"
           line={{ strokeDasharray: '5 5' }}
           legendType="line"

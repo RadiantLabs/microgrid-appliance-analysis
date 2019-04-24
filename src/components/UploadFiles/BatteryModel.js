@@ -30,7 +30,11 @@ class BatteryModel extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={10}>
-              <PredictedVsActual />
+              <PredictedVsActual
+                data={grid.fileData}
+                predicted="originalModeledBatteryEnergyContent"
+                actual="originalBatteryEnergyContent"
+              />
             </Grid.Column>
             <Grid.Column width={6}>
               <BatteryErrorTable />
