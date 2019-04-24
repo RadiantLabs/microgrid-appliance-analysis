@@ -11,6 +11,8 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
   }
   const { trainedBatteryModel } = trainMlrBatteryModel(fileData)
 
+  console.log('running calcBatteryDebugData')
+
   return _.reduce(
     fileData,
     (result, row, rowIndex, rows) => {
@@ -87,9 +89,9 @@ function mlrPrediction(
   return _.clamp(unclamped, batteryMin, batteryMax)
 }
 
-function naivePrediction(prevBatteryEnergyContent, electricalProductionLoadDiff) {
-  return prevBatteryEnergyContent + electricalProductionLoadDiff
-}
+// function naivePrediction(prevBatteryEnergyContent, electricalProductionLoadDiff) {
+//   return prevBatteryEnergyContent + electricalProductionLoadDiff
+// }
 
 // This is currently battery model used
 function naiveClampedPrediction(

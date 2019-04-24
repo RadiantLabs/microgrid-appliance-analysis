@@ -50,7 +50,7 @@ class HomerFiles extends React.Component {
                 </Button>
               </Menu.Item>
             </Menu>
-            <Menu vertical fluid style={{ position: 'fixed', width: '250px !important' }}>
+            <Menu vertical fluid>
               {_.map(availableGrids, (file, fileIndex) => {
                 const { isActive, fileInfo, label } = file
                 return (

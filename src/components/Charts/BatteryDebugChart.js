@@ -13,7 +13,7 @@ import {
 import { observer, inject } from 'mobx-react'
 import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
-import BatteryDebugPredictedVsActual from '../Charts/BatteryDebugPredictedVsActual'
+import PredictedVsActual from '../Charts/PredictedVsActual'
 
 const chartLines = ['homerOriginal', 'naiveClamped', 'mlr']
 
@@ -46,15 +46,17 @@ class BatteryDebugChart extends Component {
     const { viewedGrid } = this.props.store
     const { batteryDebugData, batteryMinEnergyContent, batteryMaxEnergyContent } = viewedGrid
     const yMin = _.floor(batteryMinEnergyContent - batteryMinEnergyContent * 0.2)
-    // TODO: Is it possible that using local state has caused problems with rendering?
-
     return (
       <div>
         <Header as="h3">Battery Predictions vs. Actual</Header>
         <Grid>
           <Grid.Row>
             <Grid.Column width={10}>
-              <BatteryDebugPredictedVsActual actual="homerOriginal" predicted="naive" />
+              <PredictedVsActual
+                data={batteryDebugData}
+                actual="homerOriginal"
+                predicted={radioSelection}
+              />
             </Grid.Column>
             <Grid.Column width={6}>
               <Form style={{ marginTop: '40px' }}>

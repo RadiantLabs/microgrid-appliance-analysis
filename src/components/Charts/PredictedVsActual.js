@@ -28,6 +28,7 @@ const PredictedVsActual = ({ data, predicted, actual }) => {
       />
     )
   }
+
   const dataMin = _.floor(_.minBy(data, predicted)[predicted])
   const dataMax = _.ceil(_.maxBy(data, predicted)[predicted])
   const range = _.range(dataMin, dataMax)
