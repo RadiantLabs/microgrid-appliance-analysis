@@ -157,9 +157,6 @@ export const ApplianceStore = types
       event.preventDefault()
       self.hasMotor = data.value
     },
-    handleCancelUpload() {
-      console.log('TODO: handleCancelUpload')
-    },
     toggleCard(toggleState) {
       if (_.isBoolean(toggleState)) {
         self.cardIsOpen = toggleState

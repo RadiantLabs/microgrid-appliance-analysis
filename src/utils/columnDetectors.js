@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { logger } from '../utils/logger'
 
 export function hasColumnHeaders(headers) {
   const header4 = parseFloat(headers[3])
@@ -10,10 +11,10 @@ export function getGridPowerType(headers) {
   const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
   const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))
   if (hasDC && hasAC) {
-    throw new Error(`Detecting both AC and DC Loads`)
+    logger(`Detecting both AC and DC Loads`)
   }
   if (!hasDC && !hasAC) {
-    throw new Error(`Detecting neiter AC nor DC Loads`)
+    logger(`Detecting neither AC nor DC Loads`)
   }
   return {
     powerType: hasDC ? 'DC' : 'AC',

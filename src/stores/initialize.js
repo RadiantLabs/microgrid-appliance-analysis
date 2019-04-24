@@ -13,6 +13,7 @@ import { MainStore } from './MainStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
+import { logger } from '../utils/logger'
 
 // -----------------------------------------------------------------------------
 // Initialize Mobx State Tree Store
@@ -82,8 +83,17 @@ export async function getInitialState() {
         isFreshState,
       }
     })
-    .catch(err => {
-      console.log(err)
-      throw new Error(err)
+    .catch(err => logger(err))
+}
+
+export async function getUserInfo() {
+  return localforage
+    .getItem('user')
+    .then(latestSnapshot => {
+      return {
+        userName: _.has(latestSnapshot, 'userName') ? latestSnapshot.userName : null,
+        userEmail: _.has(latestSnapshot, 'userEmail') ? latestSnapshot.userEmail : null,
+      }
     })
+    .catch(err => logger(err))
 }

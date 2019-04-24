@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Menu, Icon, Button, Popup } from 'semantic-ui-react'
+import { Menu, Button, Popup } from 'semantic-ui-react'
 import { lastSavedTimeAgo } from '../../utils/helpers'
 import { NavItem } from '../../components/Elements/NavItem'
 import shortLogo from '../../images/factore-short-logo-20x26.png'
@@ -43,17 +43,14 @@ export const TopMenu = inject('store')(
             />
           </div>
           <Menu.Item as={NavItem} to="/files/homer">
-            <Icon name="file" />
             Files
           </Menu.Item>
           <Menu.Item as={NavItem} to="/about">
-            <Icon name="info circle" />
             About
           </Menu.Item>
-          {/* <Menu.Item as={NavItem} to="/profile">
-            <Icon name="user" />
+          <Menu.Item as={NavItem} to="/profile">
             User
-          </Menu.Item> */}
+          </Menu.Item>
         </Menu.Menu>
       </Menu>
     )

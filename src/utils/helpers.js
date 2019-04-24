@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import path from 'path-browserify'
 import moment from 'moment'
 import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
-// window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
+import { logger } from './logger'
 
 export const momentApplianceParseFormats = ['YYYY-MM-DD hh:mm:ss']
 
@@ -65,8 +65,7 @@ export const arrayInsert = (arr, item, index) => {
 
 export const checkKey = (table, key) => {
   if (!_.has(_.first(table), key)) {
-    // debugger
-    throw new Error(`Can't find key: ${key}: Check calling function`)
+    logger(`Can't find key: ${key}: Check calling function`)
   }
 }
 
@@ -86,7 +85,6 @@ export function parseHomerDateFormats(val) {
     default:
       // 1/1/07 0:00  (notice this has a 2 digit year)
       return moment(val, 'M/D/YY H:mm').format()
-    // throw new Error(`Cannot parse HOMER file dateformat: `, val)
   }
 }
 // window.parseHomerDateFormats = parseHomerDateFormats

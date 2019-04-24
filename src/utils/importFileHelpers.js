@@ -19,6 +19,8 @@ import {
   getBatteryType,
   getGeneratorType,
 } from './columnDetectors'
+import { logger } from './logger'
+
 export const csvOptions = {
   header: true,
   delimiter: ',',
@@ -259,7 +261,7 @@ export function filePathLookup(fileName, fileType, urlLocation) {
     case 'appliance':
       return relativePathCount + 'data/appliances/' + fileName + '.csv'
     default:
-      throw new Error(`Need to pass fileType (homer, appliance) to filePathLookup`)
+      logger(`Need to pass fileType (homer, appliance) to filePathLookup`)
   }
 }
 
@@ -288,7 +290,7 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
     const csv = await res.text()
     const parsedFile = Papa.parse(csv, csvOptions)
     if (!_.isEmpty(parsedFile.errors)) {
-      throw new Error(`Problem parsing grid CSV: ${JSON.stringify(parsedFile.errors)}`)
+      logger(`Problem parsing grid CSV: ${JSON.stringify(parsedFile.errors)}`)
     }
     switch (fileInfo.fileType) {
       case 'homer':
@@ -296,7 +298,7 @@ export async function fetchSampleFile(fileInfo, urlLocation) {
       case 'appliance':
         return analyzeApplianceFile(parsedFile, fileInfo)
       default:
-        throw new Error(
+        logger(
           `Expected either a 'homer' for 'appliance' file in fetchSampleFile. Got ${
             fileInfo.fileType
           }`
