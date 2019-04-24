@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@sentry/browser": "^5.1.0",
-    "color": "^3.1.0",
     "express": "^4.16.4",
     "express-favicon": "^2.0.1",
     "file-saver": "^2.0.1",
