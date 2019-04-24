@@ -50,6 +50,10 @@ export const TopMenu = inject('store')(
             <Icon name="info circle" />
             About
           </Menu.Item>
+          {/* <Menu.Item as={NavItem} to="/profile">
+            <Icon name="user" />
+            User
+          </Menu.Item> */}
         </Menu.Menu>
       </Menu>
     )

@@ -29,7 +29,7 @@ const App = () => (
           <Route path="/files" component={UploadFiles} />
           <Route path="/about" component={About} />
           <Route path="/debug" component={Debug} />
-          {/*<Route path="/profile" component={Profile} />*/}
+          {/* <Route path="/profile" component={Profile} /> */}
           <Route component={FourOhFour} />
         </Switch>
       </div>

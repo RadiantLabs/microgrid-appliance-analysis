@@ -20,7 +20,6 @@ const Debug = ({ store }) => {
               <Button
                 content="Delete Local Data"
                 icon="delete"
-                size="mini"
                 color="red"
                 compact
                 onClick={clearAppState}
