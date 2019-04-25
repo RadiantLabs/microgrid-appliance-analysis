@@ -146,36 +146,9 @@ const HomerFormFields = ({ store }) => {
           </Table.Cell>
           <Table.Cell>{viewedGrid.generatorType}</Table.Cell>
         </Table.Row>
-
-        <Table.Row>
-          <Table.Cell>File Upload Warnings </Table.Cell>
-          <Table.Cell>
-            <FileUploadErrors fileErrors={fileWarnings} />
-          </Table.Cell>
-        </Table.Row>
-
-        <Table.Row>
-          <Table.Cell>File Upload Errors </Table.Cell>
-          <Table.Cell>
-            <FileUploadErrors fileErrors={fileErrors} />
-          </Table.Cell>
-        </Table.Row>
       </Table.Body>
     </Table>
   )
 }
 
 export default inject('store')(observer(HomerFormFields))
-
-const FileUploadErrors = ({ fileErrors }) => {
-  if (_.isEmpty(fileErrors)) {
-    return 'None Found'
-  }
-  return (
-    <div>
-      {_.map(fileErrors, error => (
-        <div key={error}>{error}</div>
-      ))}
-    </div>
-  )
-}

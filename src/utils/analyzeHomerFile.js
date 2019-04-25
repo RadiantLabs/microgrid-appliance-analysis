@@ -13,6 +13,19 @@ import {
   hasColumnHeaders,
 } from './helpers'
 
+// These are the required columns needed for further calculations.
+// These are the column names after renaming to a reliable, calculable name
+const requiredColumns = [
+  'Time',
+  // 'Wat',  // for debugging
+  'Original Battery Energy Content',
+  'Total Renewable Power Output', // this will change once we have exampels of grids without renewables
+  'Original Unmet Electrical Load',
+  'Original Excess Electrical Production',
+  'Original Electrical Load Served',
+]
+const requiredOneOfColumns = [['AC Primary Load', 'DC Primary Load']]
+
 // _____________________________________________________________________________
 // Primary function that processes the HOMER files
 // _____________________________________________________________________________
@@ -47,6 +60,9 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   errors.push(generatorTypeErrors)
 
   const fileData = prepHomerData({ parsedFile, pvType, batteryType, generatorType })
+
+  const requiredColumnErrors = checkRequiredHomerColumns(fileData)
+  errors.push(requiredColumnErrors)
 
   const batteryEstimatedMinEnergyContent = findColMin(fileData, 'Original Battery Energy Content')
   const batteryEstimatedMaxEnergyContent = findColMax(fileData, 'Original Battery Energy Content')
@@ -142,6 +158,27 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
         return key
     }
   })
+}
+
+// _____________________________________________________________________________
+// Check that HOMER files has the right columns for calculations
+// _____________________________________________________________________________
+// These checks are done after renaming columns into reliable, calculable names
+function checkRequiredHomerColumns(fileData) {
+  const headers = _.keys(_.first(fileData))
+  const requiredErrors = _.map(requiredColumns, col => {
+    return _.includes(headers, col) ? null : col
+  })
+  const requiredOneOfErrors = _.map(requiredOneOfColumns, colPair => {
+    const hasAtLeastOne = _.includes(headers, colPair[0]) || _.includes(headers, colPair[1])
+    return hasAtLeastOne ? null : `One of ${colPair[0]} or ${colPair[1]}`
+  })
+  const errors = _.concat([], _.compact(requiredErrors), _.compact(requiredOneOfErrors))
+  return _.isEmpty(errors)
+    ? null
+    : `Missing required columns: ${errors.join(
+        ', '
+      )}. These columns in your HOMER file may be called something else. For example, a HOMER column may be called 'Generic 1kWh Lead Acid Energy Content' but the app will rename it to 'Battery Energy Contnet'. Either way, we need a column that contains the battery energy content and cannot do calculations without it.`
 }
 
 // _____________________________________________________________________________

@@ -22,7 +22,8 @@ export function calcHybridColumns(grid, summedAppliances) {
 
     // Calculated (summed) loads from new enabled appliances
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
-    const totalElectricalProduction = homerRow['Total Renewable Power Output']
+    const totalElectricalProduction = homerRow['totalElectricalProduction']
+
     const { powerType: gridPowerType } = getGridPowerType(_.keys(homerRow))
 
     // 'Load Served' implies it was actually served, instead of load demand.

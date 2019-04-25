@@ -36,7 +36,7 @@ File Importing
 Misc:
 - [x] Make HOMER file description a textarea
 - [ ] Make Appliance file description a textarea
-- [ ] Organize analyzeApplianceFile and analyzeHomerFile better
+- [x] Organize analyzeApplianceFile and analyzeHomerFile better
 - [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [x] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)

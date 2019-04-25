@@ -171,6 +171,7 @@ export const GridStore = types
         _.isFinite(self.retailElectricityPrice),
         _.isFinite(self.batteryMinEnergyContent),
         _.isFinite(self.batteryMaxEnergyContent),
+        _.isEmpty(self.fileErrors),
         hasNoErrors,
       ])
     },
