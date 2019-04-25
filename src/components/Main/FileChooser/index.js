@@ -112,6 +112,25 @@ class FileChoosers extends Component {
       activeGridIsLoading,
       ancillaryEquipmentLabels,
     } = this.props.store
+
+    const dropdownOptions = _.map(availableGrids, (grid, index) => {
+      const isActive = grid.fileInfo.id === activeGrid.fileInfo.id
+      return {
+        key: grid.fileInfo.id,
+        text: grid.label,
+        value: grid.fileInfo.id,
+        selected: isActive,
+        onClick: this.setActiveGridFile,
+        content: (
+          <Header
+            as="h5"
+            icon={isActive ? 'check circle outline' : 'circle outline'}
+            content={grid.label}
+            subheader={grid.description}
+          />
+        ),
+      }
+    })
     return (
       <Grid columns="equal" padded>
         <Grid.Row>
@@ -119,21 +138,11 @@ class FileChoosers extends Component {
             <Header as="h5" style={{ marginBottom: 4 }}>
               Select Grid File:
             </Header>
-            <Dropdown text={activeGrid.label} loading={activeGridIsLoading}>
-              <Dropdown.Menu>
-                {_.map(availableGrids, grid => (
-                  <Dropdown.Item
-                    text={grid.label}
-                    key={grid.fileInfo.id}
-                    description={grid.description}
-                    value={grid.fileInfo.id}
-                    active={grid.fileInfo.id === activeGrid.fileInfo.id}
-                    onClick={this.setActiveGridFile}
-                    // icon="check" // If currently active (or bold)
-                  />
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+            <Dropdown
+              text={activeGrid.label}
+              loading={activeGridIsLoading}
+              options={dropdownOptions}
+            />
           </Grid.Column>
           <Grid.Column>
             <Header as="h5" style={{ marginBottom: 4 }}>

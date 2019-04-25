@@ -67,7 +67,9 @@ class ApplianceFiles extends React.Component {
                       position="right center"
                       wide={true}
                     />
-                    <span>{description}</span>
+                    <p style={{ marginBottom: 0, fontSize: '0.9em', fontWeight: 300 }}>
+                      {description}
+                    </p>
                     {(fileInfo.isSample || enabled) && (
                       <Label
                         basic

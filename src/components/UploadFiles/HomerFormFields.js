@@ -32,7 +32,7 @@ const HomerFormFields = ({ store }) => {
             />
           </Table.Cell>
           <Table.Cell>
-            <InputField fieldKey="description" modelInstance={viewedGrid} />
+            <InputField fieldKey="description" modelInstance={viewedGrid} type="textarea" />
           </Table.Cell>
         </Table.Row>
 

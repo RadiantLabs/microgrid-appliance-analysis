@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input, Label, Form } from 'semantic-ui-react'
+import { Input, Label, Form, TextArea } from 'semantic-ui-react'
 // import { Slider } from 'react-semantic-ui-range'
 import _ from 'lodash'
 import { isFloat, isInteger } from '../../../utils/helpers'
@@ -66,7 +66,7 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey, modelInstance, disabled, labelLeft, labelRight, size } = this.props
+    const { fieldKey, modelInstance, disabled, labelLeft, labelRight, size, type } = this.props
     if (_.isEmpty(modelInstance)) {
       return <span>Missing Data</span>
     }
@@ -77,6 +77,20 @@ class InputField extends React.Component {
     // Except in JS-wisdom, zero is falsy, so ensure that doesn't get set to empty string.
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
     const error = Boolean(modelInputErrors[fieldKey])
+
+    if (type === 'textarea') {
+      return (
+        <Form>
+          <TextArea
+            value={value}
+            onChange={e => this.handleChange(e, { value: e.target.value })}
+            onBlur={this.handleBlur}
+            disabled={disabled}
+            style={{ minWidth: '60px' }}
+          />
+        </Form>
+      )
+    }
 
     if (labelLeft) {
       return (

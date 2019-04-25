@@ -141,10 +141,10 @@ class HomerFile extends React.Component {
             <Segment attached className={isActive ? 'activeFileBorderNoTop' : null}>
               <Grid>
                 <Grid.Row>
-                  <Grid.Column width={8}>
+                  <Grid.Column width={10}>
                     <HomerFormFields />
                   </Grid.Column>
-                  <Grid.Column width={8}>
+                  <Grid.Column width={6}>
                     <BatteryChargeTable grid={viewedGrid} />
                   </Grid.Column>
                 </Grid.Row>

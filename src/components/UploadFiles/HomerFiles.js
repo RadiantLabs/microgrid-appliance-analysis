@@ -53,7 +53,7 @@ class HomerFiles extends React.Component {
             </Menu>
             <Menu vertical fluid>
               {_.map(availableGrids, (file, fileIndex) => {
-                const { isActive, fileInfo, label } = file
+                const { isActive, fileInfo, description, label } = file
                 return (
                   <Menu.Item
                     key={fileInfo.id}
@@ -67,7 +67,9 @@ class HomerFiles extends React.Component {
                       position="right center"
                       wide={true}
                     />
-                    <span>{file.description}</span>
+                    <p style={{ marginBottom: 0, fontSize: '0.9em', fontWeight: 300 }}>
+                      {description}
+                    </p>
                     {(isActive || fileInfo.isSample) && (
                       <Label
                         basic
