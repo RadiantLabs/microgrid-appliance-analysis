@@ -31,14 +31,18 @@ Before Launch:
 
 File Importing
 - [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Remove columns from columnHeaders that don't exist in the upload
+- [x] Remove columns from columnHeaders that don't exist in the upload
 
 Misc:
-- [x] Make file description a textarea
+- [x] Make HOMER file description a textarea
+- [ ] Make Appliance file description a textarea
+- [ ] Organize analyzeApplianceFile and analyzeHomerFile better
+- [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [x] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
-- [ ] Create function that returns units attached to value from fieldDefinitions
 - [ ] Add refresh app button to user page
+- [ ] Fix popover trigger z-index (drop FileChooser down to see)
+
 
 - Charts:
 - [ ] Sum excess load over year
@@ -81,8 +85,8 @@ Post launch
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [ ] Add commas to number outputs in summary view (or localized versions?)
-
-
+- [ ] Create function that returns units attached to value from fieldDefinitions
+- [ ] Figure out why fetchSnapshotGridFile and fetchSnapshotApplianceFile is being called but not used
 --------------------------------------------------------------------------------
 Future Features
 --------------------------------------------------------------------------------

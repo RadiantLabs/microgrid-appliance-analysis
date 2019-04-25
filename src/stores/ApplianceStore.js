@@ -2,12 +2,9 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import {
-  fetchSampleFile,
-  fetchSnapshotApplianceFile,
-  analyzeApplianceFile,
-  csvOptions,
-} from '../utils/importFileHelpers'
+import { fetchSampleFile, fetchSnapshotApplianceFile } from '../utils/importFileHelpers'
+import { analyzeApplianceFile } from '../utils/analyzeApplianceFile'
+import { csvOptions } from '../utils/helpers'
 import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
 import { fieldDefinitions } from '../utils/fieldDefinitions'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'

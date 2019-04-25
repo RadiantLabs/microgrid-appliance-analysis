@@ -1,12 +1,6 @@
 import _ from 'lodash'
 import { logger } from '../utils/logger'
 
-export function hasColumnHeaders(headers) {
-  const header4 = parseFloat(headers[3])
-  const header5 = parseFloat(headers[4])
-  return !_.isFinite(header4) && !_.isFinite(header5)
-}
-
 export function getGridPowerType(headers) {
   const hasDC = _.some(headers, header => _.includes(header, 'DC Primary Load'))
   const hasAC = _.some(headers, header => _.includes(header, 'AC Primary Load'))

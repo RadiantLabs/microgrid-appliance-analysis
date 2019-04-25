@@ -6,13 +6,40 @@ import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constan
 import { logger } from './logger'
 
 export const momentApplianceParseFormats = ['YYYY-MM-DD hh:mm:ss']
+export const csvOptions = {
+  header: true,
+  delimiter: ',',
+  dynamicTyping: true,
+  skipEmptyLines: true,
+  comments: 'sep=',
+}
 
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------
+export function isFileCsv(fileType) {
+  return fileType === 'text/csv'
+}
+
+// Just check a sample of column headers to make sure they are strings.
+// But since this is coming in from a CSV, we need to make sure they aren't
+// numbers wrapped in quotes, like '5'.
+export function hasColumnHeaders(headers) {
+  const header4 = parseFloat(headers[3])
+  const header5 = parseFloat(headers[4])
+  return !_.isFinite(header4) && !_.isFinite(header5)
+}
+
 export function lastSavedTimeAgo(appIsSavedTimestamp) {
   const mDate = moment(appIsSavedTimestamp)
   return mDate.isValid() ? `Last Saved: ${mDate.fromNow()}` : 'No found versions'
+}
+
+// Add a column to table that autoincrements based on row index
+export function addHourIndex(rows) {
+  return _.map(rows, (row, rowIndex) => {
+    return { ...row, ...{ hour: rowIndex } }
+  })
 }
 
 // Where credit is due: https://stackoverflow.com/a/14053282/1884101

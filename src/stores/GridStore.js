@@ -2,14 +2,16 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
-import { getIsoTimestamp, removeFileExtension, calcAvgError, calcMaxError } from '../utils/helpers'
 import { calcBatteryDebugData } from '../utils/calcBatteryDebugData'
+import { analyzeHomerFile } from '../utils/analyzeHomerFile'
+import { fetchSampleFile, fetchSnapshotGridFile } from '../utils/importFileHelpers'
 import {
+  getIsoTimestamp,
+  removeFileExtension,
+  calcAvgError,
+  calcMaxError,
   csvOptions,
-  analyzeHomerFile,
-  fetchSampleFile,
-  fetchSnapshotGridFile,
-} from '../utils/importFileHelpers'
+} from '../utils/helpers'
 
 //
 // -----------------------------------------------------------------------------
