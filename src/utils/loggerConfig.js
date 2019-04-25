@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import * as Sentry from '@sentry/browser'
-var heap = window.heap
 
 export function loggerConfig(command, data) {
   // if (process.env.NODE_ENV !== 'production') {
@@ -30,7 +29,11 @@ function user(data) {
   Sentry.configureScope(scope => {
     scope.setUser({ username: userName, email: userEmail })
   })
-  heap.identify(heapUserName(data))
+  if (_.isFunction(window.heap.identify)) {
+    window.heap.identify(heapUserName(data))
+  } else {
+    Sentry.captureException(new Error(`heap.identify is not a function`))
+  }
 }
 
 function heapUserName(data) {
