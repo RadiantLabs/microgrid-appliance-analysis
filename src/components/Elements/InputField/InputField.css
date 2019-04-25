@@ -1,5 +1,11 @@
 .InputFieldWrapper .ui.basic.label {
   font-weight: 400;
-  font-size: 0.9em !important;
+  font-size: 13px !important;
   color: rgba(0, 0, 0, 0.87);
+}
+
+.InputFieldWrapper textarea {
+  font-size: 13px !important;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
 }

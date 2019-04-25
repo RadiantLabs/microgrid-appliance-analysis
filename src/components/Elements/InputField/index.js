@@ -80,37 +80,41 @@ class InputField extends React.Component {
 
     if (type === 'textarea') {
       return (
-        <Form>
-          <TextArea
-            value={value}
-            onChange={e => this.handleChange(e, { value: e.target.value })}
-            onBlur={this.handleBlur}
-            disabled={disabled}
-            style={{ minWidth: '60px' }}
-          />
-        </Form>
-      )
-    }
-
-    if (labelLeft) {
-      return (
-        <Form.Field error={error}>
-          <Input
-            labelPosition={labelRight ? 'right' : 'left'}
-            type="text"
-            size={size || 'mini'}
-            fluid>
-            <Label basic>{labelLeft}</Label>
-            <input
+        <div className="InputFieldWrapper">
+          <Form>
+            <TextArea
               value={value}
               onChange={e => this.handleChange(e, { value: e.target.value })}
               onBlur={this.handleBlur}
               disabled={disabled}
               style={{ minWidth: '60px' }}
             />
-            {labelRight && <Label>{labelRight}</Label>}
-          </Input>
-        </Form.Field>
+          </Form>
+        </div>
+      )
+    }
+
+    if (labelLeft) {
+      return (
+        <div className="InputFieldWrapper">
+          <Form.Field error={error}>
+            <Input
+              labelPosition={labelRight ? 'right' : 'left'}
+              type="text"
+              size={size || 'mini'}
+              fluid>
+              <Label basic>{labelLeft}</Label>
+              <input
+                value={value}
+                onChange={e => this.handleChange(e, { value: e.target.value })}
+                onBlur={this.handleBlur}
+                disabled={disabled}
+                style={{ minWidth: '60px' }}
+              />
+              {labelRight && <Label>{labelRight}</Label>}
+            </Input>
+          </Form.Field>
+        </div>
       )
     }
     return (
