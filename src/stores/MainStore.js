@@ -81,7 +81,7 @@ export const MainStore = types
       self.userName = userName
       self.userEmail = userEmail
       loggerConfig('init')
-      loggerConfig('user', { username: self.userName, email: self.userEmail })
+      loggerConfig('user', { userName: self.userName, userEmail: self.userEmail })
     }),
 
     loadActiveGrid: flow(function* loadActiveGrid() {
@@ -261,8 +261,7 @@ export const MainStore = types
         .setItem('user', { userName: self.userName, userEmail: self.userEmail })
         .then(() => console.log('saved user data'))
         .catch(e => self.openFileImportWarningModal())
-      loggerConfig('user', { username: self.userName, email: self.userEmail })
-      logger('wat')
+      loggerConfig('user', { userName: self.userName, userEmail: self.userEmail })
     },
 
     // Store history undo, WIP

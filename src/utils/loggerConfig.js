@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/browser'
 
 export function loggerConfig(command, data) {
+  // if (process.env.NODE_ENV !== 'production') {
+  //   return null
+  // }
   switch (command) {
     case 'init':
       return init()
@@ -11,12 +14,6 @@ export function loggerConfig(command, data) {
   }
 }
 
-// if (process.env.NODE_ENV === 'production') {
-//   console.log('Initializing Sentry Error logging for production environment')
-//   Sentry.init({
-//     dsn: 'https://89977b0faa6a4d1aa58dd8dd1eb469ca@sentry.io/1325177',
-//   })
-// }
 function init() {
   console.log('Initializing Sentry Error logging for ALL environments')
   Sentry.init({
@@ -26,7 +23,7 @@ function init() {
 
 function user(data) {
   const { userName, userEmail } = data
-  console.log('setting user scope: ', data)
+  console.log('setting Sentry user: ', data)
   Sentry.configureScope(scope => {
     scope.setUser({ username: userName, email: userEmail })
   })

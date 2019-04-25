@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Container, Grid, Header, Segment, Button, Form } from 'semantic-ui-react'
+import { Container, Grid, Header, Segment, Button, Form, Transition } from 'semantic-ui-react'
 import { logger } from '../../utils/logger'
 
 class Profile extends Component {
+  state = { visible: false }
+
   handleSubmit = () => {
     const { name, email } = this.state
     this.props.store.saveUserInfo(name, email)
   }
 
+  toggleDebugVisibility = () => this.setState({ visible: !this.state.visible })
+
   render() {
+    const { visible } = this.state
     const { userName, userEmail, saveUserInfo, handleUserInfoChange } = this.props.store
     return (
       <Container>
@@ -40,14 +45,38 @@ class Profile extends Component {
           </Form>
         </Segment>
 
-        <Button
-          content="Throw Error"
-          onClick={() => {
-            logger('Error from button 2')
-          }}
-        />
-
         <DeleteGrid />
+
+        <Segment>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={12}>
+                <Header as="h5">Debugging</Header>
+                <p>Only use this section if asked to by developers who are debugging the app.</p>
+              </Grid.Column>
+              <Grid.Column width={4}>
+                <Button
+                  basic
+                  content={visible ? 'Hide Debug Info' : 'Show Debug Info'}
+                  onClick={this.toggleDebugVisibility}
+                />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={16}>
+                <Transition visible={visible} animation="scale" duration={100}>
+                  <Button
+                    content="Throw Test Error"
+                    basic
+                    onClick={() => {
+                      logger('Error from Throw Test Error Button')
+                    }}
+                  />
+                </Transition>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
       </Container>
     )
   }
