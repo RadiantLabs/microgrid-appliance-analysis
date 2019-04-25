@@ -21,7 +21,7 @@ import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLab
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
 import { loggerConfig } from '../utils/loggerConfig'
-import { logger } from '../utils/logger'
+// import { logger } from '../utils/logger'
 
 // -----------------------------------------------------------------------------
 // Configure local forage

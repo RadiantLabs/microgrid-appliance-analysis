@@ -1,4 +1,6 @@
+import _ from 'lodash'
 import * as Sentry from '@sentry/browser'
+var heap = window.heap
 
 export function loggerConfig(command, data) {
   // if (process.env.NODE_ENV !== 'production') {
@@ -21,10 +23,17 @@ function init() {
   })
 }
 
+// Identify user to both Sentry error logging and Heap analytics
 function user(data) {
   const { userName, userEmail } = data
   console.log('setting Sentry user: ', data)
   Sentry.configureScope(scope => {
     scope.setUser({ username: userName, email: userEmail })
   })
+  heap.identify(heapUserName(data))
+}
+
+function heapUserName(data) {
+  const { userName, userEmail } = data
+  return `${_.kebabCase(userName)}|${userEmail}`
 }
