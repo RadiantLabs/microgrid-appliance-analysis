@@ -30,16 +30,12 @@ Before Launch:
 - [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
 
 File Importing
-- [ ] Make list of columns to check for when uploading HOMER import
-- [x] Remove columns from columnHeaders that don't exist in the upload
+- [ ] Required certain columns for appliances, prevent upload if they don't exist
 
 Misc:
-- [x] Make HOMER file description a textarea
 - [ ] Make Appliance file description a textarea
-- [x] Organize analyzeApplianceFile and analyzeHomerFile better
 - [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
 - [ ] When deleting all data, redirect to home and refresh (history.push)
-- [x] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Add refresh app button to user page
 - [ ] Fix popover trigger z-index (drop FileChooser down to see)
 
