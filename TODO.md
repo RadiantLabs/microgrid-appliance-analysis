@@ -33,11 +33,9 @@ File Importing
 - [ ] Required certain columns for appliances, prevent upload if they don't exist
 
 Misc:
-- [ ] Make Appliance file description a textarea
 - [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [ ] Add refresh app button to user page
-- [ ] Fix popover trigger z-index (drop FileChooser down to see)
 
 
 - Charts:

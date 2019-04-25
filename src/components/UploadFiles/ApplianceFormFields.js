@@ -26,7 +26,7 @@ const ApplianceFormFields = ({ store }) => {
       <Grid.Row>
         <Grid.Column width={8}>
           <FieldLabelInput fieldKey="label" modelInstance={viewedAppliance} />
-          <FieldLabelInput fieldKey="description" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="description" modelInstance={viewedAppliance} type="textarea" />
           <FieldLabelInput fieldKey="nominalPower" modelInstance={viewedAppliance} />
           <FieldLabelInput fieldKey="productionUnitType" modelInstance={viewedAppliance} />
           <FieldLabelInput fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
@@ -83,7 +83,7 @@ const ApplianceFormFields = ({ store }) => {
 
 export default inject('store')(observer(ApplianceFormFields))
 
-const FieldLabelInput = ({ fieldKey, modelInstance }) => {
+const FieldLabelInput = ({ fieldKey, modelInstance, type }) => {
   return (
     <Grid>
       <Grid.Column width={8}>
@@ -91,7 +91,7 @@ const FieldLabelInput = ({ fieldKey, modelInstance }) => {
         <HelperPopup position="right center" content={fieldDefinitions[fieldKey].description} />
       </Grid.Column>
       <Grid.Column width={8}>
-        <InputField fieldKey={fieldKey} modelInstance={modelInstance} />
+        <InputField fieldKey={fieldKey} modelInstance={modelInstance} type={type} />
       </Grid.Column>
     </Grid>
   )

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
 import { Table } from 'semantic-ui-react'
 import InputField from '../../components/Elements/InputField'
@@ -9,7 +8,6 @@ import { fieldDefinitions } from '../../utils/fieldDefinitions'
 
 const HomerFormFields = ({ store }) => {
   const { viewedGrid } = store
-  const { fileErrors, fileWarnings } = viewedGrid
   return (
     <Table basic="very" collapsing compact className={borderlessTableStyles.borderless}>
       <Table.Body>
