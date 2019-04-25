@@ -51,3 +51,10 @@
   padding: 1rem;
   min-width: 280px;
 }
+
+/* In Semantic UI dropdown panels have a lower z-index than tooltip triggers
+   like Icons. This makes sure a dropdown panel won't have icos peeking through
+ */
+ .ui.visible.dropdown .visible.menu.transition {
+  z-index: 10000;
+ }
