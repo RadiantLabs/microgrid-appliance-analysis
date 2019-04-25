@@ -24,8 +24,8 @@ export const ApplianceStore = types
     fileData: types.frozen(),
     label: types.string,
     description: types.string,
-    fileErrors: types.array(types.string),
-    fileWarnings: types.array(types.string),
+    fileImportErrors: types.array(types.string),
+    fileImportWarnings: types.array(types.string),
     applianceType: types.enumeration('applianceType', fieldDefinitions.applianceType.enumerations), // applianceType is not currently used
     capex: types.number,
     capexAssignment: types.enumeration(
@@ -129,8 +129,8 @@ export const ApplianceStore = types
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
-        self.fileErrors = analyzedFile.fileErrors
-        self.fileWarnings = analyzedFile.fileWarnings
+        self.fileImportErrors = analyzedFile.fileImportErrors
+        self.fileImportWarnings = analyzedFile.fileImportWarnings
         self.isAnalyzingFile = false
       })
     },
@@ -231,8 +231,8 @@ export const initialApplianceState = {
   fileData: [],
   label: '',
   description: '',
-  fileErrors: [],
-  fileWarnings: [],
+  fileImportErrors: [],
+  fileImportWarnings: [],
   applianceType: '',
   capex: 0,
   capexTempValue: '',

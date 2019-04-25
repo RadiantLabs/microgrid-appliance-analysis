@@ -5,28 +5,28 @@ import { hasColumnHeaders, momentApplianceParseFormats, isFileCsv } from './help
 
 export function analyzeApplianceFile(parsedFile, fileInfo) {
   const { isSample, fileType, size, mimeType } = fileInfo
-  let fileErrors = []
-  let fileWarnings = []
+  let fileImportErrors = []
+  let fileImportWarnings = []
   const fileIsCsv = isSample ? true : isFileCsv(mimeType)
   if (fileType !== 'appliance') {
-    fileErrors.push(`File is not applliance file. Current fileType: ${fileType}`)
+    fileImportErrors.push(`File is not applliance file. Current fileType: ${fileType}`)
   }
   if (!fileIsCsv) {
-    fileErrors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
+    fileImportErrors.push(`File is not a CSV. If you have an Excel file, export as CSV.`)
   }
   const headers = _.keys(_.first(parsedFile.data))
   if (!hasColumnHeaders(headers)) {
-    fileErrors.push(
+    fileImportErrors.push(
       `This file appears to not have column header descriptions. The first row of the HOMER file should contain the column name and the second row contain the column units.`
     )
   }
   // 5MB limit
   if (size > 1048576 * 5) {
-    fileErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
+    fileImportErrors.push(`Filesize too big. Your file is ${prettyBytes(size)}`)
   }
   const dateExample = parsedFile.data[0].datetime
   if (!moment(dateExample, momentApplianceParseFormats).isValid()) {
-    fileErrors.push(
+    fileImportErrors.push(
       `Appliance date format is incorrect. It should be of the format 'YYYY-MM-DD hh:mm:ss'. For exmaple, 2018-01-01 00:00:00`
     )
   }
@@ -40,8 +40,8 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   return {
     fileInfo,
     fileData: processedData,
-    fileErrors,
-    fileWarnings,
+    fileImportErrors,
+    fileImportWarnings,
     fileType,
   }
 }

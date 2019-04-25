@@ -24,8 +24,8 @@ export const GridStore = types
     fileData: types.frozen(),
     label: types.string,
     description: types.string,
-    fileErrors: types.array(types.string),
-    fileWarnings: types.array(types.string),
+    fileImportErrors: types.array(types.string),
+    fileImportWarnings: types.array(types.string),
     pvType: types.string,
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     batteryType: types.string,
@@ -113,8 +113,8 @@ export const GridStore = types
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
-        self.fileErrors = analyzedFile.fileErrors
-        self.fileWarnings = analyzedFile.fileWarnings
+        self.fileImportErrors = analyzedFile.fileImportErrors
+        self.fileImportWarnings = analyzedFile.fileImportWarnings
         self.powerType = analyzedFile.powerType
         self.pvType = analyzedFile.pvType
         self.batteryType = analyzedFile.batteryType
@@ -171,7 +171,7 @@ export const GridStore = types
         _.isFinite(self.retailElectricityPrice),
         _.isFinite(self.batteryMinEnergyContent),
         _.isFinite(self.batteryMaxEnergyContent),
-        _.isEmpty(self.fileErrors),
+        _.isEmpty(self.fileImportErrors),
         hasNoErrors,
       ])
     },
@@ -195,8 +195,8 @@ export const initialGridState = {
   fileData: [],
   label: '',
   description: '',
-  fileErrors: [],
-  fileWarnings: [],
+  fileImportErrors: [],
+  fileImportWarnings: [],
   pvType: '',
   powerType: '',
   batteryType: '',

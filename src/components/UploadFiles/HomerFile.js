@@ -51,7 +51,7 @@ const StagedFileHeader = inject('store')(
       isAnalyzingFile,
       handleGridFileUpload,
       fileReadyToSave,
-      fileErrors,
+      fileImportErrors,
     } = viewedGrid
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
@@ -84,7 +84,7 @@ const StagedFileHeader = inject('store')(
                 <Icon name="cancel" />
                 Cancel
               </Button>
-              {!_.isEmpty(fileErrors) && (
+              {!_.isEmpty(fileImportErrors) && (
                 <>
                   <div style={errorFontStyles}>
                     Errors with the imported file need to be resolved before saving
@@ -117,7 +117,7 @@ class HomerFile extends React.Component {
 
   render() {
     const { viewedGrid } = this.props
-    const { fileErrors, fileWarnings } = viewedGrid
+    const { fileImportErrors, fileImportWarnings } = viewedGrid
     if (_.isEmpty(viewedGrid)) {
       return <h2>Empty Viewed Grid</h2> // log this
     }
@@ -166,14 +166,14 @@ class HomerFile extends React.Component {
                 <Grid.Row>
                   <Grid.Column width={4}>File Upload Warnings</Grid.Column>
                   <Grid.Column width={12}>
-                    <FileUploadErrors fileErrors={fileWarnings} level="warning" />
+                    <FileUploadErrors fileImportErrors={fileImportWarnings} level="warning" />
                   </Grid.Column>
                 </Grid.Row>
 
                 <Grid.Row>
                   <Grid.Column width={4}>File Upload Warnings</Grid.Column>
                   <Grid.Column width={12}>
-                    <FileUploadErrors fileErrors={fileErrors} level="error" />
+                    <FileUploadErrors fileImportErrors={fileImportErrors} level="error" />
                   </Grid.Column>
                 </Grid.Row>
 

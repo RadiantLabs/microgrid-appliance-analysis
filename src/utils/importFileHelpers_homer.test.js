@@ -41,8 +41,8 @@ function commonExpectations(result) {
   expect(result.batteryEstimatedMinEnergyContent).toBeGreaterThan(1)
   expect(result.batteryMaxSoC).toBeGreaterThan(1)
   expect(result.batteryMinSoC).toBeGreaterThan(1)
-  expect(_.isEmpty(result.fileErrors)).toBe(true)
-  expect(_.isEmpty(result.fileWarnings)).toBe(true)
+  expect(_.isEmpty(result.fileImportErrors)).toBe(true)
+  expect(_.isEmpty(result.fileImportWarnings)).toBe(true)
 
   // Currently there is a difference in how node.js and the browser parses dates.
   // This sounds like a pain to fix. May want to just switch to Moment.js

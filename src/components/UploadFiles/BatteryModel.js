@@ -10,7 +10,7 @@ const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' 
 class BatteryModel extends React.Component {
   render() {
     const { grid } = this.props
-    if (!_.isEmpty(grid.fileErrors)) {
+    if (!_.isEmpty(grid.fileImportErrors)) {
       return null
     }
     return (

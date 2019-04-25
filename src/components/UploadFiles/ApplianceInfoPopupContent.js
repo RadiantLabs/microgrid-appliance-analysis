@@ -3,14 +3,14 @@ import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 
 const ApplianceInfoPopupContent = ({ file }) => {
-  const { prettyFileSize, powerType, fileWarnings, phase, hasMotor } = file
+  const { prettyFileSize, powerType, fileImportWarnings, phase, hasMotor } = file
   return (
     <Table basic="very" inverted>
       <Table.Body>
         <Table.Row>
           <Table.Cell width={7}>File Warnings</Table.Cell>
           <Table.Cell width={9} textAlign="right">
-            {_.isEmpty(file.fileWarnings) ? 'None' : fileWarnings.join(', ')}
+            {_.isEmpty(file.fileImportWarnings) ? 'None' : fileImportWarnings.join(', ')}
           </Table.Cell>
         </Table.Row>
         <Table.Row>

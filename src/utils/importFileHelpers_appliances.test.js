@@ -38,14 +38,14 @@ function commonExpectations(result) {
   expect(_.isNumber(result.fileInfo.size)).toBe(true)
   expect(_.isString(result.fileInfo.timestamp)).toBe(true)
 
-  if (!_.isEmpty(result.fileErrors)) {
-    console.log('fileErrors: ', result.fileErrors)
+  if (!_.isEmpty(result.fileImportErrors)) {
+    console.log('fileImportErrors: ', result.fileImportErrors)
   }
-  if (!_.isEmpty(result.fileWarnings)) {
-    console.log('fileWarnings: ', result.fileWarnings)
+  if (!_.isEmpty(result.fileImportWarnings)) {
+    console.log('fileImportWarnings: ', result.fileImportWarnings)
   }
-  expect(_.isEmpty(result.fileErrors)).toBe(true)
-  expect(_.isEmpty(result.fileWarnings)).toBe(true)
+  expect(_.isEmpty(result.fileImportErrors)).toBe(true)
+  expect(_.isEmpty(result.fileImportWarnings)).toBe(true)
 
   // Currently there is a difference in how node.js and the browser parses dates.
   // This sounds like a pain to fix. May want to just switch to Moment.js

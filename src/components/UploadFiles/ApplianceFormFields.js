@@ -17,8 +17,8 @@ const ApplianceFormFields = ({ store }) => {
     handlePhaseChange,
     hasMotor,
     handleHasMotorChange,
-    fileErrors,
-    fileWarnings,
+    fileImportErrors,
+    fileImportWarnings,
   } = viewedAppliance
 
   return (
@@ -61,14 +61,14 @@ const ApplianceFormFields = ({ store }) => {
       <Grid.Row>
         <Grid.Column width={4}>File Upload Warnings</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileErrors={fileWarnings} />
+          <FileUploadErrors fileImportErrors={fileImportWarnings} />
         </Grid.Column>
       </Grid.Row>
 
       <Grid.Row>
         <Grid.Column width={4}>File Upload Errors</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileErrors={fileErrors} />
+          <FileUploadErrors fileImportErrors={fileImportErrors} />
         </Grid.Column>
       </Grid.Row>
 
@@ -123,13 +123,13 @@ const FieldLabelDropdown = ({ fieldKey, currentValue, itemDisplayFn, items, clic
   )
 }
 
-const FileUploadErrors = ({ fileErrors }) => {
-  if (_.isEmpty(fileErrors)) {
+const FileUploadErrors = ({ fileImportErrors }) => {
+  if (_.isEmpty(fileImportErrors)) {
     return 'None Found'
   }
   return (
     <div>
-      {_.map(fileErrors, error => (
+      {_.map(fileImportErrors, error => (
         <div key={error}>{error}</div>
       ))}
     </div>

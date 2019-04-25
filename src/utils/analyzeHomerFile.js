@@ -17,7 +17,7 @@ import {
 // These are the column names after renaming to a reliable, calculable name
 const requiredColumns = [
   'Time',
-  // 'Wat',  // for debugging
+  // 'Wat', // for debugging
   'Original Battery Energy Content',
   'Total Renewable Power Output', // this will change once we have exampels of grids without renewables
   'Original Unmet Electrical Load',
@@ -84,8 +84,8 @@ export function analyzeHomerFile(parsedFile, fileInfo) {
   return {
     fileInfo,
     fileData: withBatteryPredictions,
-    fileErrors: _.compact(errors),
-    fileWarnings: parsedFile.errors,
+    fileImportErrors: _.compact(errors),
+    fileImportWarnings: parsedFile.errors,
     powerType,
     pvType,
     batteryType,
