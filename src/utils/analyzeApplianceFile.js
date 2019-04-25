@@ -3,6 +3,16 @@ import prettyBytes from 'pretty-bytes'
 import moment from 'moment'
 import { hasColumnHeaders, momentApplianceParseFormats, isFileCsv } from './helpers'
 
+const requiredColumns = [
+  'datetime',
+  // 'Wut', // for debugging
+  'hour',
+  'day',
+  'hour_of_day',
+  'day_hour',
+  'kw_factor',
+]
+
 export function analyzeApplianceFile(parsedFile, fileInfo) {
   const { isSample, fileType, size, mimeType } = fileInfo
   let fileImportErrors = []
@@ -30,6 +40,10 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       `Appliance date format is incorrect. It should be of the format 'YYYY-MM-DD hh:mm:ss'. For exmaple, 2018-01-01 00:00:00`
     )
   }
+
+  const requiredColumnsErrors = checkRequiredHomerColumns(parsedFile.data)
+  fileImportErrors.push(requiredColumnsErrors)
+
   const processedData = _.map(parsedFile.data, row => {
     const trimmedRow = _.omit(row, ['production_factor'])
     return {
@@ -40,8 +54,18 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   return {
     fileInfo,
     fileData: processedData,
-    fileImportErrors,
-    fileImportWarnings,
+    fileImportErrors: _.compact(fileImportErrors),
+    fileImportWarnings: _.compact(fileImportWarnings), // Not currently used
     fileType,
   }
+}
+
+// _____________________________________________________________________________
+// Check that Appliance files has the right columns for calculations
+// _____________________________________________________________________________
+function checkRequiredHomerColumns(fileData) {
+  const headers = _.keys(_.first(fileData))
+  const requiredErrors = _.map(requiredColumns, col => (_.includes(headers, col) ? null : col))
+  const errors = _.compact(requiredErrors)
+  return _.isEmpty(errors) ? null : `Missing required columns: ${requiredErrors.join(', ')}`
 }

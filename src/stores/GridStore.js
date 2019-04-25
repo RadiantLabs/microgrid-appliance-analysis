@@ -163,7 +163,7 @@ export const GridStore = types
       return _.compact(_.values(self.modelInputErrors))
     },
     get fileReadyToSave() {
-      const hasNoErrors = _.size(self.inputErrorList) === 0
+      const hasNoInputErrors = _.size(self.inputErrorList) === 0
       return _.every([
         self.label,
         self.description,
@@ -172,7 +172,7 @@ export const GridStore = types
         _.isFinite(self.batteryMinEnergyContent),
         _.isFinite(self.batteryMaxEnergyContent),
         _.isEmpty(self.fileImportErrors),
-        hasNoErrors,
+        hasNoInputErrors,
       ])
     },
     get batteryDebugData() {

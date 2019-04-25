@@ -7,6 +7,7 @@ import { ApplianceSummaryStats } from './ApplianceSummaryStats'
 import InputField from '../../components/Elements/InputField'
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
 import { booleanDisplay } from '../../utils/helpers'
+import { FileUploadErrors } from './FileUploadErrors'
 
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
@@ -61,14 +62,14 @@ const ApplianceFormFields = ({ store }) => {
       <Grid.Row>
         <Grid.Column width={4}>File Upload Warnings</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileImportErrors={fileImportWarnings} />
+          <FileUploadErrors fileImportErrors={fileImportWarnings} level="warning" />
         </Grid.Column>
       </Grid.Row>
 
       <Grid.Row>
         <Grid.Column width={4}>File Upload Errors</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileImportErrors={fileImportErrors} />
+          <FileUploadErrors fileImportErrors={fileImportErrors} level="error" />
         </Grid.Column>
       </Grid.Row>
 
@@ -120,18 +121,5 @@ const FieldLabelDropdown = ({ fieldKey, currentValue, itemDisplayFn, items, clic
         </Dropdown>
       </Grid.Column>
     </Grid>
-  )
-}
-
-const FileUploadErrors = ({ fileImportErrors }) => {
-  if (_.isEmpty(fileImportErrors)) {
-    return 'None Found'
-  }
-  return (
-    <div>
-      {_.map(fileImportErrors, error => (
-        <div key={error}>{error}</div>
-      ))}
-    </div>
   )
 }

@@ -7,7 +7,6 @@ import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
 import { FileUploadErrors } from './FileUploadErrors'
-import { redErrorFontColor } from '../../utils/constants'
 // import BatteryDebugChart from '../Charts/BatteryDebugChart'
 
 const DeleteGrid = inject('store')(
@@ -86,14 +85,14 @@ const StagedFileHeader = inject('store')(
               </Button>
               {!_.isEmpty(fileImportErrors) && (
                 <>
-                  <div style={errorFontStyles}>
-                    Errors with the imported file need to be resolved before saving
+                  <div className="saveFileMessageErrorStyle">
+                    Resolve errors with the imported file before saving
                   </div>
                   <br />
                 </>
               )}
               {!fileReadyToSave && (
-                <div style={saveFileMessageStyle}>Fill out all fields before saving file</div>
+                <div className="saveFileMessageStyle">Fill out all fields before saving file</div>
               )}
             </>
           )}
@@ -195,15 +194,3 @@ class HomerFile extends React.Component {
 }
 
 export default inject('store')(observer(HomerFile))
-
-const saveFileMessageStyle = {
-  float: 'right',
-  fontSize: '12px',
-  fontWeight: 300,
-  marginRight: '4px',
-}
-
-const errorFontStyles = {
-  ...saveFileMessageStyle,
-  ...{ color: redErrorFontColor },
-}

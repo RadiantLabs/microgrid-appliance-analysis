@@ -203,7 +203,7 @@ export const ApplianceStore = types
       return _.compact(_.values(self.modelInputErrors))
     },
     get fileReadyToSave() {
-      const hasNoErrors = _.size(self.inputErrorList) === 0
+      const hasNoInputErrors = _.size(self.inputErrorList) === 0
       return _.every([
         self.label,
         self.description,
@@ -216,7 +216,8 @@ export const ApplianceStore = types
         _.isFinite(self.revenuePerProductionUnits),
         _.isFinite(self.powerFactor),
         _.isFinite(self.dutyCycleDerateFactor),
-        hasNoErrors,
+        _.isEmpty(self.fileImportErrors),
+        hasNoInputErrors,
       ])
     },
   }))
