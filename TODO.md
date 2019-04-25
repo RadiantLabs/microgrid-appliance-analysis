@@ -34,9 +34,9 @@ File Importing
 - [ ] Remove columns from columnHeaders that don't exist in the upload
 
 Misc:
-- [ ] Make file description a textarea
+- [x] Make file description a textarea
 - [ ] When deleting all data, redirect to home and refresh (history.push)
-- [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
+- [x] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
 
 - Charts:

@@ -234,10 +234,15 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     applianceOperatorNewAppliancesNetIncome: _.round(applianceOperatorNewAppliancesNetIncome),
 
     // ROI & Payback
+    // TODO: Update lodash on next major release which has release with the isFinite check
     gridOwnerRoi: _.round(gridOwnerRoi),
     applianceOwnerRoi: _.round(applianceOwnerRoi),
-    gridOwnerPayback: _.round(gridOwnerPayback, 1),
-    applianceOwnerPayback: _.round(applianceOwnerPayback, 1),
+    gridOwnerPayback: _.isFinite(gridOwnerPayback)
+      ? _.round(gridOwnerPayback, 1)
+      : gridOwnerPayback,
+    applianceOwnerPayback: _.isFinite(applianceOwnerPayback)
+      ? _.round(applianceOwnerPayback, 1)
+      : applianceOwnerPayback,
   }
 }
 
