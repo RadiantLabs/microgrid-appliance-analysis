@@ -18,6 +18,7 @@ import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
 import { calcEnabledApplianceLabels } from '../utils/calcEnabledApplianceLabels'
 import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLabels'
+import { filterCombinedTableHeaders } from '../utils/filterCombinedTableHeaders'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
 import { loggerConfig } from '../utils/loggerConfig'
@@ -298,9 +299,11 @@ export const MainStore = types
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
     },
     get filteredCombinedTableHeaders() {
-      return _.filter(combinedColumnHeaderOrder, header => {
-        return !_.includes(self.excludedTableColumns, header)
-      })
+      return filterCombinedTableHeaders(
+        self.combinedTable,
+        self.excludedTableColumns,
+        combinedColumnHeaderOrder
+      )
     },
     get percentTableColumnsShowing() {
       return _.round(

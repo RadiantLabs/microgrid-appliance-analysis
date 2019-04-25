@@ -38,6 +38,7 @@ Misc:
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [x] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
 - [ ] Create function that returns units attached to value from fieldDefinitions
+- [ ] Add refresh app button to user page
 
 - Charts:
 - [ ] Sum excess load over year
