@@ -166,9 +166,7 @@ function renameHomerKeys({ row, pvType, batteryType, generatorType }) {
 // These checks are done after renaming columns into reliable, calculable names
 function checkRequiredHomerColumns(fileData) {
   const headers = _.keys(_.first(fileData))
-  const requiredErrors = _.map(requiredColumns, col => {
-    return _.includes(headers, col) ? null : col
-  })
+  const requiredErrors = _.map(requiredColumns, col => (_.includes(headers, col) ? null : col))
   const requiredOneOfErrors = _.map(requiredOneOfColumns, colPair => {
     const hasAtLeastOne = _.includes(headers, colPair[0]) || _.includes(headers, colPair[1])
     return hasAtLeastOne ? null : `One of ${colPair[0]} or ${colPair[1]}`

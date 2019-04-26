@@ -30,7 +30,7 @@ Before Launch:
 - [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
 
 File Importing
-- [ ] Required certain columns for appliances, prevent upload if they don't exist
+- [x] Required certain columns for appliances, prevent upload if they don't exist
 
 Misc:
 - [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile

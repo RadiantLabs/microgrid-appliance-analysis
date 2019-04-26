@@ -4,7 +4,8 @@ import path from 'path'
 import Papa from 'papaparse'
 // import { DateTime } from 'luxon'
 // import { isLuxonObject, isValidLuxonDate } from './helpers'
-import { csvOptions, analyzeApplianceFile } from './importFileHelpers'
+import { analyzeApplianceFile } from './analyzeApplianceFile'
+import { csvOptions } from './helpers'
 
 // analyzeApplianceFile requires a fileInfo object, which includes the name of the
 // file. But I'm not testing this aspect of analyzeApplianceFile. So even though
@@ -26,7 +27,7 @@ function loadAndAnalyzeFile(fileName) {
   return analyzeApplianceFile(parsedFile, fileInfo)
 }
 
-// Every parsed HOMER file should meet these criteria:
+// Every parsed appliance file should meet these criteria:
 function commonExpectations(result) {
   expect(result).toHaveProperty('fileData')
   expect(_.size(result.fileData)).toBe(8760)
