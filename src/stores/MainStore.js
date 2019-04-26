@@ -13,6 +13,7 @@ import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 // Import Helpers and domain data
 import { combineTables } from '../utils/helpers'
 import { calcSummaryStats } from '../utils/calcSummaryStats'
+import { calcTimeSegments } from '../utils/calcTimeSegments'
 import { calcHybridColumns } from '../utils/calcHybridColumns'
 import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
@@ -307,6 +308,9 @@ export const MainStore = types
     },
     get summaryStats() {
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
+    },
+    get timeSegments() {
+      return calcTimeSegments(self.combinedTable)
     },
     get filteredCombinedTableHeaders() {
       return filterCombinedTableHeaders(

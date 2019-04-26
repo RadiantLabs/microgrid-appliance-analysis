@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Table, Button } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
@@ -22,13 +22,14 @@ import TimeSegmentControls from './TimeSegmentControls'
 
 class TimeSegments extends React.Component {
   render() {
-    const { summaryStats } = this.props.store
-    if (_.isEmpty(summaryStats)) {
+    const { summaryStats, timeSegments } = this.props.store
+    if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
     const { allUnmetLoadHist } = summaryStats
     return (
       <div>
+        <code>{JSON.stringify(timeSegments, null, 2)}</code>
         <TimeSegmentControls />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

@@ -28,7 +28,6 @@ class TimeSegmentControls extends React.Component {
       return <LoaderSpinner />
     }
     const { stackOffset } = this.state
-    const { maxLoadValue, maxLoadFirstHour } = this.props.store.maxApplianceLoad
     return (
       <Grid>
         <Grid.Row style={{ paddingBottom: 0 }}>

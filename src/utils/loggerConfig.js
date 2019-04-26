@@ -25,7 +25,7 @@ function init() {
 // Identify user to both Sentry error logging and Heap analytics
 function user(data) {
   const { userName, userEmail } = data
-  console.log('setting Sentry user: ', data)
+  // console.log('setting Sentry user: ', data)
   Sentry.configureScope(scope => {
     scope.setUser({ username: userName, email: userEmail })
   })
