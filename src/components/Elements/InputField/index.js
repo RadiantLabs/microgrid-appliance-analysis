@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Input, Label, Form } from 'semantic-ui-react'
+import { Input, Label, Form, TextArea } from 'semantic-ui-react'
 // import { Slider } from 'react-semantic-ui-range'
 import _ from 'lodash'
 import { isFloat, isInteger } from '../../../utils/helpers'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
+import { logger } from '../../../utils/logger'
 import './InputField.css'
 
 // Only save to mobx store once it's a valid value
@@ -13,25 +14,27 @@ class InputField extends React.Component {
     super(props)
     const { fieldKey, modelInstance } = this.props
     if (_.isEmpty(modelInstance)) {
-      throw new Error(`Must supply modelInstance to input field`)
+      logger(`Must supply modelInstance to input field`)
     }
     if (_.isEmpty(modelInstance.onModelInputChange)) {
-      throw new Error(`modelInstance must have an onModelInputChange as an action`)
+      logger(`modelInstance must have an onModelInputChange as an action`)
     }
     if (_.isNil(fieldKey)) {
-      throw new Error(`fieldKey is required`)
+      logger(`fieldKey in InputField is required`)
     }
     if (_.isNil(fieldDefinitions[fieldKey])) {
-      throw new Error(`fieldKey passed in is not found in fieldDefinitions: ${fieldKey}`)
+      logger(`fieldKey passed in InputField is not found in fieldDefinitions: ${fieldKey}`)
     }
     if (_.has(modelInstance[fieldKey])) {
-      throw new Error(`fieldKey passed in is not found in model instance: ${fieldKey}`)
+      logger(`fieldKey passed in InputField is not found in model instance: ${fieldKey}`)
     }
     if (_.has(modelInstance[`${fieldKey}Temp`])) {
-      throw new Error(`${fieldKey}Temp passed in is not found in model instance: ${fieldKey}Temp`)
+      logger(`${fieldKey}Temp passed in InputField is not found in model instance: ${fieldKey}Temp`)
     }
     if (_.has(modelInstance[`${fieldKey}Error`])) {
-      throw new Error(`${fieldKey}Error passed in is not found in model instance: ${fieldKey}Error`)
+      logger(
+        `${fieldKey}Error passed in InputField is not found in model instance: ${fieldKey}Error`
+      )
     }
   }
 
@@ -63,7 +66,7 @@ class InputField extends React.Component {
   }
 
   render() {
-    const { fieldKey, modelInstance, disabled, labelLeft, labelRight, size } = this.props
+    const { fieldKey, modelInstance, disabled, labelLeft, labelRight, size, type } = this.props
     if (_.isEmpty(modelInstance)) {
       return <span>Missing Data</span>
     }
@@ -75,25 +78,43 @@ class InputField extends React.Component {
     const value = modelInputValues[fieldKey] === 0 ? 0 : modelInputValues[fieldKey] || ''
     const error = Boolean(modelInputErrors[fieldKey])
 
-    if (labelLeft) {
+    if (type === 'textarea') {
       return (
-        <Form.Field error={error}>
-          <Input
-            labelPosition={labelRight ? 'right' : 'left'}
-            type="text"
-            size={size || 'mini'}
-            fluid>
-            <Label basic>{labelLeft}</Label>
-            <input
+        <div className="InputFieldWrapper">
+          <Form>
+            <TextArea
               value={value}
               onChange={e => this.handleChange(e, { value: e.target.value })}
               onBlur={this.handleBlur}
               disabled={disabled}
               style={{ minWidth: '60px' }}
             />
-            {labelRight && <Label>{labelRight}</Label>}
-          </Input>
-        </Form.Field>
+          </Form>
+        </div>
+      )
+    }
+
+    if (labelLeft) {
+      return (
+        <div className="InputFieldWrapper">
+          <Form.Field error={error}>
+            <Input
+              labelPosition={labelRight ? 'right' : 'left'}
+              type="text"
+              size={size || 'mini'}
+              fluid>
+              <Label basic>{labelLeft}</Label>
+              <input
+                value={value}
+                onChange={e => this.handleChange(e, { value: e.target.value })}
+                onBlur={this.handleBlur}
+                disabled={disabled}
+                style={{ minWidth: '60px' }}
+              />
+              {labelRight && <Label>{labelRight}</Label>}
+            </Input>
+          </Form.Field>
+        </div>
       )
     }
     return (

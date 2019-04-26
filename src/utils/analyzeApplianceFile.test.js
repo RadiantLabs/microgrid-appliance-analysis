@@ -4,7 +4,8 @@ import path from 'path'
 import Papa from 'papaparse'
 // import { DateTime } from 'luxon'
 // import { isLuxonObject, isValidLuxonDate } from './helpers'
-import { csvOptions, analyzeApplianceFile } from './importFileHelpers'
+import { analyzeApplianceFile } from './analyzeApplianceFile'
+import { csvOptions } from './helpers'
 
 // analyzeApplianceFile requires a fileInfo object, which includes the name of the
 // file. But I'm not testing this aspect of analyzeApplianceFile. So even though
@@ -26,7 +27,7 @@ function loadAndAnalyzeFile(fileName) {
   return analyzeApplianceFile(parsedFile, fileInfo)
 }
 
-// Every parsed HOMER file should meet these criteria:
+// Every parsed appliance file should meet these criteria:
 function commonExpectations(result) {
   expect(result).toHaveProperty('fileData')
   expect(_.size(result.fileData)).toBe(8760)
@@ -38,14 +39,14 @@ function commonExpectations(result) {
   expect(_.isNumber(result.fileInfo.size)).toBe(true)
   expect(_.isString(result.fileInfo.timestamp)).toBe(true)
 
-  if (!_.isEmpty(result.fileErrors)) {
-    console.log('fileErrors: ', result.fileErrors)
+  if (!_.isEmpty(result.fileImportErrors)) {
+    console.log('fileImportErrors: ', result.fileImportErrors)
   }
-  if (!_.isEmpty(result.fileWarnings)) {
-    console.log('fileWarnings: ', result.fileWarnings)
+  if (!_.isEmpty(result.fileImportWarnings)) {
+    console.log('fileImportWarnings: ', result.fileImportWarnings)
   }
-  expect(_.isEmpty(result.fileErrors)).toBe(true)
-  expect(_.isEmpty(result.fileWarnings)).toBe(true)
+  expect(_.isEmpty(result.fileImportErrors)).toBe(true)
+  expect(_.isEmpty(result.fileImportWarnings)).toBe(true)
 
   // Currently there is a difference in how node.js and the browser parses dates.
   // This sounds like a pain to fix. May want to just switch to Moment.js

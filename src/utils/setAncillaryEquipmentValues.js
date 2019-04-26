@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { logger } from '../utils/logger'
 
 // Ancillary Equipment Rules based on
 // https://docs.google.com/spreadsheets/d/1DH7CaK4894MkHnTFlH1M9p7qmcHtqufdzLO8x-SXO8s/edit#gid=748448415
@@ -33,9 +34,7 @@ export function setAncillaryEquipmentValues({
     case 'threeFourPointDcMotorStarter':
       return threeFourPointDcMotorStarter(gridPowerType, applPowerType, applSize)
     default:
-      throw new Error(
-        `Ancillary Equipment Rules: There is no rule for equipment type: ${equipmentType}`
-      )
+      logger(`Ancillary Equipment Rules: There is no rule for equipment type: ${equipmentType}`)
   }
 }
 

@@ -2,14 +2,16 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
-import { getIsoTimestamp, removeFileExtension, calcAvgError, calcMaxError } from '../utils/helpers'
-import { calcPredictedVsActual, calcReferenceLine } from '../utils/calcPredictedVsActual'
+import { calcBatteryDebugData } from '../utils/calcBatteryDebugData'
+import { analyzeHomerFile } from '../utils/analyzeHomerFile'
+import { fetchSampleFile, fetchSnapshotGridFile } from '../utils/importFileHelpers'
 import {
+  getIsoTimestamp,
+  removeFileExtension,
+  calcAvgError,
+  calcMaxError,
   csvOptions,
-  analyzeHomerFile,
-  fetchSampleFile,
-  fetchSnapshotGridFile,
-} from '../utils/importFileHelpers'
+} from '../utils/helpers'
 
 //
 // -----------------------------------------------------------------------------
@@ -22,8 +24,8 @@ export const GridStore = types
     fileData: types.frozen(),
     label: types.string,
     description: types.string,
-    fileErrors: types.array(types.string),
-    fileWarnings: types.array(types.string),
+    fileImportErrors: types.array(types.string),
+    fileImportWarnings: types.array(types.string),
     pvType: types.string,
     powerType: types.enumeration('powerType', ['AC', 'DC', '']),
     batteryType: types.string,
@@ -111,8 +113,8 @@ export const GridStore = types
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
-        self.fileErrors = analyzedFile.fileErrors
-        self.fileWarnings = analyzedFile.fileWarnings
+        self.fileImportErrors = analyzedFile.fileImportErrors
+        self.fileImportWarnings = analyzedFile.fileImportWarnings
         self.powerType = analyzedFile.powerType
         self.pvType = analyzedFile.pvType
         self.batteryType = analyzedFile.batteryType
@@ -148,12 +150,6 @@ export const GridStore = types
       }
       return true
     },
-    get predictedVsActualBatteryValues() {
-      return calcPredictedVsActual(self.fileData)
-    },
-    get predictedVsActualReferenceLine() {
-      return calcReferenceLine(self.batteryMinEnergyContent, self.batteryMaxEnergyContent)
-    },
     get batteryAvgErrorPct() {
       return calcAvgError(self.predictedVsActualBatteryValues, 'error')
     },
@@ -167,7 +163,7 @@ export const GridStore = types
       return _.compact(_.values(self.modelInputErrors))
     },
     get fileReadyToSave() {
-      const hasNoErrors = _.size(self.inputErrorList) === 0
+      const hasNoInputErrors = _.size(self.inputErrorList) === 0
       return _.every([
         self.label,
         self.description,
@@ -175,8 +171,16 @@ export const GridStore = types
         _.isFinite(self.retailElectricityPrice),
         _.isFinite(self.batteryMinEnergyContent),
         _.isFinite(self.batteryMaxEnergyContent),
-        hasNoErrors,
+        _.isEmpty(self.fileImportErrors),
+        hasNoInputErrors,
       ])
+    },
+    get batteryDebugData() {
+      return calcBatteryDebugData(
+        self.fileData,
+        self.batteryMinEnergyContent,
+        self.batteryMaxEnergyContent
+      )
     },
   }))
 
@@ -191,8 +195,8 @@ export const initialGridState = {
   fileData: [],
   label: '',
   description: '',
-  fileErrors: [],
-  fileWarnings: [],
+  fileImportErrors: [],
+  fileImportWarnings: [],
   pvType: '',
   powerType: '',
   batteryType: '',

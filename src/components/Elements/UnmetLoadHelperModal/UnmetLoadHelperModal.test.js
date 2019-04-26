@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { UnmetLoadHelperModal } from './UnmetLoadHelperModal'
+import { UnmetLoadHelperModal } from './index'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')

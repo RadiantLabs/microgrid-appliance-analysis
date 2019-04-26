@@ -1,11 +1,13 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Header, Segment, Button, Icon, Loader, Message } from 'semantic-ui-react'
+import { Grid, Header, Segment, Button, Icon, Loader, Message, Divider } from 'semantic-ui-react'
 import FileButton from '../../components/Elements/FileButton'
 import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
+import { FileUploadErrors } from './FileUploadErrors'
+// import BatteryDebugChart from '../Charts/BatteryDebugChart'
 
 const DeleteGrid = inject('store')(
   observer(({ store }) => {
@@ -43,7 +45,13 @@ const DeleteGrid = inject('store')(
 
 const StagedFileHeader = inject('store')(
   observer(({ store, viewedGrid }) => {
-    const { fileIsSelected, isAnalyzingFile, handleGridFileUpload, fileReadyToSave } = viewedGrid
+    const {
+      fileIsSelected,
+      isAnalyzingFile,
+      handleGridFileUpload,
+      fileReadyToSave,
+      fileImportErrors,
+    } = viewedGrid
     const { cancelStagedGrid, saveStagedGrid } = store
     return (
       <div>
@@ -75,11 +83,16 @@ const StagedFileHeader = inject('store')(
                 <Icon name="cancel" />
                 Cancel
               </Button>
+              {!_.isEmpty(fileImportErrors) && (
+                <>
+                  <div className="saveFileMessageErrorStyle">
+                    Resolve errors with the imported file before saving
+                  </div>
+                  <br />
+                </>
+              )}
               {!fileReadyToSave && (
-                <div
-                  style={{ float: 'right', fontSize: '12px', fontWeight: 300, marginRight: '4px' }}>
-                  Fill out all fields before saving file
-                </div>
+                <div className="saveFileMessageStyle">Fill out all fields before saving file</div>
               )}
             </>
           )}
@@ -103,6 +116,7 @@ class HomerFile extends React.Component {
 
   render() {
     const { viewedGrid } = this.props
+    const { fileImportErrors, fileImportWarnings } = viewedGrid
     if (_.isEmpty(viewedGrid)) {
       return <h2>Empty Viewed Grid</h2> // log this
     }
@@ -140,19 +154,36 @@ class HomerFile extends React.Component {
             <Segment attached className={isActive ? 'activeFileBorderNoTop' : null}>
               <Grid>
                 <Grid.Row>
-                  <Grid.Column width={8}>
+                  <Grid.Column width={10}>
                     <HomerFormFields />
                   </Grid.Column>
-                  <Grid.Column width={8}>
+                  <Grid.Column width={6}>
                     <BatteryChargeTable grid={viewedGrid} />
                   </Grid.Column>
                 </Grid.Row>
+
+                <Grid.Row>
+                  <Grid.Column width={4}>File Upload Warnings</Grid.Column>
+                  <Grid.Column width={12}>
+                    <FileUploadErrors fileImportErrors={fileImportWarnings} level="warning" />
+                  </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                  <Grid.Column width={4}>File Upload Warnings</Grid.Column>
+                  <Grid.Column width={12}>
+                    <FileUploadErrors fileImportErrors={fileImportErrors} level="error" />
+                  </Grid.Column>
+                </Grid.Row>
+
                 <Grid.Row>
                   <Grid.Column>
                     <BatteryModel grid={viewedGrid} />
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
+              <Divider />
+              {/*<BatteryDebugChart />*/}
             </Segment>
             {!viewedGridIsStaged && <DeleteGrid />}
           </>

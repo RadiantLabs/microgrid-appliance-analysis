@@ -2,19 +2,11 @@ import 'react-app-polyfill/ie11'
 import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import * as Sentry from '@sentry/browser'
 import * as serviceWorker from './serviceWorker'
 import App from './App'
 import 'semantic-ui-css/semantic.min.css'
 import './styles/index.css'
 import 'react-virtualized/styles.css'
-
-if (process.env.NODE_ENV === 'production') {
-  console.log('Initializing Sentry Error logging for production environment')
-  Sentry.init({
-    dsn: 'https://89977b0faa6a4d1aa58dd8dd1eb469ca@sentry.io/1325177',
-  })
-}
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

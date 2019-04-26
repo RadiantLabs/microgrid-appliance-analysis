@@ -29,30 +29,39 @@ Before Launch:
 --------------------------------------------------------------------------------
 - [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
 
-File Importing
-- [ ] Make list of columns to check for when uploading HOMER import
-- [ ] Remove columns from columnHeaders that don't exist in the upload
-
-
-Logging
-- [ ] Add more logs for possible problems around the app (search for 'catch')
-
-Misc:
-- [ ] When deleting all data, redirect to home and refresh (history.push)
-- [x] Ancillary Equipment summary of what's enabled on the viewed appliance
-- [ ] Uncomment profile page. Include name & email for logging, along with clear cache button
-  - [ ] Link to debug page from main app, as well as an independent route
-- [ ] Guard against rounding Infinity to 2 places for payback and ROI (https://github.com/lodash/lodash/issues/4266)
-- [ ] Create function that returns units attached to value from fieldDefinitions
-
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
 
 Battery Model
-- [ ] Find multivariate linear regression library (check d3 observables)
 - [ ] Test with all HOMER files
 
+Battery Notes:
+- Don't depend on the originalModeledBatteryEnergyContent for naiveClampled:
+  - Recompute inside calcBatteryDebugData
+  - Then models update always, not just when they were imported
+- Move batteryDebugData to grid view as a computed value.
+  - It will recalculate when the viewed grid changes
+- Reference line can be calculated inside the chart view, passing the right x and y accessors
+- [ ] debugBatteryPrediction() takes gridData & generates plottable data for:
+  - naive
+  - naiveClamped (current way it's calculated, so pull it from fileData)
+  - originalHomer (pull from fileData)
+  - mlr
+
+- [ ] naiveClamped should not have a loss applied during clamping
+
+- [ ] The whole reason for getting an accurate battery model is estimating unmet load
+  and excess production (right? Are there other reasons?). If so, then metrics
+  I should use to test the battery model should focus on those. Put those metrics
+  next to the naive, naiveClamped, mlr, ...
+- [ ] Make sure I only train MLR once in the production app.
+
+TODO:
+- I want to make the predicted vs actual charts the same for naiveClamped
+  - First one uses originalBatteryEnergyContent, originalModeledBatteryEnergyContent
+  - What does the second one use?
+  - Make sure all of these battery models don't include new appliances
 
 --------------------------------------------------------------------------------
 Post launch
@@ -61,8 +70,8 @@ Post launch
 - [ ] Switch from Luxon to Moment (search for getIsoTimestamp). This may allow more detailed tests
 - [ ] Get rid of `processApplianceFile` (route it through analyzeApplianceFile)
 - [ ] Add commas to number outputs in summary view (or localized versions?)
-
-
+- [ ] Create function that returns units attached to value from fieldDefinitions
+- [ ] Figure out why fetchSnapshotGridFile and fetchSnapshotApplianceFile is being called but not used
 --------------------------------------------------------------------------------
 Future Features
 --------------------------------------------------------------------------------

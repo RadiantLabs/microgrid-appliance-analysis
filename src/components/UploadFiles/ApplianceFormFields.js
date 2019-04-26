@@ -7,6 +7,7 @@ import { ApplianceSummaryStats } from './ApplianceSummaryStats'
 import InputField from '../../components/Elements/InputField'
 import { fieldDefinitions } from '../../utils/fieldDefinitions'
 import { booleanDisplay } from '../../utils/helpers'
+import { FileUploadErrors } from './FileUploadErrors'
 
 const ApplianceFormFields = ({ store }) => {
   const { viewedAppliance } = store
@@ -17,8 +18,8 @@ const ApplianceFormFields = ({ store }) => {
     handlePhaseChange,
     hasMotor,
     handleHasMotorChange,
-    fileErrors,
-    fileWarnings,
+    fileImportErrors,
+    fileImportWarnings,
   } = viewedAppliance
 
   return (
@@ -26,7 +27,7 @@ const ApplianceFormFields = ({ store }) => {
       <Grid.Row>
         <Grid.Column width={8}>
           <FieldLabelInput fieldKey="label" modelInstance={viewedAppliance} />
-          <FieldLabelInput fieldKey="description" modelInstance={viewedAppliance} />
+          <FieldLabelInput fieldKey="description" modelInstance={viewedAppliance} type="textarea" />
           <FieldLabelInput fieldKey="nominalPower" modelInstance={viewedAppliance} />
           <FieldLabelInput fieldKey="productionUnitType" modelInstance={viewedAppliance} />
           <FieldLabelInput fieldKey="productionUnitsPerKwh" modelInstance={viewedAppliance} />
@@ -61,14 +62,14 @@ const ApplianceFormFields = ({ store }) => {
       <Grid.Row>
         <Grid.Column width={4}>File Upload Warnings</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileErrors={fileWarnings} />
+          <FileUploadErrors fileImportErrors={fileImportWarnings} level="warning" />
         </Grid.Column>
       </Grid.Row>
 
       <Grid.Row>
         <Grid.Column width={4}>File Upload Errors</Grid.Column>
         <Grid.Column width={12}>
-          <FileUploadErrors fileErrors={fileErrors} />
+          <FileUploadErrors fileImportErrors={fileImportErrors} level="error" />
         </Grid.Column>
       </Grid.Row>
 
@@ -83,7 +84,7 @@ const ApplianceFormFields = ({ store }) => {
 
 export default inject('store')(observer(ApplianceFormFields))
 
-const FieldLabelInput = ({ fieldKey, modelInstance }) => {
+const FieldLabelInput = ({ fieldKey, modelInstance, type }) => {
   return (
     <Grid>
       <Grid.Column width={8}>
@@ -91,7 +92,7 @@ const FieldLabelInput = ({ fieldKey, modelInstance }) => {
         <HelperPopup position="right center" content={fieldDefinitions[fieldKey].description} />
       </Grid.Column>
       <Grid.Column width={8}>
-        <InputField fieldKey={fieldKey} modelInstance={modelInstance} />
+        <InputField fieldKey={fieldKey} modelInstance={modelInstance} type={type} />
       </Grid.Column>
     </Grid>
   )
@@ -120,18 +121,5 @@ const FieldLabelDropdown = ({ fieldKey, currentValue, itemDisplayFn, items, clic
         </Dropdown>
       </Grid.Column>
     </Grid>
-  )
-}
-
-const FileUploadErrors = ({ fileErrors }) => {
-  if (_.isEmpty(fileErrors)) {
-    return 'None Found'
-  }
-  return (
-    <div>
-      {_.map(fileErrors, error => (
-        <div key={error}>{error}</div>
-      ))}
-    </div>
   )
 }

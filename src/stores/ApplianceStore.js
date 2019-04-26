@@ -2,12 +2,9 @@ import _ from 'lodash'
 import { types, flow, getParent } from 'mobx-state-tree'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
-import {
-  fetchSampleFile,
-  fetchSnapshotApplianceFile,
-  analyzeApplianceFile,
-  csvOptions,
-} from '../utils/importFileHelpers'
+import { fetchSampleFile, fetchSnapshotApplianceFile } from '../utils/importFileHelpers'
+import { analyzeApplianceFile } from '../utils/analyzeApplianceFile'
+import { csvOptions } from '../utils/helpers'
 import { getIsoTimestamp, removeFileExtension } from '../utils/helpers'
 import { fieldDefinitions } from '../utils/fieldDefinitions'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
@@ -27,8 +24,8 @@ export const ApplianceStore = types
     fileData: types.frozen(),
     label: types.string,
     description: types.string,
-    fileErrors: types.array(types.string),
-    fileWarnings: types.array(types.string),
+    fileImportErrors: types.array(types.string),
+    fileImportWarnings: types.array(types.string),
     applianceType: types.enumeration('applianceType', fieldDefinitions.applianceType.enumerations), // applianceType is not currently used
     capex: types.number,
     capexAssignment: types.enumeration(
@@ -132,8 +129,8 @@ export const ApplianceStore = types
       self.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
-        self.fileErrors = analyzedFile.fileErrors
-        self.fileWarnings = analyzedFile.fileWarnings
+        self.fileImportErrors = analyzedFile.fileImportErrors
+        self.fileImportWarnings = analyzedFile.fileImportWarnings
         self.isAnalyzingFile = false
       })
     },
@@ -156,9 +153,6 @@ export const ApplianceStore = types
     handleHasMotorChange(event, data) {
       event.preventDefault()
       self.hasMotor = data.value
-    },
-    handleCancelUpload() {
-      console.log('TODO: handleCancelUpload')
     },
     toggleCard(toggleState) {
       if (_.isBoolean(toggleState)) {
@@ -209,7 +203,7 @@ export const ApplianceStore = types
       return _.compact(_.values(self.modelInputErrors))
     },
     get fileReadyToSave() {
-      const hasNoErrors = _.size(self.inputErrorList) === 0
+      const hasNoInputErrors = _.size(self.inputErrorList) === 0
       return _.every([
         self.label,
         self.description,
@@ -222,7 +216,8 @@ export const ApplianceStore = types
         _.isFinite(self.revenuePerProductionUnits),
         _.isFinite(self.powerFactor),
         _.isFinite(self.dutyCycleDerateFactor),
-        hasNoErrors,
+        _.isEmpty(self.fileImportErrors),
+        hasNoInputErrors,
       ])
     },
   }))
@@ -237,8 +232,8 @@ export const initialApplianceState = {
   fileData: [],
   label: '',
   description: '',
-  fileErrors: [],
-  fileWarnings: [],
+  fileImportErrors: [],
+  fileImportWarnings: [],
   applianceType: '',
   capex: 0,
   capexTempValue: '',

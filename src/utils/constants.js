@@ -24,6 +24,9 @@ export const undeletableApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20
 // https://refactoringui.com/previews/building-your-color-palette/
 // https://learnui.design/tools/data-color-picker.html
 
+export const redErrorFontColor = '#db2828'
+export const orangeWarningFontColor = '#f2711c'
+
 export const greyColors = [
   '#212934',
   '#5F6B7A',

@@ -3,16 +3,43 @@ import { DateTime } from 'luxon'
 import path from 'path-browserify'
 import moment from 'moment'
 import { HOURS_PER_YEAR, tableDateFormat, applianceParseFormat } from './constants'
-// window.LuxonDateTime = DateTime // Used for debugging Luxon tokens
+import { logger } from './logger'
 
 export const momentApplianceParseFormats = ['YYYY-MM-DD hh:mm:ss']
+export const csvOptions = {
+  header: true,
+  delimiter: ',',
+  dynamicTyping: true,
+  skipEmptyLines: true,
+  comments: 'sep=',
+}
 
 // -----------------------------------------------------------------------------
 // These are more general purpose utility functions, not directly related to the store
 //------------------------------------------------------------------------------
+export function isFileCsv(fileType) {
+  return fileType === 'text/csv'
+}
+
+// Just check a sample of column headers to make sure they are strings.
+// But since this is coming in from a CSV, we need to make sure they aren't
+// numbers wrapped in quotes, like '5'.
+export function hasColumnHeaders(headers) {
+  const header4 = parseFloat(headers[3])
+  const header5 = parseFloat(headers[4])
+  return !_.isFinite(header4) && !_.isFinite(header5)
+}
+
 export function lastSavedTimeAgo(appIsSavedTimestamp) {
   const mDate = moment(appIsSavedTimestamp)
   return mDate.isValid() ? `Last Saved: ${mDate.fromNow()}` : 'No found versions'
+}
+
+// Add a column to table that autoincrements based on row index
+export function addHourIndex(rows) {
+  return _.map(rows, (row, rowIndex) => {
+    return { ...row, ...{ hour: rowIndex } }
+  })
 }
 
 // Where credit is due: https://stackoverflow.com/a/14053282/1884101
@@ -65,8 +92,7 @@ export const arrayInsert = (arr, item, index) => {
 
 export const checkKey = (table, key) => {
   if (!_.has(_.first(table), key)) {
-    // debugger
-    throw new Error(`Can't find key: ${key}: Check calling function`)
+    logger(`Can't find key: ${key}: Check calling function`)
   }
 }
 
@@ -86,7 +112,6 @@ export function parseHomerDateFormats(val) {
     default:
       // 1/1/07 0:00  (notice this has a 2 digit year)
       return moment(val, 'M/D/YY H:mm').format()
-    // throw new Error(`Cannot parse HOMER file dateformat: `, val)
   }
 }
 // window.parseHomerDateFormats = parseHomerDateFormats

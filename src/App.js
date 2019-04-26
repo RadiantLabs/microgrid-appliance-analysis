@@ -10,7 +10,7 @@ import Main from './components/Main'
 import About from './components/About'
 import UploadFiles from './components/UploadFiles'
 import Snapshots from './components/Snapshots'
-// import Profile from './components/Profile'
+import Profile from './components/Profile'
 import FourOhFour from './components/FourOhFour'
 import Debug from './components/Debug'
 
@@ -29,7 +29,7 @@ const App = () => (
           <Route path="/files" component={UploadFiles} />
           <Route path="/about" component={About} />
           <Route path="/debug" component={Debug} />
-          {/*<Route path="/profile" component={Profile} />*/}
+          <Route path="/profile" component={Profile} />
           <Route component={FourOhFour} />
         </Switch>
       </div>

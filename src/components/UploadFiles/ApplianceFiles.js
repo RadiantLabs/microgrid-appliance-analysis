@@ -5,6 +5,7 @@ import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react
 import ApplianceFile from './ApplianceFile'
 import { HelperPopup } from '../../components/Elements/HelperPopup'
 import ApplianceInfoPopupContent from './ApplianceInfoPopupContent'
+import { logger } from '../../utils/logger'
 
 const labelStyle = {
   background: 'none #fff',
@@ -66,7 +67,9 @@ class ApplianceFiles extends React.Component {
                       position="right center"
                       wide={true}
                     />
-                    <span>{description}</span>
+                    <p style={{ marginBottom: 0, fontSize: '0.9em', fontWeight: 300 }}>
+                      {description}
+                    </p>
                     {(fileInfo.isSample || enabled) && (
                       <Label
                         basic
@@ -96,7 +99,7 @@ class ApplianceFiles extends React.Component {
 export default inject('store')(observer(ApplianceFiles))
 
 const ApplianceFileBlankState = () => {
-  // TODO: log this state. It shouldn't show up
+  logger('Hit ApplianceFileBlankState which probably shouldnt happen')
   return (
     <div>
       <Header as="h3">Appliance File Management</Header>

@@ -15,7 +15,7 @@ const FilePopupContent = ({ file }) => {
         <Table.Row>
           <Table.Cell>File Warnings</Table.Cell>
           <Table.Cell textAlign="right">
-            {_.isEmpty(file.fileWarnings) ? 'None' : file.fileWarnings.join(', ')}
+            {_.isEmpty(file.fileImportWarnings) ? 'None' : file.fileImportWarnings.join(', ')}
           </Table.Cell>
         </Table.Row>
         <Table.Row>

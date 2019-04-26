@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Header, Divider } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 import EquipmentCard from './EquipmentCard'
 
 const EquipmentRowsByStatus = ({ compatibility, header, isFirst }) => {

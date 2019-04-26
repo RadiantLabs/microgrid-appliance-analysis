@@ -4,10 +4,9 @@ import { types, flow, getSnapshot, applySnapshot, destroy } from 'mobx-state-tre
 import { keepAlive } from 'mobx-utils'
 import { RouterModel } from 'mst-react-router'
 import localforage from 'localforage'
-import moment from 'moment'
 
 // Import Other Stores:
-import { getInitialState } from './initialize'
+import { getInitialState, getUserInfo, history } from './initialize'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
@@ -19,10 +18,11 @@ import { sumApplianceColumns } from '../utils/sumApplianceColumns'
 import { calcMaxApplianceLoad } from '../utils/calcMaxApplianceLoad'
 import { calcEnabledApplianceLabels } from '../utils/calcEnabledApplianceLabels'
 import { calcAncillaryApplianceLabels } from '../utils/calcAncillaryApplianceLabels'
+import { filterCombinedTableHeaders } from '../utils/filterCombinedTableHeaders'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
-
-window.moment = moment
+import { loggerConfig } from '../utils/loggerConfig'
+// import { logger } from '../utils/logger'
 
 // -----------------------------------------------------------------------------
 // Configure local forage
@@ -61,6 +61,9 @@ export const MainStore = types
     appIsSaved: types.boolean,
     appIsSavedTimestamp: types.maybeNull(types.Date),
     fileImportWarningIsActive: types.maybeNull(types.boolean),
+
+    userName: types.maybeNull(types.string),
+    userEmail: types.maybeNull(types.string),
   })
   .actions(self => ({
     afterCreate() {
@@ -74,6 +77,12 @@ export const MainStore = types
         self.loadAvailableGrids()
         self.loadAppliances()
       }
+
+      const { userName, userEmail } = yield getUserInfo()
+      self.userName = userName
+      self.userEmail = userEmail
+      loggerConfig('init')
+      loggerConfig('user', { userName: self.userName, userEmail: self.userEmail })
     }),
 
     loadActiveGrid: flow(function* loadActiveGrid() {
@@ -238,8 +247,32 @@ export const MainStore = types
     clearAppState() {
       localforage
         .clear()
-        .then(() => self.closeFileImportWarningModal())
+        .then(() => {
+          self.closeFileImportWarningModal()
+          self.refreshApp()
+        })
         .catch(err => console.log(err))
+    },
+
+    refreshApp() {
+      history.push('/')
+      // Reload without browser cache so state tree is cleared. If it hasn't been
+      // deleted from local storage, then it will bootstrap with new sample files
+      window.location.reload(true)
+    },
+
+    handleUserInfoChange(e, { name, value }) {
+      e.preventDefault()
+      self[name] = value
+    },
+
+    saveUserInfo(e) {
+      e.preventDefault()
+      localforage
+        .setItem('user', { userName: self.userName, userEmail: self.userEmail })
+        .then(() => console.log('saved user data'))
+        .catch(e => self.openFileImportWarningModal())
+      loggerConfig('user', { userName: self.userName, userEmail: self.userEmail })
     },
 
     // Store history undo, WIP
@@ -276,9 +309,11 @@ export const MainStore = types
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
     },
     get filteredCombinedTableHeaders() {
-      return _.filter(combinedColumnHeaderOrder, header => {
-        return !_.includes(self.excludedTableColumns, header)
-      })
+      return filterCombinedTableHeaders(
+        self.combinedTable,
+        self.excludedTableColumns,
+        combinedColumnHeaderOrder
+      )
     },
     get percentTableColumnsShowing() {
       return _.round(
@@ -340,6 +375,8 @@ let initialMainState = {
   appIsSaved: true,
   appIsSavedTimestamp: null,
   fileImportWarningIsActive: false,
+  userName: '',
+  userEmail: '',
 }
 
 //

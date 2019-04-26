@@ -67,6 +67,7 @@ const StagedFileHeader = inject('store')(
       isAnalyzingFile,
       handleApplianceFileUpload,
       fileReadyToSave,
+      fileImportErrors,
     } = store.viewedAppliance
     const { saveStagedAppliance, cancelStagedAppliance } = store
     return (
@@ -99,11 +100,16 @@ const StagedFileHeader = inject('store')(
                 <Icon name="cancel" />
                 Cancel
               </Button>
+              {!_.isEmpty(fileImportErrors) && (
+                <>
+                  <div className="saveFileMessageErrorStyle">
+                    Resolve errors with the imported file before saving
+                  </div>
+                  <br />
+                </>
+              )}
               {!fileReadyToSave && (
-                <div
-                  style={{ float: 'right', fontSize: '12px', fontWeight: 300, marginRight: '4px' }}>
-                  Fill out all fields before saving file
-                </div>
+                <div className="saveFileMessageStyle">Fill out all fields before saving file</div>
               )}
             </>
           )}

@@ -5,6 +5,7 @@ import { Grid, Header, Menu, Button, Icon, Label, List } from 'semantic-ui-react
 import HomerFile from './HomerFile'
 import { HelperPopup } from '../../components/Elements/HelperPopup'
 import GridInfoPopupContent from './GridInfoPopupContent'
+import { logger } from '../../utils/logger'
 
 const labelStyle = {
   background: 'none #fff',
@@ -52,7 +53,7 @@ class HomerFiles extends React.Component {
             </Menu>
             <Menu vertical fluid>
               {_.map(availableGrids, (file, fileIndex) => {
-                const { isActive, fileInfo, label } = file
+                const { isActive, fileInfo, description, label } = file
                 return (
                   <Menu.Item
                     key={fileInfo.id}
@@ -66,7 +67,9 @@ class HomerFiles extends React.Component {
                       position="right center"
                       wide={true}
                     />
-                    <span>{file.description}</span>
+                    <p style={{ marginBottom: 0, fontSize: '0.9em', fontWeight: 300 }}>
+                      {description}
+                    </p>
                     {(isActive || fileInfo.isSample) && (
                       <Label
                         basic
@@ -96,7 +99,7 @@ class HomerFiles extends React.Component {
 export default inject('store')(observer(HomerFiles))
 
 const HomerFileBlankState = () => {
-  // TODO: log this state. It shouldn't show up
+  logger('Hit HomerFileBlankState which probably shouldnt happen')
   return (
     <div>
       <Header as="h3">HOMER File Management</Header>

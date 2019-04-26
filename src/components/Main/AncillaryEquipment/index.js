@@ -5,6 +5,7 @@ import { Grid, Header, Menu, Label, List } from 'semantic-ui-react'
 import { HelperPopup } from '../../Elements/HelperPopup'
 import ApplianceInfoPopupContent from '../../UploadFiles/ApplianceInfoPopupContent'
 import EquipmentCards from './EquipmentCards'
+import { logger } from '../../../utils/logger'
 
 const labelStyle = {
   background: 'none #fff',
@@ -43,7 +44,9 @@ class ApplianceFiles extends React.Component {
                       position="right center"
                       wide={true}
                     />
-                    <span>{description}</span>
+                    <p style={{ marginBottom: 0, fontSize: '0.9em', fontWeight: 300 }}>
+                      {description}
+                    </p>
                     {(fileInfo.isSample || enabled) && (
                       <Label
                         basic
@@ -62,7 +65,7 @@ class ApplianceFiles extends React.Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={12}>
-            {useBlankState ? <ApplianceFileBlankState /> : <EquipmentCards />}
+            {useBlankState ? <AncillaryBlankState /> : <EquipmentCards />}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -72,8 +75,8 @@ class ApplianceFiles extends React.Component {
 
 export default inject('store')(observer(ApplianceFiles))
 
-// TODO: log this state. It shouldn't show up
-const ApplianceFileBlankState = () => {
+const AncillaryBlankState = () => {
+  logger('Hit AncillaryBlankState which probably shouldnt happen')
   return (
     <div>
       <Header as="h3">Appliance File Management</Header>
