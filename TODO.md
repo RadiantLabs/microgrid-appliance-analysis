@@ -34,7 +34,7 @@ File Importing
 
 Misc:
 - [x] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
-- [ ] When deleting all data, redirect to home and refresh (history.push)
+- [x] When deleting all data, redirect to home and refresh (history.push)
 - [ ] Add refresh app button to user page
 
 

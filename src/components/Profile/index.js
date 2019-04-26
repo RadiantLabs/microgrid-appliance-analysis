@@ -45,7 +45,8 @@ class Profile extends Component {
           </Form>
         </Segment>
 
-        <DeleteGrid />
+        <RefreshApp />
+        <DeleteStoredData />
 
         <Segment>
           <Grid>
@@ -66,7 +67,7 @@ class Profile extends Component {
               <Grid.Column width={16}>
                 <Transition visible={visible} animation="scale" duration={100}>
                   <Button
-                    content="Throw Test Error"
+                    content="Send Test Error"
                     basic
                     onClick={() => {
                       logger('Error from Throw Test Error Button')
@@ -84,7 +85,33 @@ class Profile extends Component {
 
 export default inject('store')(observer(Profile))
 
-const DeleteGrid = inject('store')(
+const RefreshApp = inject('store')(
+  observer(({ store }) => {
+    const { refreshApp } = store
+    return (
+      <Segment>
+        <Header>Danger Zone</Header>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={12}>
+              <p>
+                Refresh the app. This may be useful if there are problems or to see app updates. Any
+                unsaved changes will be lost.
+              </p>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Button basic compact color="blue" onClick={refreshApp}>
+                Refresh App
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    )
+  })
+)
+
+const DeleteStoredData = inject('store')(
   observer(({ store }) => {
     const { clearAppState } = store
     return (

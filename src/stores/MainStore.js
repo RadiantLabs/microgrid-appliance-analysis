@@ -249,10 +249,16 @@ export const MainStore = types
         .clear()
         .then(() => {
           self.closeFileImportWarningModal()
-          history.push('/')
-          window.location.reload(true) // Reload without browser cache so state tree is cleared
+          self.refreshApp()
         })
         .catch(err => console.log(err))
+    },
+
+    refreshApp() {
+      history.push('/')
+      // Reload without browser cache so state tree is cleared. If it hasn't been
+      // deleted from local storage, then it will bootstrap with new sample files
+      window.location.reload(true)
     },
 
     handleUserInfoChange(e, { name, value }) {
