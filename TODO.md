@@ -29,15 +29,6 @@ Before Launch:
 --------------------------------------------------------------------------------
 - [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
 
-File Importing
-- [x] Required certain columns for appliances, prevent upload if they don't exist
-
-Misc:
-- [x] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
-- [x] When deleting all data, redirect to home and refresh (history.push)
-- [ ] Add refresh app button to user page
-
-
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
