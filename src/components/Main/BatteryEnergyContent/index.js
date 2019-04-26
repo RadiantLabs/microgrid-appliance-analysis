@@ -88,7 +88,7 @@ class BatteryEnergyContent extends React.Component {
               y={batteryMaxEnergyContent}
               label={{
                 position: 'top',
-                value: `Max Battery Energy Content: ${_.round(batteryMaxEnergyContent, 2)}`,
+                value: `Max Battery Energy Content: ${_.round(batteryMaxEnergyContent, 2)} kWh`,
                 fontWeight: 500,
                 textStroke: '2px white',
               }}
@@ -100,7 +100,7 @@ class BatteryEnergyContent extends React.Component {
               stroke={chartColorsByKey['totalUnmetLoad']}
               label={{
                 position: 'top',
-                value: `Min Battery Energy Content: ${_.round(batteryMinEnergyContent, 2)}`,
+                value: `Min Battery Energy Content: ${_.round(batteryMinEnergyContent, 2)} kWh`,
                 fontWeight: 500,
                 textStroke: '2px white',
               }}
@@ -134,6 +134,14 @@ class BatteryEnergyContent extends React.Component {
             <Brush startIndex={brushStartDomain[0]} endIndex={brushStartDomain[1]} gap={5} />
           </AreaChart>
         </ResponsiveContainer>
+        <Header as="h4" textAlign="center" style={{ marginTop: '10px' }}>
+          Hour of Year
+          <Header.Subheader>
+            Hover over chart to see details.
+            <br />
+            Brush and slide grey handle above to explore more hours of the year
+          </Header.Subheader>
+        </Header>
       </div>
     )
   }
@@ -144,7 +152,7 @@ export default inject('store')(observer(BatteryEnergyContent))
 //
 // -----------------------------------------------------------------------------
 const chartLabelStyle = {
-  marginTop: '10px',
+  marginTop: 0,
   marginBottom: '10px',
   marginLeft: '60px',
 }

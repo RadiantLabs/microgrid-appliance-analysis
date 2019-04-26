@@ -18,7 +18,7 @@ class UnmetLoads extends React.Component {
       <div>
         <Header>
           Unmet Loads by Hour of Day
-          <Header sub>kW for 1 hour</Header>
+          <Header.Subheader>kW for 1 hour (kWh)</Header.Subheader>
         </Header>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -30,6 +30,10 @@ class UnmetLoads extends React.Component {
             <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
+        <Header as="h4" textAlign="center" style={{ marginTop: '10px' }}>
+          Hour of Day
+          <Header.Subheader>Hover over chart to see details.</Header.Subheader>
+        </Header>
       </div>
     )
   }
