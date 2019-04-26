@@ -6,7 +6,7 @@ import { RouterModel } from 'mst-react-router'
 import localforage from 'localforage'
 
 // Import Other Stores:
-import { getInitialState, getUserInfo } from './initialize'
+import { getInitialState, getUserInfo, history } from './initialize'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 
@@ -247,7 +247,11 @@ export const MainStore = types
     clearAppState() {
       localforage
         .clear()
-        .then(() => self.closeFileImportWarningModal())
+        .then(() => {
+          self.closeFileImportWarningModal()
+          history.push('/')
+          window.location.reload(true) // Reload without browser cache so state tree is cleared
+        })
         .catch(err => console.log(err))
     },
 

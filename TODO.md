@@ -33,7 +33,7 @@ File Importing
 - [x] Required certain columns for appliances, prevent upload if they don't exist
 
 Misc:
-- [ ] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
+- [x] Fix tests after re-organizing analyzeApplianceFile and analyzeHomerFile
 - [ ] When deleting all data, redirect to home and refresh (history.push)
 - [ ] Add refresh app button to user page
 
