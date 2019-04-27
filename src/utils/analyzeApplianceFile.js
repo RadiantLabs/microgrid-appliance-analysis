@@ -9,7 +9,7 @@ const requiredColumns = [
   'hour',
   'day',
   'hourOfDay',
-  'day_hour',
+  'dayHour',
   'kwFactor',
 ]
 
@@ -52,7 +52,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       ...{ dayHour: row['day_hour'] },
     }
     // Convert incoming to camel case
-    return _.omit(processedRow, ['production_factor', 'kwFactor', 'hour_of_day', 'dayHour'])
+    return _.omit(processedRow, ['production_factor', 'kw_factor', 'hour_of_day', 'day_hour'])
   })
   return {
     fileInfo,

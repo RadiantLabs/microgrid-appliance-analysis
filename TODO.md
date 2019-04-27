@@ -32,7 +32,11 @@ Before Launch:
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 
 - Charts:
-- [ ] Sum excess load over year
+- [ ] Create byTime columns to groupBy: hourOfDay, dayOfWeek, month, dayHour. Add to combinedTable
+- [ ] Add change handlers for metric, aggregation, by
+- [ ] groupBy as a computed value (keepAlive)
+
+- [ ] Sum excess load over year (summary stats)
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
 
 Battery Model
