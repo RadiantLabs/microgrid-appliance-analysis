@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Table, Button } from 'semantic-ui-react'
+import { Grid, Table, Button, Header } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
@@ -8,7 +8,6 @@ import {
   YAxis,
   Tooltip,
   Brush,
-  Legend,
   ResponsiveContainer,
   AreaChart,
   Area,
@@ -39,12 +38,12 @@ class LoadsByHour extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={7}>
-              <h3>
-                Loads by hour of year <br />
-                <small style={{ fontWeight: '300' }}>
-                  Each data point unit is average kW for 1 hour (kW*h)
-                </small>
-              </h3>
+              <Header.Subheader as="h3">
+                Loads by hour of year
+                <Header.Subheader>
+                  Each data point unit is average kW for 1 hour (kWh)
+                </Header.Subheader>
+              </Header.Subheader>
             </Grid.Column>
             <Grid.Column width={9}>
               <Button.Group basic compact style={{ float: 'right', marginTop: '8px' }}>
@@ -63,7 +62,7 @@ class LoadsByHour extends React.Component {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>Max Appliance Load</Table.Cell>
-                    <Table.Cell textAlign="right">{_.round(maxLoadValue, 2)} kW*h</Table.Cell>
+                    <Table.Cell textAlign="right">{_.round(maxLoadValue, 2)} kWh</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>First hour of year hitting max load</Table.Cell>
@@ -78,7 +77,7 @@ class LoadsByHour extends React.Component {
           <AreaChart
             data={combinedTable}
             stackOffset={stackOffset}
-            margin={{ top: 40, right: 30, left: 0, bottom: 0 }}>
+            margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
             <XAxis dataKey="hour" />
             <YAxis domain={stackOffset === 'none' ? [0, yAxisDomainMax] : null} />
             <Tooltip content={<CustomToolTip />} />
@@ -114,14 +113,21 @@ class LoadsByHour extends React.Component {
             />
             <ReferenceLine
               y={maxLoadValue}
-              label={`Max Appliance Load: ${_.round(maxLoadValue, 2)}`}
+              label={`Max Appliance Load: ${_.round(maxLoadValue, 2)} kWh`}
               stroke={chartColorsByKey['newAppliancesAncillaryLoad']}
               strokeDasharray="3 3"
             />
-            <Legend />
-            <Brush startIndex={0} endIndex={200} />
+            <Brush startIndex={0} endIndex={200} dy={20} />
           </AreaChart>
         </ResponsiveContainer>
+        <Header as="h4" textAlign="center" style={{ marginTop: 0 }}>
+          Hour of Year
+          <Header.Subheader>
+            Hover over chart to see details.
+            <br />
+            Brush and slide grey handle above to explore more hours of the year
+          </Header.Subheader>
+        </Header>
       </div>
     )
   }

@@ -29,6 +29,8 @@ Before Launch:
 --------------------------------------------------------------------------------
 - [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
 
+- [ ] When no appliances are enabled, still show HOMER data in the summary view
+
 - Charts:
 - [ ] Sum excess load over year
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart

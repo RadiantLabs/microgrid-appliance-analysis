@@ -1,13 +1,11 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import _ from 'lodash'
-import { Table } from 'semantic-ui-react'
+import { Table, Header } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { getChartColors, greyColors } from '../../../utils/constants'
+import { getChartColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
-
-const headerStyle = { color: greyColors[1], fontWeight: '200', fontSize: '16px' }
 
 class UnmetLoads extends React.Component {
   render() {
@@ -18,9 +16,10 @@ class UnmetLoads extends React.Component {
     const { allUnmetLoadHist } = summaryStats
     return (
       <div>
-        <h3>
-          Unmet Loads by Hour of Day <small style={headerStyle}>kW for 1 hour</small>
-        </h3>
+        <Header>
+          Unmet Loads by Hour of Day
+          <Header.Subheader>kW for 1 hour (kWh)</Header.Subheader>
+        </Header>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <XAxis dataKey="hour_of_day" />
@@ -31,6 +30,10 @@ class UnmetLoads extends React.Component {
             <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
+        <Header as="h4" textAlign="center" style={{ marginTop: '10px' }}>
+          Hour of Day
+          <Header.Subheader>Hover over chart to see details.</Header.Subheader>
+        </Header>
       </div>
     )
   }
