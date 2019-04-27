@@ -29,7 +29,6 @@ class TimeSegments extends React.Component {
     const { allUnmetLoadHist } = summaryStats
     return (
       <div>
-        <code>{JSON.stringify(timeSegments, null, 2)}</code>
         <TimeSegmentControls />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -41,6 +40,7 @@ class TimeSegments extends React.Component {
             <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
+        <code>{_.truncate(JSON.stringify(timeSegments, null, 2))}</code>
       </div>
     )
   }
