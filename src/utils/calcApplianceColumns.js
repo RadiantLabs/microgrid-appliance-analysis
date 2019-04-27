@@ -12,7 +12,7 @@ export function calcApplianceColumns(appliance) {
     ancillaryEquipmentEfficiency,
   } = appliance
   return _.map(appliance.fileData, row => {
-    const newApplianceLoad = row['kw_factor'] * nominalPower * dutyCycleDerateFactor
+    const newApplianceLoad = row['kwFactor'] * nominalPower * dutyCycleDerateFactor
 
     const newApplianceAncillaryLoad =
       newApplianceLoad / ancillaryEquipmentEfficiency - newApplianceLoad

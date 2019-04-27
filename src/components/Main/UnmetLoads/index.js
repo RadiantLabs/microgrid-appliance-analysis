@@ -22,7 +22,7 @@ class UnmetLoads extends React.Component {
         </Header>
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <XAxis dataKey="hour_of_day" />
+            <XAxis dataKey="hourOfDay" />
             <YAxis />
             <Tooltip content={<CustomToolTip />} />
             <Legend />

@@ -8,9 +8,9 @@ const requiredColumns = [
   // 'Wut', // for debugging
   'hour',
   'day',
-  'hour_of_day',
+  'hourOfDay',
   'day_hour',
-  'kw_factor',
+  'kwFactor',
 ]
 
 export function analyzeApplianceFile(parsedFile, fileInfo) {
@@ -45,11 +45,14 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   fileImportErrors.push(requiredColumnsErrors)
 
   const processedData = _.map(parsedFile.data, row => {
-    const trimmedRow = _.omit(row, ['production_factor'])
-    return {
-      ...trimmedRow,
-      ...{ kw_factor: _.round(row['kw_factor'], 5) },
+    const processedRow = {
+      ...row,
+      ...{ kwFactor: _.round(row['kw_factor'], 5) },
+      ...{ hourOfDay: row['hour_of_day'] },
+      ...{ dayHour: row['day_hour'] },
     }
+    // Convert incoming to camel case
+    return _.omit(processedRow, ['production_factor', 'kwFactor', 'hour_of_day', 'dayHour'])
   })
   return {
     fileInfo,

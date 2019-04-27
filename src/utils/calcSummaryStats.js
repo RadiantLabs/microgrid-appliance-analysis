@@ -27,7 +27,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'originalUnmetLoad'
   )
 
@@ -36,7 +36,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const newAppliancesUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
   const newAppliancesUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'newAppliancesUnmetLoad'
   )
 
@@ -46,13 +46,13 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const totalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'totalUnmetLoad')
   const totalUnmetLoadHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'totalUnmetLoad'
   )
 
   // Create a histogram object that combined both originalUnmetLoadCount and totalUnmetLoadCount
   const allUnmetLoadHist = mergeArraysOfObjects(
-    'hour_of_day',
+    'hourOfDay',
     originalUnmetLoadHist,
     totalUnmetLoadHist
   )
@@ -67,7 +67,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const originalExcessProductionSum = sumGreaterThanZero(combinedTable, 'originalExcessProduction')
   const originalExcessProductionHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'originalExcessProduction'
   )
 
@@ -84,7 +84,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   )
   const newAppliancesExcessProductionHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'newAppliancesExcessProduction'
   )
 
@@ -93,12 +93,12 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const totalExcessProductionSum = sumGreaterThanZero(combinedTable, 'totalExcessProduction')
   const totalExcessProductionHist = createGreaterThanZeroHistogram(
     combinedTable,
-    'hour_of_day',
+    'hourOfDay',
     'totalExcessProduction'
   )
 
   const allExcessProductionHist = mergeArraysOfObjects(
-    'hour_of_day',
+    'hourOfDay',
     originalUnmetLoadHist,
     totalUnmetLoadHist
   )

@@ -98,9 +98,9 @@ export function calcHybridColumns(grid, summedAppliances) {
     result.push({
       hour: homerRow['hour'],
       datetime: homerRow['Time'],
-      hour_of_day: applianceRow['hour_of_day'],
+      hourOfDay: applianceRow['hourOfDay'],
       day: applianceRow['day'],
-      day_hour: applianceRow['day_hour'],
+      dayHour: applianceRow['dayHour'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
       batteryEnergyContent: _.round(batteryEnergyContent, 4),
       totalElectricalProduction: _.round(totalElectricalProduction, 4),

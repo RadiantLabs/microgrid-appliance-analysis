@@ -22,9 +22,9 @@ export const ApplianceFileInstructions = inject('store')(
             <Grid.Column width={16}>
               <p>
                 If you want to generate your own appliance usage file, the most pragmatic way would
-                be to download the template and fill in your own kw_factor based on the appliance
-                you are modeling. If you want to generate your own from the source generator, you
-                can run this Jupyter notebook.{' '}
+                be to download the template and fill in your own kwFactor based on the appliance you
+                are modeling. If you want to generate your own from the source generator, you can
+                run this Jupyter notebook.{' '}
                 <a
                   href="https://github.com/RadiantLabs/microgrid-appliance-usage-profile-generators"
                   target="_blank"
@@ -58,13 +58,13 @@ export const ApplianceFileInstructions = inject('store')(
             col="day"
             def="A concatenation of the index of the day of the week (0 through 6) and the first 3 letters of the day of the week name. This is used for analyzing usage by day of week."
           />
-          <ColumnDefinition col="hour_of_day" def="Hour of the day, from 0 to 23" />
+          <ColumnDefinition col="hourOfDay" def="Hour of the day, from 0 to 23" />
           <ColumnDefinition
-            col="day_hour"
-            def="A concatenation of the day column (0mon) and hour_of_day"
+            col="dayHour"
+            def="A concatenation of the day column (0mon) and hourOfDay"
           />
           <ColumnDefinition
-            col="kw_factor"
+            col="kwFactor"
             def="The number of minutes an appliance was fully utilized, summed over an hour. If it
                 was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM.
                 See the Microgrid Appliance Usage Profile Generator linked to above for more
@@ -84,9 +84,9 @@ const ExampleFileTable = () => {
           <Table.HeaderCell>datetime</Table.HeaderCell>
           <Table.HeaderCell>hour</Table.HeaderCell>
           <Table.HeaderCell>day</Table.HeaderCell>
-          <Table.HeaderCell>hour_of_day</Table.HeaderCell>
-          <Table.HeaderCell>day_hour</Table.HeaderCell>
-          <Table.HeaderCell>kw_factor</Table.HeaderCell>
+          <Table.HeaderCell>hourOfDay</Table.HeaderCell>
+          <Table.HeaderCell>dayHour</Table.HeaderCell>
+          <Table.HeaderCell>kwFactor</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

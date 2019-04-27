@@ -23,6 +23,11 @@ import { filterCombinedTableHeaders } from '../utils/filterCombinedTableHeaders'
 import { combinedColumnHeaderOrder } from '../utils/columnHeaders'
 import { ancillaryEquipmentList } from '../utils/fileInfo'
 import { loggerConfig } from '../utils/loggerConfig'
+import {
+  timeSegmentsMetrics,
+  timeSegmentsAggregations,
+  timeSegmentsBy,
+} from '../utils/calcTimeSegments'
 // import { logger } from '../utils/logger'
 
 // -----------------------------------------------------------------------------
@@ -55,6 +60,15 @@ export const MainStore = types
     // For uploading and viewing different appliance files
     stagedAppliance: types.maybeNull(ApplianceStore),
     viewedApplianceId: types.maybeNull(types.string),
+
+    // Time Segments chart view variables
+    timeSegmentsMetric: types.maybeNull(
+      types.enumeration('timeSegmentsMetric', timeSegmentsMetrics)
+    ),
+    timeSegmentsAggregation: types.maybeNull(
+      types.enumeration('timeSegmentsAggregation', timeSegmentsAggregations)
+    ),
+    timeSegmentsBy: types.maybeNull(types.enumeration('timeSegmentsBy', timeSegmentsBy)),
 
     excludedTableColumns: types.optional(types.array(types.string), []),
     router: RouterModel,
@@ -127,6 +141,10 @@ export const MainStore = types
         self.excludedTableColumns.push(columnName)
       }
       self.saveAppState()
+    },
+
+    handleTimeSegmentsMetricChange(e, { value }) {
+      self.timeSegmentsMetric = value
     },
 
     // -------------------------------------------------------------------------
@@ -375,6 +393,9 @@ let initialMainState = {
   appliances: [],
   viewedApplianceId: null,
   excludedTableColumns: [],
+  timeSegmentsMetric: 'load',
+  timeSegmentsAggregation: 'average',
+  timeSegmentsBy: 'hourOfDay',
   router: RouterModel.create(),
   appIsSaved: true,
   appIsSavedTimestamp: null,

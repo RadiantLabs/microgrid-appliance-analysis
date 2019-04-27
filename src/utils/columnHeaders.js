@@ -4,8 +4,8 @@ import _ from 'lodash'
 export const hybridColumnHeaderUnits = [
   ['hour', '-'],
   ['datetime', '-'],
-  ['hour_of_day', '-'],
-  // ['day_hour', '-'],
+  ['hourOfDay', '-'],
+  // ['dayHour', '-'],
   ['totalElectricalLoadServed', 'kW'],
   ['electricalProductionLoadDiff', 'kW'],
   ['batteryEnergyContent', 'kWh'],
@@ -61,8 +61,8 @@ export const applianceHeaderUnits = [
   ['newAppliancesLoad', 'kW'],
   ['newAppliancesAncillaryLoad', 'kW'],
   ['productionUnitsRevenue', '$'],
-  ['day_hour', '-'],
-  ['kw_factor', '-'],
+  ['dayHour', '-'],
+  ['kwFactor', '-'],
 ]
 
 // Export array of columnn headers. This is to allow defining column order

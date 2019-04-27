@@ -1,58 +1,58 @@
 import _ from 'lodash'
 
+export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
+export const timeSegmentsAggregations = ['average', 'count', 'sum']
+export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
+
 export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}
   }
 
-  const metrics = ['load', 'unmetLoad', 'excessProduction']
+  // const xProd = cartesianProductOf(timeSegmentsMetrics, timeSegmentsAggregations, timeSegmentsBy)
+  // console.log('xProd: ', xProd)
 
-  const aggregations = [
-    'average', //
-    'count', //
-    'sum', //
-  ]
+  // TODO: To generate the name of the hist, join each item in the cartesian prod:
+  // load_average_dayOfWeek
+  // load_average_month
+  // Need to switch hourOfDay to hourOfDay throughout app
 
-  const byTime = [
-    'hour_of_day', // TODO: rename this at the appliance level
-    // 'hourOfDay', //
-    'dayOfWeek',
-    'month',
-    'dayHour',
-  ]
-
-  const xProd = cartesianProductOf(metrics, aggregations, byTime)
-  console.log('xProd: ', xProd)
-  debugger
+  // Or do I calculate these on demand?
+  // debugger
 
   // ___________________________________________________________________________
   // Group by time segment (for more efficient calculations)
   // ___________________________________________________________________________
-  const byHourOfDayGroup = _.groupBy(combinedTable, 'hour_of_day')
-  // const byDayOfWeekGroup = groupByDayOfWeek(combinedTable)
 
   // originalUnmetLoad
   const originalUnmetLoadSum = _.sumBy(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
-  const originalUnmetLoadSumByHour = sumByHist(byHourOfDayGroup, 'originalUnmetLoad', 'hour_of_day')
-  const originalUnmetLoadAvgByHour = averageByHist(
-    byHourOfDayGroup,
-    'originalUnmetLoad',
-    'hour_of_day'
-  )
+
+  const t0 = performance.now()
+  const byHourOfDayGroup = _.groupBy(combinedTable, 'hourOfDay') // 2.2ms
+  const t1 = performance.now()
+  // const byDayOfWeekGroup = groupByDayOfWeek(combinedTable)
+  // const originalUnmetLoadSumByHour = sumByHist(byHourOfDayGroup, 'originalUnmetLoad', 'hourOfDay')  // 3ms
+
+  // const originalUnmetLoadAvgByHour = averageByHist(
+  //   byHourOfDayGroup,
+  //   'originalUnmetLoad',
+  //   'hourOfDay'
+  // ) // 5ms
+
   const originalUnmetLoadCountByHour = countByHist(
     byHourOfDayGroup,
     'originalUnmetLoad',
-    'hour_of_day'
-  )
-  console.log('originalUnmetLoadAvgByHour: ', originalUnmetLoadAvgByHour)
-  console.log('originalUnmetLoadCountByHour: ', originalUnmetLoadCountByHour)
+    'hourOfDay'
+  ) // 16ms
+
+  console.log('calc took: ', t1 - t0, 'ms')
 
   // ___________________________________________________________________________
   // Looped Calculations
   // ___________________________________________________________________________
   const groups = {
-    hour_of_day: _.groupBy(combinedTable, 'hour_of_day'),
+    hourOfDay: _.groupBy(combinedTable, 'hourOfDay'),
   }
   // const aggregations = {
   // }
@@ -60,8 +60,8 @@ export function calcTimeSegments(combinedTable) {
   return {
     originalUnmetLoadSum,
     originalUnmetLoadCount,
-    originalUnmetLoadSumByHour: _.round(originalUnmetLoadSumByHour),
-    originalUnmetLoadAvgByHour,
+    // originalUnmetLoadSumByHour: _.round(originalUnmetLoadSumByHour),
+    // originalUnmetLoadAvgByHour,
     originalUnmetLoadCountByHour,
   }
 }

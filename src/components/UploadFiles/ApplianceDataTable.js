@@ -70,10 +70,10 @@ class ApplianceDataTable extends React.Component {
     const applianceHeaders = [
       'datetime',
       'day',
-      'day_hour',
+      'dayHour',
       'hour',
-      'hour_of_day',
-      'kw_factor',
+      'hourOfDay',
+      'kwFactor',
       'newApplianceLoad',
       'productionUnits',
       'productionUnitsRevenue',

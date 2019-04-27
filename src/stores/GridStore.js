@@ -20,7 +20,7 @@ import {
 export const GridStore = types
   .model({
     isActive: types.boolean,
-    fileInfo: types.frozen(),
+    fileInfo: types.frozen(), // I could include a types.identifier() here
     fileData: types.frozen(),
     label: types.string,
     description: types.string,

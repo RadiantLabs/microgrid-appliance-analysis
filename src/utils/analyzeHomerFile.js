@@ -203,7 +203,7 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
     const dateObject = DateTime.fromISO(datetime)
     return {
       datetime,
-      hour_of_day: dateObject.hour,
+      hourOfDay: dateObject.hour,
       originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 4),
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
       originalElectricalProductionLoadDiff: _.round(originalElectricalProductionLoadDiff, 4),

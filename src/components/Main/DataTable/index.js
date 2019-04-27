@@ -51,12 +51,12 @@ class DataTable extends React.Component {
         </div>
       )
     }
-    if (columnHeader === 'kw_factor') {
+    if (columnHeader === 'kwFactor') {
       return (
         <div key={key} style={setHeaderStyles(style, rowIndex, tableType)}>
           {multipleAppliancesEnabled
             ? 'Multiple'
-            : enabledAppliances[0].fileData[rowIndex - headerRowCount]['kw_factor']}
+            : enabledAppliances[0].fileData[rowIndex - headerRowCount]['kwFactor']}
         </div>
       )
     }
