@@ -42,6 +42,10 @@ export function addHourIndex(rows) {
   })
 }
 
+export function getMonth(datetime) {
+  return parseInt(moment(datetime).format('M'), 10)
+}
+
 // Where credit is due: https://stackoverflow.com/a/14053282/1884101
 export function stripDuplicateWhitespace(str) {
   return String(str).replace(/\s{2,}/g, ' ')

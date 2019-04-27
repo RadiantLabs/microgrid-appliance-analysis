@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import prettyBytes from 'pretty-bytes'
 import moment from 'moment'
-import { hasColumnHeaders, momentApplianceParseFormats, isFileCsv } from './helpers'
+import { hasColumnHeaders, momentApplianceParseFormats, isFileCsv, getMonth } from './helpers'
 
 const requiredColumns = [
   'datetime',
@@ -50,9 +50,17 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       ...{ kwFactor: _.round(row['kw_factor'], 5) },
       ...{ hourOfDay: row['hour_of_day'] },
       ...{ dayHour: row['day_hour'] },
+      ...{ dayOfWeek: row['day'] },
+      ...{ month: getMonth(row['datetime']) },
     }
     // Convert incoming to camel case
-    return _.omit(processedRow, ['production_factor', 'kw_factor', 'hour_of_day', 'day_hour'])
+    return _.omit(processedRow, [
+      'production_factor',
+      'kw_factor',
+      'hour_of_day',
+      'day_hour',
+      'day',
+    ])
   })
   return {
     fileInfo,

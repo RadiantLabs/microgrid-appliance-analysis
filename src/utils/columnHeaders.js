@@ -63,6 +63,7 @@ export const applianceHeaderUnits = [
   ['productionUnitsRevenue', '$'],
   ['dayHour', '-'],
   ['kwFactor', '-'],
+  // ['month', '-'],
 ]
 
 // Export array of columnn headers. This is to allow defining column order

@@ -67,18 +67,20 @@ class ApplianceDataTable extends React.Component {
     if (_.isEmpty(viewedAppliance) || _.isEmpty(calculatedApplianceColumns)) {
       return <LoaderSpinner />
     }
-    const applianceHeaders = [
-      'datetime',
-      'day',
-      'dayHour',
-      'hour',
-      'hourOfDay',
-      'kwFactor',
-      'newApplianceLoad',
-      'productionUnits',
-      'productionUnitsRevenue',
+    const applianceHeaderPairs = [
+      ['datetime', '-'],
+      ['dayOfWeek', '-'],
+      ['dayHour', '-'],
+      ['month', '-'],
+      ['hour', '-'],
+      ['hourOfDay', '-'],
+      ['kwFactor', '-'],
+      ['newApplianceLoad', 'kWh'],
+      ['productionUnits', productionUnitType],
+      ['productionUnitsRevenue', '$'],
     ]
-    const applianceHeadersUnits = ['-', '-', '-', '-', '-', '-', 'kW', productionUnitType, '$']
+    const applianceHeaders = _.map(applianceHeaderPairs, pair => pair[0])
+    const applianceHeadersUnits = _.map(applianceHeaderPairs, pair => pair[1])
     const rowCount = _.size(calculatedApplianceColumns)
     const columnCount = _.size(applianceHeaders)
     return (
