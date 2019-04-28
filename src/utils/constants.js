@@ -60,6 +60,8 @@ export const chartColorsByKey = {
   totalUnmetLoad: '#DD5182',
 }
 
+export const timeSegmentColors = ['#444e86', '#955196']
+
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
 
 // _____________________________________________________________________________

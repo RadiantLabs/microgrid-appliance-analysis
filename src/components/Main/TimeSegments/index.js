@@ -13,7 +13,7 @@ import {
   AreaChart,
   Area,
 } from 'recharts'
-import { getChartColors } from '../../../utils/constants'
+import { getChartColors, timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
@@ -57,16 +57,16 @@ class TimeSegments extends React.Component {
               type="monotone"
               dataKey={columns[0]}
               stackId="1"
-              stroke={getChartColors(columns[0])}
-              fill={getChartColors(columns[0])}
+              stroke={timeSegmentColors[0]}
+              fill={timeSegmentColors[0]}
               fillOpacity="1"
             />
             <Area
               type="monotone"
               dataKey={columns[1]}
               stackId="1"
-              stroke={getChartColors(columns[1])}
-              fill={getChartColors(columns[1])}
+              stroke={timeSegmentColors[1]}
+              fill={timeSegmentColors[1]}
               fillOpacity="1"
             />
           </AreaChart>
@@ -74,13 +74,13 @@ class TimeSegments extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">
-              <Label basic style={{ borderBottom: '4px solid rgb(68, 78, 134)' }}>
+              <Label basic style={{ borderBottom: `4px solid ${timeSegmentColors[0]}` }}>
                 <Icon name="check square outline" />
-                Original Unmet Loads
+                {fieldDefinitions[columns[0]].title}
               </Label>
-              <Label basic style={{ borderBottom: '4px solid rgb(221, 81, 130)' }}>
+              <Label basic style={{ borderBottom: `4px solid ${timeSegmentColors[1]}` }}>
                 <Icon name="square outline" />
-                New Appliance Unmet Loads
+                {fieldDefinitions[columns[1]].title}
               </Label>
             </Grid.Column>
           </Grid.Row>
