@@ -343,7 +343,12 @@ export const MainStore = types
       return calcTimeSegmentGroups(self.combinedTable)
     },
     get timeSegments() {
-      return calcTimeSegments(self.combinedTable)
+      return calcTimeSegments(
+        self.timeSegmentsMetric,
+        self.timeSegmentsAggregation,
+        self.timeSegmentsBy,
+        self.timeSegmentGroups
+      )
     },
     get filteredCombinedTableHeaders() {
       return filterCombinedTableHeaders(

@@ -174,6 +174,11 @@ export const sumGreaterThanZero = (table, key) => {
     .value()
 }
 
+// https://gist.github.com/ijy/6094414#gistcomment-2651944
+// function cartesianProductOf(...arrays) {
+//   return arrays.reduce((a, b) => _.flatten(a.map(x => b.map(y => x.concat([y])))), [[]])
+// }
+
 // Date formatting
 export const isLuxonObject = val => {
   return _.isObject(val) && typeof val.fromISO == 'function'

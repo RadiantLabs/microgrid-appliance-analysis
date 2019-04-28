@@ -1,8 +1,20 @@
 import _ from 'lodash'
+import { logger } from './logger'
 
 export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'count', 'sum']
 export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
+
+// TODO: where is originalLoad? I should create this variable when parsing
+const columnsToCalculate = {
+  load: ['TODO', 'newAppliancesLoad', 'totalElectricalLoadServed'],
+  unmetLoad: ['originalUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
+  excessProduction: [
+    'originalExcessProduction',
+    'newAppliancesExcessProduction',
+    'totalExcessProduction',
+  ],
+}
 
 // ___________________________________________________________________________
 // Group by time segment (for more efficient calculations)
@@ -20,63 +32,32 @@ export function calcTimeSegmentGroups(combinedTable) {
   }
 }
 
-export function calcTimeSegments(combinedTable) {
-  if (_.isEmpty(combinedTable)) {
+export function calcTimeSegments(metric, aggregation, by, groups) {
+  if (_.isEmpty(groups) || !metric || !aggregation || !by) {
     return {}
   }
+  console.log('groups: ', groups)
+  const abc = dispatcher(metric, aggregation, by, groups)
+  // debugger
+  return abc
+}
 
-  // originalUnmetLoad
-  const originalUnmetLoadSum = _.sumBy(combinedTable, 'originalUnmetLoad')
-  const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
-
-  const t0 = performance.now()
-  const byHourOfDayGroup = _.groupBy(combinedTable, 'hourOfDay') // 2.2ms
-  const t1 = performance.now()
-  // const byDayOfWeekGroup = groupByDayOfWeek(combinedTable)
-  // const originalUnmetLoadSumByHour = sumByHist(byHourOfDayGroup, 'originalUnmetLoad', 'hourOfDay')  // 3ms
-
-  // const originalUnmetLoadAvgByHour = averageByHist(
-  //   byHourOfDayGroup,
-  //   'originalUnmetLoad',
-  //   'hourOfDay'
-  // ) // 5ms
-
-  const originalUnmetLoadCountByHour = countByHist(
-    byHourOfDayGroup,
-    'originalUnmetLoad',
-    'hourOfDay'
-  ) // 16ms
-
-  console.log('calc took: ', t1 - t0, 'ms')
-
-  // ___________________________________________________________________________
-  // Looped Calculations
-  // ___________________________________________________________________________
-
-  return {
-    originalUnmetLoadSum,
-    originalUnmetLoadCount,
-    // originalUnmetLoadSumByHour: _.round(originalUnmetLoadSumByHour),
-    // originalUnmetLoadAvgByHour,
-    originalUnmetLoadCountByHour,
+function dispatcher(metric, aggregation, by, groups) {
+  switch (aggregation) {
+    case 'average':
+      // TODO: 'load' only specifies one of several variables in the table
+      // I need a lookup from load to originalUnmetLoad and additionalUnmetLoad
+      return averageByHist(groups[by], metric, by)
+    case 'count':
+      return countByHist(groups[by], metric, by)
+    case 'sum':
+      return sumByHist(groups[by], metric, by)
+    default:
+      logger(
+        `Could not find a histogram function. metric: ${metric}, aggregation: ${aggregation}, by: ${by}`
+      )
   }
 }
-
-// _____________________________________________________________________________
-// Misc
-// _____________________________________________________________________________
-
-function countGreaterThanZero(table, valKey, precision = 1) {
-  const rowsGreaterThanZero = _.filter(table, row => {
-    return _.round(row[valKey], precision) > 0
-  })
-  return _.size(rowsGreaterThanZero)
-}
-
-// https://gist.github.com/ijy/6094414#gistcomment-2651944
-// function cartesianProductOf(...arrays) {
-//   return arrays.reduce((a, b) => _.flatten(a.map(x => b.map(y => x.concat([y])))), [[]])
-// }
 
 // _____________________________________________________________________________
 // Histogram Functions
@@ -103,9 +84,8 @@ function countByHist(group, valKey, byKey, precision = 1) {
   })
 }
 
-function sumByHist(table, valKey, byKey) {
-  const groupedByKey = _.groupBy(table, byKey)
-  return _.map(groupedByKey, (val, key) => {
+function sumByHist(group, valKey, byKey) {
+  return _.map(group, (val, key) => {
     const sum = _.sumBy(val, valKey)
     return {
       [byKey]: key,
