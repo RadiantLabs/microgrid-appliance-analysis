@@ -403,7 +403,7 @@ export const MainStore = types
 // Load this top-level store's initial state. Then after instantiation, check to
 // see if there is state stored locally. If so, apply that (applySnapshot),
 // otherwise use the initial state from each of these stores.
-let initialMainState = {
+export const initialMainState = {
   availableGrids: [],
   stagedGrid: null,
   viewedGridId: null,
@@ -426,8 +426,17 @@ let initialMainState = {
 // -----------------------------------------------------------------------------
 // Instantiate Primary Store
 // -----------------------------------------------------------------------------
+// This sets up the root-level store with the defaults from initialMainState and
+// no sub-models, such as availableGrids or appliances (just empty arrays of those
+// model types). Immediately after MainStore is instantiated, afterCreate() fires
+// which calls getInitialState(). This fetches from localforage or if empty,
+// uses all of the store initializations to create a fresh state.
+// applySnapshot(self, initialState) methodically merges that fresh or saved state
+// into this skeleton mainStore instantiated below.
+
+// keepAlive and autorun still works, because it will observe values once they
+// get filled in with the saved or fresh state
 let mainStore = MainStore.create(initialMainState)
-console.log('early mainStore: ', mainStore)
 window.mainStore = mainStore // inspect the store in console for debugging
 
 //

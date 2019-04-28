@@ -9,7 +9,7 @@ import {
 } from '../utils/fileInfo'
 
 // Import Other Stores:
-import { MainStore } from './MainStore'
+import { MainStore, initialMainState } from './MainStore'
 import { GridStore, initialGridState } from './GridStore'
 import { ApplianceStore, initialApplianceState } from './ApplianceStore'
 import { AncillaryEquipmentStore, initialAncillaryEquipmentState } from './AncillaryEquipmentStore'
@@ -31,7 +31,7 @@ function freshInitialization() {
   // const enabledApplianceFileId = 'maize_mill_usage_profile_1_20_2019-02-16T20:34:25.937-07:00'
   const applianceFileInfos = sampleApplianceFiles.concat([]) // TODO: concat fileInfos from localforage
 
-  return {
+  const subModels = {
     availableGrids: _.map(allGridFileInfos, gridInfo => {
       return GridStore.create({
         ...initialGridState,
@@ -71,6 +71,8 @@ function freshInitialization() {
     appIsSaved: true,
     appIsSavedTimestamp: null,
   }
+
+  return { ...initialMainState, ...subModels }
 }
 
 export async function getInitialState() {
