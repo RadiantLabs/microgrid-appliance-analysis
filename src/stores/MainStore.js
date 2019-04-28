@@ -27,6 +27,7 @@ import {
   timeSegmentsMetrics,
   timeSegmentsAggregations,
   timeSegmentsBy,
+  calcTimeSegmentGroups,
 } from '../utils/calcTimeSegments'
 // import { logger } from '../utils/logger'
 
@@ -326,6 +327,9 @@ export const MainStore = types
     },
     get summaryStats() {
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
+    },
+    get timeSegmentGroups() {
+      return calcTimeSegmentGroups(self.combinedTable)
     },
     get timeSegments() {
       return calcTimeSegments(self.combinedTable)

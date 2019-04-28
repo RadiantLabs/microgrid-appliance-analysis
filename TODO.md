@@ -27,18 +27,17 @@ Old Notes from meeting:
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
-- [ ] Update Amanda and send file to review: https://github.com/RadiantLabs/microgrid-appliance-analysis/blob/04a5ba972b43b373337496fd61ddfd7e27cf7352/src/utils/setAncillaryEquipmentValues.js#L3-L4
-
-- [ ] When no appliances are enabled, still show HOMER data in the summary view
-
-- Charts:
-- [ ] Create byTime columns to groupBy: hourOfDay, dayOfWeek, month, dayHour. Add to combinedTable
+Charts:
+- [x] Create byTime columns to groupBy: hourOfDay, dayOfWeek, month, dayHour. Add to combinedTable
+- [x] Calculate by time segment groups as computed value
 - [ ] Add change handlers for metric, aggregation, by
-- [ ] groupBy as a computed value (keepAlive)
+- [ ] Monitor group recalculation and use keepAlive if needed
 
 - [ ] Sum excess load over year (summary stats)
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
 
+Misc:
+- [ ] When no appliances are enabled, still show HOMER data in the summary view
 Battery Model
 - [ ] Test with all HOMER files
 

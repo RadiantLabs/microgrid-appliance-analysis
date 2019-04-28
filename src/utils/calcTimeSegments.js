@@ -4,25 +4,26 @@ export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'count', 'sum']
 export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 
+// ___________________________________________________________________________
+// Group by time segment (for more efficient calculations)
+// ___________________________________________________________________________
+export function calcTimeSegmentGroups(combinedTable) {
+  if (_.isEmpty(combinedTable)) {
+    return {}
+  }
+  console.log('calculating calcTimeSegmentGroups')
+  return {
+    hourOfDay: _.groupBy(combinedTable, 'hourOfDay'),
+    dayOfWeek: _.groupBy(combinedTable, 'dayOfWeek'),
+    month: _.groupBy(combinedTable, 'month'),
+    dayHour: _.groupBy(combinedTable, 'dayHour'),
+  }
+}
+
 export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}
   }
-
-  // const xProd = cartesianProductOf(timeSegmentsMetrics, timeSegmentsAggregations, timeSegmentsBy)
-  // console.log('xProd: ', xProd)
-
-  // TODO: To generate the name of the hist, join each item in the cartesian prod:
-  // load_average_dayOfWeek
-  // load_average_month
-  // Need to switch hourOfDay to hourOfDay throughout app
-
-  // Or do I calculate these on demand?
-  // debugger
-
-  // ___________________________________________________________________________
-  // Group by time segment (for more efficient calculations)
-  // ___________________________________________________________________________
 
   // originalUnmetLoad
   const originalUnmetLoadSum = _.sumBy(combinedTable, 'originalUnmetLoad')
@@ -51,11 +52,6 @@ export function calcTimeSegments(combinedTable) {
   // ___________________________________________________________________________
   // Looped Calculations
   // ___________________________________________________________________________
-  const groups = {
-    hourOfDay: _.groupBy(combinedTable, 'hourOfDay'),
-  }
-  // const aggregations = {
-  // }
 
   return {
     originalUnmetLoadSum,
@@ -64,17 +60,6 @@ export function calcTimeSegments(combinedTable) {
     // originalUnmetLoadAvgByHour,
     originalUnmetLoadCountByHour,
   }
-}
-
-// _____________________________________________________________________________
-// Group By Functions
-// _____________________________________________________________________________
-function groupByDayOfWeek(table) {
-  const abc = _.groupBy(table, row => {
-    // console.log('row: ', row)
-    // debugger
-  })
-  return abc
 }
 
 // _____________________________________________________________________________
@@ -89,9 +74,9 @@ function countGreaterThanZero(table, valKey, precision = 1) {
 }
 
 // https://gist.github.com/ijy/6094414#gistcomment-2651944
-function cartesianProductOf(...arrays) {
-  return arrays.reduce((a, b) => _.flatten(a.map(x => b.map(y => x.concat([y])))), [[]])
-}
+// function cartesianProductOf(...arrays) {
+//   return arrays.reduce((a, b) => _.flatten(a.map(x => b.map(y => x.concat([y])))), [[]])
+// }
 
 // _____________________________________________________________________________
 // Histogram Functions

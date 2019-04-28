@@ -22,7 +22,7 @@ import TimeSegmentControls from './TimeSegmentControls'
 
 class TimeSegments extends React.Component {
   render() {
-    const { summaryStats, timeSegments } = this.props.store
+    const { summaryStats, timeSegments, timeSegmentGroups } = this.props.store
     if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
@@ -40,6 +40,8 @@ class TimeSegments extends React.Component {
             <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
+
+        <code>{_.truncate(JSON.stringify(timeSegmentGroups, null, 2))}</code>
         <code>{_.truncate(JSON.stringify(timeSegments, null, 2))}</code>
       </div>
     )
