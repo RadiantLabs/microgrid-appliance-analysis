@@ -19,6 +19,12 @@ import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 
 class TimeSegments extends React.Component {
+  state = {}
+
+  handleLegendClick = (e, { value }) => {
+    console.log('value: ', value)
+  }
+
   render() {
     const {
       timeSegments,
@@ -74,11 +80,21 @@ class TimeSegments extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">
-              <Label basic style={{ borderBottom: `4px solid ${timeSegmentColors[0]}` }}>
+              <Label
+                basic
+                value={columns[0]}
+                onClick={this.handleLegendClick}
+                style={{ borderBottom: `4px solid ${timeSegmentColors[0]}` }}
+                size="large">
                 <Icon name="check square outline" />
                 {fieldDefinitions[columns[0]].title}
               </Label>
-              <Label basic style={{ borderBottom: `4px solid ${timeSegmentColors[1]}` }}>
+              <Label
+                basic
+                value={columns[1]}
+                onClick={this.handleLegendClick}
+                style={{ borderBottom: `4px solid ${timeSegmentColors[1]}` }}
+                size="large">
                 <Icon name="square outline" />
                 {fieldDefinitions[columns[1]].title}
               </Label>
