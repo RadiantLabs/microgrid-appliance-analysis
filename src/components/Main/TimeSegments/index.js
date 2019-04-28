@@ -63,13 +63,10 @@ class TimeSegments extends React.Component {
     )
   }
 }
-{
-  /* <Checkbox label={<label>Original Unmet Load</label>} />
-<Checkbox label={<label>New Appliances Unmet Load</label>} /> */
-}
 
 export default inject('store')(observer(TimeSegments))
 
+// Tooltip
 const CustomToolTip = ({ active, payload, label }) => {
   if (!active || _.isEmpty(payload)) {
     return null
