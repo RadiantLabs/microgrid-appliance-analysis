@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table } from 'semantic-ui-react'
+import { Table, Form, Checkbox, Grid, Label, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
@@ -35,17 +35,37 @@ class TimeSegments extends React.Component {
             <XAxis dataKey="hourOfDay" />
             <YAxis />
             <Tooltip content={<CustomToolTip />} />
-            <Legend />
+            {/* <Legend /> */}
             <Bar dataKey="originalUnmetLoad" fill={getChartColors('originalUnmetLoad')} />
             <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
           </BarChart>
         </ResponsiveContainer>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={16} textAlign="center">
+              <Label basic style={{ borderBottom: '4px solid rgb(68, 78, 134)' }}>
+                <Icon name="check square outline" />
+                Original Unmet Loads
+              </Label>
+              <Label basic style={{ borderBottom: '4px solid rgb(221, 81, 130)' }}>
+                <Icon name="square outline" />
+                New Appliance Unmet Loads
+              </Label>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
+        <br />
+        <br />
         <code>{_.truncate(JSON.stringify(timeSegmentGroups, null, 2))}</code>
         <code>{_.truncate(JSON.stringify(timeSegments, null, 2))}</code>
       </div>
     )
   }
+}
+{
+  /* <Checkbox label={<label>Original Unmet Load</label>} />
+<Checkbox label={<label>New Appliances Unmet Load</label>} /> */
 }
 
 export default inject('store')(observer(TimeSegments))
