@@ -8,9 +8,9 @@ const requiredColumns = [
   // 'Wut', // for debugging
   'hour',
   'day',
-  'hourOfDay',
-  'dayHour',
-  'kwFactor',
+  'hour_of_day',
+  'day_hour',
+  'kw_factor',
 ]
 
 export function analyzeApplianceFile(parsedFile, fileInfo) {
@@ -41,7 +41,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
     )
   }
 
-  const requiredColumnsErrors = checkRequiredHomerColumns(parsedFile.data)
+  const requiredColumnsErrors = checkRequiredApplianceColumns(parsedFile.data)
   fileImportErrors.push(requiredColumnsErrors)
 
   const processedData = _.map(parsedFile.data, row => {
@@ -74,7 +74,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
 // _____________________________________________________________________________
 // Check that Appliance files has the right columns for calculations
 // _____________________________________________________________________________
-function checkRequiredHomerColumns(fileData) {
+function checkRequiredApplianceColumns(fileData) {
   const headers = _.keys(_.first(fileData))
   const requiredErrors = _.map(requiredColumns, col => (_.includes(headers, col) ? null : col))
   const errors = _.compact(requiredErrors)

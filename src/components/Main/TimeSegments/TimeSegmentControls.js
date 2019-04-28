@@ -18,7 +18,6 @@ class TimeSegmentControls extends React.Component {
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
-    console.log('load is active: ', timeSegmentsMetric, timeSegmentsMetric === 'load')
     return (
       <Grid>
         <Grid.Row style={{ paddingBottom: 0 }}>

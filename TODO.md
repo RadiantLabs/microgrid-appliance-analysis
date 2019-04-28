@@ -30,15 +30,17 @@ Before Launch:
 Charts:
 - [x] Create byTime columns to groupBy: hourOfDay, dayOfWeek, month, dayHour. Add to combinedTable
 - [x] Calculate by time segment groups as computed value
-- [ ] Add change handlers for metric, aggregation, by
+- [x] Add change handlers for metric, aggregation, by
 - [ ] Monitor group recalculation and use keepAlive if needed
 
 - [ ] Sum excess load over year (summary stats)
 - [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
 
 Misc:
+- [ ] Fix broken appliance imports (missing required columns)
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
-Battery Model
+
+Battery Model:
 - [ ] Test with all HOMER files
 
 Battery Notes:
