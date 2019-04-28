@@ -5,29 +5,20 @@ import { Grid, Button, Header } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 
 class TimeSegmentControls extends React.Component {
-  handleMetricChange = (e, { value }) => {
-    e.preventDefault()
-    console.log('value: ', value)
-    return null
-  }
-
-  handleAggregationChange = (e, { value }) => {
-    e.preventDefault()
-    console.log('value: ', value)
-    return null
-  }
-
-  handleByTimeChange = (e, { value }) => {
-    e.preventDefault()
-    console.log('value: ', value)
-    return null
-  }
-
   render() {
-    const { combinedTable } = this.props.store
+    const {
+      combinedTable,
+      timeSegmentsMetric,
+      timeSegmentsAggregation,
+      timeSegmentsBy,
+      handleTimeSegmentsMetricChange,
+      handleTimeSegmentsAggregationChange,
+      handleTimeSegmentsByChange,
+    } = this.props.store
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
+    console.log('load is active: ', timeSegmentsMetric, timeSegmentsMetric === 'load')
     return (
       <Grid>
         <Grid.Row style={{ paddingBottom: 0 }}>
@@ -36,13 +27,22 @@ class TimeSegmentControls extends React.Component {
           </Grid.Column>
           <Grid.Column width={14}>
             <Button.Group basic compact size="tiny">
-              <Button value="load" onClick={this.handleMetricChange}>
+              <Button
+                value="load"
+                onClick={handleTimeSegmentsMetricChange}
+                active={timeSegmentsMetric === 'load'}>
                 Load
               </Button>
-              <Button value="unmetLoad" onClick={this.handleMetricChange}>
+              <Button
+                value="unmetLoad"
+                onClick={handleTimeSegmentsMetricChange}
+                active={timeSegmentsMetric === 'unmetLoad'}>
                 Unmet Load
               </Button>
-              <Button value="excessProduction" onClick={this.handleMetricChange}>
+              <Button
+                value="excessProduction"
+                onClick={handleTimeSegmentsMetricChange}
+                active={timeSegmentsMetric === 'excessProduction'}>
                 Excess Production
               </Button>
             </Button.Group>
@@ -55,13 +55,22 @@ class TimeSegmentControls extends React.Component {
           </Grid.Column>
           <Grid.Column width={14}>
             <Button.Group basic compact size="tiny">
-              <Button value="average" onClick={this.handleAggregationChange}>
+              <Button
+                value="average"
+                onClick={handleTimeSegmentsAggregationChange}
+                active={timeSegmentsAggregation === 'average'}>
                 Average
               </Button>
-              <Button value="count" onClick={this.handleAggregationChange}>
+              <Button
+                value="count"
+                onClick={handleTimeSegmentsAggregationChange}
+                active={timeSegmentsAggregation === 'count'}>
                 Count
               </Button>
-              <Button value="sum" onClick={this.handleAggregationChange}>
+              <Button
+                value="sum"
+                onClick={handleTimeSegmentsAggregationChange}
+                active={timeSegmentsAggregation === 'sum'}>
                 Sum
               </Button>
             </Button.Group>
@@ -74,16 +83,28 @@ class TimeSegmentControls extends React.Component {
           </Grid.Column>
           <Grid.Column width={14}>
             <Button.Group basic compact size="tiny">
-              <Button value="hourOfDay" onClick={this.handleByTimeChange}>
+              <Button
+                value="hourOfDay"
+                onClick={handleTimeSegmentsByChange}
+                active={timeSegmentsBy === 'hourOfDay'}>
                 Hour of Day
               </Button>
-              <Button value="dayOfWeek" onClick={this.handleByTimeChange}>
+              <Button
+                value="dayOfWeek"
+                onClick={handleTimeSegmentsByChange}
+                active={timeSegmentsBy === 'dayOfWeek'}>
                 Day of Week
               </Button>
-              <Button value="month" onClick={this.handleByTimeChange}>
+              <Button
+                value="month"
+                onClick={handleTimeSegmentsByChange}
+                active={timeSegmentsBy === 'month'}>
                 Month
               </Button>
-              <Button value="dayHour" onClick={this.handleByTimeChange}>
+              <Button
+                value="dayHour"
+                onClick={handleTimeSegmentsByChange}
+                active={timeSegmentsBy === 'dayHour'}>
                 Day-Hour
               </Button>
             </Button.Group>

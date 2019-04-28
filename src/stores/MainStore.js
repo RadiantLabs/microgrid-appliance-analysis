@@ -63,15 +63,16 @@ export const MainStore = types
     viewedApplianceId: types.maybeNull(types.string),
 
     // Time Segments chart view variables
-    timeSegmentsMetric: types.maybeNull(
-      types.enumeration('timeSegmentsMetric', timeSegmentsMetrics)
-    ),
+    timeSegmentsMetric: types.enumeration('timeSegmentsMetric', timeSegmentsMetrics),
     timeSegmentsAggregation: types.maybeNull(
       types.enumeration('timeSegmentsAggregation', timeSegmentsAggregations)
     ),
     timeSegmentsBy: types.maybeNull(types.enumeration('timeSegmentsBy', timeSegmentsBy)),
 
+    // Filter out columns in the Data table UI
     excludedTableColumns: types.optional(types.array(types.string), []),
+
+    // Link React Router to mobx-state-tree
     router: RouterModel,
 
     appIsSaved: types.boolean,
@@ -93,7 +94,6 @@ export const MainStore = types
         self.loadAvailableGrids()
         self.loadAppliances()
       }
-
       const { userName, userEmail } = yield getUserInfo()
       self.userName = userName
       self.userEmail = userEmail
@@ -144,8 +144,19 @@ export const MainStore = types
       self.saveAppState()
     },
 
+    // -------------------------------------------------------------------------
+    // -- Time Segment Actions
+    // -------------------------------------------------------------------------
     handleTimeSegmentsMetricChange(e, { value }) {
       self.timeSegmentsMetric = value
+    },
+
+    handleTimeSegmentsAggregationChange(e, { value }) {
+      self.timeSegmentsAggregation = value
+    },
+
+    handleTimeSegmentsByChange(e, { value }) {
+      self.timeSegmentsBy = value
     },
 
     // -------------------------------------------------------------------------
@@ -389,6 +400,9 @@ export const MainStore = types
 // -----------------------------------------------------------------------------
 // Initialize Mobx State Tree Store
 // -----------------------------------------------------------------------------
+// Load this top-level store's initial state. Then after instantiation, check to
+// see if there is state stored locally. If so, apply that (applySnapshot),
+// otherwise use the initial state from each of these stores.
 let initialMainState = {
   availableGrids: [],
   stagedGrid: null,
@@ -413,6 +427,7 @@ let initialMainState = {
 // Instantiate Primary Store
 // -----------------------------------------------------------------------------
 let mainStore = MainStore.create(initialMainState)
+console.log('early mainStore: ', mainStore)
 window.mainStore = mainStore // inspect the store in console for debugging
 
 //
