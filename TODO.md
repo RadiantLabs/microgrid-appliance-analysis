@@ -28,16 +28,14 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- [x] Create byTime columns to groupBy: hourOfDay, dayOfWeek, month, dayHour. Add to combinedTable
-- [x] Calculate by time segment groups as computed value
-- [x] Add change handlers for metric, aggregation, by
+- [ ] Calculate histogram computed views depending on metric, aggregation and by
+- [ ] Plot Time Segment histogram (area chart)
+- [ ] Add chart type selector
 - [ ] Monitor group recalculation and use keepAlive if needed
-
-- [ ] Sum excess load over year (summary stats)
-- [ ] Load by hour of day (bar chart weekly chart): http://recharts.org/en-US/examples/BubbleChart
+- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 
 Misc:
-- [ ] Fix broken appliance imports (missing required columns)
+- [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 
 Battery Model:
