@@ -24,34 +24,37 @@ const allMetricColumns = [
   ..._.flatMap(totalColumnsByMetric, _.values),
 ]
 
-// ___________________________________________________________________________
-// Group by time segment (for more efficient calculations)
-// ___________________________________________________________________________
-export function calcTimeSegmentGroups(combinedTable) {
+// Calculate histogram data for all time segment.
+// Put all metrics we will use in a single histogram structure
+// total: 486ms
+export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}
   }
-  console.log('calculating calcTimeSegmentGroups')
+  console.log('calculating calcTimeSegments')
+  const groups = calcTimeSegmentGroups(combinedTable)
+  const byTimePairs = _.flatMap(timeSegmentsBy, by => {
+    return [
+      [`average_${by}_hist`, averageByHist(groups[by], allMetricColumns, by)],
+      [`sum_${by}_hist`, sumByHist(groups[by], allMetricColumns, by)],
+      [`count_${by}_hist`, countByHist(groups[by], allMetricColumns, by)],
+    ]
+  })
+  return _.fromPairs(byTimePairs)
+}
+
+// ___________________________________________________________________________
+// Group by time segment (for more efficient calculations)
+// ___________________________________________________________________________
+function calcTimeSegmentGroups(combinedTable) {
+  if (_.isEmpty(combinedTable)) {
+    return {}
+  }
   return {
     hourOfDay: _.groupBy(combinedTable, 'hourOfDay'),
     dayOfWeek: _.groupBy(combinedTable, 'dayOfWeek'),
     month: _.groupBy(combinedTable, 'month'),
     dayHour: _.groupBy(combinedTable, 'dayHour'),
-  }
-}
-
-// Calculate histogram data for a given time segment.
-// Put all metrics we will use in a single histogram structure
-// total: 120ms
-export function calcTimeSegments(metric, aggregation, by, groups) {
-  if (_.isEmpty(groups) || !metric || !aggregation || !by) {
-    return {}
-  }
-  console.log('calculating calcTimeSegments')
-  return {
-    averageHist: averageByHist(groups[by], allMetricColumns, by), // 12ms
-    sumHist: sumByHist(groups[by], allMetricColumns, by), // 11ms
-    countHist: countByHist(groups[by], allMetricColumns, by), // 89ms
   }
 }
 

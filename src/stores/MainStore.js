@@ -339,16 +339,8 @@ export const MainStore = types
     get summaryStats() {
       return calcSummaryStats(self.activeGrid, self.combinedTable, self.enabledAppliances)
     },
-    get timeSegmentGroups() {
-      return calcTimeSegmentGroups(self.combinedTable)
-    },
     get timeSegments() {
-      return calcTimeSegments(
-        self.timeSegmentsMetric,
-        self.timeSegmentsAggregation,
-        self.timeSegmentsBy,
-        self.timeSegmentGroups
-      )
+      return calcTimeSegments(self.combinedTable)
     },
     get filteredCombinedTableHeaders() {
       return filterCombinedTableHeaders(
