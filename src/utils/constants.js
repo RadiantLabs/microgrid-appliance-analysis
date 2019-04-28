@@ -18,15 +18,15 @@ export const tableDateFormat = 'MMM dd H:mm'
 
 export const undeletableApplianceFileId = 'rice_mill_usage_profile_2019-02-16T20:33:55.583-07:00'
 
+// _____________________________________________________________________________
 // Color palettes:
+// _____________________________________________________________________________
 // https://semantic-ui.com/usage/theming.html
 // https://blog.graphiq.com/finding-the-right-color-palettes-for-data-visualizations-fcd4e707a283
 // https://refactoringui.com/previews/building-your-color-palette/
 // https://learnui.design/tools/data-color-picker.html
-
 export const redErrorFontColor = '#db2828'
 export const orangeWarningFontColor = '#f2711c'
-
 export const greyColors = [
   '#212934',
   '#5F6B7A',
@@ -36,9 +36,7 @@ export const greyColors = [
   '#E1E7EC',
   '#F8F9FA',
 ]
-
 export const chartColorsByIndex = ['#003f5c', '#444e86', '#955196', '#DD5182', '#FF6E54', '#FFA601']
-
 export const tableColorsByKey = {
   appliance: '#DD5182',
   homer: '#FFA601',
@@ -46,7 +44,6 @@ export const tableColorsByKey = {
   excluded: greyColors[5],
   default: '#f9fafb',
 }
-
 export const chartColorsByKey = {
   // Loads
   'Original Electrical Load Served': '#444e86',
@@ -64,3 +61,7 @@ export const chartColorsByKey = {
 }
 
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
+
+// _____________________________________________________________________________
+// Color palettes:
+// _____________________________________________________________________________

@@ -33,10 +33,12 @@ Charts:
 - [ ] Add chart type selector
 - [ ] Monitor group recalculation and use keepAlive if needed
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
+- [ ] The dayHour isn't being calculated correctly yet
 
 Misc:
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
+- [ ] Rename hour to hourOfYear?
 
 Battery Model:
 - [ ] Test with all HOMER files

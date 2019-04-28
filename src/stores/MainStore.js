@@ -27,7 +27,6 @@ import {
   timeSegmentsMetrics,
   timeSegmentsAggregations,
   timeSegmentsBy,
-  calcTimeSegmentGroups,
 } from '../utils/calcTimeSegments'
 // import { logger } from '../utils/logger'
 
@@ -447,6 +446,10 @@ _.forEach(mainStore.appliances, appliance => {
   keepAlive(appliance, 'calculatedApplianceColumns')
   keepAlive(appliance, 'applianceSummaryStats')
 })
+// This is not working...
+// if (!_.isEmpty(mainStore.fileData)) {
+//   keepAlive(mainStore, 'timeSegments')
+// }
 
 //
 // -----------------------------------------------------------------------------

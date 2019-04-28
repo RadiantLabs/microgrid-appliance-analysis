@@ -1,32 +1,32 @@
 import _ from 'lodash'
-import { logger } from './logger'
+// import { logger } from './logger'
 
 export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
-export const timeSegmentsAggregations = ['average', 'count', 'sum']
+export const timeSegmentsAggregations = ['average', 'sum', 'count']
 export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 
 // We will only chart the original [0] and new appliances [1] metric.
 // The total [2] will be used in the tool tip
 export const columnsToCalculate = {
-  load: ['Original Electrical Load Served', 'newAppliancesLoad'],
-  unmetLoad: ['originalUnmetLoad', 'newAppliancesUnmetLoad'],
-  excessProduction: ['originalExcessProduction', 'newAppliancesExcessProduction'],
+  load: ['Original Electrical Load Served', 'newAppliancesLoad', 'totalElectricalLoadServed'],
+  unmetLoad: ['originalUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
+  excessProduction: [
+    'originalExcessProduction',
+    'newAppliancesExcessProduction',
+    'totalExcessProduction',
+  ],
 }
 
-export const totalColumnsByMetric = {
-  load: ['totalElectricalLoadServed'],
-  unmetLoad: ['totalUnmetLoad'],
-  excessProduction: ['totalExcessProduction'],
-}
-
-const allMetricColumns = [
-  ..._.flatMap(columnsToCalculate, _.values),
-  ..._.flatMap(totalColumnsByMetric, _.values),
-]
+const allMetricColumns = _.flatMap(columnsToCalculate, _.values)
 
 // Calculate histogram data for all time segment.
 // Put all metrics we will use in a single histogram structure
 // total: 486ms
+// Naming scheme:
+// average_dayHour_hist
+// average_dayOfWeek_hist
+// count_month_hist
+// sum_dayHour_hist
 export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}

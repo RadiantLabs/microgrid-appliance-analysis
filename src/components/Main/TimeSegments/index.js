@@ -1,44 +1,75 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table, Form, Checkbox, Grid, Label, Icon } from 'semantic-ui-react'
+import { Table, Grid, Label, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
   XAxis,
   YAxis,
   Tooltip,
-  Bar,
-  BarChart,
-  Legend,
+  // Bar,
+  // BarChart,
   ResponsiveContainer,
-  // AreaChart,
-  // Area,
-  // ReferenceLine,
+  AreaChart,
+  Area,
 } from 'recharts'
-import { formatDateForTable } from '../../../utils/helpers'
 import { getChartColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
+import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 
 class TimeSegments extends React.Component {
   render() {
-    const { summaryStats, timeSegments, timeSegmentGroups } = this.props.store
+    const {
+      timeSegments,
+      timeSegmentsMetric,
+      timeSegmentsAggregation,
+      timeSegmentsBy,
+    } = this.props.store
     if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
-    const { allUnmetLoadHist } = summaryStats
+
+    // hist names look like: average_dayHour_hist
+    const hist = timeSegments[`${timeSegmentsAggregation}_${timeSegmentsBy}_hist`]
+    console.log('hist: ', hist)
+
+    // First 2 elements in columns should be displayed in the chart. The third
+    // element is the total, showed in the tooltip
+    const columns = columnsToCalculate[timeSegmentsMetric]
+    const stackOffset = 'none'
     return (
       <div>
         <TimeSegmentControls />
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-          <BarChart data={allUnmetLoadHist} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <XAxis dataKey="hourOfDay" />
+          <AreaChart
+            data={hist}
+            stackOffset={stackOffset}
+            margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
+            <XAxis dataKey={timeSegmentsBy} />
             <YAxis />
-            <Tooltip content={<CustomToolTip />} />
-            {/* <Legend /> */}
-            <Bar dataKey="originalUnmetLoad" fill={getChartColors('originalUnmetLoad')} />
-            <Bar dataKey="totalUnmetLoad" fill={getChartColors('totalUnmetLoad')} />
-          </BarChart>
+            <Tooltip
+              content={<CustomToolTip />}
+              columns={columns}
+              timeSegmentsBy={timeSegmentsBy}
+            />
+            <Area
+              type="monotone"
+              dataKey={columns[0]}
+              stackId="1"
+              stroke={getChartColors(columns[0])}
+              fill={getChartColors(columns[0])}
+              fillOpacity="1"
+            />
+            <Area
+              type="monotone"
+              dataKey={columns[1]}
+              stackId="1"
+              stroke={getChartColors(columns[1])}
+              fill={getChartColors(columns[1])}
+              fillOpacity="1"
+            />
+          </AreaChart>
         </ResponsiveContainer>
         <Grid>
           <Grid.Row>
@@ -54,11 +85,6 @@ class TimeSegments extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-
-        <br />
-        <br />
-        <code>{_.truncate(JSON.stringify(timeSegmentGroups, null, 2))}</code>
-        <code>{_.truncate(JSON.stringify(timeSegments, null, 2))}</code>
       </div>
     )
   }
@@ -66,16 +92,20 @@ class TimeSegments extends React.Component {
 
 export default inject('store')(observer(TimeSegments))
 
-// Tooltip
-const CustomToolTip = ({ active, payload, label }) => {
+// ___________________________________________________________________________
+// Custom tooltip
+// ___________________________________________________________________________
+const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy }) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
-  const { datetime, totalElectricalLoadServed } = payload[0]['payload']
+  const totalColumnName = columns[2]
+  const totalVal = payload[0]['payload'][totalColumnName]
   return (
     <div className="custom-tooltip">
-      <p className="label">Hour of Year: {label}</p>
-      <p className="label">Date: {formatDateForTable(datetime)}</p>
+      <p className="label">
+        {fieldDefinitions[timeSegmentsBy].title}: {label}
+      </p>
       <Table basic="very" compact>
         <Table.Body>
           {_.map(payload, element => {
@@ -91,10 +121,10 @@ const CustomToolTip = ({ active, payload, label }) => {
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell>Combined Load</Table.HeaderCell>
+            <Table.HeaderCell>{fieldDefinitions[totalColumnName].title}</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">
-              {_.round(totalElectricalLoadServed, 2)}{' '}
-              {fieldDefinitions['totalElectricalLoadServed'].units}
+              {totalVal}
+              {fieldDefinitions[totalColumnName].units}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>

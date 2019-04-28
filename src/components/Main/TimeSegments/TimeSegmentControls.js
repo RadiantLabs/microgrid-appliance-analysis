@@ -61,16 +61,16 @@ class TimeSegmentControls extends React.Component {
                 Average
               </Button>
               <Button
-                value="count"
-                onClick={handleTimeSegmentsAggregationChange}
-                active={timeSegmentsAggregation === 'count'}>
-                Count
-              </Button>
-              <Button
                 value="sum"
                 onClick={handleTimeSegmentsAggregationChange}
                 active={timeSegmentsAggregation === 'sum'}>
                 Sum
+              </Button>
+              <Button
+                value="count"
+                onClick={handleTimeSegmentsAggregationChange}
+                active={timeSegmentsAggregation === 'count'}>
+                Count
               </Button>
             </Button.Group>
           </Grid.Column>
