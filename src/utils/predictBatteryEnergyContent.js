@@ -67,7 +67,6 @@ export function predictBatteryEnergyContent({
     }
   }
 
-  // const unLossed = prevBatteryEnergyContent + electricalProductionLoadDiff
   const unclamped = predict(electricalProductionLoadDiff, prevBatteryEnergyContent, roundTripLosses)
   const clamped = _.clamp(unclamped, batteryMinEnergyContent, batteryMaxEnergyContent)
 

@@ -16,6 +16,8 @@ to calculate load?
 - [ ] For excess production chart, should that include original excess + additional?
   - [ ] Switch histograms to using originalModeledExcessProduction
   - [ ] Fix tests
+- [ ] Figure out what 'load' 'count' even means
+- [ ] Have explanation of what aggregations mean
 - [ ] Document assumption that total load (original + appliance) is total load served,
       not just total hypothetical load, because we are assuming a backup generator
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)

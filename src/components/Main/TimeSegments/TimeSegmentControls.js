@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import { observer, inject } from 'mobx-react'
-import { Grid, Button, Header } from 'semantic-ui-react'
+import { Grid, Button } from 'semantic-ui-react'
 import LoaderSpinner from '../../../components/Elements/Loader'
 
 class TimeSegmentControls extends React.Component {
