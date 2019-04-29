@@ -4,6 +4,18 @@ import _ from 'lodash'
 export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'sum', 'count']
 export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
+export const timeSegmentLabels = {
+  load: 'Load',
+  unmetLoad: 'Unmet Load',
+  excessProduction: 'Excess Production',
+  average: 'Average',
+  sum: 'Sum of',
+  count: 'Count of',
+  hourOfDay: 'Hour of Day',
+  dayOfWeek: 'Day of Week',
+  month: 'Month',
+  dayHour: 'Day-Hour',
+}
 
 // We will only chart the original [0] and new appliances [1] metric.
 // The total [2] will be used in the tool tip

@@ -65,5 +65,5 @@ export const timeSegmentColors = ['#444e86', '#955196']
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
 
 // _____________________________________________________________________________
-// Color palettes:
+// Misc:
 // _____________________________________________________________________________

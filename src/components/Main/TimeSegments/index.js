@@ -5,7 +5,7 @@ import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
-import { columnsToCalculate } from '../../../utils/calcTimeSegments'
+import { columnsToCalculate, timeSegmentLabels } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedArea } from './StackedArea'
 import { StackedBar } from './StackedBar'
@@ -58,6 +58,7 @@ class TimeSegments extends React.Component {
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
     const columns = columnsToCalculate[timeSegmentsMetric]
+    const chartTitle = getChartTitle(timeSegmentsMetric, timeSegmentsAggregation, timeSegmentsBy)
     return (
       <div>
         <Grid>
@@ -114,7 +115,7 @@ class TimeSegments extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={16}>{getChartTitle()}</Grid.Column>
+            <Grid.Column width={16}>{chartTitle}</Grid.Column>
           </Grid.Row>
         </Grid>
 
@@ -172,13 +173,12 @@ export default inject('store')(observer(TimeSegments))
 // ___________________________________________________________________________
 // Misc
 // ___________________________________________________________________________
-function getChartTitle() {
-  return (
-    <Header as="h3">
-      Loads by hour of year (TODO)
-      <Header sub>Each data point unit is average kW for 1 hour (kW*h)</Header>
-    </Header>
-  )
+
+function getChartTitle(metric, aggregation, by) {
+  const title = `${timeSegmentLabels[aggregation]} ${timeSegmentLabels[metric]} by ${
+    timeSegmentLabels[by]
+  }`
+  return <Header as="h3">{title}</Header>
 }
 
 function legendLabelStyles(colorIndex) {

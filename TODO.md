@@ -16,6 +16,7 @@ Charts:
   - [ ] totalUnmetLoad should be greater with the totals
 - [ ] newAppliancesExcessProduction should not stack on top of each other. For excess,
       we can set the stack to something different
+- [ ] X-axis label
 - [ ] Update Title of chart based on metrics and by and aggregation
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
