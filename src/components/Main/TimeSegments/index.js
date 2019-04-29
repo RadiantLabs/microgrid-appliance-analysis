@@ -1,25 +1,14 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table, Grid, Label, Icon, Header, Button } from 'semantic-ui-react'
+import { Grid, Label, Icon, Header, Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
-import {
-  XAxis,
-  YAxis,
-  Tooltip,
-  // Bar,
-  // BarChart,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from 'recharts'
-
 import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedArea } from './StackedArea'
-import { CustomToolTip } from './ToolTip'
+import { StackedBar } from './StackedBar'
 
 class TimeSegments extends React.Component {
   state = {
@@ -129,13 +118,25 @@ class TimeSegments extends React.Component {
           </Grid.Row>
         </Grid>
 
-        <StackedArea
-          hist={hist}
-          stackOffset={stackOffset}
-          timeSegmentsBy={timeSegmentsBy}
-          columns={columns}
-          show={show}
-        />
+        {chartType === 'area' && (
+          <StackedArea
+            hist={hist}
+            stackOffset={stackOffset}
+            timeSegmentsBy={timeSegmentsBy}
+            columns={columns}
+            show={show}
+          />
+        )}
+
+        {chartType === 'bar' && (
+          <StackedBar
+            hist={hist}
+            stackOffset={stackOffset}
+            timeSegmentsBy={timeSegmentsBy}
+            columns={columns}
+            show={show}
+          />
+        )}
 
         <Grid>
           <Grid.Row>

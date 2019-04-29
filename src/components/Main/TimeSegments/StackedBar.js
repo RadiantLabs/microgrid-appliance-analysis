@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import { timeSegmentColors } from '../../../utils/constants'
 import { CustomToolTip } from './ToolTip'
 
-export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }) => {
+export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, columns, show }) => {
   return (
     <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-      <AreaChart
+      <BarChart
         data={hist}
         stackOffset={stackOffset}
         margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
@@ -14,7 +14,7 @@ export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }
         <YAxis />
         <Tooltip content={<CustomToolTip />} columns={columns} timeSegmentsBy={timeSegmentsBy} />
         {show.has(columns[0]) && (
-          <Area
+          <Bar
             type="monotone"
             dataKey={columns[0]}
             stackId="1"
@@ -24,7 +24,7 @@ export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }
           />
         )}
         {show.has(columns[1]) && (
-          <Area
+          <Bar
             type="monotone"
             dataKey={columns[1]}
             stackId="1"
@@ -33,7 +33,7 @@ export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }
             fillOpacity="1"
           />
         )}
-      </AreaChart>
+      </BarChart>
     </ResponsiveContainer>
   )
 }
