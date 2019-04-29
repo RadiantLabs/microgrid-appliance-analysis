@@ -34,6 +34,8 @@ Charts:
 - [ ] Monitor group recalculation and use keepAlive if needed
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] The dayHour isn't being calculated correctly yet
+- [ ] Excess Production shouldn't be adding onto the other chart
+- [ ] Update Title of chart based on metrics and by and aggregation
 
 Misc:
 - [ ] Sum excess load over year in summaryStats

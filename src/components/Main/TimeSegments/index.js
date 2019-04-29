@@ -13,16 +13,36 @@ import {
   AreaChart,
   Area,
 } from 'recharts'
-import { getChartColors, timeSegmentColors } from '../../../utils/constants'
+import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 
 class TimeSegments extends React.Component {
-  state = {}
+  state = {
+    load: {
+      show: new Set(['Original Electrical Load Served', 'newAppliancesLoad']),
+      stackOffset: 'none',
+      chartType: 'area', // could be bar
+    },
+    unmetLoad: {
+      show: new Set(['originalUnmetLoad', 'newAppliancesUnmetLoad']),
+      stackOffset: 'none',
+      chartType: 'area',
+    },
+    excessProduction: {
+      show: new Set(['originalExcessProduction', 'newAppliancesExcessProduction']),
+      stackOffset: 'none',
+      chartType: 'area',
+    },
+  }
 
   handleLegendClick = (e, { value }) => {
-    console.log('value: ', value)
+    const { timeSegmentsMetric } = this.props.store
+    this.setState((state, props) => {
+      const show = state[timeSegmentsMetric].show
+      return show.has(value) ? show.delete(value) : show.add(value)
+    })
   }
 
   render() {
@@ -35,7 +55,7 @@ class TimeSegments extends React.Component {
     if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
-
+    const { show } = this.state[timeSegmentsMetric]
     // hist names look like: average_dayHour_hist
     const hist = timeSegments[`${timeSegmentsAggregation}_${timeSegmentsBy}_hist`]
     console.log('hist: ', hist)
@@ -59,22 +79,26 @@ class TimeSegments extends React.Component {
               columns={columns}
               timeSegmentsBy={timeSegmentsBy}
             />
-            <Area
-              type="monotone"
-              dataKey={columns[0]}
-              stackId="1"
-              stroke={timeSegmentColors[0]}
-              fill={timeSegmentColors[0]}
-              fillOpacity="1"
-            />
-            <Area
-              type="monotone"
-              dataKey={columns[1]}
-              stackId="1"
-              stroke={timeSegmentColors[1]}
-              fill={timeSegmentColors[1]}
-              fillOpacity="1"
-            />
+            {show.has(columns[0]) && (
+              <Area
+                type="monotone"
+                dataKey={columns[0]}
+                stackId="1"
+                stroke={timeSegmentColors[0]}
+                fill={timeSegmentColors[0]}
+                fillOpacity="1"
+              />
+            )}
+            {show.has(columns[1]) && (
+              <Area
+                type="monotone"
+                dataKey={columns[1]}
+                stackId="1"
+                stroke={timeSegmentColors[1]}
+                fill={timeSegmentColors[1]}
+                fillOpacity="1"
+              />
+            )}
           </AreaChart>
         </ResponsiveContainer>
         <Grid>
@@ -84,18 +108,18 @@ class TimeSegments extends React.Component {
                 basic
                 value={columns[0]}
                 onClick={this.handleLegendClick}
-                style={{ borderBottom: `4px solid ${timeSegmentColors[0]}` }}
+                style={legendLabelStyles(0)}
                 size="large">
-                <Icon name="check square outline" />
+                <Icon name={`square outline${show.has(columns[0]) ? ' check' : ''}`} />
                 {fieldDefinitions[columns[0]].title}
               </Label>
               <Label
                 basic
                 value={columns[1]}
                 onClick={this.handleLegendClick}
-                style={{ borderBottom: `4px solid ${timeSegmentColors[1]}` }}
+                style={legendLabelStyles(1)}
                 size="large">
-                <Icon name="square outline" />
+                <Icon name={`square outline${show.has(columns[1]) ? ' check' : ''}`} />
                 {fieldDefinitions[columns[1]].title}
               </Label>
             </Grid.Column>
@@ -147,4 +171,11 @@ const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy }) => {
       </Table>
     </div>
   )
+}
+
+function legendLabelStyles(colorIndex) {
+  return {
+    borderBottom: `4px solid ${timeSegmentColors[colorIndex]}`,
+    cursor: 'pointer',
+  }
 }
