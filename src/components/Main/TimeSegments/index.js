@@ -139,6 +139,8 @@ class TimeSegments extends React.Component {
           />
         )}
 
+        <p> </p>
+
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">

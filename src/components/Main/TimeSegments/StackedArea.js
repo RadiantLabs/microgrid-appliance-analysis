@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
 import { timeSegmentColors } from '../../../utils/constants'
+import { timeSegmentLabels } from '../../../utils/calcTimeSegments'
 import { CustomToolTip } from './ToolTip'
 
 export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }) => {
@@ -10,7 +11,10 @@ export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }
         data={hist}
         stackOffset={stackOffset}
         margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
-        <XAxis dataKey={timeSegmentsBy} />
+        <XAxis
+          dataKey={timeSegmentsBy}
+          label={{ value: timeSegmentLabels[timeSegmentsBy], position: 'bottom', offset: 0 }}
+        />
         <YAxis />
         <Tooltip content={<CustomToolTip />} columns={columns} timeSegmentsBy={timeSegmentsBy} />
         {show.has(columns[0]) && (
