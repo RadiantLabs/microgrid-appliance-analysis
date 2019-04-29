@@ -3,15 +3,7 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recha
 import { timeSegmentColors } from '../../../utils/constants'
 import { CustomToolTip } from './ToolTip'
 
-export const StackedBar = ({
-  hist,
-  stackOffset,
-  timeSegmentsBy,
-  timeSegmentsMetric,
-  columns,
-  show,
-}) => {
-  const isStacked = timeSegmentsMetric !== 'excessProduction'
+export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, columns, show }) => {
   return (
     <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
       <BarChart

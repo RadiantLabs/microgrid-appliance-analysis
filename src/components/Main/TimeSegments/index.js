@@ -59,6 +59,7 @@ class TimeSegments extends React.Component {
     // element is the total, showed in the tooltip
     const columns = columnsToCalculate[timeSegmentsMetric]
     const chartTitle = getChartTitle(timeSegmentsMetric, timeSegmentsAggregation, timeSegmentsBy)
+    const isStacked = timeSegmentsMetric !== 'excessProduction'
     return (
       <div>
         <Grid>
@@ -81,6 +82,7 @@ class TimeSegments extends React.Component {
                         Normal
                       </Button>
                       <Button
+                        disabled={!isStacked}
                         value="expand"
                         onClick={this.handleStackClick}
                         active={stackOffset === 'expand'}>
