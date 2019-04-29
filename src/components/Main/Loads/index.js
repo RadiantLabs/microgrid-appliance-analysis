@@ -38,12 +38,12 @@ class LoadsByHour extends React.Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={7}>
-              <Header.Subheader as="h3">
+              <Header as="h3">
                 Loads by hour of year
                 <Header.Subheader>
                   Each data point unit is average kW for 1 hour (kWh)
                 </Header.Subheader>
-              </Header.Subheader>
+              </Header>
             </Grid.Column>
             <Grid.Column width={9}>
               <Button.Group basic compact style={{ float: 'right', marginTop: '8px' }}>

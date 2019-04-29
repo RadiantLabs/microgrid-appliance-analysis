@@ -124,6 +124,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsMetric={timeSegmentsMetric}
             columns={columns}
             show={show}
           />
@@ -134,6 +135,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsMetric={timeSegmentsMetric}
             columns={columns}
             show={show}
           />
@@ -180,7 +182,28 @@ function getChartTitle(metric, aggregation, by) {
   const title = `${timeSegmentLabels[aggregation]} ${timeSegmentLabels[metric]} by ${
     timeSegmentLabels[by]
   }`
-  return <Header as="h3">{title}</Header>
+  const isStacked = metric === 'load' || metric === 'unmetLoad'
+  const isNotStacked = metric === 'excessProduction'
+  const stackedMsg = (
+    <span>
+      Additional appliances will increase the ${_.toLower(timeSegmentLabels[metric])}, so in this
+      chart it is stacked on top of the original ${_.toLower(timeSegmentLabels[metric])}
+    </span>
+  )
+  const notStackedMsg = (
+    <span>
+      Additional appliances will decrease the {_.toLower(timeSegmentLabels[metric])} so in this
+      chart it is <strong>not</strong> stacked on top of the original{' '}
+      {_.toLower(timeSegmentLabels[metric])}
+    </span>
+  )
+  return (
+    <Header as="h3">
+      {title}
+      {isStacked && <Header.Subheader>{stackedMsg}</Header.Subheader>}
+      {isNotStacked && <Header.Subheader>{notStackedMsg}</Header.Subheader>}
+    </Header>
+  )
 }
 
 function legendLabelStyles(colorIndex) {

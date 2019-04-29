@@ -4,7 +4,15 @@ import { timeSegmentColors } from '../../../utils/constants'
 import { timeSegmentLabels } from '../../../utils/calcTimeSegments'
 import { CustomToolTip } from './ToolTip'
 
-export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }) => {
+export const StackedArea = ({
+  hist,
+  stackOffset,
+  timeSegmentsBy,
+  timeSegmentsMetric,
+  columns,
+  show,
+}) => {
+  const isStacked = timeSegmentsMetric !== 'excessProduction'
   return (
     <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
       <AreaChart
@@ -31,7 +39,7 @@ export const StackedArea = ({ hist, stackOffset, timeSegmentsBy, columns, show }
           <Area
             type="monotone"
             dataKey={columns[1]}
-            stackId="1"
+            stackId={isStacked ? '1' : '2'}
             stroke={timeSegmentColors[1]}
             fill={timeSegmentColors[1]}
             fillOpacity="1"
