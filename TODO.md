@@ -12,6 +12,10 @@ Charts:
 to calculate load?
 - The underlying assumption is that we have a generator backup, so it will always be served
 
+
+- [ ] For excess production chart, should that include original excess + additional?
+  - [ ] Switch histograms to using originalModeledExcessProduction
+  - [ ] Fix tests
 - [ ] Document assumption that total load (original + appliance) is total load served,
       not just total hypothetical load, because we are assuming a backup generator
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)
@@ -28,6 +32,7 @@ to calculate load?
 - [ ] Monitor group recalculation and use keepAlive if needed
 
 Misc:
+
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Rename hour to hourOfYear?

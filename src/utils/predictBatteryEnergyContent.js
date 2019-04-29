@@ -67,12 +67,12 @@ export function predictBatteryEnergyContent({
     }
   }
 
-  const unLossed = prevBatteryEnergyContent + electricalProductionLoadDiff
+  // const unLossed = prevBatteryEnergyContent + electricalProductionLoadDiff
   const unclamped = predict(electricalProductionLoadDiff, prevBatteryEnergyContent, roundTripLosses)
   const clamped = _.clamp(unclamped, batteryMinEnergyContent, batteryMaxEnergyContent)
 
-  const totalExcessProduction = unclamped - clamped > 0 ? unLossed - clamped : 0
-  const totalUnmetLoad = unclamped - clamped < 0 ? Math.abs(unLossed - clamped) : 0
+  const totalExcessProduction = unclamped - clamped > 0 ? unclamped - clamped : 0 // always positive
+  const totalUnmetLoad = unclamped - clamped < 0 ? clamped - unclamped : 0 // always positive
   return {
     batteryEnergyContent: clamped,
     totalExcessProduction: _.round(totalExcessProduction, 4),

@@ -261,7 +261,7 @@ export const fieldDefinitions = {
   },
   originalExcessProduction: {
     $schema: jsonSchemaStandard,
-    title: 'New Excess Production',
+    title: 'Original Excess Production',
     description: 'Excess production from the original HOMER file',
     type: 'float',
     units: 'kWh',

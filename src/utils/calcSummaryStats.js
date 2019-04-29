@@ -117,15 +117,13 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // ___________________________________________________________________________
   // __ Yearly Load Served _____________________________________________________
   // ___________________________________________________________________________
-  // Sum yearly kWh for only new appliances added, not including original HOMER load
-  // TODO: how does Original Electric Load Served compare with originalElectricLoad
-  const originalElectricLoadSum = sumGreaterThanZero(
-    combinedTable,
-    'Original Electrical Load Served'
-  )
+  // Note: Once we add hypothetical appliances, we assume the load is always served
+  // using a backup generator or whatever. So there is no distinction between
+  // load and load served. We still know what the unmet load is, but we assume
+  // something is meeeting that load as well.
+  const originalElectricLoadSum = sumGreaterThanZero(combinedTable, 'originalElectricLoadServed')
   const newAppliancesLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
-  // TODO: how do I do totalElectricalLoadServed?
-  // We need to take into account newAppliancesLoadSum and unmet load
+  const totalElectricalLoadSum = originalElectricLoadSum + newAppliancesLoadSum
 
   // ___________________________________________________________________________
   // __ Financial Calculations _________________________________________________
@@ -228,9 +226,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     totalExcessProductionHist,
     allExcessProductionHist,
 
-    newAppliancesLoadSum: _.round(newAppliancesLoadSum),
-    // newAppliancesLoadSum: _.round(newAppliancesLoadSum),  // TODO: Change variable names
     originalElectricLoadSum: _.round(originalElectricLoadSum),
+    newAppliancesLoadSum: _.round(newAppliancesLoadSum),
+    totalElectricalLoadSum: _.round(totalElectricalLoadSum),
 
     newAppliancesGridRevenue: _.round(newAppliancesGridRevenue),
     newAppliancesApplianceOwnerOpex: _.round(newAppliancesApplianceOwnerOpex),
@@ -269,6 +267,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   return returnObject
 }
 
+//
+// _____________________________________________________________________________
+// __ Helper functions _________________________________________________________
+// _____________________________________________________________________________
 // TODO: In the case of multiple appliances, return an object with keys as
 // appliance name and values as production units
 function calcYearlyProductionUnits(enabledAppliances) {
@@ -291,16 +293,64 @@ function calcProductionUnitType(enabledAppliances) {
   return enabledAppliances[0]['productionUnitType']
 }
 
-function debugOutputValues(out, combinedTable) {
+// _____________________________________________________________________________
+// __ Debug functions __________________________________________________________
+// _____________________________________________________________________________
+function debugOutputValues(out, table) {
   console.log('__ load _______________')
-  console.log('stat newAppliancesLoadSum: ', out.newAppliancesLoadSum)
-  // console.log('')
+  console.log(
+    'originalElectricLoadSum: ',
+    out.originalElectricLoadSum,
+    _.round(_.sumBy(table, 'originalElectricLoadServed'))
+  )
+  console.log(
+    'newAppliancesLoadSum: ',
+    out.newAppliancesLoadSum,
+    _.round(_.sumBy(table, 'newAppliancesLoad'))
+  )
+  console.log(
+    'totalElectricalLoadSum: ',
+    out.totalElectricalLoadSum,
+    _.round(out.originalElectricLoadSum + out.newAppliancesLoadSum),
+    ' -> ',
+    out.originalElectricLoadSum + out.newAppliancesLoadSum
+  )
 
   console.log('__ unmet load _________')
-  console.log('stat originalUnmetLoadSum: ', out.originalUnmetLoadSum)
-  console.log('man  originalUnmetLoadSum: ', _.sumBy(combinedTable, 'originalUnmetLoad'))
-  console.log('stat newAppliancesUnmetLoadSum: ', out.newAppliancesUnmetLoadSum)
-  console.log('man  newAppliancesUnmetLoadSum: ', _.sumBy(combinedTable, 'newAppliancesUnmetLoad'))
-  console.log('stat totalUnmetLoadSum: ', out.totalUnmetLoadSum)
-  console.log('man  totalUnmetLoadSum: ', _.sumBy(combinedTable, 'totalUnmetLoad'))
+  console.log(
+    'originalUnmetLoadSum: ',
+    out.originalUnmetLoadSum,
+    _.round(_.sumBy(table, 'originalUnmetLoad'))
+  )
+  console.log(
+    'newAppliancesUnmetLoadSum: ',
+    out.newAppliancesUnmetLoadSum,
+    _.round(_.sumBy(table, 'newAppliancesUnmetLoad'))
+  )
+  console.log(
+    'totalUnmetLoadSum: ',
+    out.totalUnmetLoadSum,
+    _.round(_.sumBy(table, 'totalUnmetLoad')),
+    ' -> ',
+    out.originalUnmetLoadSum + out.newAppliancesUnmetLoadSum
+  )
+
+  console.log('__ excess production _________')
+  console.log(
+    'originalExcessProductionSum: ',
+    out.originalExcessProductionSum,
+    _.round(_.sumBy(table, 'originalExcessProduction'))
+  )
+  console.log(
+    'newAppliancesExcessProductionSum: ',
+    out.newAppliancesExcessProductionSum,
+    _.round(_.sumBy(table, 'newAppliancesExcessProduction'))
+  )
+  console.log(
+    'totalExcessProductionSum: ',
+    out.totalExcessProductionSum,
+    _.round(_.sumBy(table, 'totalExcessProduction')),
+    ' -> ',
+    out.originalExcessProductionSum + out.newAppliancesExcessProductionSum
+  )
 }

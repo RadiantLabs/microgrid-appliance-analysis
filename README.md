@@ -71,8 +71,11 @@ Values that depend on the battery energy content:
 - unmet load
     - OPEX, ROI, Payback, Net revenue
 
+### Load Served vs. Load
+Once we add hypothetical appliances, we assume the load is always served using a backup generator or something. So there is no distinction between load and load served. We still know what the unmet load is and calculate it's cost, but we assume something is meeeting that load as well. For example, if there is no backup generator, unmet load count is the number of hours the grid is down.
 
-### Definitions
+
+## Definitions
 
 **kw_factor** is the number of minutes an appliance was fully utilized, summed over an hour. If it was running at 50% RPM, the factor for 1 minute is less than if it was at 100% RPM. Here is the code that is used to produce the sample appliance files that includes the kw_factor: [microgrid-appliance-usage-profile-generators](https://github.com/RadiantLabs/microgrid-appliance-usage-profile-generators)
 
