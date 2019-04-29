@@ -1,23 +1,3 @@
-Launch considerations
-* Changing model will make people's uploaded files need to be re-Uploaded
-* Logging with name and email
-
-
-Jeff
-- Check for essential HOMER columns and throw up a modal
-  - If there are errors, allow downloading a template
-- Get longer version of description
-- label x axis hour of year
-- Summary of enabled appliance files in case they are below the fold:
-  - Currently enabled equipment for this appliance
-- Send Amanda ancillary equipment file
-- Sum hours up to the $9K limit
-
-
-Amanda:
-  - Describe sample HOMER files
-
-
 Old Notes from meeting:
 - Amanda will do basic sanity check calculations
 - Amanda review question marks
@@ -28,14 +8,17 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- [ ] Calculate histogram computed views depending on metric, aggregation and by
-- [ ] Plot Time Segment histogram (area chart)
-- [ ] Add chart type selector
-- [ ] Monitor group recalculation and use keepAlive if needed
-- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
-- [ ] The dayHour isn't being calculated correctly yet
-- [ ] Excess Production shouldn't be adding onto the other chart
+- [x] Calculate histogram computed views depending on metric, aggregation and by
+- [x] Plot Time Segment histogram
+- [x] Add chart type selector (bar and area)
+- [ ] Double-check all calculations (dayHour isn't being calculated correctly)
+  - [ ] excessProduction should drop with the totals
+  - [ ] totalUnmetLoad should be greater with the totals
+- [ ] newAppliancesExcessProduction should not stack on top of each other. For excess,
+      we can set the stack to something different
 - [ ] Update Title of chart based on metrics and by and aggregation
+- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
+- [ ] Monitor group recalculation and use keepAlive if needed
 
 Misc:
 - [ ] Sum excess load over year in summaryStats
