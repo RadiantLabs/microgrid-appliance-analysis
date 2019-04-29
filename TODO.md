@@ -14,11 +14,11 @@ Charts:
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)
   - [ ] excessProduction should drop with the totals
   - [ ] totalUnmetLoad should be greater with the totals
-- [ ] newAppliancesExcessProduction should not stack on top of each other. For excess,
+- [x] newAppliancesExcessProduction should not stack on top of each other. For excess,
       we can set the stack to something different
 - [x] X-axis label
 - [ ] X-axis ticks (dayOfWeek, Month)
-- [ ] Update Title of chart based on metrics and by and aggregation
+- [x] Update Title of chart based on metrics and by and aggregation
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
 

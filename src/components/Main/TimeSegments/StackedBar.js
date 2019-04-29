@@ -9,6 +9,7 @@ export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, colum
       <BarChart
         data={hist}
         stackOffset={stackOffset}
+        barGap={0}
         margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
         <XAxis dataKey={timeSegmentsBy} />
         <YAxis />
