@@ -8,20 +8,11 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- [x] Calculate histogram computed views depending on metric, aggregation and by
-- [x] Plot Time Segment histogram
-- [x] Add chart type selector (bar and area)
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)
   - [ ] excessProduction should drop with the totals
   - [ ] totalUnmetLoad should be greater with the totals
-- [x] newAppliancesExcessProduction should not stack on top of each other. For excess,
-      we can set the stack to something different
-- [x] X-axis label
-- [x] X-axis ticks (dayOfWeek, Month)
-- [x] Update Title of chart based on metrics and by and aggregation
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
-- [x] Move timeSegmentLabels to constants
 
 Misc:
 - [ ] Sum excess load over year in summaryStats
