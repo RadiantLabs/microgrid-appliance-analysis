@@ -100,7 +100,7 @@ export const ApplianceOperatorEconomicSummary = inject('store')(
 export const ApplianceOperatorTechnicalSummary = inject('store')(
   observer(({ store }) => {
     const { summaryStats } = store
-    const { yearlyProductionUnits, productionUnitType, newAppliancesYearlyKwh } = summaryStats
+    const { yearlyProductionUnits, productionUnitType, newAppliancesLoadSum } = summaryStats
     return (
       <div>
         <Header as="h4">Technical Outputs</Header>
@@ -108,7 +108,7 @@ export const ApplianceOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>New Appliances Electricity Consumption</Table.Cell>
-              <Table.Cell textAlign="right">{newAppliancesYearlyKwh || 0} kWh</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesLoadSum || 0} kWh</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Units Produced</Table.Cell>

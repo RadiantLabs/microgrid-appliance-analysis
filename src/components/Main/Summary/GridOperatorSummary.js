@@ -115,7 +115,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
     const { summaryStats: stats } = store
 
     // Financials
-    const newAppliancesYearlyKwh = _.get(stats, 'newAppliancesYearlyKwh', '-')
+    const newAppliancesLoadSum = _.get(stats, 'newAppliancesLoadSum', '-')
 
     // Unmet loads
     const originalUnmetLoadCount = _.get(stats, 'originalUnmetLoadCount', '-')
@@ -162,7 +162,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
           <Table.Body>
             <Table.Row>
               <Table.Cell>New Appliances Energy Consumption</Table.Cell>
-              <Table.Cell>{newAppliancesYearlyKwh} kWh</Table.Cell>
+              <Table.Cell>{newAppliancesLoadSum} kWh</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

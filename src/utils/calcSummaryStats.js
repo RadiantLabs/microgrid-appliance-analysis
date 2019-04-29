@@ -123,9 +123,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     combinedTable,
     'Original Electrical Load Served'
   )
-  const newAppliancesYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
+  const newAppliancesLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
   // TODO: how do I do totalElectricalLoadServed?
-  // We need to take into account newAppliancesYearlyKwh and unmet load
+  // We need to take into account newAppliancesLoadSum and unmet load
 
   // ___________________________________________________________________________
   // __ Financial Calculations _________________________________________________
@@ -133,13 +133,13 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // Revenue for grid operator due to new appliances
   // This is the appliance owner's operating costs.
   // For clarity, create a new variable for the appliance owner's OpEx
-  const newAppliancesGridRevenue = newAppliancesYearlyKwh * grid['retailElectricityPrice']
+  const newAppliancesGridRevenue = newAppliancesLoadSum * grid['retailElectricityPrice']
   const newAppliancesApplianceOwnerOpex = newAppliancesGridRevenue
 
   // Electricity cost to grid operator due to new appliances. This is not opex,
   // which includes other costs, such as unmet load.
   const newAppliancesWholesaleElectricityCost =
-    newAppliancesYearlyKwh * grid['wholesaleElectricityCost']
+    newAppliancesLoadSum * grid['wholesaleElectricityCost']
   const gridOperatorNewAppliancesOpex =
     newAppliancesWholesaleElectricityCost + newAppliancesUnmetLoadCost
 
@@ -228,7 +228,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     totalExcessProductionHist,
     allExcessProductionHist,
 
-    newAppliancesYearlyKwh: _.round(newAppliancesYearlyKwh),
+    newAppliancesLoadSum: _.round(newAppliancesLoadSum),
     // newAppliancesLoadSum: _.round(newAppliancesLoadSum),  // TODO: Change variable names
     originalElectricLoadSum: _.round(originalElectricLoadSum),
 
@@ -293,7 +293,7 @@ function calcProductionUnitType(enabledAppliances) {
 
 function debugOutputValues(out, combinedTable) {
   console.log('__ load _______________')
-  console.log('stat newAppliancesYearlyKwh: ', out.newAppliancesYearlyKwh)
+  console.log('stat newAppliancesLoadSum: ', out.newAppliancesLoadSum)
   // console.log('')
 
   console.log('__ unmet load _________')
