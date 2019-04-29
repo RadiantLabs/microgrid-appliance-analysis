@@ -21,10 +21,10 @@ class TimeSegmentControls extends React.Component {
     return (
       <Grid>
         <Grid.Row style={{ paddingBottom: 0 }}>
-          <Grid.Column width={2} textAlign="right" style={{ marginTop: '6px' }}>
+          <Grid.Column width={4} textAlign="right" style={{ marginTop: '6px' }}>
             <strong>Grid Metric</strong>
           </Grid.Column>
-          <Grid.Column width={14}>
+          <Grid.Column width={10}>
             <Button.Group basic compact size="tiny">
               <Button
                 value="load"
@@ -49,10 +49,10 @@ class TimeSegmentControls extends React.Component {
         </Grid.Row>
 
         <Grid.Row style={{ paddingBottom: 0 }}>
-          <Grid.Column width={2} textAlign="right" style={{ marginTop: '6px' }}>
+          <Grid.Column width={4} textAlign="right" style={{ marginTop: '6px' }}>
             <strong>Aggregation</strong>
           </Grid.Column>
-          <Grid.Column width={14}>
+          <Grid.Column width={10}>
             <Button.Group basic compact size="tiny">
               <Button
                 value="average"
@@ -77,10 +77,10 @@ class TimeSegmentControls extends React.Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={2} textAlign="right" style={{ marginTop: '6px' }}>
+          <Grid.Column width={4} textAlign="right" style={{ marginTop: '6px' }}>
             <strong>By</strong>
           </Grid.Column>
-          <Grid.Column width={14}>
+          <Grid.Column width={10}>
             <Button.Group basic compact size="tiny">
               <Button
                 value="hourOfDay"
@@ -108,16 +108,6 @@ class TimeSegmentControls extends React.Component {
               </Button>
             </Button.Group>
           </Grid.Column>
-        </Grid.Row>
-
-        <Grid.Row>
-          <Grid.Column width={7}>
-            <Header as="h3">
-              Loads by hour of year
-              <Header sub>Each data point unit is average kW for 1 hour (kW*h)</Header>
-            </Header>
-          </Grid.Column>
-          <Grid.Column width={9} />
         </Grid.Row>
       </Grid>
     )

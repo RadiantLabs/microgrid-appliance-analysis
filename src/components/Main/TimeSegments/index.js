@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Table, Grid, Label, Icon } from 'semantic-ui-react'
+import { Table, Grid, Label, Icon, Header, Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import {
@@ -13,36 +13,39 @@ import {
   AreaChart,
   Area,
 } from 'recharts'
+
 import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { columnsToCalculate } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
+import { CustomToolTip } from './ToolTip'
 
 class TimeSegments extends React.Component {
   state = {
-    load: {
-      show: new Set(['Original Electrical Load Served', 'newAppliancesLoad']),
-      stackOffset: 'none',
-      chartType: 'area', // could be bar
-    },
-    unmetLoad: {
-      show: new Set(['originalUnmetLoad', 'newAppliancesUnmetLoad']),
-      stackOffset: 'none',
-      chartType: 'area',
-    },
-    excessProduction: {
-      show: new Set(['originalExcessProduction', 'newAppliancesExcessProduction']),
-      stackOffset: 'none',
-      chartType: 'area',
-    },
+    chartType: 'area', // could be bar
+    stackOffset: 'none',
+    load: new Set(['Original Electrical Load Served', 'newAppliancesLoad']),
+    unmetLoad: new Set(['originalUnmetLoad', 'newAppliancesUnmetLoad']),
+    excessProduction: new Set(['originalExcessProduction', 'newAppliancesExcessProduction']),
   }
 
   handleLegendClick = (e, { value }) => {
+    e.preventDefault()
     const { timeSegmentsMetric } = this.props.store
-    this.setState((state, props) => {
-      const show = state[timeSegmentsMetric].show
+    this.setState(state => {
+      const show = state[timeSegmentsMetric]
       return show.has(value) ? show.delete(value) : show.add(value)
     })
+  }
+
+  handleStackClick = (e, { value }) => {
+    e.preventDefault()
+    this.setState({ stackOffset: value })
+  }
+
+  handleChartTypeClick = (e, { value }) => {
+    e.preventDefault()
+    this.setState({ chartType: value })
   }
 
   render() {
@@ -55,7 +58,9 @@ class TimeSegments extends React.Component {
     if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
-    const { show } = this.state[timeSegmentsMetric]
+    const show = this.state[timeSegmentsMetric]
+    const { stackOffset, chartType } = this.state
+
     // hist names look like: average_dayHour_hist
     const hist = timeSegments[`${timeSegmentsAggregation}_${timeSegmentsBy}_hist`]
     console.log('hist: ', hist)
@@ -63,10 +68,66 @@ class TimeSegments extends React.Component {
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
     const columns = columnsToCalculate[timeSegmentsMetric]
-    const stackOffset = 'none'
     return (
       <div>
-        <TimeSegmentControls />
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              <TimeSegmentControls />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <Grid>
+                <Grid.Row style={{ paddingBottom: 0 }}>
+                  <Grid.Column width={4} textAlign="right" style={{ marginTop: '6px' }}>
+                    <strong>Stack</strong>
+                  </Grid.Column>
+                  <Grid.Column width={10}>
+                    <Button.Group basic compact size="tiny">
+                      <Button
+                        value="none"
+                        onClick={this.handleStackClick}
+                        active={stackOffset === 'none'}>
+                        Normal
+                      </Button>
+                      <Button
+                        value="expand"
+                        onClick={this.handleStackClick}
+                        active={stackOffset === 'expand'}>
+                        Percent
+                      </Button>
+                    </Button.Group>
+                  </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row style={{ paddingBottom: 0 }}>
+                  <Grid.Column width={4} textAlign="right" style={{ marginTop: '6px' }}>
+                    <strong>Chart Type</strong>
+                  </Grid.Column>
+                  <Grid.Column width={10}>
+                    <Button.Group basic compact size="tiny">
+                      <Button
+                        value="area"
+                        onClick={this.handleChartTypeClick}
+                        active={chartType === 'area'}>
+                        <Icon name="chart area" style={{ marginLeft: '4px' }} />
+                      </Button>
+                      <Button
+                        value="bar"
+                        onClick={this.handleChartTypeClick}
+                        active={chartType === 'bar'}>
+                        <Icon name="chart bar" style={{ marginLeft: '4px' }} />
+                      </Button>
+                    </Button.Group>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={16}>{getChartTitle()}</Grid.Column>
+          </Grid.Row>
+        </Grid>
+
         <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
           <AreaChart
             data={hist}
@@ -133,43 +194,14 @@ class TimeSegments extends React.Component {
 export default inject('store')(observer(TimeSegments))
 
 // ___________________________________________________________________________
-// Custom tooltip
+// Misc
 // ___________________________________________________________________________
-const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy }) => {
-  if (!active || _.isEmpty(payload)) {
-    return null
-  }
-  const totalColumnName = columns[2]
-  const totalVal = payload[0]['payload'][totalColumnName]
+function getChartTitle() {
   return (
-    <div className="custom-tooltip">
-      <p className="label">
-        {fieldDefinitions[timeSegmentsBy].title}: {label}
-      </p>
-      <Table basic="very" compact>
-        <Table.Body>
-          {_.map(payload, element => {
-            return (
-              <Table.Row style={{ color: element.color }} key={element.dataKey}>
-                <Table.Cell>{fieldDefinitions[element.dataKey].title}</Table.Cell>
-                <Table.Cell textAlign="right">
-                  {_.round(element.value, 2)} {fieldDefinitions[element.dataKey].units}
-                </Table.Cell>
-              </Table.Row>
-            )
-          })}
-        </Table.Body>
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell>{fieldDefinitions[totalColumnName].title}</Table.HeaderCell>
-            <Table.HeaderCell textAlign="right">
-              {totalVal}
-              {fieldDefinitions[totalColumnName].units}
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
-      </Table>
-    </div>
+    <Header as="h3">
+      Loads by hour of year (TODO)
+      <Header sub>Each data point unit is average kW for 1 hour (kW*h)</Header>
+    </Header>
   )
 }
 
