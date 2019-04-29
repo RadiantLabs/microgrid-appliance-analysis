@@ -8,6 +8,12 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
+- Do I need to calculate both load and load served? What variable am I using now
+to calculate load?
+- The underlying assumption is that we have a generator backup, so it will always be served
+
+- [ ] Document assumption that total load (original + appliance) is total load served,
+      not just total hypothetical load, because we are assuming a backup generator
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)
   - [ ] cross-checks: sum each time segment and compare with totals in summary page
   - [ ] sum a couple individual slices, such as hour 16. Do a manual filter and sumBy

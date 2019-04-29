@@ -36,6 +36,8 @@ export function calcHybridColumns(grid, summedAppliances) {
     const originalElectricLoad =
       gridPowerType === 'AC' ? homerRow['AC Primary Load'] : homerRow['DC Primary Load']
 
+    // TODO: this is hypothetical because newAppliancesLoad may not be loadServed?
+    // The underlying assumption is that we have a generator backup, so it will always be served
     const totalElectricalLoadServed =
       originalElectricLoad + newAppliancesLoad + applianceRow['newAppliancesAncillaryLoad']
 

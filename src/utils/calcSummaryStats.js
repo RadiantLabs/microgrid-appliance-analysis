@@ -19,7 +19,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     return {}
   }
 
+  // ___________________________________________________________________________
   // __ Unmet load _____________________________________________________________
+  // ___________________________________________________________________________
   // Unmet Loads: Original without new appliance. Output values into a histogram
   // data object for charts
   const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
@@ -57,7 +59,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     totalUnmetLoadHist
   )
 
+  // ___________________________________________________________________________
   // __ Excess Production ______________________________________________________
+  // ___________________________________________________________________________
   // Unmet Loads: Original without new appliance. Output values into a histogram
   const originalExcessProductionCount = countGreaterThanZero(
     combinedTable,
@@ -103,17 +107,29 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     totalUnmetLoadHist
   )
 
-  // __ Yearly unmet load costs ________________________________________________
+  // Yearly unmet load costs
   // `totalUnmetLoadCost` includes original and the new appliances
   // unmet load. So `newAppliancesUnmetLoadCost` should always be positive.
   const originalUnmetLoadCost = originalUnmetLoadSum * grid['unmetLoadCostPerKwh']
   const totalUnmetLoadCost = totalUnmetLoadSum * grid['unmetLoadCostPerKwh']
   const newAppliancesUnmetLoadCost = newAppliancesUnmetLoadSum * grid['unmetLoadCostPerKwh']
 
-  // __ Yearly kWh & Financial Calculations ____________________________________
+  // ___________________________________________________________________________
+  // __ Yearly Load Served _____________________________________________________
+  // ___________________________________________________________________________
   // Sum yearly kWh for only new appliances added, not including original HOMER load
+  // TODO: how does Original Electric Load Served compare with originalElectricLoad
+  const originalElectricLoadSum = sumGreaterThanZero(
+    combinedTable,
+    'Original Electrical Load Served'
+  )
   const newAppliancesYearlyKwh = sumGreaterThanZero(combinedTable, 'newAppliancesLoad')
+  // TODO: how do I do totalElectricalLoadServed?
+  // We need to take into account newAppliancesYearlyKwh and unmet load
 
+  // ___________________________________________________________________________
+  // __ Financial Calculations _________________________________________________
+  // ___________________________________________________________________________
   // Revenue for grid operator due to new appliances
   // This is the appliance owner's operating costs.
   // For clarity, create a new variable for the appliance owner's OpEx
@@ -213,6 +229,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     allExcessProductionHist,
 
     newAppliancesYearlyKwh: _.round(newAppliancesYearlyKwh),
+    // newAppliancesLoadSum: _.round(newAppliancesLoadSum),  // TODO: Change variable names
+    originalElectricLoadSum: _.round(originalElectricLoadSum),
+
     newAppliancesGridRevenue: _.round(newAppliancesGridRevenue),
     newAppliancesApplianceOwnerOpex: _.round(newAppliancesApplianceOwnerOpex),
     newAppliancesWholesaleElectricityCost: _.round(newAppliancesWholesaleElectricityCost),
@@ -275,6 +294,7 @@ function calcProductionUnitType(enabledAppliances) {
 function debugOutputValues(out, combinedTable) {
   console.log('__ load _______________')
   console.log('stat newAppliancesYearlyKwh: ', out.newAppliancesYearlyKwh)
+  // console.log('')
 
   console.log('__ unmet load _________')
   console.log('stat originalUnmetLoadSum: ', out.originalUnmetLoadSum)
