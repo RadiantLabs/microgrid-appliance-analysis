@@ -62,6 +62,9 @@ function calcTimeSegmentGroups(combinedTable) {
 // Histogram Functions
 // _____________________________________________________________________________
 function averageByHist(group, columns, byKey) {
+  // console.log('__ byKey: ', byKey, '__________')
+  // console.log('group: ', group)
+  // console.log('columns: ', columns)
   return _.map(group, (rows, key) => {
     const columnAvgPairs = _.map(columns, column => {
       return [column, _.round(_.sumBy(rows, column) / _.size(rows), 2)]

@@ -9,7 +9,14 @@ Before Launch:
 --------------------------------------------------------------------------------
 Charts:
 - [ ] Double-check all calculations (dayHour isn't being calculated correctly)
-  - [ ] excessProduction should drop with the totals
+  - [ ] cross-checks: sum each time segment and compare with totals in summary page
+  - [ ] sum a couple individual slices, such as hour 16. Do a manual filter and sumBy
+        on the combinedTable to double check
+  - [ ] compare first week hourly
+  - [ ] unmet load sum & count should increase with totals (average should not)
+  - [ ] Should average and sum have the same shape? What am I averaging over?
+        What should I average over?
+  - [ ] excessProduction sum should drop with the totals
   - [ ] totalUnmetLoad should be greater with the totals
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
@@ -18,6 +25,7 @@ Misc:
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Rename hour to hourOfYear?
+- [ ] Change Filechooser to use square checkboxes
 
 Battery Model:
 - [ ] Test with all HOMER files

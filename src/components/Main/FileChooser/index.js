@@ -124,7 +124,7 @@ class FileChoosers extends Component {
         content: (
           <Header
             as="h5"
-            icon={isActive ? 'check circle outline' : 'circle outline'}
+            icon={isActive ? 'square outline check' : 'square outline'}
             content={grid.label}
             subheader={grid.description}
           />

@@ -189,8 +189,8 @@ function getChartTitle(metric, aggregation, by) {
   const isNotStacked = metric === 'excessProduction'
   const stackedMsg = (
     <span>
-      Additional appliances will increase the ${_.toLower(timeSegmentLabels[metric])}, so in this
-      chart it is stacked on top of the original ${_.toLower(timeSegmentLabels[metric])}
+      Additional appliances will increase the {_.toLower(timeSegmentLabels[metric])}, so in this
+      chart it is stacked on top of the original {_.toLower(timeSegmentLabels[metric])}
     </span>
   )
   const notStackedMsg = (
