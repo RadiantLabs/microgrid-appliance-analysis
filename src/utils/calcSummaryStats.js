@@ -177,7 +177,8 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     applianceOperatorNewAppliancesNetIncome,
     totalCapexAssignedToAppliance
   )
-  return {
+
+  const returnObject = {
     // Unmet Load
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
@@ -244,6 +245,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
       ? _.round(applianceOwnerPayback, 1)
       : applianceOwnerPayback,
   }
+
+  debugOutputValues(returnObject, combinedTable)
+  return returnObject
 }
 
 // TODO: In the case of multiple appliances, return an object with keys as
@@ -266,4 +270,17 @@ function calcProductionUnitType(enabledAppliances) {
     return 'Multiple'
   }
   return enabledAppliances[0]['productionUnitType']
+}
+
+function debugOutputValues(out, combinedTable) {
+  console.log('__ load _______________')
+  console.log('stat newAppliancesYearlyKwh: ', out.newAppliancesYearlyKwh)
+
+  console.log('__ unmet load _________')
+  console.log('stat originalUnmetLoadSum: ', out.originalUnmetLoadSum)
+  console.log('man  originalUnmetLoadSum: ', _.sumBy(combinedTable, 'originalUnmetLoad'))
+  console.log('stat newAppliancesUnmetLoadSum: ', out.newAppliancesUnmetLoadSum)
+  console.log('man  newAppliancesUnmetLoadSum: ', _.sumBy(combinedTable, 'newAppliancesUnmetLoad'))
+  console.log('stat totalUnmetLoadSum: ', out.totalUnmetLoadSum)
+  console.log('man  totalUnmetLoadSum: ', _.sumBy(combinedTable, 'totalUnmetLoad'))
 }
