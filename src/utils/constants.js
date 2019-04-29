@@ -67,3 +67,30 @@ export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
 // _____________________________________________________________________________
 // Misc:
 // _____________________________________________________________________________
+export const dayOfWeekLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+export const monthLabels = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]
+export const timeSegmentLabels = {
+  load: 'Load',
+  unmetLoad: 'Unmet Load',
+  excessProduction: 'Excess Production',
+  average: 'Average',
+  sum: 'Sum of',
+  count: 'Count of',
+  hourOfDay: 'Hour of Day',
+  dayOfWeek: 'Day of Week',
+  month: 'Month',
+  dayHour: 'Day-Hour',
+}

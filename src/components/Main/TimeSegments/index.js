@@ -5,7 +5,8 @@ import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
-import { columnsToCalculate, timeSegmentLabels } from '../../../utils/calcTimeSegments'
+import { columnsToCalculate } from '../../../utils/calcTimeSegments'
+import { timeSegmentLabels } from '../../../utils/constants'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedArea } from './StackedArea'
 import { StackedBar } from './StackedBar'
@@ -126,7 +127,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
-            timeSegmentsMetric={timeSegmentsMetric}
+            isStacked={isStacked}
             columns={columns}
             show={show}
           />
@@ -137,7 +138,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
-            timeSegmentsMetric={timeSegmentsMetric}
+            isStacked={isStacked}
             columns={columns}
             show={show}
           />

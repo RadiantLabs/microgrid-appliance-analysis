@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
-import { timeSegmentColors } from '../../../utils/constants'
+import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
 import { CustomToolTip } from './ToolTip'
+import { xAxisFormatter } from './xAxisFormatter'
 
 export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, columns, show }) => {
   return (
@@ -11,7 +12,11 @@ export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, colum
         stackOffset={stackOffset}
         barGap={0}
         margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
-        <XAxis dataKey={timeSegmentsBy} />
+        <XAxis
+          dataKey={timeSegmentsBy}
+          label={{ value: timeSegmentLabels[timeSegmentsBy], position: 'bottom', offset: 0 }}
+          tickFormatter={xAxisFormatter.bind(null, timeSegmentsBy)}
+        />
         <YAxis />
         <Tooltip content={<CustomToolTip />} columns={columns} timeSegmentsBy={timeSegmentsBy} />
         {show.has(columns[0]) && (
