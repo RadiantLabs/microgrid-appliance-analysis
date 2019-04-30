@@ -83,10 +83,10 @@ class LoadsByHour extends React.Component {
             <Tooltip content={<CustomToolTip />} />
             <Area
               type="monotone"
-              dataKey="Original Electrical Load Served"
+              dataKey="originalElectricLoadServed"
               stackId="1"
-              stroke={chartColorsByKey['Original Electrical Load Served']}
-              fill={chartColorsByKey['Original Electrical Load Served']}
+              stroke={chartColorsByKey['originalElectricLoadServed']}
+              fill={chartColorsByKey['originalElectricLoadServed']}
               fillOpacity="1"
             />
             <Area

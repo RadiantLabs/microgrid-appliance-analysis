@@ -331,6 +331,13 @@ export const fieldDefinitions = {
     type: 'float',
     units: 'kWh',
   },
+  originalElectricLoadServed: {
+    $schema: jsonSchemaStandard,
+    title: 'Original Electrical Load Served',
+    description: 'Original electrical load served without new appliances based on the HOMER file',
+    type: 'float',
+    units: 'kWh',
+  },
   newAppliancesLoad: {
     $schema: jsonSchemaStandard,
     title: 'New Appliances Load',

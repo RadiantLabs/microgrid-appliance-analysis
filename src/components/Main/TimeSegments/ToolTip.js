@@ -3,7 +3,14 @@ import { Table } from 'semantic-ui-react'
 import _ from 'lodash'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 
-export const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy }) => {
+export const CustomToolTip = ({
+  active,
+  payload,
+  label,
+  columns,
+  timeSegmentsBy,
+  timeSegmentsAggregation,
+}) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
@@ -21,7 +28,10 @@ export const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy 
               <Table.Row style={{ color: element.color }} key={element.dataKey}>
                 <Table.Cell>{fieldDefinitions[element.dataKey].title}</Table.Cell>
                 <Table.Cell textAlign="right">
-                  {_.round(element.value, 2)} {fieldDefinitions[element.dataKey].units}
+                  {_.round(element.value, 2)}{' '}
+                  {timeSegmentsAggregation === 'count'
+                    ? 'times/yr'
+                    : fieldDefinitions[element.dataKey].units}
                 </Table.Cell>
               </Table.Row>
             )
@@ -31,7 +41,10 @@ export const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy 
           <Table.Row>
             <Table.HeaderCell>{fieldDefinitions[totalColumnName].title}</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">
-              {totalVal} {fieldDefinitions[totalColumnName].units}
+              {totalVal}{' '}
+              {timeSegmentsAggregation === 'count'
+                ? 'times/yr'
+                : fieldDefinitions[totalColumnName].units}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>

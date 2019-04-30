@@ -16,7 +16,7 @@ class TimeSegments extends React.Component {
   state = {
     chartType: 'area', // could be bar
     stackOffset: 'none',
-    load: new Set(['Original Electrical Load Served', 'newAppliancesLoad']),
+    load: new Set(['originalElectricLoadServed', 'newAppliancesLoad']),
     unmetLoad: new Set(['originalModeledUnmetLoad', 'newAppliancesUnmetLoad']),
     excessProduction: new Set(['originalModeledExcessProduction', 'newAppliancesExcessProduction']),
   }
@@ -128,6 +128,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsAggregation={timeSegmentsAggregation}
             isStacked={isStacked}
             columns={columns}
             show={show}
@@ -139,6 +140,7 @@ class TimeSegments extends React.Component {
             hist={hist}
             stackOffset={stackOffset}
             timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsAggregation={timeSegmentsAggregation}
             isStacked={isStacked}
             columns={columns}
             show={show}

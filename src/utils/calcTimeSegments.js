@@ -8,13 +8,25 @@ export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 // We will only chart the original [0] and new appliances [1] metric.
 // The total [2] will be used in the tool tip
 export const columnsToCalculate = {
-  load: ['Original Electrical Load Served', 'newAppliancesLoad', 'totalElectricalLoadServed'],
+  load: ['originalElectricLoadServed', 'newAppliancesLoad', 'totalElectricalLoadServed'],
   unmetLoad: ['originalModeledUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
   excessProduction: [
     'originalModeledExcessProduction',
     'newAppliancesExcessProduction',
     'totalExcessProduction',
   ],
+}
+
+// This is used for counting how many times per year we have a value for the load,
+// unmet load or excess production. So for example, how many times per year (at a given
+// hour of day or day of week) do we have unmet load? If we already have an unmet load
+// from the original HOMER grid, we don't want to add another count of unmet load
+// due to appliances. The generator has already turned on.
+// I could generate this data structure fro the columnsToCalculate but it would be pretty opaque
+const countPairs = {
+  newAppliancesLoad: 'originalElectricLoadServed',
+  newAppliancesUnmetLoad: 'originalModeledUnmetLoad',
+  newAppliancesExcessProduction: 'originalModeledExcessProduction',
 }
 
 const allMetricColumns = _.flatMap(columnsToCalculate, _.values)
@@ -37,7 +49,7 @@ export function calcTimeSegments(combinedTable) {
     return [
       [`average_${by}_hist`, averageByHist(groups[by], allMetricColumns, by)],
       [`sum_${by}_hist`, sumByHist(groups[by], allMetricColumns, by)],
-      [`count_${by}_hist`, countByHist(groups[by], allMetricColumns, by)],
+      [`count_${by}_hist`, countByHist(groups[by], allMetricColumns, by, countPairs)],
     ]
   })
   return _.fromPairs(byTimePairs)
@@ -88,10 +100,15 @@ function sumByHist(group, columns, byKey) {
   })
 }
 
-function countByHist(group, columns, byKey, precision = 1) {
+function countByHist(group, columns, byKey, countPairs, precision = 1) {
   return _.map(group, (rows, key) => {
     const columnSumPairs = _.map(columns, column => {
       const rowsGreaterThanZero = _.filter(rows, row => {
+        // Does it already have a count from it's pair? For example, for newAppliancesLoad, is
+        // originalElectricLoadServed already counted? If so, don't count it twice
+        if (_.has(countPairs, column)) {
+          return origIsCounted(row, column, countPairs[column], precision)
+        }
         return _.round(row[column], precision) > 0
       })
       return [column, _.size(rowsGreaterThanZero)]
@@ -101,4 +118,10 @@ function countByHist(group, columns, byKey, precision = 1) {
       ..._.fromPairs(columnSumPairs),
     }
   })
+}
+
+function origIsCounted(row, newAppliances, original, precision) {
+  const originalVal = _.round(row[original], precision)
+  const newAppliancesVal = _.round(row[newAppliances], precision)
+  return originalVal > 0 ? false : newAppliancesVal > 0
 }

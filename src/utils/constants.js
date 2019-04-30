@@ -47,6 +47,7 @@ export const tableColorsByKey = {
 export const chartColorsByKey = {
   // Loads
   'Original Electrical Load Served': '#444e86',
+  originalElectricLoadServed: '#444e86',
   newAppliancesLoad: '#955196',
   newAppliancesAncillaryLoad: '#FF6E54',
 

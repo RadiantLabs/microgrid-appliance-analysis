@@ -4,7 +4,15 @@ import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
 import { CustomToolTip } from './ToolTip'
 import { xAxisFormatter } from './xAxisFormatter'
 
-export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, columns, show }) => {
+export const StackedBar = ({
+  hist,
+  stackOffset,
+  timeSegmentsBy,
+  timeSegmentsAggregation,
+  isStacked,
+  columns,
+  show,
+}) => {
   return (
     <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
       <BarChart
@@ -18,7 +26,12 @@ export const StackedBar = ({ hist, stackOffset, timeSegmentsBy, isStacked, colum
           tickFormatter={xAxisFormatter.bind(null, timeSegmentsBy)}
         />
         <YAxis />
-        <Tooltip content={<CustomToolTip />} columns={columns} timeSegmentsBy={timeSegmentsBy} />
+        <Tooltip
+          content={<CustomToolTip />}
+          columns={columns}
+          timeSegmentsBy={timeSegmentsBy}
+          timeSegmentsAggregation={timeSegmentsAggregation}
+        />
         {show.has(columns[0]) && (
           <Bar
             type="monotone"

@@ -18,7 +18,6 @@ class TimeSegmentControls extends React.Component {
     if (_.isEmpty(combinedTable)) {
       return <LoaderSpinner />
     }
-    const disableCount = timeSegmentsMetric === 'load' || timeSegmentsMetric === 'excessProduction'
     return (
       <Grid>
         <Grid.Row style={{ paddingBottom: 0 }}>
@@ -69,7 +68,6 @@ class TimeSegmentControls extends React.Component {
               </Button>
               <Button
                 value="count"
-                disabled={disableCount}
                 onClick={handleTimeSegmentsAggregationChange}
                 active={timeSegmentsAggregation === 'count'}>
                 Count

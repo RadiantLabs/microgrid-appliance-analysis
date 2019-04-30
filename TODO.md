@@ -12,21 +12,30 @@ Charts:
 to calculate load?
 - The underlying assumption is that we have a generator backup, so it will always be served
 
+-[x] Fix countByHist(): It should not double count an hour. For example:
+     * Original Electrical Load Served: 322 times/year
+     * New appliances load: 87 times/year  -> These don't simple add: If original is already 'on' don't count new appliances
+
+- What does averages in this case mean? If you say the average load at noon is 10kWh, then you
+  are taking all of the loads at noon, summing them and then dividing by the number of noon
+  that you summed (365 noons in a year)
+
 - Double Check Calculations
   - Excess Production
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [ ] What am I averaging over
-    - [ ] Disable count
+    - [ ] What am I averaging over?
+    - [x] Fix count. It also should not have kWh as units in the tooltip
 
   - Unmet Load
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
     - [ ] What am I averaging over
-    - [ ] Manually check count. It should represent how many times/year on an hourOfDay we get unmet          loads
+    - [x] Manually check count. It should represent how many times/year on an
+          hourOfDay we get unmet loads
 
   - Load
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
     - [ ] What am I averaging over
-    - [ ] Disable count
+    - [x] Fix count
 
   - [ ] Should average and sum have the same shape? What am I averaging over?
         What should I average over?
@@ -36,13 +45,14 @@ to calculate load?
       not just total hypothetical load, because we are assuming a backup generator
 - [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
+- [x] Why is there any significant variation in month? -> Because HOMER and solar production!
 
 Misc:
 - [ ] Rename dayHour to hourOfWeek
+- [ ] Rename hour to hourOfYear?
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
-- [ ] Rename hour to hourOfYear?
-- [ ] Change Filechooser to use square checkboxes
+- [x] Change Filechooser to use square checkboxes
 - [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
 
 Battery Model:
