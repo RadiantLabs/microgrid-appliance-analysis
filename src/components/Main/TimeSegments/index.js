@@ -12,12 +12,13 @@ import { StackedArea } from './StackedArea'
 import { StackedBar } from './StackedBar'
 
 class TimeSegments extends React.Component {
+  // I could set initial state based on incoming props
   state = {
     chartType: 'area', // could be bar
     stackOffset: 'none',
     load: new Set(['Original Electrical Load Served', 'newAppliancesLoad']),
-    unmetLoad: new Set(['originalUnmetLoad', 'newAppliancesUnmetLoad']),
-    excessProduction: new Set(['originalExcessProduction', 'newAppliancesExcessProduction']),
+    unmetLoad: new Set(['originalModeledUnmetLoad', 'newAppliancesUnmetLoad']),
+    excessProduction: new Set(['originalModeledExcessProduction', 'newAppliancesExcessProduction']),
   }
 
   handleLegendClick = (e, { value }) => {
@@ -195,9 +196,8 @@ function getChartTitle(metric, aggregation, by) {
   )
   const notStackedMsg = (
     <span>
-      Additional appliances will decrease the {_.toLower(timeSegmentLabels[metric])} so in this
-      chart it is <strong>not</strong> stacked on top of the original{' '}
-      {_.toLower(timeSegmentLabels[metric])}
+      Additional appliances will decrease the {_.toLower(timeSegmentLabels[metric])} so it is
+      subtracted from the original
     </span>
   )
   return (

@@ -96,10 +96,14 @@ export function calcHybridColumns(grid, summedAppliances) {
     // more sense to use the originalModeledExcessProduction to calculate the excess
     // due to new appliances.
     // const newAppliancesExcessProduction = originalModeledExcessProduction - totalExcessProduction
+    // const newAppliancesExcessProduction =
+    //   originalModeledExcessProduction - totalExcessProduction < 0
+    //     ? 0
+    //     : originalModeledExcessProduction - totalExcessProduction
     const newAppliancesExcessProduction =
-      originalModeledExcessProduction - totalExcessProduction < 0
+      totalExcessProduction - originalModeledExcessProduction > 0
         ? 0
-        : originalModeledExcessProduction - totalExcessProduction
+        : totalExcessProduction - originalModeledExcessProduction
 
     // __ Output Results _______________________________________________________
     // I am thinking availableCapacity doesn't make sense to calculate or display.

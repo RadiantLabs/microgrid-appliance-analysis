@@ -9,9 +9,9 @@ export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 // The total [2] will be used in the tool tip
 export const columnsToCalculate = {
   load: ['Original Electrical Load Served', 'newAppliancesLoad', 'totalElectricalLoadServed'],
-  unmetLoad: ['originalUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
+  unmetLoad: ['originalModeledUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
   excessProduction: [
-    'originalExcessProduction',
+    'originalModeledExcessProduction',
     'newAppliancesExcessProduction',
     'totalExcessProduction',
   ],
