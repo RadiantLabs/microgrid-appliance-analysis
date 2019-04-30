@@ -107,7 +107,7 @@ function countByHist(group, columns, byKey, countPairs, precision = 1) {
         // Does it already have a count from it's pair? For example, for newAppliancesLoad, is
         // originalElectricLoadServed already counted? If so, don't count it twice
         if (_.has(countPairs, column)) {
-          return origIsCounted(row, column, countPairs[column], precision)
+          return originalWillHaveCount(row, column, countPairs[column], precision)
         }
         return _.round(row[column], precision) > 0
       })
@@ -120,7 +120,7 @@ function countByHist(group, columns, byKey, countPairs, precision = 1) {
   })
 }
 
-function origIsCounted(row, newAppliances, original, precision) {
+function originalWillHaveCount(row, newAppliances, original, precision) {
   const originalVal = _.round(row[original], precision)
   const newAppliancesVal = _.round(row[newAppliances], precision)
   return originalVal > 0 ? false : newAppliancesVal > 0
