@@ -39,6 +39,7 @@ Misc:
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Rename hour to hourOfYear?
 - [ ] Change Filechooser to use square checkboxes
+- [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
 
 Battery Model:
 - [ ] Test with all HOMER files

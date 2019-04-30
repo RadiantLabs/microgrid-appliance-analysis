@@ -31,8 +31,7 @@ export const CustomToolTip = ({ active, payload, label, columns, timeSegmentsBy 
           <Table.Row>
             <Table.HeaderCell>{fieldDefinitions[totalColumnName].title}</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">
-              {totalVal}
-              {fieldDefinitions[totalColumnName].units}
+              {totalVal} {fieldDefinitions[totalColumnName].units}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>
