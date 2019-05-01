@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { predictBatteryEnergyContent } from './predictBatteryEnergyContent'
-import { getGridPowerType } from './columnDetectors'
+// import { getGridPowerType } from './columnDetectors'
 
 // Pass in the merged table that includes Homer and summed appliance calculated columnms.
 // Also pass in adjustable fields from store that are required
@@ -24,7 +24,7 @@ export function calcHybridColumns(grid, summedAppliances) {
     const newAppliancesLoad = applianceRow['newAppliancesLoad']
     const totalElectricalProduction = homerRow['totalElectricalProduction']
 
-    const { powerType: gridPowerType } = getGridPowerType(_.keys(homerRow))
+    // const { powerType: gridPowerType } = getGridPowerType(_.keys(homerRow))
 
     // 'Load Served' implies it was actually served, instead of load demand.
     // We want to predict the battery energy content, unmet load and excess production.
@@ -33,14 +33,16 @@ export function calcHybridColumns(grid, summedAppliances) {
     // 'load served' and just 'load' because if the grid goes down, there is no load.
     // However, the prediction function calculates battery energy content, excess
     // production and unmet load at the same time.
-    const originalElectricLoad =
-      gridPowerType === 'AC' ? homerRow['AC Primary Load'] : homerRow['DC Primary Load']
+
+    // const originalElectricLoad =
+    //   gridPowerType === 'AC' ? homerRow['AC Primary Load'] : homerRow['DC Primary Load']
 
     const originalElectricLoadServed = homerRow['Original Electrical Load Served']
 
     // The underlying assumption is that we have a generator backup, so it will always be served
     const totalElectricalLoadServed =
-      originalElectricLoad + newAppliancesLoad + applianceRow['newAppliancesAncillaryLoad']
+      // originalElectricLoad + newAppliancesLoad + applianceRow['newAppliancesAncillaryLoad']  // Temp
+      originalElectricLoadServed + newAppliancesLoad + applianceRow['newAppliancesAncillaryLoad']
 
     // This value is important for predicting the battery energy content based on new loads
     // It's positive if battery is charging, negative if battery is discharging
@@ -120,6 +122,8 @@ export function calcHybridColumns(grid, summedAppliances) {
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
       batteryEnergyContent: _.round(batteryEnergyContent, 4),
       totalElectricalProduction: _.round(totalElectricalProduction, 4),
+
+      // originalElectricLoad: _.round(originalElectricLoad, 4), // I don't think we need it
       totalElectricalLoadServed: _.round(totalElectricalLoadServed, 4),
       originalElectricLoadServed: _.round(originalElectricLoadServed, 4),
       electricalProductionLoadDiff: _.round(electricalProductionLoadDiff, 4),

@@ -8,13 +8,8 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- Do I need to calculate both load and load served? What variable am I using now
-to calculate load?
-- The underlying assumption is that we have a generator backup, so it will always be served
-
--[x] Fix countByHist(): It should not double count an hour. For example:
-     * Original Electrical Load Served: 322 times/year
-     * New appliances load: 87 times/year  -> These don't simple add: If original is already 'on' don't count new appliances
+- TODO: Add newAppliancesAncillaryLoad to columnsToCalculate
+  - Add newAppliancesAncillaryLoad to chart
 
 - What does averages in this case mean? If you say the average load at noon is 10kWh, then you
   are taking all of the loads at noon, summing them and then dividing by the number of noon
@@ -23,14 +18,14 @@ to calculate load?
 - Double Check Calculations
   - Excess Production
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [ ] What am I averaging over?
     - [x] Fix count. It also should not have kWh as units in the tooltip
 
   - Unmet Load
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [ ] What am I averaging over
     - [x] Manually check count. It should represent how many times/year on an
           hourOfDay we get unmet loads
+    - [ ] Does originalElectricLoad include served + unmetLoad? Should that be used
+          in the predict battery content instead of originalElectricLoadServed?
 
   - Load
     - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console

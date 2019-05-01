@@ -8,7 +8,12 @@ export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 // We will only chart the original [0] and new appliances [1] metric.
 // The total [2] will be used in the tool tip
 export const columnsToCalculate = {
-  load: ['originalElectricLoadServed', 'newAppliancesLoad', 'totalElectricalLoadServed'],
+  load: [
+    'originalElectricLoadServed',
+    'newAppliancesLoad',
+    'newAppliancesAncillaryLoad',
+    'totalElectricalLoadServed',
+  ],
   unmetLoad: ['originalModeledUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
   excessProduction: [
     'originalModeledExcessProduction',
@@ -74,9 +79,6 @@ function calcTimeSegmentGroups(combinedTable) {
 // Histogram Functions
 // _____________________________________________________________________________
 function averageByHist(group, columns, byKey) {
-  // console.log('__ byKey: ', byKey, '__________')
-  // console.log('group: ', group)
-  // console.log('columns: ', columns)
   return _.map(group, (rows, key) => {
     const columnAvgPairs = _.map(columns, column => {
       return [column, _.round(_.sumBy(rows, column) / _.size(rows), 2)]

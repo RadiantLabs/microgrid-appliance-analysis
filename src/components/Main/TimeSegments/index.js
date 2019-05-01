@@ -55,7 +55,6 @@ class TimeSegments extends React.Component {
 
     // hist names look like: average_dayHour_hist
     const hist = timeSegments[`${timeSegmentsAggregation}_${timeSegmentsBy}_hist`]
-    console.log('hist: ', hist)
 
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
