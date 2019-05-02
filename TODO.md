@@ -43,6 +43,7 @@ Charts:
 - [x] Why is there any significant variation in month? -> Because HOMER and solar production!
 
 Misc:
+- [ ] Make sure to add polyfills: https://stackoverflow.com/questions/43756211/best-way-to-polyfill-es6-features-in-react-app-that-uses-create-react-app (spread with Set)
 - [ ] Rename dayHour to hourOfWeek
 - [ ] Rename hour to hourOfYear?
 - [ ] Sum excess load over year in summaryStats

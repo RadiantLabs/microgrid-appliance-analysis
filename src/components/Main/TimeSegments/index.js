@@ -13,19 +13,19 @@ import { StackedChart } from './StackedChart'
 class TimeSegments extends React.Component {
   // I could set initial state based on incoming props
   state = {
-    chartType: 'area', // could be bar
+    chartType: 'area', //  `area` | `bar`
     stackOffset: 'none',
-    load: new Set(['originalElectricLoadServed', 'newAppliancesLoad']),
-    unmetLoad: new Set(['originalModeledUnmetLoad', 'newAppliancesUnmetLoad']),
-    excessProduction: new Set(['originalModeledExcessProduction', 'newAppliancesExcessProduction']),
+    load: new Set(),
+    unmetLoad: new Set(),
+    excessProduction: new Set(),
   }
 
   handleLegendClick = (e, { value }) => {
     e.preventDefault()
     const { timeSegmentsMetric } = this.props.store
     this.setState(state => {
-      const show = state[timeSegmentsMetric]
-      return show.has(value) ? show.delete(value) : show.add(value)
+      const metric = state[timeSegmentsMetric]
+      return metric.has(value) ? metric.delete(value) : metric.add(value)
     })
   }
 
@@ -49,7 +49,6 @@ class TimeSegments extends React.Component {
     if (_.isEmpty(timeSegments)) {
       return <LoaderSpinner />
     }
-    const show = this.state[timeSegmentsMetric]
     const totalsColumnName = totalsColumn[timeSegmentsMetric][0]
     const { stackOffset, chartType } = this.state
 
@@ -58,11 +57,11 @@ class TimeSegments extends React.Component {
 
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
-    const columns = chartedColumns[timeSegmentsMetric]
-    console.log('columns: ', columns)
-
     const chartTitle = getChartTitle(timeSegmentsMetric, timeSegmentsAggregation, timeSegmentsBy)
     const isStacked = timeSegmentsMetric !== 'excessProduction'
+    const columns = chartedColumns[timeSegmentsMetric]
+    const excludedColumns = this.state[timeSegmentsMetric]
+    const activeColumns = _.without(columns, ...excludedColumns) // spread of Sets requires polyfill for older browsers
     return (
       <div>
         <Grid>
@@ -131,34 +130,29 @@ class TimeSegments extends React.Component {
           timeSegmentsBy={timeSegmentsBy}
           timeSegmentsAggregation={timeSegmentsAggregation}
           isStacked={isStacked}
-          columns={columns}
+          columns={activeColumns}
           totalsColumnName={totalsColumnName}
-          show={show}
         />
 
         <p> </p>
-
+        {/* Clickable Legend */}
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">
-              <Label
-                basic
-                value={columns[0]}
-                onClick={this.handleLegendClick}
-                style={legendLabelStyles(0)}
-                size="large">
-                <Icon name={`square outline${show.has(columns[0]) ? ' check' : ''}`} />
-                {fieldDefinitions[columns[0]].title}
-              </Label>
-              <Label
-                basic
-                value={columns[1]}
-                onClick={this.handleLegendClick}
-                style={legendLabelStyles(1)}
-                size="large">
-                <Icon name={`square outline${show.has(columns[1]) ? ' check' : ''}`} />
-                {fieldDefinitions[columns[1]].title}
-              </Label>
+              {_.map(columns, column => {
+                return (
+                  <Label
+                    basic
+                    key={column}
+                    value={column}
+                    onClick={this.handleLegendClick}
+                    style={legendLabelStyles(column)}
+                    size="large">
+                    <Icon name={`square outline${excludedColumns.has(column) ? '' : ' check'}`} />
+                    {fieldDefinitions[column].title}
+                  </Label>
+                )
+              })}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -168,46 +162,6 @@ class TimeSegments extends React.Component {
 }
 
 export default inject('store')(observer(TimeSegments))
-
-// {
-//   /* <StackedChart
-// hist={hist}
-// chartType={chartType}
-// stackOffset={stackOffset}
-// timeSegmentsBy={timeSegmentsBy}
-// timeSegmentsAggregation={timeSegmentsAggregation}
-// isStacked={isStacked}
-// columns={columns}
-// totalsColumnName={totalsColumnName}
-// show={show}
-// /> */
-// }
-
-// {chartType === 'area' && (
-//   <StackedArea
-//     hist={hist}
-//     stackOffset={stackOffset}
-//     timeSegmentsBy={timeSegmentsBy}
-//     timeSegmentsAggregation={timeSegmentsAggregation}
-//     isStacked={isStacked}
-//     columns={columns}
-//     totalsColumnName={totalsColumnName}
-//     show={show}
-//   />
-// )}
-
-// {chartType === 'bar' && (
-//   <StackedBar
-//     hist={hist}
-//     stackOffset={stackOffset}
-//     timeSegmentsBy={timeSegmentsBy}
-//     timeSegmentsAggregation={timeSegmentsAggregation}
-//     isStacked={isStacked}
-//     columns={columns}
-//     totalsColumnName={totalsColumnName}
-//     show={show}
-//   />
-// )}
 
 // ___________________________________________________________________________
 // Misc
@@ -240,9 +194,9 @@ function getChartTitle(metric, aggregation, by) {
   )
 }
 
-function legendLabelStyles(colorIndex) {
+function legendLabelStyles(column) {
   return {
-    borderBottom: `4px solid ${timeSegmentColors[colorIndex]}`,
+    borderBottom: `4px solid ${timeSegmentColors[column]}`,
     cursor: 'pointer',
   }
 }

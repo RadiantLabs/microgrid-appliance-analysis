@@ -61,7 +61,18 @@ export const chartColorsByKey = {
   totalUnmetLoad: '#DD5182',
 }
 
-export const timeSegmentColors = ['#444e86', '#955196']
+// export const timeSegmentColors = ['#444e86', '#955196']
+export const timeSegmentColors = {
+  originalElectricLoadServed: '#444e86',
+  originalModeledUnmetLoad: '#444e86',
+  originalModeledExcessProduction: '#444e86',
+
+  newAppliancesLoad: '#955196',
+  newAppliancesUnmetLoad: '#955196',
+  newAppliancesExcessProduction: '#955196',
+
+  newAppliancesAncillaryLoad: '#FF6E54',
+}
 
 export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
 

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import _ from 'lodash'
 import {
   XAxis,
   YAxis,
@@ -22,7 +23,6 @@ export const StackedChart = ({
   isStacked,
   columns,
   totalsColumnName,
-  show,
 }) => {
   const ChartWrapper = chartType === 'area' ? AreaChart : BarChart
   const Chart = chartType === 'area' ? Area : Bar
@@ -46,26 +46,19 @@ export const StackedChart = ({
           timeSegmentsBy={timeSegmentsBy}
           timeSegmentsAggregation={timeSegmentsAggregation}
         />
-        {show.has(columns[0]) && (
-          <Chart
-            type="monotone"
-            dataKey={columns[0]}
-            stackId="1"
-            stroke={timeSegmentColors[0]}
-            fill={timeSegmentColors[0]}
-            fillOpacity="1"
-          />
-        )}
-        {show.has(columns[1]) && (
-          <Chart
-            type="monotone"
-            dataKey={columns[1]}
-            stackId={isStacked ? '1' : '2'}
-            stroke={timeSegmentColors[1]}
-            fill={timeSegmentColors[1]}
-            fillOpacity="1"
-          />
-        )}
+        {_.map(columns, (column, columnIndex) => {
+          return (
+            <Chart
+              key={column}
+              type="monotone"
+              dataKey={column}
+              stackId={isStacked ? 1 : columnIndex}
+              stroke={timeSegmentColors[column]}
+              fill={timeSegmentColors[column]}
+              fillOpacity="1"
+            />
+          )
+        })}
       </ChartWrapper>
     </ResponsiveContainer>
   )
