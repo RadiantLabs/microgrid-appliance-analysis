@@ -263,7 +263,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
       : applianceOwnerPayback,
   }
 
-  debugOutputValues(returnObject, combinedTable)
+  // debugOutputValues(returnObject, combinedTable)
   return returnObject
 }
 

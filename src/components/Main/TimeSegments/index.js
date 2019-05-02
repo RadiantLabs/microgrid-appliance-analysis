@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Label, Icon, Header, Button } from 'semantic-ui-react'
+import { Grid, Label, Icon, Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
-import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { chartedColumns, totalsColumn } from '../../../utils/calcTimeSegments'
-import { timeSegmentLabels } from '../../../utils/constants'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedChart } from './StackedChart'
+import { getChartTitle } from './getChartTitle'
+import { timeSegmentColors } from '../../../utils/constants'
 
 class TimeSegments extends React.Component {
   state = {
@@ -161,37 +161,6 @@ class TimeSegments extends React.Component {
 }
 
 export default inject('store')(observer(TimeSegments))
-
-// ___________________________________________________________________________
-// Misc
-// ___________________________________________________________________________
-
-function getChartTitle(metric, aggregation, by) {
-  const title = `${timeSegmentLabels[aggregation]} ${timeSegmentLabels[metric]} by ${
-    timeSegmentLabels[by]
-  }`
-  const isStacked = metric === 'load' || metric === 'unmetLoad'
-  const isNotStacked = metric === 'excessProduction'
-  const stackedMsg = (
-    <span>
-      Additional appliances will increase the {_.toLower(timeSegmentLabels[metric])}, so in this
-      chart it is stacked on top of the original {_.toLower(timeSegmentLabels[metric])}
-    </span>
-  )
-  const notStackedMsg = (
-    <span>
-      Additional appliances will decrease the {_.toLower(timeSegmentLabels[metric])} so it is
-      subtracted from the original
-    </span>
-  )
-  return (
-    <Header as="h3">
-      {title}
-      {isStacked && <Header.Subheader>{stackedMsg}</Header.Subheader>}
-      {isNotStacked && <Header.Subheader>{notStackedMsg}</Header.Subheader>}
-    </Header>
-  )
-}
 
 function legendLabelStyles(column) {
   return {

@@ -11,13 +11,13 @@ Charts:
 - [ ] Have explanation of what aggregations mean
 - [ ] Document assumption that total load (original + appliance) is total load served,
       not just total hypothetical load, because we are assuming a backup generator
-- [ ] Monitor group recalculation and use keepAlive if needed
+- [x] Monitor group recalculation and use keepAlive if needed (Does not work)
 - [ ] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
 
 Misc:
-- [ ] Rename hourOfWeek to hourOfWeek
-- [ ] Rename hour to hourOfYear?
-- [ ] Sum excess load over year in summaryStats
+- [x] Rename hourOfWeek to hourOfWeek
+- [x] Rename hour to hourOfYear? (not going to do it)
+- [ ] Sum excess load over year in summaryStats (wait until I delete hists from summary stats)
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
 
