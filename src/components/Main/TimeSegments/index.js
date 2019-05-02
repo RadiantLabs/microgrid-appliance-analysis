@@ -11,7 +11,6 @@ import TimeSegmentControls from './TimeSegmentControls'
 import { StackedChart } from './StackedChart'
 
 class TimeSegments extends React.Component {
-  // I could set initial state based on incoming props
   state = {
     chartType: 'area', //  `area` | `bar`
     stackOffset: 'none',

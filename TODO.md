@@ -8,47 +8,17 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- TODO: Add newAppliancesAncillaryLoad to columnsToCalculate
-  - Add newAppliancesAncillaryLoad to chart
-
-- What does averages in this case mean? If you say the average load at noon is 10kWh, then you
-  are taking all of the loads at noon, summing them and then dividing by the number of noon
-  that you summed (365 noons in a year)
-
-- Double Check Calculations
-  - Excess Production
-    - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [x] Fix count. It also should not have kWh as units in the tooltip
-
-  - Unmet Load
-    - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [x] Manually check count. It should represent how many times/year on an
-          hourOfDay we get unmet loads
-    - [ ] Does originalElectricLoad include served + unmetLoad? Should that be used
-          in the predict battery content instead of originalElectricLoadServed?
-
-  - Load
-    - [ ] Sum over hourOfDay, dayOfWeek, hourOfWeek, Month matches manual checks in console
-    - [ ] What am I averaging over
-    - [x] Fix count
-
-  - [ ] Should average and sum have the same shape? What am I averaging over?
-        What should I average over?
-
 - [ ] Have explanation of what aggregations mean
 - [ ] Document assumption that total load (original + appliance) is total load served,
       not just total hypothetical load, because we are assuming a backup generator
-- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 - [ ] Monitor group recalculation and use keepAlive if needed
-- [x] Why is there any significant variation in month? -> Because HOMER and solar production!
+- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
 
 Misc:
-- [ ] Make sure to add polyfills: https://stackoverflow.com/questions/43756211/best-way-to-polyfill-es6-features-in-react-app-that-uses-create-react-app (spread with Set)
 - [ ] Rename dayHour to hourOfWeek
 - [ ] Rename hour to hourOfYear?
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
-- [x] Change Filechooser to use square checkboxes
 - [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
 
 Battery Model:
