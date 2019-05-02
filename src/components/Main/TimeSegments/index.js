@@ -5,7 +5,7 @@ import _ from 'lodash'
 import LoaderSpinner from '../../../components/Elements/Loader'
 import { timeSegmentColors } from '../../../utils/constants'
 import { fieldDefinitions } from '../../../utils/fieldDefinitions'
-import { columnsToCalculate } from '../../../utils/calcTimeSegments'
+import { chartedColumns, totalsColumn } from '../../../utils/calcTimeSegments'
 import { timeSegmentLabels } from '../../../utils/constants'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedArea } from './StackedArea'
@@ -51,6 +51,7 @@ class TimeSegments extends React.Component {
       return <LoaderSpinner />
     }
     const show = this.state[timeSegmentsMetric]
+    const totalsColumnName = totalsColumn[timeSegmentsMetric][0]
     const { stackOffset, chartType } = this.state
 
     // hist names look like: average_dayHour_hist
@@ -58,7 +59,7 @@ class TimeSegments extends React.Component {
 
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
-    const columns = columnsToCalculate[timeSegmentsMetric]
+    const columns = chartedColumns[timeSegmentsMetric]
     const chartTitle = getChartTitle(timeSegmentsMetric, timeSegmentsAggregation, timeSegmentsBy)
     const isStacked = timeSegmentsMetric !== 'excessProduction'
     return (
@@ -130,6 +131,7 @@ class TimeSegments extends React.Component {
             timeSegmentsAggregation={timeSegmentsAggregation}
             isStacked={isStacked}
             columns={columns}
+            totalsColumnName={totalsColumnName}
             show={show}
           />
         )}
@@ -142,6 +144,7 @@ class TimeSegments extends React.Component {
             timeSegmentsAggregation={timeSegmentsAggregation}
             isStacked={isStacked}
             columns={columns}
+            totalsColumnName={totalsColumnName}
             show={show}
           />
         )}

@@ -11,6 +11,7 @@ export const StackedArea = ({
   timeSegmentsAggregation,
   isStacked,
   columns,
+  totalsColumnName,
   show,
 }) => {
   return (
@@ -27,7 +28,7 @@ export const StackedArea = ({
         <YAxis />
         <Tooltip
           content={<CustomToolTip />}
-          columns={columns}
+          totalsColumnName={totalsColumnName}
           timeSegmentsBy={timeSegmentsBy}
           timeSegmentsAggregation={timeSegmentsAggregation}
         />

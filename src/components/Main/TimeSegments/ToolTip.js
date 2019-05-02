@@ -7,15 +7,14 @@ export const CustomToolTip = ({
   active,
   payload,
   label,
-  columns,
+  totalsColumnName,
   timeSegmentsBy,
   timeSegmentsAggregation,
 }) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
-  const totalColumnName = columns[2]
-  const totalVal = payload[0]['payload'][totalColumnName]
+  const totalVal = payload[0]['payload'][totalsColumnName]
   return (
     <div className="custom-tooltip">
       <p className="label">
@@ -39,12 +38,12 @@ export const CustomToolTip = ({
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell>{fieldDefinitions[totalColumnName].title}</Table.HeaderCell>
+            <Table.HeaderCell>{fieldDefinitions[totalsColumnName].title}</Table.HeaderCell>
             <Table.HeaderCell textAlign="right">
               {totalVal}{' '}
               {timeSegmentsAggregation === 'count'
                 ? 'times/yr'
-                : fieldDefinitions[totalColumnName].units}
+                : fieldDefinitions[totalsColumnName].units}
             </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>

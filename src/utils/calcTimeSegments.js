@@ -5,36 +5,46 @@ export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'sum', 'count']
 export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
 
-// We will only chart the original [0] and new appliances [1] metric.
-// The total [2] will be used in the tool tip
-export const columnsToCalculate = {
-  load: [
-    'originalElectricLoadServed',
-    'newAppliancesLoad',
-    'newAppliancesAncillaryLoad',
-    'totalElectricalLoadServed',
-  ],
-  unmetLoad: ['originalModeledUnmetLoad', 'newAppliancesUnmetLoad', 'totalUnmetLoad'],
-  excessProduction: [
-    'originalModeledExcessProduction',
-    'newAppliancesExcessProduction',
-    'totalExcessProduction',
-  ],
+export const originalsColumns = {
+  load: ['originalElectricLoadServed'],
+  unmetLoad: ['originalModeledUnmetLoad'],
+  excessProduction: ['originalModeledExcessProduction'],
 }
+
+export const newLoadsColumns = {
+  load: ['newAppliancesLoad', 'newAppliancesAncillaryLoad'],
+  unmetLoad: ['newAppliancesUnmetLoad'],
+  excessProduction: ['newAppliancesExcessProduction'],
+}
+
+export const totalsColumn = {
+  load: ['totalElectricalLoadServed'],
+  unmetLoad: ['totalUnmetLoad'],
+  excessProduction: ['totalExcessProduction'],
+}
+
+function concatValues(objValue, srcValue) {
+  return _.isArray(objValue) ? objValue.concat(srcValue) : null
+}
+
+export const chartedColumns = _.mergeWith(originalsColumns, newLoadsColumns, concatValues)
+
+const allMetricColumns = _.flatten(
+  _.concat(_.values(originalsColumns), _.values(newLoadsColumns), _.values(totalsColumn))
+)
 
 // This is used for counting how many times per year we have a value for the load,
 // unmet load or excess production. So for example, how many times per year (at a given
 // hour of day or day of week) do we have unmet load? If we already have an unmet load
 // from the original HOMER grid, we don't want to add another count of unmet load
-// due to appliances. The generator has already turned on.
-// I could generate this data structure fro the columnsToCalculate but it would be pretty opaque
+// due to appliances. The generator has already turned on so we don't want to count again.
+// Note: This does not include the load from ancillary equipment, which would probably
+// be negiligible but may want to include it at some point.
 const countPairs = {
   newAppliancesLoad: 'originalElectricLoadServed',
   newAppliancesUnmetLoad: 'originalModeledUnmetLoad',
   newAppliancesExcessProduction: 'originalModeledExcessProduction',
 }
-
-const allMetricColumns = _.flatMap(columnsToCalculate, _.values)
 
 // Calculate histogram data for all time segment.
 // Put all metrics we will use in a single histogram structure
