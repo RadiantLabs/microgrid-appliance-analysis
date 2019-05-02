@@ -101,10 +101,10 @@ class TimeSegmentControls extends React.Component {
                 Month
               </Button>
               <Button
-                value="dayHour"
+                value="hourOfWeek"
                 onClick={handleTimeSegmentsByChange}
-                active={timeSegmentsBy === 'dayHour'}>
-                Day-Hour
+                active={timeSegmentsBy === 'hourOfWeek'}>
+                Hour of Week
               </Button>
             </Button.Group>
           </Grid.Column>

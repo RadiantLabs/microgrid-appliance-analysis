@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'sum', 'count']
-export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'dayHour']
+export const timeSegmentsBy = ['hourOfDay', 'dayOfWeek', 'month', 'hourOfWeek']
 
 export const originalsColumns = {
   load: ['originalElectricLoadServed'],
@@ -50,10 +50,10 @@ const countPairs = {
 // Put all metrics we will use in a single histogram structure
 // total: 486ms
 // Naming scheme:
-// average_dayHour_hist
+// average_hourOfWeek_hist
 // average_dayOfWeek_hist
 // count_month_hist
-// sum_dayHour_hist
+// sum_hourOfWeek_hist
 export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}
@@ -81,7 +81,7 @@ function calcTimeSegmentGroups(combinedTable) {
     hourOfDay: _.groupBy(combinedTable, 'hourOfDay'),
     dayOfWeek: _.groupBy(combinedTable, 'dayOfWeek'),
     month: _.groupBy(combinedTable, 'month'),
-    dayHour: _.groupBy(combinedTable, 'dayHour'),
+    hourOfWeek: _.groupBy(combinedTable, 'hourOfWeek'),
   }
 }
 

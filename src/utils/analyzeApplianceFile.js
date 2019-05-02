@@ -9,7 +9,7 @@ const requiredColumns = [
   'hour',
   'day',
   'hour_of_day',
-  'day_hour',
+  'hour_of_week',
   'kw_factor',
 ]
 
@@ -49,7 +49,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       ...row,
       ...{ kwFactor: _.round(row['kw_factor'], 5) },
       ...{ hourOfDay: row['hour_of_day'] },
-      ...{ dayHour: row['day_hour'] },
+      ...{ hourOfWeek: row['hour_of_week'] },
       ...{ dayOfWeek: row['day'] },
       ...{ month: getMonth(row['datetime']) },
     }
@@ -58,7 +58,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       'production_factor',
       'kw_factor',
       'hour_of_day',
-      'day_hour',
+      'hour_of_week',
       'day',
     ])
   })

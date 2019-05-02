@@ -12,10 +12,10 @@ Charts:
 - [ ] Document assumption that total load (original + appliance) is total load served,
       not just total hypothetical load, because we are assuming a backup generator
 - [ ] Monitor group recalculation and use keepAlive if needed
-- [ ] Create weekly bar chart for dayHour: http://recharts.org/en-US/examples/BubbleChart
+- [ ] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
 
 Misc:
-- [ ] Rename dayHour to hourOfWeek
+- [ ] Rename hourOfWeek to hourOfWeek
 - [ ] Rename hour to hourOfYear?
 - [ ] Sum excess load over year in summaryStats
 - [ ] When no appliances are enabled, still show HOMER data in the summary view

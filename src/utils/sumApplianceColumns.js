@@ -21,7 +21,7 @@ export function sumApplianceColumns(enabledAppliances) {
       hourOfDay: appliancesRow[0]['hourOfDay'],
       dayOfWeek: appliancesRow[0]['dayOfWeek'],
       month: appliancesRow[0]['month'],
-      dayHour: appliancesRow[0]['dayHour'],
+      hourOfWeek: appliancesRow[0]['hourOfWeek'],
       newAppliancesLoad: _.round(newAppliancesLoad, 4),
       newAppliancesAncillaryLoad: _.round(newAppliancesAncillaryLoad, 4),
       productionUnitsRevenue: _.round(productionUnitsRevenue, 4),
@@ -38,7 +38,7 @@ const emptyApplianceRows = _.map(_.range(0, 8760), hour => {
     hourOfDay: null,
     dayOfWeek: null,
     month: null,
-    dayHour: null,
+    hourOfWeek: null,
     newAppliancesLoad: 0,
     productionUnitsRevenue: 0,
   }

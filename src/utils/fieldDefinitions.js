@@ -378,9 +378,9 @@ export const fieldDefinitions = {
     description: 'The number of the month of the year, from 1 (January) to 12 (December)',
     type: 'integer',
   },
-  dayHour: {
+  hourOfWeek: {
     $schema: jsonSchemaStandard,
-    title: 'Day-Hour',
+    title: 'Hour Of Week',
     description:
       'A combination of the day of the week and the hour of the day. This uniquely identifies an hour within a week.',
     type: 'string',

@@ -70,7 +70,7 @@ class ApplianceDataTable extends React.Component {
     const applianceHeaderPairs = [
       ['datetime', '-'],
       ['dayOfWeek', '-'],
-      ['dayHour', '-'],
+      ['hourOfWeek', '-'],
       ['month', '-'],
       ['hour', '-'],
       ['hourOfDay', '-'],

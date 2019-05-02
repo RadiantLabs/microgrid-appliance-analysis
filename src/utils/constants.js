@@ -104,5 +104,5 @@ export const timeSegmentLabels = {
   hourOfDay: 'Hour of Day',
   dayOfWeek: 'Day of Week',
   month: 'Month',
-  dayHour: 'Day-Hour',
+  hourOfWeek: 'Hour of Week',
 }

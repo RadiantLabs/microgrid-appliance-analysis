@@ -5,7 +5,7 @@ export const hybridColumnHeaderUnits = [
   ['hour', '-'],
   ['datetime', '-'],
   ['hourOfDay', '-'],
-  // ['dayHour', '-'],
+  // ['hourOfWeek', '-'],
   ['totalElectricalLoadServed', 'kW'],
   ['electricalProductionLoadDiff', 'kW'],
   ['batteryEnergyContent', 'kWh'],
@@ -61,7 +61,7 @@ export const applianceHeaderUnits = [
   ['newAppliancesLoad', 'kW'],
   ['newAppliancesAncillaryLoad', 'kW'],
   ['productionUnitsRevenue', '$'],
-  ['dayHour', '-'],
+  ['hourOfWeek', '-'],
   ['kwFactor', '-'],
   // ['month', '-'],
 ]

@@ -60,7 +60,7 @@ export const ApplianceFileInstructions = inject('store')(
           />
           <ColumnDefinition col="hourOfDay" def="Hour of the day, from 0 to 23" />
           <ColumnDefinition
-            col="dayHour"
+            col="hourOfWeek"
             def="A concatenation of the day column (0mon) and hourOfDay"
           />
           <ColumnDefinition
@@ -85,7 +85,7 @@ const ExampleFileTable = () => {
           <Table.HeaderCell>hour</Table.HeaderCell>
           <Table.HeaderCell>day</Table.HeaderCell>
           <Table.HeaderCell>hourOfDay</Table.HeaderCell>
-          <Table.HeaderCell>dayHour</Table.HeaderCell>
+          <Table.HeaderCell>hourOfWeek</Table.HeaderCell>
           <Table.HeaderCell>kwFactor</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
