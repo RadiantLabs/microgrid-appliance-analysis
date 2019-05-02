@@ -1,11 +1,21 @@
 import * as React from 'react'
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
+import {
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+} from 'recharts'
 import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
 import { xAxisFormatter } from './xAxisFormatter'
 import { CustomToolTip } from './ToolTip'
 
-export const StackedArea = ({
+export const StackedChart = ({
   hist,
+  chartType,
   stackOffset,
   timeSegmentsBy,
   timeSegmentsAggregation,
@@ -14,10 +24,14 @@ export const StackedArea = ({
   totalsColumnName,
   show,
 }) => {
+  const ChartWrapper = chartType === 'area' ? AreaChart : BarChart
+  const Chart = chartType === 'area' ? Area : Bar
+  const barGap = chartType === 'area' ? null : 0
   return (
     <ResponsiveContainer minWidth={1000} minHeight={400} height="90%">
-      <AreaChart
+      <ChartWrapper
         data={hist}
+        barGap={barGap}
         stackOffset={stackOffset}
         margin={{ top: 40, right: 30, left: 0, bottom: 20 }}>
         <XAxis
@@ -33,7 +47,7 @@ export const StackedArea = ({
           timeSegmentsAggregation={timeSegmentsAggregation}
         />
         {show.has(columns[0]) && (
-          <Area
+          <Chart
             type="monotone"
             dataKey={columns[0]}
             stackId="1"
@@ -43,7 +57,7 @@ export const StackedArea = ({
           />
         )}
         {show.has(columns[1]) && (
-          <Area
+          <Chart
             type="monotone"
             dataKey={columns[1]}
             stackId={isStacked ? '1' : '2'}
@@ -52,7 +66,7 @@ export const StackedArea = ({
             fillOpacity="1"
           />
         )}
-      </AreaChart>
+      </ChartWrapper>
     </ResponsiveContainer>
   )
 }

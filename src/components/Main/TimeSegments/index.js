@@ -8,8 +8,7 @@ import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { chartedColumns, totalsColumn } from '../../../utils/calcTimeSegments'
 import { timeSegmentLabels } from '../../../utils/constants'
 import TimeSegmentControls from './TimeSegmentControls'
-import { StackedArea } from './StackedArea'
-import { StackedBar } from './StackedBar'
+import { StackedChart } from './StackedChart'
 
 class TimeSegments extends React.Component {
   // I could set initial state based on incoming props
@@ -60,6 +59,8 @@ class TimeSegments extends React.Component {
     // First 2 elements in columns should be displayed in the chart. The third
     // element is the total, showed in the tooltip
     const columns = chartedColumns[timeSegmentsMetric]
+    console.log('columns: ', columns)
+
     const chartTitle = getChartTitle(timeSegmentsMetric, timeSegmentsAggregation, timeSegmentsBy)
     const isStacked = timeSegmentsMetric !== 'excessProduction'
     return (
@@ -123,31 +124,17 @@ class TimeSegments extends React.Component {
           </Grid.Row>
         </Grid>
 
-        {chartType === 'area' && (
-          <StackedArea
-            hist={hist}
-            stackOffset={stackOffset}
-            timeSegmentsBy={timeSegmentsBy}
-            timeSegmentsAggregation={timeSegmentsAggregation}
-            isStacked={isStacked}
-            columns={columns}
-            totalsColumnName={totalsColumnName}
-            show={show}
-          />
-        )}
-
-        {chartType === 'bar' && (
-          <StackedBar
-            hist={hist}
-            stackOffset={stackOffset}
-            timeSegmentsBy={timeSegmentsBy}
-            timeSegmentsAggregation={timeSegmentsAggregation}
-            isStacked={isStacked}
-            columns={columns}
-            totalsColumnName={totalsColumnName}
-            show={show}
-          />
-        )}
+        <StackedChart
+          hist={hist}
+          chartType={chartType}
+          stackOffset={stackOffset}
+          timeSegmentsBy={timeSegmentsBy}
+          timeSegmentsAggregation={timeSegmentsAggregation}
+          isStacked={isStacked}
+          columns={columns}
+          totalsColumnName={totalsColumnName}
+          show={show}
+        />
 
         <p> </p>
 
@@ -181,6 +168,46 @@ class TimeSegments extends React.Component {
 }
 
 export default inject('store')(observer(TimeSegments))
+
+// {
+//   /* <StackedChart
+// hist={hist}
+// chartType={chartType}
+// stackOffset={stackOffset}
+// timeSegmentsBy={timeSegmentsBy}
+// timeSegmentsAggregation={timeSegmentsAggregation}
+// isStacked={isStacked}
+// columns={columns}
+// totalsColumnName={totalsColumnName}
+// show={show}
+// /> */
+// }
+
+// {chartType === 'area' && (
+//   <StackedArea
+//     hist={hist}
+//     stackOffset={stackOffset}
+//     timeSegmentsBy={timeSegmentsBy}
+//     timeSegmentsAggregation={timeSegmentsAggregation}
+//     isStacked={isStacked}
+//     columns={columns}
+//     totalsColumnName={totalsColumnName}
+//     show={show}
+//   />
+// )}
+
+// {chartType === 'bar' && (
+//   <StackedBar
+//     hist={hist}
+//     stackOffset={stackOffset}
+//     timeSegmentsBy={timeSegmentsBy}
+//     timeSegmentsAggregation={timeSegmentsAggregation}
+//     isStacked={isStacked}
+//     columns={columns}
+//     totalsColumnName={totalsColumnName}
+//     show={show}
+//   />
+// )}
 
 // ___________________________________________________________________________
 // Misc
