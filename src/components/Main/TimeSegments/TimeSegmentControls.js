@@ -81,7 +81,7 @@ class TimeSegmentControls extends React.Component {
             <strong>By</strong>
           </Grid.Column>
           <Grid.Column width={10}>
-            <Button.Group basic compact size="tiny">
+            <Button.Group basic compact size="tiny" style={{ minWidth: '380px' }}>
               <Button
                 value="hourOfDay"
                 onClick={handleTimeSegmentsByChange}
