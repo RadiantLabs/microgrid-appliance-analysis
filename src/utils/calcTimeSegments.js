@@ -94,7 +94,7 @@ function averageByHist(group, columns, byKey) {
       return [column, _.round(_.sumBy(rows, column) / _.size(rows), 2)]
     })
     return {
-      [byKey]: parseInt(key, 10),
+      [byKey]: key,
       ..._.fromPairs(columnAvgPairs),
     }
   })
@@ -106,7 +106,7 @@ function sumByHist(group, columns, byKey) {
       return [column, _.round(_.sumBy(rows, column))]
     })
     return {
-      [byKey]: parseInt(key, 10),
+      [byKey]: key,
       ..._.fromPairs(columnSumPairs),
     }
   })
@@ -126,7 +126,7 @@ function countByHist(group, columns, byKey, countPairs, precision = 1) {
       return [column, _.size(rowsGreaterThanZero)]
     })
     return {
-      [byKey]: parseInt(key, 10),
+      [byKey]: key,
       ..._.fromPairs(columnSumPairs),
     }
   })

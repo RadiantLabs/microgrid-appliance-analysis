@@ -7,6 +7,7 @@ import { fieldDefinitions } from '../../../utils/fieldDefinitions'
 import { chartedColumns, totalsColumn } from '../../../utils/calcTimeSegments'
 import TimeSegmentControls from './TimeSegmentControls'
 import { StackedChart } from './StackedChart'
+import { HourOfWeekChart } from './HourOfWeekChart'
 import { getChartTitle } from './getChartTitle'
 import { timeSegmentColors } from '../../../utils/constants'
 
@@ -122,16 +123,31 @@ class TimeSegments extends React.Component {
           </Grid.Row>
         </Grid>
 
-        <StackedChart
-          hist={hist}
-          chartType={chartType}
-          stackOffset={stackOffset}
-          timeSegmentsBy={timeSegmentsBy}
-          timeSegmentsAggregation={timeSegmentsAggregation}
-          isStacked={isStacked}
-          columns={activeColumns}
-          totalsColumnName={totalsColumnName}
-        />
+        {timeSegmentsBy !== 'hourOfWeek' && (
+          <StackedChart
+            hist={hist}
+            chartType={chartType}
+            stackOffset={stackOffset}
+            timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsAggregation={timeSegmentsAggregation}
+            isStacked={isStacked}
+            columns={activeColumns}
+            totalsColumnName={totalsColumnName}
+          />
+        )}
+
+        {timeSegmentsBy === 'hourOfWeek' && (
+          <HourOfWeekChart
+            hist={hist}
+            chartType={chartType}
+            stackOffset={stackOffset}
+            timeSegmentsBy={timeSegmentsBy}
+            timeSegmentsAggregation={timeSegmentsAggregation}
+            isStacked={isStacked}
+            columns={activeColumns}
+            totalsColumnName={totalsColumnName}
+          />
+        )}
 
         <p> </p>
         {/* Clickable Legend */}
