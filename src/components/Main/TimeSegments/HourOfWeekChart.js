@@ -51,18 +51,27 @@ export const HourOfWeekChart = ({
   return (
     <div style={{ height: '500px' }}>
       {_.map(byDayOfWeek, (day, dayIndex) => {
+        const yValue = yAxisValues[day[0].day]
         return (
           <ResponsiveContainer minWidth={1000} height="14%" key={day[0].hourOfWeek + dayIndex + ''}>
             <AreaChart
               data={day}
               stackOffset={stackOffset}
               margin={{ top: 0, right: 30, left: 0, bottom: 4 }}>
+              <YAxis
+                label={{ value: yValue, position: 'insideRight' }}
+                width={40}
+                tick={false}
+                tickLine={false}
+                axisLine={false}
+              />
               <Tooltip
                 content={<CustomToolTip />}
                 totalsColumnName={totalsColumnName}
                 timeSegmentsBy={timeSegmentsBy}
                 timeSegmentsAggregation={timeSegmentsAggregation}
               />
+
               {_.map(columns, (column, columnIndex) => {
                 return (
                   <Area
@@ -87,3 +96,13 @@ export const HourOfWeekChart = ({
 
 // barGap={barGap}
 /* <XAxis dataKey="hourOfWeek" /> */
+
+const yAxisValues = {
+  '0mon': 'Mon',
+  '1tue': 'Tue',
+  '2wed': 'Wed',
+  '3thu': 'Thu',
+  '4fri': 'Fri',
+  '5sat': 'Sat',
+  '6sun': 'Sun',
+}
