@@ -27,37 +27,15 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
   const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalUnmetLoad')
-  const originalUnmetLoadHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'originalUnmetLoad'
-  )
 
   const newAppliancesUnmetLoadCount = countGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
   const newAppliancesUnmetLoadCountPercent = percentOfYear(newAppliancesUnmetLoadCount)
   const newAppliancesUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
-  const newAppliancesUnmetLoadHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'newAppliancesUnmetLoad'
-  )
 
   // Unmet Loads: Total (original + new appliance)
   const totalUnmetLoadCount = countGreaterThanZero(combinedTable, 'totalUnmetLoad')
   const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
   const totalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'totalUnmetLoad')
-  const totalUnmetLoadHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'totalUnmetLoad'
-  )
-
-  // Create a histogram object that combined both originalUnmetLoadCount and totalUnmetLoadCount
-  const allUnmetLoadHist = mergeArraysOfObjects(
-    'hourOfDay',
-    originalUnmetLoadHist,
-    totalUnmetLoadHist
-  )
 
   // ___________________________________________________________________________
   // __ Excess Production ______________________________________________________
@@ -69,11 +47,6 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   )
   const originalExcessProductionCountPercent = percentOfYear(originalExcessProductionCount)
   const originalExcessProductionSum = sumGreaterThanZero(combinedTable, 'originalExcessProduction')
-  const originalExcessProductionHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'originalExcessProduction'
-  )
 
   const newAppliancesExcessProductionCount = countGreaterThanZero(
     combinedTable,
@@ -86,26 +59,10 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     combinedTable,
     'newAppliancesExcessProduction'
   )
-  const newAppliancesExcessProductionHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'newAppliancesExcessProduction'
-  )
 
   const totalExcessProductionCount = countGreaterThanZero(combinedTable, 'totalExcessProduction')
   const totalExcessProductionCountPercent = percentOfYear(totalExcessProductionCount)
   const totalExcessProductionSum = sumGreaterThanZero(combinedTable, 'totalExcessProduction')
-  const totalExcessProductionHist = createGreaterThanZeroHistogram(
-    combinedTable,
-    'hourOfDay',
-    'totalExcessProduction'
-  )
-
-  const allExcessProductionHist = mergeArraysOfObjects(
-    'hourOfDay',
-    originalUnmetLoadHist,
-    totalUnmetLoadHist
-  )
 
   // Yearly unmet load costs
   // `totalUnmetLoadCost` includes original and the new appliances
@@ -197,16 +154,12 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     originalUnmetLoadCount,
     originalUnmetLoadCountPercent,
     originalUnmetLoadSum: _.round(originalUnmetLoadSum),
-    originalUnmetLoadHist,
     newAppliancesUnmetLoadCount,
     newAppliancesUnmetLoadCountPercent,
     newAppliancesUnmetLoadSum: _.round(newAppliancesUnmetLoadSum),
-    newAppliancesUnmetLoadHist,
     totalUnmetLoadCount,
     totalUnmetLoadCountPercent,
     totalUnmetLoadSum: _.round(totalUnmetLoadSum),
-    totalUnmetLoadHist,
-    allUnmetLoadHist,
     originalUnmetLoadCost: _.round(originalUnmetLoadCost),
     totalUnmetLoadCost: _.round(totalUnmetLoadCost),
     newAppliancesUnmetLoadCost: _.round(newAppliancesUnmetLoadCost),
@@ -215,16 +168,12 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     originalExcessProductionCount,
     originalExcessProductionCountPercent,
     originalExcessProductionSum: _.round(originalExcessProductionSum),
-    originalExcessProductionHist,
     newAppliancesExcessProductionCount,
     newAppliancesExcessProductionCountPercent,
     newAppliancesExcessProductionSum: _.round(newAppliancesExcessProductionSum),
-    newAppliancesExcessProductionHist,
     totalExcessProductionCount,
     totalExcessProductionCountPercent,
     totalExcessProductionSum: _.round(totalExcessProductionSum),
-    totalExcessProductionHist,
-    allExcessProductionHist,
 
     originalElectricLoadSum: _.round(originalElectricLoadSum),
     newAppliancesLoadSum: _.round(newAppliancesLoadSum),
@@ -296,61 +245,61 @@ function calcProductionUnitType(enabledAppliances) {
 // _____________________________________________________________________________
 // __ Debug functions __________________________________________________________
 // _____________________________________________________________________________
-function debugOutputValues(out, table) {
-  console.log('__ load _______________')
-  console.log(
-    'originalElectricLoadSum: ',
-    out.originalElectricLoadSum,
-    _.round(_.sumBy(table, 'originalElectricLoadServed'))
-  )
-  console.log(
-    'newAppliancesLoadSum: ',
-    out.newAppliancesLoadSum,
-    _.round(_.sumBy(table, 'newAppliancesLoad'))
-  )
-  console.log(
-    'totalElectricalLoadSum: ',
-    out.totalElectricalLoadSum,
-    _.round(out.originalElectricLoadSum + out.newAppliancesLoadSum),
-    ' -> ',
-    out.originalElectricLoadSum + out.newAppliancesLoadSum
-  )
+// function debugOutputValues(out, table) {
+//   console.log('__ load _______________')
+//   console.log(
+//     'originalElectricLoadSum: ',
+//     out.originalElectricLoadSum,
+//     _.round(_.sumBy(table, 'originalElectricLoadServed'))
+//   )
+//   console.log(
+//     'newAppliancesLoadSum: ',
+//     out.newAppliancesLoadSum,
+//     _.round(_.sumBy(table, 'newAppliancesLoad'))
+//   )
+//   console.log(
+//     'totalElectricalLoadSum: ',
+//     out.totalElectricalLoadSum,
+//     _.round(out.originalElectricLoadSum + out.newAppliancesLoadSum),
+//     ' -> ',
+//     out.originalElectricLoadSum + out.newAppliancesLoadSum
+//   )
 
-  console.log('__ unmet load _________')
-  console.log(
-    'originalUnmetLoadSum: ',
-    out.originalUnmetLoadSum,
-    _.round(_.sumBy(table, 'originalUnmetLoad'))
-  )
-  console.log(
-    'newAppliancesUnmetLoadSum: ',
-    out.newAppliancesUnmetLoadSum,
-    _.round(_.sumBy(table, 'newAppliancesUnmetLoad'))
-  )
-  console.log(
-    'totalUnmetLoadSum: ',
-    out.totalUnmetLoadSum,
-    _.round(_.sumBy(table, 'totalUnmetLoad')),
-    ' -> ',
-    out.originalUnmetLoadSum + out.newAppliancesUnmetLoadSum
-  )
+//   console.log('__ unmet load _________')
+//   console.log(
+//     'originalUnmetLoadSum: ',
+//     out.originalUnmetLoadSum,
+//     _.round(_.sumBy(table, 'originalUnmetLoad'))
+//   )
+//   console.log(
+//     'newAppliancesUnmetLoadSum: ',
+//     out.newAppliancesUnmetLoadSum,
+//     _.round(_.sumBy(table, 'newAppliancesUnmetLoad'))
+//   )
+//   console.log(
+//     'totalUnmetLoadSum: ',
+//     out.totalUnmetLoadSum,
+//     _.round(_.sumBy(table, 'totalUnmetLoad')),
+//     ' -> ',
+//     out.originalUnmetLoadSum + out.newAppliancesUnmetLoadSum
+//   )
 
-  console.log('__ excess production _________')
-  console.log(
-    'originalExcessProductionSum: ',
-    out.originalExcessProductionSum,
-    _.round(_.sumBy(table, 'originalExcessProduction'))
-  )
-  console.log(
-    'newAppliancesExcessProductionSum: ',
-    out.newAppliancesExcessProductionSum,
-    _.round(_.sumBy(table, 'newAppliancesExcessProduction'))
-  )
-  console.log(
-    'totalExcessProductionSum: ',
-    out.totalExcessProductionSum,
-    _.round(_.sumBy(table, 'totalExcessProduction')),
-    ' -> ',
-    out.originalExcessProductionSum + out.newAppliancesExcessProductionSum
-  )
-}
+//   console.log('__ excess production _________')
+//   console.log(
+//     'originalExcessProductionSum: ',
+//     out.originalExcessProductionSum,
+//     _.round(_.sumBy(table, 'originalExcessProduction'))
+//   )
+//   console.log(
+//     'newAppliancesExcessProductionSum: ',
+//     out.newAppliancesExcessProductionSum,
+//     _.round(_.sumBy(table, 'newAppliancesExcessProduction'))
+//   )
+//   console.log(
+//     'totalExcessProductionSum: ',
+//     out.totalExcessProductionSum,
+//     _.round(_.sumBy(table, 'totalExcessProduction')),
+//     ' -> ',
+//     out.originalExcessProductionSum + out.newAppliancesExcessProductionSum
+//   )
+// }

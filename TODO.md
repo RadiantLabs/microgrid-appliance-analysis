@@ -8,7 +8,8 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- [ ] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
+- [x] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
+- [x] Delete Unmet Loads chart
 
 Misc:
 - [ ] Sum excess load over year in summaryStats (wait until I delete hists from summary stats)
