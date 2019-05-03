@@ -11,7 +11,7 @@ import {
   Bar,
 } from 'recharts'
 import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
-import { xAxisFormatter } from './xAxisFormatter'
+import { xAxisFormatter } from './axisFormatters'
 import { CustomToolTip } from './ToolTip'
 
 export const StackedChart = ({

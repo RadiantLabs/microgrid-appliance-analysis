@@ -11,7 +11,7 @@ import {
   Bar,
 } from 'recharts'
 import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
-import { xAxisFormatter } from './xAxisFormatter'
+import { yAxisFormatter } from './axisFormatters'
 import { CustomToolTip } from './ToolTip'
 
 export const HourOfWeekChart = ({
@@ -28,7 +28,6 @@ export const HourOfWeekChart = ({
   const Chart = chartType === 'area' ? Area : Bar
   const barGap = chartType === 'area' ? null : 0
 
-  console.log('hist: ', hist)
   // Each chart row represents a single day (Monday) that goes from 1-24
   // Create 7 arrays, 1 for each day of week
   const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
@@ -46,20 +45,29 @@ export const HourOfWeekChart = ({
       }
     })
   })
-  console.log('byDayOfWeek: ', byDayOfWeek)
 
   return (
-    <div style={{ height: '500px' }}>
+    <div style={{ height: '460px' }}>
       {_.map(byDayOfWeek, (day, dayIndex) => {
-        const yValue = yAxisValues[day[0].day]
+        const dayName = yAxisFormatter(day[0].day)
+        const isLastChart = dayIndex === _.size(byDayOfWeek) - 1
         return (
           <ResponsiveContainer minWidth={1000} height="14%" key={day[0].hourOfWeek + dayIndex + ''}>
-            <AreaChart
+            <ChartWrapper
               data={day}
+              barGap={barGap}
               stackOffset={stackOffset}
-              margin={{ top: 0, right: 30, left: 0, bottom: 4 }}>
+              margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+              <XAxis
+                type="category"
+                dataKey="hour"
+                name="hour"
+                interval={0}
+                tick={isLastChart ? { fontSize: '12px' } : { fontSize: 0 }}
+                tickLine={{ transform: 'translate(0, -6)' }}
+              />
               <YAxis
-                label={{ value: yValue, position: 'insideRight' }}
+                label={{ value: dayName, position: 'insideRight' }}
                 width={40}
                 tick={false}
                 tickLine={false}
@@ -70,11 +78,12 @@ export const HourOfWeekChart = ({
                 totalsColumnName={totalsColumnName}
                 timeSegmentsBy={timeSegmentsBy}
                 timeSegmentsAggregation={timeSegmentsAggregation}
+                wrapperStyle={{ zIndex: 100 }}
               />
 
               {_.map(columns, (column, columnIndex) => {
                 return (
-                  <Area
+                  <Chart
                     key={column}
                     type="monotone"
                     name="hourOfDay"
@@ -86,23 +95,10 @@ export const HourOfWeekChart = ({
                   />
                 )
               })}
-            </AreaChart>
+            </ChartWrapper>
           </ResponsiveContainer>
         )
       })}
     </div>
   )
-}
-
-// barGap={barGap}
-/* <XAxis dataKey="hourOfWeek" /> */
-
-const yAxisValues = {
-  '0mon': 'Mon',
-  '1tue': 'Tue',
-  '2wed': 'Wed',
-  '3thu': 'Thu',
-  '4fri': 'Fri',
-  '5sat': 'Sat',
-  '6sun': 'Sun',
 }

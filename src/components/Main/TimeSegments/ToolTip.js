@@ -18,7 +18,10 @@ export const CustomToolTip = ({
   return (
     <div className="custom-tooltip">
       <p className="label">
-        {fieldDefinitions[timeSegmentsBy].title}: {label}
+        {timeSegmentsBy === 'hourOfWeek'
+          ? fieldDefinitions['hourOfDay'].title
+          : fieldDefinitions[timeSegmentsBy].title}
+        : {label}
       </p>
       <Table basic="very" compact>
         <Table.Body>

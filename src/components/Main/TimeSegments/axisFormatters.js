@@ -9,3 +9,7 @@ export function xAxisFormatter(by, val) {
   }
   return val
 }
+
+export function yAxisFormatter(val) {
+  return dayOfWeekLabels[val]
+}

@@ -79,7 +79,16 @@ export const getChartColors = key => _.get(chartColorsByKey, key, greyColors[2])
 // _____________________________________________________________________________
 // Misc:
 // _____________________________________________________________________________
-export const dayOfWeekLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+export const dayOfWeekLabels = {
+  '0mon': 'Mon',
+  '1tue': 'Tue',
+  '2wed': 'Wed',
+  '3thu': 'Thu',
+  '4fri': 'Fri',
+  '5sat': 'Sat',
+  '6sun': 'Sun',
+}
+
 export const monthLabels = [
   'Jan',
   'Feb',
