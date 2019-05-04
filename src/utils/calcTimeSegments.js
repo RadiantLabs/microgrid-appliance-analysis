@@ -58,6 +58,7 @@ export function calcTimeSegments(combinedTable) {
   if (_.isEmpty(combinedTable)) {
     return {}
   }
+
   console.log('calculating calcTimeSegments')
   const groups = calcTimeSegmentGroups(combinedTable)
   const byTimePairs = _.flatMap(timeSegmentsBy, by => {

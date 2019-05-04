@@ -175,31 +175,31 @@ export const GridOperatorTechnicalSummary = inject('store')(
               <Table.HeaderCell>
                 Count <em>hrs/year</em> <UnmetLoadHelperModal />
               </Table.HeaderCell>
+              <Table.HeaderCell>Count Percent of Year</Table.HeaderCell>
               <Table.HeaderCell>
                 Sum <em>kWh</em>
               </Table.HeaderCell>
-              <Table.HeaderCell>Percent of Year</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             <Table.Row>
               <Table.Cell>Original Unmet Load</Table.Cell>
               <Table.Cell textAlign="right">{originalUnmetLoadCount}</Table.Cell>
-              <Table.Cell textAlign="right">{originalUnmetLoadSum}</Table.Cell>
               <Table.Cell textAlign="right">{originalUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{originalUnmetLoadSum}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New Appliances Unmet Load</Table.Cell>
               <Table.Cell textAlign="right">{newAppliancesUnmetLoadCount}</Table.Cell>
-              <Table.Cell textAlign="right">{newAppliancesUnmetLoadSum}</Table.Cell>
               <Table.Cell textAlign="right">{newAppliancesUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesUnmetLoadSum}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
               <Table.Cell>Total Unmet Load</Table.Cell>
               <Table.Cell textAlign="right">{totalUnmetLoadCount}</Table.Cell>
-              <Table.Cell textAlign="right">{totalUnmetLoadSum}</Table.Cell>
               <Table.Cell textAlign="right">{totalUnmetLoadCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{totalUnmetLoadSum}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -212,33 +212,33 @@ export const GridOperatorTechnicalSummary = inject('store')(
               <Table.HeaderCell>
                 Count <em>hrs/year</em> <UnmetLoadHelperModal />
               </Table.HeaderCell>
+              <Table.HeaderCell>Count Percent of Year</Table.HeaderCell>
               <Table.HeaderCell>
                 Sum <em>kWh</em>
               </Table.HeaderCell>
-              <Table.HeaderCell>Percent of Year</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             <Table.Row>
               <Table.Cell>Original Excess Production</Table.Cell>
               <Table.Cell textAlign="right">{originalExcessProductionCount}</Table.Cell>
-              <Table.Cell textAlign="right">{originalExcessProductionSum}</Table.Cell>
               <Table.Cell textAlign="right">{originalExcessProductionCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{originalExcessProductionSum}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>New Appliances Excess Production</Table.Cell>
               <Table.Cell textAlign="right">{newAppliancesExcessProductionCount}</Table.Cell>
-              <Table.Cell textAlign="right">{newAppliancesExcessProductionSum}</Table.Cell>
               <Table.Cell textAlign="right">
                 {newAppliancesExcessProductionCountPercent}%
               </Table.Cell>
+              <Table.Cell textAlign="right">{newAppliancesExcessProductionSum}</Table.Cell>
             </Table.Row>
 
             <Table.Row>
               <Table.Cell>Total Excess Production</Table.Cell>
               <Table.Cell textAlign="right">{totalExcessProductionCount}</Table.Cell>
-              <Table.Cell textAlign="right">{totalExcessProductionSum}</Table.Cell>
               <Table.Cell textAlign="right">{totalExcessProductionCountPercent}%</Table.Cell>
+              <Table.Cell textAlign="right">{totalExcessProductionSum}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

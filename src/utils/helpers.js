@@ -162,6 +162,28 @@ export const countGreaterThanZero = (table, key) => {
     .value()
 }
 
+// function originalWillHaveCount(row, newAppliances, original, precision) {
+//   const originalVal = _.round(row[original], precision)
+//   const newAppliancesVal = _.round(row[newAppliances], precision)
+//   return originalVal > 0 ? false : newAppliancesVal > 0
+// }
+
+// export const countGreaterThanZero = (table, column, countPairs, precision = 1) => {
+//   const rowsGreaterThanZero = _.filter(table, row => {
+//     // Does it already have a count from it's pair? For example, for newAppliancesLoad, is
+//     // originalElectricLoadServed already counted? If so, don't count it twice
+//     if (_.has(countPairs, column)) {
+//       const abc = originalWillHaveCount(row, column, countPairs[column], precision)
+//       console.log('abc: ', abc)
+//       return abc
+//     }
+//     // debugger
+//     return _.round(row[column], precision) > 0
+//   })
+//   console.log('count: ', _.size(rowsGreaterThanZero))
+//   return rowsGreaterThanZero
+// }
+
 // There may be negative numbers when summing. This only sums positive.
 export const sumGreaterThanZero = (table, key) => {
   checkKey(table, key)

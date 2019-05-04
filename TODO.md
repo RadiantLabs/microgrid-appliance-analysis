@@ -8,11 +8,12 @@ Old Notes from meeting:
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
+- [ ] Fix unmet load totals: In Summary, total is smaller than original
+- [ ] Sum excess load over year in summaryStats (wait until I delete hists from summary stats)
 - [x] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
 - [x] Delete Unmet Loads chart
 
 Misc:
-- [ ] Sum excess load over year in summaryStats (wait until I delete hists from summary stats)
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
 

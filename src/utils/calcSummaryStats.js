@@ -3,12 +3,16 @@ import { calcAncillaryEquipmentCosts } from '../utils/calcAncillaryEquipmentCost
 import {
   countGreaterThanZero,
   percentOfYear,
-  mergeArraysOfObjects,
   sumGreaterThanZero,
-  createGreaterThanZeroHistogram,
   calculateRoi,
   calculatePayback,
 } from './helpers'
+
+// const countPairs = {
+//   newAppliancesLoad: 'originalElectricLoadServed',
+//   newAppliancesUnmetLoad: 'originalModeledUnmetLoad',
+//   newAppliancesExcessProduction: 'originalModeledExcessProduction',
+// }
 
 // This is the final yearly summary stats calculation, incorporating:
 // * all enabled appliances
@@ -24,16 +28,23 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // ___________________________________________________________________________
   // Unmet Loads: Original without new appliance. Output values into a histogram
   // data object for charts
-  const originalUnmetLoadCount = countGreaterThanZero(combinedTable, 'originalUnmetLoad')
+  const originalUnmetLoadCount = countGreaterThanZero(
+    combinedTable,
+    'originalModeledUnmetLoad',
+    countPairs
+  )
+
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
-  const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalUnmetLoad')
+  const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalModeledUnmetLoad')
 
   const newAppliancesUnmetLoadCount = countGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
+
   const newAppliancesUnmetLoadCountPercent = percentOfYear(newAppliancesUnmetLoadCount)
   const newAppliancesUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
 
   // Unmet Loads: Total (original + new appliance)
   const totalUnmetLoadCount = countGreaterThanZero(combinedTable, 'totalUnmetLoad')
+
   const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
   const totalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'totalUnmetLoad')
 
@@ -43,10 +54,13 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // Unmet Loads: Original without new appliance. Output values into a histogram
   const originalExcessProductionCount = countGreaterThanZero(
     combinedTable,
-    'originalExcessProduction'
+    'originalModeledExcessProduction'
   )
   const originalExcessProductionCountPercent = percentOfYear(originalExcessProductionCount)
-  const originalExcessProductionSum = sumGreaterThanZero(combinedTable, 'originalExcessProduction')
+  const originalExcessProductionSum = sumGreaterThanZero(
+    combinedTable,
+    'originalModeledExcessProduction'
+  )
 
   const newAppliancesExcessProductionCount = countGreaterThanZero(
     combinedTable,
