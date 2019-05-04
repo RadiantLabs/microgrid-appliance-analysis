@@ -14,8 +14,11 @@ Charts:
 - [x] Delete Unmet Loads chart
 
 Misc:
+- [ ] Comment out tooltip for why unmet loads don't add up
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 - [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
+- [ ] Find why  originalModeledExcessProduction is undefined
+- [ ] Why does Oversize have fewer excess production hours?
 
 Battery Model:
 - [ ] Test with all HOMER files

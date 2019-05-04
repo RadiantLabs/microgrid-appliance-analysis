@@ -28,23 +28,16 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // ___________________________________________________________________________
   // Unmet Loads: Original without new appliance. Output values into a histogram
   // data object for charts
-  const originalUnmetLoadCount = countGreaterThanZero(
-    combinedTable,
-    'originalModeledUnmetLoad',
-    countPairs
-  )
-
+  const originalUnmetLoadCount = _.sumBy(combinedTable, 'originalModeledUnmetLoadCount')
   const originalUnmetLoadCountPercent = percentOfYear(originalUnmetLoadCount)
   const originalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'originalModeledUnmetLoad')
 
-  const newAppliancesUnmetLoadCount = countGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
-
+  const newAppliancesUnmetLoadCount = _.sumBy(combinedTable, 'newAppliancesUnmetLoadCount')
   const newAppliancesUnmetLoadCountPercent = percentOfYear(newAppliancesUnmetLoadCount)
   const newAppliancesUnmetLoadSum = sumGreaterThanZero(combinedTable, 'newAppliancesUnmetLoad')
 
   // Unmet Loads: Total (original + new appliance)
-  const totalUnmetLoadCount = countGreaterThanZero(combinedTable, 'totalUnmetLoad')
-
+  const totalUnmetLoadCount = _.sumBy(combinedTable, 'totalUnmetLoadCount')
   const totalUnmetLoadCountPercent = percentOfYear(totalUnmetLoadCount)
   const totalUnmetLoadSum = sumGreaterThanZero(combinedTable, 'totalUnmetLoad')
 
@@ -52,9 +45,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
   // __ Excess Production ______________________________________________________
   // ___________________________________________________________________________
   // Unmet Loads: Original without new appliance. Output values into a histogram
-  const originalExcessProductionCount = countGreaterThanZero(
+  const originalExcessProductionCount = _.sumBy(
     combinedTable,
-    'originalModeledExcessProduction'
+    'originalModeledExcessProductionCount'
   )
   const originalExcessProductionCountPercent = percentOfYear(originalExcessProductionCount)
   const originalExcessProductionSum = sumGreaterThanZero(
@@ -62,9 +55,9 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     'originalModeledExcessProduction'
   )
 
-  const newAppliancesExcessProductionCount = countGreaterThanZero(
+  const newAppliancesExcessProductionCount = _.sumBy(
     combinedTable,
-    'newAppliancesUnmetLoad'
+    'newAppliancesExcessProductionCount'
   )
   const newAppliancesExcessProductionCountPercent = percentOfYear(
     newAppliancesExcessProductionCount
@@ -74,7 +67,7 @@ export function calcSummaryStats(grid, combinedTable, enabledAppliances) {
     'newAppliancesExcessProduction'
   )
 
-  const totalExcessProductionCount = countGreaterThanZero(combinedTable, 'totalExcessProduction')
+  const totalExcessProductionCount = _.sumBy(combinedTable, 'totalExcessProductionCount')
   const totalExcessProductionCountPercent = percentOfYear(totalExcessProductionCount)
   const totalExcessProductionSum = sumGreaterThanZero(combinedTable, 'totalExcessProduction')
 

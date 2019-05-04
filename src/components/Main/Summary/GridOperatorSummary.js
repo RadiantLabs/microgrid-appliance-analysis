@@ -226,7 +226,7 @@ export const GridOperatorTechnicalSummary = inject('store')(
               <Table.Cell textAlign="right">{originalExcessProductionSum}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>New Appliances Excess Production</Table.Cell>
+              <Table.Cell>Excess Production Reduction From New Appliances</Table.Cell>
               <Table.Cell textAlign="right">{newAppliancesExcessProductionCount}</Table.Cell>
               <Table.Cell textAlign="right">
                 {newAppliancesExcessProductionCountPercent}%

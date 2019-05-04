@@ -58,8 +58,9 @@ Welder and Water pump throughput:
 
 
 ### Unmet Load
-Unmet load counts are very sensitive to h3ow many decimals you round to
+Unmet load counts are very sensitive to how many decimals you round to
 Rounding to 3 decimals filters out loads less than 1 watthour
+Rounding to 2 decimal filters out loads less than 10 watthours
 Rounding to 1 decimal filters out loads less than 100 watthours
 Rounding to 0 decimals filters out loads less than 1 kWh
 

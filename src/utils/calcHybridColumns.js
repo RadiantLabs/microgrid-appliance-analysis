@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { predictBatteryEnergyContent } from './predictBatteryEnergyContent'
-// import { getGridPowerType } from './columnDetectors'
+import { unmetLoadRoundingDecimals, excessProductionRoundingDecimals } from '../utils/constants'
 
 // Pass in the merged table that includes Homer and summed appliance calculated columnms.
 // Also pass in adjustable fields from store that are required
@@ -68,10 +68,14 @@ export function calcHybridColumns(grid, summedAppliances) {
       batteryMaxEnergyContent,
     })
 
-    // __ New Appliances Unmet Load ____________________________________________
+    // _________________________________________________________________________
+    // __ Unmet Load ___________________________________________________________
+    // _________________________________________________________________________
     // Some of these numbers from HOMER are -1x10-16. Rounding makes them reasonable
     const originalUnmetLoad = homerRow['Original Unmet Electrical Load']
     const originalModeledUnmetLoad = homerRow['originalModeledUnmetLoad']
+    const originalModeledUnmetLoadCount =
+      _.round(originalModeledUnmetLoad, unmetLoadRoundingDecimals) > 0 ? 1 : 0
 
     //  We know: original + newAppliances = total
     //  Therefore: newAppliances = total - original
@@ -85,10 +89,20 @@ export function calcHybridColumns(grid, summedAppliances) {
         ? 0
         : totalUnmetLoad - originalModeledUnmetLoad
 
+    const totalUnmetLoadCount = _.round(totalUnmetLoad, unmetLoadRoundingDecimals) > 0 ? 1 : 0
+
+    // totalUnmetLoadCount should always be greater than originalModeledUnmetLoadCount
+    // since a new appliance will increase the unmet load count
+    const newAppliancesUnmetLoadCount = totalUnmetLoadCount - originalModeledUnmetLoadCount
+
+    // _________________________________________________________________________
     // __ Excess Production _______________________________________________________
+    // _________________________________________________________________________
     // Approach excess production like unmet load above
     const originalExcessProduction = homerRow['Original Excess Electrical Production']
     const originalModeledExcessProduction = homerRow['originalModeledExcessProduction']
+    const originalModeledExcessProductionCount =
+      _.round(originalModeledExcessProduction, excessProductionRoundingDecimals) > 0 ? 1 : 0
 
     // 'original' should always be greater than or equal to the new total, since
     // new appliances will reduce the excess capacity.
@@ -97,18 +111,21 @@ export function calcHybridColumns(grid, summedAppliances) {
     // Since totalExcessProduction is based on the battery prediction model, it makes
     // more sense to use the originalModeledExcessProduction to calculate the excess
     // due to new appliances.
-    // const newAppliancesExcessProduction = originalModeledExcessProduction - totalExcessProduction
-    // const newAppliancesExcessProduction =
-    //   originalModeledExcessProduction - totalExcessProduction < 0
-    //     ? 0
-    //     : originalModeledExcessProduction - totalExcessProduction
     const newAppliancesExcessProduction =
       totalExcessProduction - originalModeledExcessProduction > 0
         ? 0
         : totalExcessProduction - originalModeledExcessProduction
 
+    const totalExcessProductionCount =
+      _.round(totalExcessProduction, excessProductionRoundingDecimals) > 0 ? 1 : 0
+
+    // Original should always be higher than total since new appliances decrease excess production
+    // newAppliancesExcessProductionCount will be negative
+    const newAppliancesExcessProductionCount =
+      totalExcessProductionCount - originalModeledExcessProductionCount
+
     // __ Output Results _______________________________________________________
-    // I am thinking availableCapacity doesn't make sense to calculate or display.
+    // I think availableCapacity doesn't make sense to calculate or display.
     // Available capacity is used to charge the battery, so you can never really
     // know if it's actuall available, unless you had a much better model of the
     // battery. Excess production is clear though - the battery is fully charged
@@ -130,13 +147,20 @@ export function calcHybridColumns(grid, summedAppliances) {
 
       // See note in README.md about how many decimal places to round unmet load
       originalUnmetLoad: _.round(originalUnmetLoad, 1),
-      totalUnmetLoad: _.round(totalUnmetLoad, 1),
+      originalModeledUnmetLoad: _.round(originalModeledUnmetLoad, 1),
+      originalModeledUnmetLoadCount,
       newAppliancesUnmetLoad: _.round(newAppliancesUnmetLoad, 1),
+      newAppliancesUnmetLoadCount,
+      totalUnmetLoad: _.round(totalUnmetLoad, 1),
+      totalUnmetLoadCount,
 
       // Excess Load
       originalExcessProduction: _.round(originalExcessProduction, 4),
-      totalExcessProduction: _.round(totalExcessProduction, 4),
+      originalModeledExcessProductionCount,
       newAppliancesExcessProduction: _.round(newAppliancesExcessProduction, 4),
+      newAppliancesExcessProductionCount,
+      totalExcessProduction: _.round(totalExcessProduction, 4),
+      totalExcessProductionCount,
     })
     return result
   }

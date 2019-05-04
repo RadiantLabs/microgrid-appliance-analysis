@@ -4,6 +4,7 @@ export const PI = 3.14
 export const HOURS_PER_YEAR = 8760
 
 export const unmetLoadRoundingDecimals = 1
+export const excessProductionRoundingDecimals = 1
 
 // Luxon Tokens: https://moment.github.io/luxon/docs/manual/formatting.html#toformat
 // HOMER's date format looks like '1/12/07 9:00'
