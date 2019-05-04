@@ -1,18 +1,6 @@
 import _ from 'lodash'
 import { calcAncillaryEquipmentCosts } from '../utils/calcAncillaryEquipmentCosts'
-import {
-  countGreaterThanZero,
-  percentOfYear,
-  sumGreaterThanZero,
-  calculateRoi,
-  calculatePayback,
-} from './helpers'
-
-// const countPairs = {
-//   newAppliancesLoad: 'originalElectricLoadServed',
-//   newAppliancesUnmetLoad: 'originalModeledUnmetLoad',
-//   newAppliancesExcessProduction: 'originalModeledExcessProduction',
-// }
+import { percentOfYear, sumGreaterThanZero, calculateRoi, calculatePayback } from './helpers'
 
 // This is the final yearly summary stats calculation, incorporating:
 // * all enabled appliances
