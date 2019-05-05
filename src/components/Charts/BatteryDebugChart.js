@@ -15,12 +15,12 @@ import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
 import PredictedVsActual from '../Charts/PredictedVsActual'
 
-const chartLines = ['homerOriginal', 'naiveClamped', 'mlr']
+const chartLines = ['homerOriginal', 'naiveClamped', 'mlr', 'mlrPosNeg']
 
 class BatteryDebugChart extends Component {
   state = {
     checkedItems: new Set(chartLines),
-    radioSelection: 'naiveClamped',
+    radioSelection: 'mlrPosNeg',
   }
 
   handleCheckedChange = (e, { value }) => {
@@ -63,68 +63,38 @@ class BatteryDebugChart extends Component {
                 <Form.Field>
                   <Header as="h4">Select battery model version</Header>
                 </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    radio
-                    label="homerOriginal"
-                    name="checkboxRadioGroup"
-                    value="homerOriginal"
-                    checked={radioSelection === 'homerOriginal'}
-                    onChange={this.handleRadioChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    radio
-                    label="naiveClamped"
-                    name="checkboxRadioGroup"
-                    value="naiveClamped"
-                    checked={radioSelection === 'naiveClamped'}
-                    onChange={this.handleRadioChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    radio
-                    label="mlr"
-                    name="checkboxRadioGroup"
-                    value="mlr"
-                    checked={radioSelection === 'mlr'}
-                    onChange={this.handleRadioChange}
-                  />
-                </Form.Field>
+                {_.map(chartLines, chartName => {
+                  return (
+                    <Form.Field key={chartName}>
+                      <Checkbox
+                        radio
+                        label={chartName}
+                        name="checkboxRadioGroup"
+                        value={chartName}
+                        checked={radioSelection === chartName}
+                        onChange={this.handleRadioChange}
+                      />
+                    </Form.Field>
+                  )
+                })}
               </Form>
               <Form style={{ marginTop: '40px' }}>
                 <Form.Field>
                   <Header as="h4">Select battery model versions (hourly)</Header>
                 </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    label="homerOriginal"
-                    name="checkboxGroup"
-                    value="homerOriginal"
-                    checked={checkedItems.has('homerOriginal')}
-                    onChange={this.handleCheckedChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    label="naiveClamped"
-                    name="checkboxGroup"
-                    value="naiveClamped"
-                    checked={checkedItems.has('naiveClamped')}
-                    onChange={this.handleCheckedChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox
-                    label="mlr"
-                    name="checkboxGroup"
-                    value="mlr"
-                    checked={checkedItems.has('mlr')}
-                    onChange={this.handleCheckedChange}
-                  />
-                </Form.Field>
+                {_.map(chartLines, chartName => {
+                  return (
+                    <Form.Field key={chartName}>
+                      <Checkbox
+                        label={chartName}
+                        name="checkboxGroup"
+                        value={chartName}
+                        checked={checkedItems.has(chartName)}
+                        onChange={this.handleCheckedChange}
+                      />
+                    </Form.Field>
+                  )
+                })}
               </Form>
             </Grid.Column>
           </Grid.Row>
@@ -218,12 +188,12 @@ const CustomToolTip = ({ active, payload, label }) => {
             )
           })}
           <Table.Row>
-            <Table.Cell>naiveOriginalDiff</Table.Cell>
-            <Table.Cell textAlign="right">{fields['naiveOriginalDiff']} kWh</Table.Cell>
+            <Table.Cell>naiveClampedOriginalDiff</Table.Cell>
+            <Table.Cell textAlign="right">{fields['naiveClampedOriginalDiff']} kWh</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>naiveOriginalPct</Table.Cell>
-            <Table.Cell textAlign="right">{fields['naiveOriginalPct']} %</Table.Cell>
+            <Table.Cell>naiveClampedOriginalPct</Table.Cell>
+            <Table.Cell textAlign="right">{fields['naiveClampedOriginalPct']} %</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>

@@ -9,7 +9,11 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
   if (_.isEmpty(fileData) || !batteryMin || !batteryMax) {
     return []
   }
-  const { trainedBatteryModel } = trainMlrBatteryModel(fileData)
+  const {
+    trainedBatteryModel,
+    trainedBatteryModelPos,
+    trainedBatteryModelNeg,
+  } = trainMlrBatteryModel(fileData)
 
   console.log('running calcBatteryDebugData')
 
@@ -36,21 +40,40 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
       // _______________________________________________________________________
       const naiveClampedPrevBatteryEnergyContent =
         rowIndex === 0 ? row['originalBatteryEnergyContent'] : result[rowIndex - 1]['naiveClamped']
+
       const naiveClamped = naiveClampedPrediction(
         naiveClampedPrevBatteryEnergyContent,
         originalElectricalProductionLoadDiff,
         batteryMin,
         batteryMax
       )
+      const naiveClampedOriginalDiff = naiveClamped - homerOriginal
+      const naiveClampedOriginalPct = (naiveClampedOriginalDiff / homerOriginal) * 100
 
       // _______________________________________________________________________
       // MLR
       // _______________________________________________________________________
       const mlrPrevBatteryEnergyContent =
         rowIndex === 0 ? row['originalBatteryEnergyContent'] : result[rowIndex - 1]['mlr']
+
       const mlr = mlrPrediction(
         trainedBatteryModel,
         mlrPrevBatteryEnergyContent,
+        originalElectricalProductionLoadDiff,
+        batteryMin,
+        batteryMax
+      )
+
+      // _______________________________________________________________________
+      // MLR Positive and Negative
+      // _______________________________________________________________________
+      const mlrPosNegPrevBatteryEnergyContent =
+        rowIndex === 0 ? row['originalBatteryEnergyContent'] : result[rowIndex - 1]['mlrPosNeg']
+
+      const mlrPosNeg = mlrPosNegPrediction(
+        trainedBatteryModelPos,
+        trainedBatteryModelNeg,
+        mlrPosNegPrevBatteryEnergyContent,
         originalElectricalProductionLoadDiff,
         batteryMin,
         batteryMax
@@ -68,7 +91,11 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
         // naiveOriginalPct: _.round(naiveOriginalPct, 2),
 
         naiveClamped: _.round(naiveClamped, 2),
+        naiveClampedOriginalDiff: _.round(naiveClampedOriginalDiff, 2),
+        naiveClampedOriginalPct: _.round(naiveClampedOriginalPct, 2),
+
         mlr: _.round(mlr, 2),
+        mlrPosNeg: _.round(mlrPosNeg, 2),
       }
       result.push(featureWtihTarget)
       return result
@@ -77,6 +104,9 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
   )
 }
 
+// _______________________________________________________________________
+// MLR
+// _______________________________________________________________________
 function mlrPrediction(
   trainedBatteryModel,
   prevBatteryEnergyContent,
@@ -85,14 +115,40 @@ function mlrPrediction(
   batteryMax
 ) {
   const feature = [prevBatteryEnergyContent, electricalProductionLoadDiff]
+  // const feature = [prevBatteryEnergyContent + electricalProductionLoadDiff]
   const [unclamped] = trainedBatteryModel.predict(feature)
   return _.clamp(unclamped, batteryMin, batteryMax)
 }
 
+// _______________________________________________________________________
+// MLR separate for positive and negative
+// _______________________________________________________________________
+function mlrPosNegPrediction(
+  trainedBatteryModelPos,
+  trainedBatteryModelNeg,
+  prevBatteryEnergyContent,
+  electricalProductionLoadDiff,
+  batteryMin,
+  batteryMax
+) {
+  const feature = [prevBatteryEnergyContent, electricalProductionLoadDiff]
+  const [unclamped] =
+    electricalProductionLoadDiff > 0
+      ? trainedBatteryModelPos.predict(feature)
+      : trainedBatteryModelNeg.predict(feature)
+  return _.clamp(unclamped, batteryMin, batteryMax)
+}
+
+// _______________________________________________________________________
+// Naive
+// _______________________________________________________________________
 // function naivePrediction(prevBatteryEnergyContent, electricalProductionLoadDiff) {
 //   return prevBatteryEnergyContent + electricalProductionLoadDiff
 // }
 
+// _______________________________________________________________________
+// Naive Clamped
+// _______________________________________________________________________
 // This is currently battery model used
 function naiveClampedPrediction(
   prevBatteryEnergyContent,

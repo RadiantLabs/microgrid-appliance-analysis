@@ -31,16 +31,27 @@ export function trainMlrBatteryModel(gridData) {
   const x = createFeatureTensor(gridData)
   const y = createTargetTensor(gridData)
   const model = new MLR(x, y, { intercept: false }) // no intercept, since battery never hits zero charge
-  const { stdError } = model
+
+  // train MLR on the positive (rising) and negative (descending) curve separately
+  const { xPos, yPos } = createPos(x, y)
+  const { xNeg, yNeg } = createNeg(x, y)
+  const modelPos = new MLR(xPos, yPos, { intercept: false })
+  const modelNeg = new MLR(xNeg, yNeg, { intercept: false })
 
   // Currently showing 118ms to train, 0.02ms to predict a single prediction.
   // So 8760 predictions, if scaled linearly, would be 175ms (tested at 110ms)
   return {
     trainedBatteryModel: model,
-    batteryModelStdError: stdError,
+    trainedBatteryModelStdError: model.stdError,
+    trainedBatteryModelPos: modelPos,
+    trainedBatteryModelNeg: modelNeg,
   }
 }
 
+//
+// _____________________________________________________________________________
+// Features and Targets
+// _____________________________________________________________________________
 // Create array of array inputs: See x in comments above
 export function createFeatureTensor(gridData) {
   return _.reduce(
@@ -66,4 +77,29 @@ export function createTargetTensor(gridData) {
   return _.map(gridData, row => {
     return [row['originalBatteryEnergyContent']]
   })
+}
+
+// Create feature and target sets that contain only positive or negative electricalProductionLoadDiff
+export function createPos(x, y) {
+  const xy = _.compact(
+    _.map(x, (feature, featureIndex) => {
+      return feature[1] > 0 ? { x: feature, y: y[featureIndex] } : null
+    })
+  )
+  return {
+    xPos: _.map(xy, 'x'),
+    yPos: _.map(xy, 'y'),
+  }
+}
+
+export function createNeg(x, y) {
+  const xy = _.compact(
+    _.map(x, (feature, featureIndex) => {
+      return feature[1] < 0 ? { x: feature, y: y[featureIndex] } : null
+    })
+  )
+  return {
+    xNeg: _.map(xy, 'x'),
+    yNeg: _.map(xy, 'y'),
+  }
 }
