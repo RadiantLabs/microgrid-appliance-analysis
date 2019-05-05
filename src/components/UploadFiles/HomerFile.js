@@ -7,7 +7,7 @@ import BatteryChargeTable from '../../components/Elements/BatteryChargeTable'
 import HomerFormFields from './HomerFormFields'
 import BatteryModel from './BatteryModel'
 import { FileUploadErrors } from './FileUploadErrors'
-// import BatteryDebugChart from '../Charts/BatteryDebugChart'
+import BatteryDebugChart from '../Charts/BatteryDebugChart'
 
 const DeleteGrid = inject('store')(
   observer(({ store }) => {
@@ -183,7 +183,7 @@ class HomerFile extends React.Component {
                 </Grid.Row>
               </Grid>
               <Divider />
-              {/*<BatteryDebugChart />*/}
+              <BatteryDebugChart />
             </Segment>
             {!viewedGridIsStaged && <DeleteGrid />}
           </>
