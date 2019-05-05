@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import prettyBytes from 'pretty-bytes'
-import { predictOriginalBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
+import { predictBatteryEnergyContent } from '../utils/predictBatteryEnergyContent'
 import { getGridPowerType, getPvType, getBatteryType, getGeneratorType } from './columnDetectors'
 import {
   findColMax,
@@ -210,4 +210,54 @@ function calculateNewHomerColumns({ fileData, batteryMinEnergyContent, batteryMa
       ..._.omit(row, ['Unmet Electrical Load', 'Original Battery Energy Content']),
     }
   })
+}
+
+// _____________________________________________________________________________
+// Predict Original Battery Energy Content
+// _____________________________________________________________________________
+// Use prediction model to calculate the original battery energy content, to
+// compare with HOMER's calculations
+
+// This function gives us the battery energy content as if there are no new appliances
+// on the grid. This should match what HOMER provides. By calculing this version,
+// I can minimize the errors
+function predictOriginalBatteryEnergyContent(
+  homerColumns,
+  batteryMinEnergyContent,
+  batteryMaxEnergyContent
+) {
+  if (_.isEmpty(homerColumns) || !batteryMinEnergyContent || !batteryMaxEnergyContent) {
+    return []
+  }
+  const columnReducer = (result, row, rowIndex, rows) => {
+    const prevResult = result[rowIndex - 1]
+
+    // For first hour's prediction, use energy content from original HOMER file
+    const prevBatteryEnergyContent =
+      rowIndex === 0
+        ? row['originalBatteryEnergyContent']
+        : prevResult['originalModeledBatteryEnergyContent']
+
+    const {
+      batteryEnergyContent: originalModeledBatteryEnergyContent,
+      totalExcessProduction,
+      totalUnmetLoad,
+    } = predictBatteryEnergyContent({
+      rowIndex,
+      prevBatteryEnergyContent,
+      electricalProductionLoadDiff: row['originalElectricalProductionLoadDiff'],
+      batteryMinEnergyContent,
+      batteryMaxEnergyContent,
+    })
+    result.push({
+      ...row,
+      ...{
+        originalModeledBatteryEnergyContent: _.round(originalModeledBatteryEnergyContent, 4),
+        originalModeledExcessProduction: _.round(totalExcessProduction, 4),
+        originalModeledUnmetLoad: _.round(totalUnmetLoad, 1),
+      },
+    })
+    return result
+  }
+  return _.reduce(homerColumns, columnReducer, [])
 }

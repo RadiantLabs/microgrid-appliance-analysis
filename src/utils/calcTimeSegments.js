@@ -1,5 +1,4 @@
 import _ from 'lodash'
-// import { logger } from './logger'
 
 export const timeSegmentsMetrics = ['load', 'unmetLoad', 'excessProduction']
 export const timeSegmentsAggregations = ['average', 'sum', 'count']
