@@ -2,16 +2,15 @@ import _ from 'lodash'
 import * as Sentry from '@sentry/browser'
 
 export function loggerConfig(command, data) {
-  // if (process.env.NODE_ENV !== 'production') {
-  //   return null
-  // }
-  switch (command) {
-    case 'init':
-      return init()
-    case 'user':
-      return user(data)
-    default:
-      throw new Error(`loggerConfig was passed an unknown command: ${command}`)
+  if (process.env.NODE_ENV === 'production') {
+    switch (command) {
+      case 'init':
+        return init()
+      case 'user':
+        return user(data)
+      default:
+        throw new Error(`loggerConfig was passed an unknown command: ${command}`)
+    }
   }
 }
 
