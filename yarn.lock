@@ -5429,6 +5429,11 @@ is-accessor-descriptor@^1.0.0:
   dependencies:
     kind-of "^6.0.0"
 
+is-any-array@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/is-any-array/-/is-any-array-0.0.3.tgz#cbdd8c7189d47b53b050969245f4ef7e55550b9b"
+  integrity sha512-Lr5SRykZv6uuYMZURz7+YpigT1ziTBHOTgFJ1zK7gL+9Wbet5Ha1ws6S84Jo/lH4zep02b95sk6o4+MTk97mPQ==
+
 is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
@@ -6906,6 +6911,49 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+ml-array-max@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ml-array-max/-/ml-array-max-1.1.1.tgz#0192a646853a5cd1085133def02c1271101ddd86"
+  integrity sha512-lEtVH02mkRESnwCq6y0w8rrnRltwlEmYKRuYNZGSmpiqL+TcHc1Z/kn73Ga9L3iFtyYOtmdLGug0ufGy0xbfmw==
+  dependencies:
+    is-any-array "^0.0.3"
+
+ml-array-min@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ml-array-min/-/ml-array-min-1.1.1.tgz#52bb6315325cd28e39b412282ef5a44416bd2e11"
+  integrity sha512-xwUm80ktZLoKMK5j0yilCM8/X07KaW/yvnBiqxPxLRkzIEqK2NA2lHw5uvDpfEYYBUzZbMIG/jHDum+YrjKvPg==
+  dependencies:
+    is-any-array "^0.0.3"
+
+ml-array-rescale@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ml-array-rescale/-/ml-array-rescale-1.2.1.tgz#8fc10ef0472a3bf27602d6089e6f93a2fb7d9fe5"
+  integrity sha512-C9YliVwYknxBNFXXbCFwCDUZScZkgL82CEL4GdpdhWAvUTZIRn7opAOOj4ZnZZXjIrUFCV+YB99DKM1frd9eOQ==
+  dependencies:
+    is-any-array "^0.0.3"
+    ml-array-max "^1.1.1"
+    ml-array-min "^1.1.1"
+
+ml-matrix@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/ml-matrix/-/ml-matrix-6.0.0.tgz#ee926add38b762ef1b5b104c4fc438d71db57d8b"
+  integrity sha512-yEsPKkUohwukvhBgWURSX+X09kf3+3aTUOa+v27VSdhmix0wLbhwE/qIGnmr2s1QKxFIHEhb0H4j/m5v5vT4yg==
+  dependencies:
+    ml-array-rescale "^1.2.1"
+
+ml-regression-base@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ml-regression-base/-/ml-regression-base-2.0.1.tgz#3e7126f3da96aeee37701cc65c830cf11d62c1e8"
+  integrity sha512-aZGe0DxeyLYPKT4343gzcILJJXrq56FtuMmb4ZafTl9NP9ZEhrjJ9GGkF+yc9CxLJ5Ba7Uc2zAZeLtQ4JokN8g==
+
+ml-regression-multivariate-linear@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ml-regression-multivariate-linear/-/ml-regression-multivariate-linear-2.0.0.tgz#7cb75b849b74f6d9f20a2b1c173f9731dd93c376"
+  integrity sha512-jdZ76nComJzdODbNKctMBsH9MYnq4ZUP9aEs/HV96OotqQsNu6153QpPKDT957u08yDQ43r6YC8caDoI/r8UtA==
+  dependencies:
+    ml-matrix "^6.0.0"
+    ml-regression-base "^2.0.0"
 
 mobx-react-devtools@^6.0.3:
   version "6.1.1"

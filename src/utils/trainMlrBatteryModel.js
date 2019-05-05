@@ -1,6 +1,5 @@
 import _ from 'lodash'
-// import MLR from 'ml-regression-multivariate-linear' // waiting for an update from ml-matrix
-var MLR = window.MLR
+import MLR from 'ml-regression-multivariate-linear'
 
 /*
 Using: https://github.com/mljs/regression-multivariate-linear#usage
