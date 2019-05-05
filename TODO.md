@@ -1,25 +1,12 @@
-Old Notes from meeting:
-- Amanda will do basic sanity check calculations
-- Amanda review question marks
-- Amanda: tell what min/max state of charge for each type of battery
 
 
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
 Charts:
-- [x] Fix unmet load totals: In Summary, total is smaller than original
-- [x] Sum excess load over year in summaryStats (wait until I delete hists from summary stats)
-- [x] Create weekly bar chart for hourOfWeek: http://recharts.org/en-US/examples/BubbleChart
-- [x] Delete Unmet Loads chart
-- [x] Redo calculations for time segment charts now that counts are included in combinedtable
 
 Misc:
-- [x] Comment out tooltip for why unmet loads don't add up
-- [x] Find why  originalModeledExcessProduction is undefined
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
-- [ ] Move predictOriginalBatteryEnergyContent into analyzeHomerFile
-- [x] Why does Oversize have fewer excess production hours?
 
 Battery Model:
 - [ ] Test with all HOMER files
