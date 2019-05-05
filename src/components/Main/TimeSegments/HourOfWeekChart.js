@@ -10,7 +10,7 @@ import {
   BarChart,
   Bar,
 } from 'recharts'
-import { timeSegmentColors, timeSegmentLabels } from '../../../utils/constants'
+import { timeSegmentColors } from '../../../utils/constants'
 import { yAxisFormatter } from './axisFormatters'
 import { CustomToolTip } from './ToolTip'
 
