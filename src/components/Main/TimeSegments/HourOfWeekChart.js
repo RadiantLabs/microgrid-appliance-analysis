@@ -47,7 +47,7 @@ export const HourOfWeekChart = ({
   })
 
   return (
-    <div style={{ height: '460px' }}>
+    <div style={{ height: '600px' }}>
       {_.map(byDayOfWeek, (day, dayIndex) => {
         const dayName = yAxisFormatter(day[0].day)
         const isLastChart = dayIndex === _.size(byDayOfWeek) - 1
@@ -57,12 +57,15 @@ export const HourOfWeekChart = ({
               data={day}
               barGap={barGap}
               stackOffset={stackOffset}
-              margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+              margin={{ top: 0, right: 30, left: 0, bottom: 10 }}>
               <XAxis
                 type="category"
                 dataKey="hour"
                 name="hour"
                 interval={0}
+                label={
+                  isLastChart ? { value: 'Hour of Day', position: 'bottom', offset: -4 } : null
+                }
                 tick={isLastChart ? { fontSize: '12px' } : { fontSize: 0 }}
                 tickLine={{ transform: 'translate(0, -6)' }}
               />
