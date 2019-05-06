@@ -29,10 +29,7 @@ export function createNaiveOriginalPairs(gridData) {
     gridData,
     (result, row, rowIndex, rows) => {
       const prevBatteryEnergyContent =
-        rowIndex === 0
-          ? row['originalBatteryEnergyContent']
-          : // Calculate from previous result
-            result[rowIndex - 1][1] // 0 is yNaive, 1 is yActual
+        rowIndex === 0 ? row['originalBatteryEnergyContent'] : result[rowIndex - 1][1] // 0 is yNaive, 1 is yActual. Use actual since this is training data
 
       const yNaive = prevBatteryEnergyContent + row['originalElectricalProductionLoadDiff']
       const yActual = row['originalBatteryEnergyContent']

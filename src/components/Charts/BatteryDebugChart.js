@@ -18,6 +18,7 @@ import PredictedVsActual from '../Charts/PredictedVsActual'
 const chartLines = [
   'originalBatteryEnergyContent',
   'mlr',
+  'manualPoly',
   'mlrPosNeg',
   'poly',
   'naiveClamped',
@@ -26,8 +27,8 @@ const chartLines = [
 
 class BatteryDebugChart extends Component {
   state = {
-    checkedItems: new Set(['originalBatteryEnergyContent', 'poly']),
-    radioSelection: 'poly',
+    checkedItems: new Set(['originalBatteryEnergyContent', 'manualPoly']),
+    radioSelection: 'manualPoly',
   }
 
   handleCheckedChange = (e, { value }) => {
