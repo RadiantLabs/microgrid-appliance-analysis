@@ -51,7 +51,7 @@ class HomerFiles extends React.Component {
                 </Button>
               </Menu.Item>
             </Menu>
-            <Menu vertical fluid style={{ position: 'fixed', width: '240px !important' }}>
+            <Menu vertical fluid className="fixedSidebar">
               {_.map(availableGrids, (file, fileIndex) => {
                 const { isActive, fileInfo, description, label } = file
                 return (
@@ -110,4 +110,9 @@ const HomerFileBlankState = () => {
       <p>Click on the menu on the left to do any of these tasks</p>
     </div>
   )
+}
+
+const fixedSidebar = {
+  position: 'fixed',
+  width: '250px !important',
 }

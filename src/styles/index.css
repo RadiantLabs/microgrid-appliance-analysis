@@ -74,3 +74,8 @@
   margin-right: 4px;
   color: #db2828;
  }
+
+ .ui.fluid.vertical.menu.fixedSidebar {
+   position: fixed;
+   width: 23% !important;
+ }

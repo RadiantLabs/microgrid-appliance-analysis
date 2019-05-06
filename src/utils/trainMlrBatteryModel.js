@@ -41,10 +41,10 @@ export function trainMlrBatteryModel(gridData) {
   // Currently showing 118ms to train, 0.02ms to predict a single prediction.
   // So 8760 predictions, if scaled linearly, would be 175ms (tested at 110ms)
   return {
-    trainedBatteryModel: model,
-    trainedBatteryModelStdError: model.stdError,
-    trainedBatteryModelPos: modelPos,
-    trainedBatteryModelNeg: modelNeg,
+    trainedMlrModel: model,
+    trainedMlrModelStdError: model.stdError,
+    trainedMlrModelPos: modelPos,
+    trainedMlrModelNeg: modelNeg,
   }
 }
 

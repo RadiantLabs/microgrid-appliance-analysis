@@ -15,12 +15,19 @@ import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
 import PredictedVsActual from '../Charts/PredictedVsActual'
 
-const chartLines = ['homerOriginal', 'naiveClamped', 'mlr', 'mlrPosNeg']
+const chartLines = [
+  'originalBatteryEnergyContent',
+  'mlr',
+  'mlrPosNeg',
+  'poly',
+  'naiveClamped',
+  'naive',
+]
 
 class BatteryDebugChart extends Component {
   state = {
-    checkedItems: new Set(chartLines),
-    radioSelection: 'mlrPosNeg',
+    checkedItems: new Set(['originalBatteryEnergyContent', 'poly']),
+    radioSelection: 'poly',
   }
 
   handleCheckedChange = (e, { value }) => {
@@ -54,7 +61,7 @@ class BatteryDebugChart extends Component {
             <Grid.Column width={10}>
               <PredictedVsActual
                 data={batteryDebugData}
-                actual="homerOriginal"
+                actual="originalBatteryEnergyContent"
                 predicted={radioSelection}
               />
             </Grid.Column>
@@ -187,14 +194,14 @@ const CustomToolTip = ({ active, payload, label }) => {
               </Table.Row>
             )
           })}
-          <Table.Row>
+          {/* <Table.Row>
             <Table.Cell>naiveClampedOriginalDiff</Table.Cell>
             <Table.Cell textAlign="right">{fields['naiveClampedOriginalDiff']} kWh</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>naiveClampedOriginalPct</Table.Cell>
             <Table.Cell textAlign="right">{fields['naiveClampedOriginalPct']} %</Table.Cell>
-          </Table.Row>
+          </Table.Row> */}
         </Table.Body>
       </Table>
     </div>
