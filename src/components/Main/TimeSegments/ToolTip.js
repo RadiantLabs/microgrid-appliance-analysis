@@ -10,6 +10,7 @@ export const CustomToolTip = ({
   totalsColumnName,
   timeSegmentsBy,
   timeSegmentsAggregation,
+  dayOfWeek,
 }) => {
   if (!active || _.isEmpty(payload)) {
     return null
@@ -17,6 +18,7 @@ export const CustomToolTip = ({
   const totalVal = payload[0]['payload'][totalsColumnName]
   return (
     <div className="custom-tooltip">
+      {dayOfWeek && <p>Day of Week: {dayOfWeek}</p>}
       <p className="label">
         {timeSegmentsBy === 'hourOfWeek'
           ? fieldDefinitions['hourOfDay'].title

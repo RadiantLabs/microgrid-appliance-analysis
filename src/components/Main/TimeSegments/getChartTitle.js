@@ -55,7 +55,7 @@ const messageByLookup = {
   hourOfDay: '9am',
   dayOfWeek: 'Wednesday',
   month: 'April',
-  hourOfWeek: 'TODO',
+  hourOfWeek: 'Monday at 9am',
 }
 
 const countMessageMetricLookup = {

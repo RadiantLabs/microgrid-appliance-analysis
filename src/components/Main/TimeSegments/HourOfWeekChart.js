@@ -10,7 +10,7 @@ import {
   BarChart,
   Bar,
 } from 'recharts'
-import { timeSegmentColors } from '../../../utils/constants'
+import { timeSegmentColors, dayOfWeekFullLabels } from '../../../utils/constants'
 import { yAxisFormatter } from './axisFormatters'
 import { CustomToolTip } from './ToolTip'
 
@@ -50,6 +50,7 @@ export const HourOfWeekChart = ({
     <div style={{ height: '600px' }}>
       {_.map(byDayOfWeek, (day, dayIndex) => {
         const dayName = yAxisFormatter(day[0].day)
+        const fullDayName = dayOfWeekFullLabels[day[0].day]
         const isLastChart = dayIndex === _.size(byDayOfWeek) - 1
         return (
           <ResponsiveContainer minWidth={1000} height="14%" key={day[0].hourOfWeek + dayIndex + ''}>
@@ -81,6 +82,7 @@ export const HourOfWeekChart = ({
                 totalsColumnName={totalsColumnName}
                 timeSegmentsBy={timeSegmentsBy}
                 timeSegmentsAggregation={timeSegmentsAggregation}
+                dayOfWeek={fullDayName}
                 wrapperStyle={{ zIndex: 100 }}
               />
 

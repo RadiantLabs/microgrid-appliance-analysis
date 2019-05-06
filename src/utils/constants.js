@@ -90,6 +90,16 @@ export const dayOfWeekLabels = {
   '6sun': 'Sun',
 }
 
+export const dayOfWeekFullLabels = {
+  '0mon': 'Monday',
+  '1tue': 'Tuesday',
+  '2wed': 'Wednesday',
+  '3thu': 'Thursday',
+  '4fri': 'Friday',
+  '5sat': 'Saturday',
+  '6sun': 'Sunday',
+}
+
 export const monthLabels = [
   'Jan',
   'Feb',
