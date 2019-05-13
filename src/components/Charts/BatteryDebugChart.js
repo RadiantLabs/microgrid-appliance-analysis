@@ -14,21 +14,23 @@ import { observer, inject } from 'mobx-react'
 import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
 import PredictedVsActual from '../Charts/PredictedVsActual'
+import BatteryLossCoeffChart from '../Charts/BatteryLossCoeffChart'
 
 const chartLines = [
-  'originalBatteryEnergyContent',
+  'originalBec',
+  'naive',
+  'naiveClamped',
+  'lossCoeffClamped',
   'mlr',
-  'manualPoly',
   'mlrPosNeg',
   'poly',
-  'naiveClamped',
-  'naive',
+  'manualPoly',
 ]
 
 class BatteryDebugChart extends Component {
   state = {
-    checkedItems: new Set(['originalBatteryEnergyContent', 'manualPoly']),
-    radioSelection: 'manualPoly',
+    checkedItems: new Set(['originalBec', 'naiveClamped']),
+    radioSelection: 'naiveClamped',
   }
 
   handleCheckedChange = (e, { value }) => {
@@ -62,7 +64,7 @@ class BatteryDebugChart extends Component {
             <Grid.Column width={10}>
               <PredictedVsActual
                 data={batteryDebugData}
-                actual="originalBatteryEnergyContent"
+                actual="originalBec"
                 predicted={radioSelection}
               />
             </Grid.Column>
@@ -73,7 +75,7 @@ class BatteryDebugChart extends Component {
                 </Form.Field>
                 {_.map(chartLines, chartName => {
                   return (
-                    <Form.Field key={chartName}>
+                    <Form.Field key={chartName} style={{ marginBottom: '4px' }}>
                       <Checkbox
                         radio
                         label={chartName}
@@ -88,11 +90,11 @@ class BatteryDebugChart extends Component {
               </Form>
               <Form style={{ marginTop: '40px' }}>
                 <Form.Field>
-                  <Header as="h4">Select battery model versions (hourly)</Header>
+                  <Header as="h4">Select battery model versions</Header>
                 </Form.Field>
                 {_.map(chartLines, chartName => {
                   return (
-                    <Form.Field key={chartName}>
+                    <Form.Field key={chartName} style={{ marginBottom: '4px' }}>
                       <Checkbox
                         label={chartName}
                         name="checkboxGroup"
@@ -167,6 +169,18 @@ class BatteryDebugChart extends Component {
             <Brush startIndex={0} endIndex={200} gap={5} />
           </LineChart>
         </ResponsiveContainer>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <Header as="h4">Charging (Positive)</Header>
+              <BatteryLossCoeffChart direction="pos" />
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Header as="h4">Discharging (Negative)</Header>
+              <BatteryLossCoeffChart direction="neg" />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     )
   }
@@ -181,7 +195,7 @@ const CustomToolTip = ({ active, payload, label }) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
-  const fields = payload[0]['payload']
+  // const fields = payload[0]['payload']
   return (
     <div className="custom-tooltip">
       <p className="label">Hour of Day: {label}</p>

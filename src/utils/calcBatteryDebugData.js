@@ -1,163 +1,135 @@
 import _ from 'lodash'
 import { trainMlrBatteryModel } from './trainMlrBatteryModel'
 import { trainPolyBatteryModel } from './trainPolyBatteryModel'
+import { trainLossCoeffBatteryModel } from './trainLossCoeffBatteryModel'
 
 // We are comparing prediction models, so we should not take into account the
 // new appliances. Therefore, these models need to use:
 // 1. prevBatteryEnergyContent - but from that specific calculation (hence the reduce function)
 // 2. originalElectricalProductionLoadDiff (which does not include the new appliance)
-export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
-  if (_.isEmpty(fileData) || !batteryMin || !batteryMax) {
+export function calcBatteryDebugData(fileData, min, max) {
+  if (_.isEmpty(fileData) || !min || !max) {
     return []
   }
   console.log('running calcBatteryDebugData')
 
   const { trainedMlrModel, trainedMlrModelPos, trainedMlrModelNeg } = trainMlrBatteryModel(fileData)
   const { trainedPolyModelPos, trainedPolyModelNeg } = trainPolyBatteryModel(fileData)
+  const {
+    lossCoeffPosData,
+    lossCoeffNegData,
+    trainedLossCoeffPos,
+    trainedLossCoeffNeg,
+  } = trainLossCoeffBatteryModel(fileData)
 
   return _.reduce(
     fileData,
-    (result, row, rowIndex) => {
-      const originalElectricalProductionLoadDiff = row['originalElectricalProductionLoadDiff']
-      if (!_.isFinite(originalElectricalProductionLoadDiff)) {
-        debugger
-      }
-
-      const originalBatteryEnergyContent = row['originalBatteryEnergyContent']
-      const originalPrevBatteryEnergyContent =
-        rowIndex === 0
-          ? originalBatteryEnergyContent
-          : result[rowIndex - 1]['originalBatteryEnergyContent']
+    (result, row, id) => {
+      const originalBec = row['originalBatteryEnergyContent']
+      const startBec = id === 0 ? row['originalBatteryEnergyContent'] : NaN
+      const chargeDiff = row['originalElectricalProductionLoadDiff']
+      const prevChargeDiff = id === 0 ? chargeDiff : result[id - 1]['chargeDiff']
 
       // _______________________________________________________________________
       // Naive Model with no clamping or efficiency loss
       // _______________________________________________________________________
-      const naivePrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['naive']
-      const naive = naivePrediction(
-        naivePrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff
-      )
-      // const naiveOriginalDiff = naive - originalBatteryEnergyContent
-      // const naiveOriginalPct = (naiveOriginalDiff / originalBatteryEnergyContent) * 100
+      const naive = naivePrediction({ result, chargeDiff, prevChargeDiff, startBec, id })
 
       // _______________________________________________________________________
       // Naive Model with clamping (Current Model)
       // _______________________________________________________________________
-      const naiveClampedPrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['naiveClamped']
+      const naiveClamped = naiveClampedPrediction({
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
+      })
 
-      // const naiveClampedPrevElProdLoadDiff =
-      //   rowIndex === 0 ? 0 : result[rowIndex - 1]['originalElectricalProductionLoadDiff']
-
-      // TODO: naive uses originalBatteryEnergyContent, so at the bottom it's always
-      // off by one hour (so naive never gets as low as original). Does it makes sense
-      // to even use the original? Maybe..., since the first hour uses the original and
-      // subsequent hours use the prediction.
-      // BUT: why is it off by 1 hour?
-
-      const naiveClamped = naiveClampedPrediction(
-        naiveClampedPrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff,
-        batteryMin,
-        batteryMax
-      )
-      // const naiveClampedOriginalDiff = naiveClamped - originalBatteryEnergyContent
-      // const naiveClampedOriginalPct = (naiveClampedOriginalDiff / originalBatteryEnergyContent) * 100
-
-      // originalVsNaive({
-      //   originalBatteryEnergyContent,
-      //   originalElectricalProductionLoadDiff,
-      //   originalPrevBatteryEnergyContent,
-      //   naiveClamped,
-      //   batteryMin,
-      //   batteryMax,
-      //   rowIndex,
-      // })
+      // _______________________________________________________________________
+      // Loss Coefficient Function Clamped
+      // _______________________________________________________________________
+      const lossCoeffClamped = lossCoeffPrediction({
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
+      })
 
       // _______________________________________________________________________
       // MLR
       // _______________________________________________________________________
-      const mlrPrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['mlr']
-
-      const mlr = mlrPrediction(
+      const mlr = mlrPrediction({
         trainedMlrModel,
-        mlrPrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff,
-        batteryMin,
-        batteryMax
-      )
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
+      })
 
       // _______________________________________________________________________
       // MLR Positive and Negative
       // _______________________________________________________________________
-      const mlrPosNegPrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['mlrPosNeg']
-
-      const mlrPosNeg = mlrPosNegPrediction(
+      const mlrPosNeg = mlrPosNegPrediction({
         trainedMlrModelPos,
         trainedMlrModelNeg,
-        mlrPosNegPrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff,
-        batteryMin,
-        batteryMax
-      )
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
+      })
 
       // _______________________________________________________________________
       // Polynomial Regression
       // _______________________________________________________________________
-      const polyPrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['poly']
-
       const poly = polyPrediction({
         trainedPolyModelPos,
         trainedPolyModelNeg,
-        polyPrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff, // We are predicting against the original conditions
-        batteryMin,
-        batteryMax,
-        rowIndex,
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
       })
 
       // _______________________________________________________________________
       // Manual Polynomial Regression
       // _______________________________________________________________________
-      const manualPolyPrevBatteryEnergyContent =
-        rowIndex === 0 ? originalBatteryEnergyContent : result[rowIndex - 1]['manualPoly']
-
-      if (
-        !_.isFinite(manualPolyPrevBatteryEnergyContent) ||
-        !_.isFinite(originalElectricalProductionLoadDiff)
-      ) {
-        debugger
-      }
       const manualPoly = manualPolyPrediction({
-        manualPolyPrevBatteryEnergyContent,
-        originalElectricalProductionLoadDiff, // We are predicting against the original conditions
-        batteryMin,
-        batteryMax,
-        rowIndex,
+        result,
+        chargeDiff,
+        prevChargeDiff,
+        min,
+        max,
+        startBec,
+        id,
       })
 
       // _______________________________________________________________________
       // Output results
       // _______________________________________________________________________
       const featureWtihTarget = {
-        hour: rowIndex,
-        originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 2),
-
+        hour: id,
+        originalBec: _.round(originalBec, 2),
+        chargeDiff,
         naive: _.round(naive, 2),
-        // naiveOriginalDiff: _.round(naiveOriginalDiff, 2),
-        // naiveOriginalPct: _.round(naiveOriginalPct, 2),
-
         naiveClamped: _.round(naiveClamped, 2),
-        // naiveClampedOriginalDiff: _.round(naiveClampedOriginalDiff, 2),
-        // naiveClampedOriginalPct: _.round(naiveClampedOriginalPct, 2),
-
+        lossCoeffClamped: _.round(lossCoeffClamped, 2),
         mlr: _.round(mlr, 2),
         mlrPosNeg: _.round(mlrPosNeg, 2),
-
         poly: _.round(poly, 2),
         manualPoly: _.round(manualPoly, 2),
       }
@@ -169,38 +141,70 @@ export function calcBatteryDebugData(fileData, batteryMin, batteryMax) {
 }
 
 // _______________________________________________________________________
+// Naive
+// _______________________________________________________________________
+function naivePrediction({ result, chargeDiff, prevChargeDiff, startBec, id }) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['naive']
+  return prevBec + chargeDiff
+}
+
+// _______________________________________________________________________
+// Naive Clamped
+// _______________________________________________________________________
+// This is currently battery model used
+function naiveClampedPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['naiveClamped']
+  const unclamped = prevBec + chargeDiff
+  return _.clamp(unclamped, min, max)
+}
+
+// _______________________________________________________________________
+// Loss Coefficient
+// _______________________________________________________________________
+function lossCoeffPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
+  const unclamped = prevBec + chargeDiff
+  return _.clamp(unclamped, min, max)
+}
+
+// _______________________________________________________________________
 // MLR
 // _______________________________________________________________________
-function mlrPrediction(
+function mlrPrediction({
   trainedMlrModel,
-  prevBatteryEnergyContent,
-  electricalProductionLoadDiff,
-  batteryMin,
-  batteryMax
-) {
-  const feature = [prevBatteryEnergyContent, electricalProductionLoadDiff]
-  // const feature = [prevBatteryEnergyContent + electricalProductionLoadDiff]
+  result,
+  chargeDiff,
+  prevChargeDiff,
+  min,
+  max,
+  startBec,
+  id,
+}) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
+  const feature = [prevBec, chargeDiff] // if using prevChargeDiff make sure to also train with it
   const [unclamped] = trainedMlrModel.predict(feature)
-  return _.clamp(unclamped, batteryMin, batteryMax)
+  return _.clamp(unclamped, min, max)
 }
 
 // _______________________________________________________________________
 // MLR separate for positive and negative
 // _______________________________________________________________________
-function mlrPosNegPrediction(
+function mlrPosNegPrediction({
   trainedMlrModelPos,
   trainedMlrModelNeg,
-  prevBatteryEnergyContent,
-  electricalProductionLoadDiff,
-  batteryMin,
-  batteryMax
-) {
-  const feature = [prevBatteryEnergyContent, electricalProductionLoadDiff]
+  result,
+  chargeDiff,
+  prevChargeDiff,
+  min,
+  max,
+  startBec,
+  id,
+}) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
+  const feature = [prevBec, chargeDiff] // if using prevChargeDiff make sure to also train with it
   const [unclamped] =
-    electricalProductionLoadDiff > 0
-      ? trainedMlrModelPos.predict(feature)
-      : trainedMlrModelNeg.predict(feature)
-  return _.clamp(unclamped, batteryMin, batteryMax)
+    chargeDiff > 0 ? trainedMlrModelPos.predict(feature) : trainedMlrModelNeg.predict(feature)
+  return _.clamp(unclamped, min, max)
 }
 
 // _______________________________________________________________________
@@ -209,23 +213,24 @@ function mlrPosNegPrediction(
 function polyPrediction({
   trainedPolyModelPos,
   trainedPolyModelNeg,
-  polyPrevBatteryEnergyContent,
-  originalElectricalProductionLoadDiff,
-  batteryMin,
-  batteryMax,
-  rowIndex,
+  result,
+  chargeDiff,
+  prevChargeDiff,
+  min,
+  max,
+  startBec,
+  id,
 }) {
-  const isPos = originalElectricalProductionLoadDiff > 0
-  const yNaive = polyPrevBatteryEnergyContent + originalElectricalProductionLoadDiff
+  const prevBec = id === 0 ? startBec : result[id - 1]['poly']
+  const yNaive = prevBec + chargeDiff
+  const isPositive = chargeDiff > 0
 
   // Results of predict is a tuple, where the first element is the input value (x)
   // and the second value is the output value (y): y = ax^2 + bx + c
-  const unclamped = isPos
+  const unclamped = isPositive
     ? trainedPolyModelPos.predict(yNaive)[1]
     : trainedPolyModelNeg.predict(yNaive)[1]
-
-  // TODO: Am I really predicting alpha, which needs to be multiplied by yNaive to get yActial?
-  return _.clamp(unclamped, batteryMin, batteryMax)
+  return _.clamp(unclamped, min, max)
 }
 
 // _______________________________________________________________________
@@ -235,95 +240,15 @@ function polyPrediction({
 // yActual = alpha * yNaive
 const manualPolyPosAlpha = x => 2.996e-5 * x ** 2 - 0.0043 * x + 0.9727
 const manualPolyNegAlpha = x => -0.0001 * x ** 2 + 0.0164 * x + 0.4139
-function manualPolyPrediction({
-  manualPolyPrevBatteryEnergyContent,
-  originalElectricalProductionLoadDiff, // We are predicting against the original conditions
-  batteryMin,
-  batteryMax,
-  rowIndex,
-}) {
-  if (
-    !_.isFinite(originalElectricalProductionLoadDiff) ||
-    !_.isFinite(manualPolyPrevBatteryEnergyContent) ||
-    !_.isFinite(batteryMin) ||
-    !_.isFinite(batteryMax)
-  ) {
-    debugger
-  }
-  const isPos = originalElectricalProductionLoadDiff > 0
-  const yNaive = manualPolyPrevBatteryEnergyContent + originalElectricalProductionLoadDiff
-  const alpha = isPos ? manualPolyPosAlpha(yNaive) : manualPolyNegAlpha(yNaive)
+function manualPolyPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
+  const prevBec = id === 0 ? startBec : result[id - 1]['manualPoly']
+  const yNaive = prevBec + chargeDiff
+  const isPositive = chargeDiff > 0
+
+  const alpha = isPositive ? manualPolyPosAlpha(yNaive) : manualPolyNegAlpha(yNaive)
   const yActual = alpha * yNaive
-  // TODO: I'm getting some of these values undefined or NaN for some reason
-  if (!alpha) {
-    debugger
-  }
-  // debugger
-  return _.clamp(yActual, batteryMin, batteryMax)
+  return _.clamp(yActual, min, max)
 }
-
-// _______________________________________________________________________
-// Naive
-// _______________________________________________________________________
-function naivePrediction(prevBatteryEnergyContent, electricalProductionLoadDiff) {
-  return prevBatteryEnergyContent + electricalProductionLoadDiff
-}
-
-// _______________________________________________________________________
-// Naive Clamped
-// _______________________________________________________________________
-// This is currently battery model used
-function naiveClampedPrediction(
-  prevBatteryEnergyContent,
-  electricalProductionLoadDiff,
-  batteryMin,
-  batteryMax
-) {
-  // TODO: Should not apply round trip losses if value gets clamped
-  // const roundTripLosses = 0.01
-  const unclamped = prevBatteryEnergyContent + electricalProductionLoadDiff
-  // (prevBatteryEnergyContent + electricalProductionLoadDiff) * (1 - roundTripLosses)
-  // prevBatteryEnergyContent + electricalProductionLoadDiff * 1.2
-  // manualTweak(prevBatteryEnergyContent, electricalProductionLoadDiff)
-  return _.clamp(unclamped, batteryMin, batteryMax)
-}
-
-// function originalVsNaive({
-//   originalBatteryEnergyContent,
-//   originalElectricalProductionLoadDiff,
-//   originalPrevBatteryEnergyContent,
-//   naiveClamped,
-//   batteryMin,
-//   batteryMax,
-//   rowIndex,
-// }) {
-//   const alpha = originalBatteryEnergyContent / naiveClamped
-//   const correctedNaiveClamped = alpha * naiveClamped
-//   const originalNaiveCorrectedDiff = correctedNaiveClamped - originalBatteryEnergyContent
-//   if (rowIndex < 50) {
-//     console.table({
-//       originalBatteryEnergyContent: _.round(originalBatteryEnergyContent, 2),
-//       naiveClamped: _.round(naiveClamped, 2),
-//       _: null,
-//       alpha: alpha,
-//       correctedNaiveClamped: _.round(correctedNaiveClamped, 2),
-//       originalNaiveCorrectedDiff: originalNaiveCorrectedDiff,
-//       __: null,
-//       originalElectricalProductionLoadDiff: _.round(originalElectricalProductionLoadDiff, 2),
-//       originalPrevBatteryEnergyContent: _.round(originalPrevBatteryEnergyContent, 2),
-//       batteryMin: _.round(batteryMin, 2),
-//       batteryMax: _.round(batteryMax, 2),
-//       rowIndex,
-//     })
-//   }
-// }
-
-// function manualTweak(prevBatteryEnergyContent, electricalProductionLoadDiff) {
-//   const isPos = electricalProductionLoadDiff > 0
-//   return isPos
-//     ? prevBatteryEnergyContent + electricalProductionLoadDiff * 1.2
-//     : prevBatteryEnergyContent + electricalProductionLoadDiff
-// }
 
 // Rescale between -1 and 1
 // https://stats.stackexchange.com/a/178629

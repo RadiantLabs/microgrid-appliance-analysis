@@ -3,6 +3,7 @@ import { types, flow, getParent } from 'mobx-state-tree'
 import Papa from 'papaparse'
 import prettyBytes from 'pretty-bytes'
 import { calcBatteryDebugData } from '../utils/calcBatteryDebugData'
+import { trainLossCoeffBatteryModel } from '../utils/trainLossCoeffBatteryModel'
 import { analyzeHomerFile } from '../utils/analyzeHomerFile'
 import { fetchSampleFile, fetchSnapshotGridFile } from '../utils/importFileHelpers'
 import {
@@ -174,6 +175,13 @@ export const GridStore = types
         _.isEmpty(self.fileImportErrors),
         hasNoInputErrors,
       ])
+    },
+    get batteryLossCoeff() {
+      return trainLossCoeffBatteryModel(
+        self.fileData,
+        self.batteryMinEnergyContent,
+        self.batteryMaxEnergyContent
+      )
     },
     get batteryDebugData() {
       return calcBatteryDebugData(
