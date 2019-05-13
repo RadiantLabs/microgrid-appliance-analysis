@@ -111,8 +111,3 @@ const HomerFileBlankState = () => {
     </div>
   )
 }
-
-const fixedSidebar = {
-  position: 'fixed',
-  width: '250px !important',
-}

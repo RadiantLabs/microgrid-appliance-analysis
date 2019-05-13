@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { trainMlrBatteryModel } from './trainMlrBatteryModel'
 import { trainPolyBatteryModel } from './trainPolyBatteryModel'
-import { trainLossCoeffBatteryModel } from './trainLossCoeffBatteryModel'
+// import { trainLossCoeffBatteryModel } from './trainLossCoeffBatteryModel'
 
 // We are comparing prediction models, so we should not take into account the
 // new appliances. Therefore, these models need to use:
@@ -15,12 +15,12 @@ export function calcBatteryDebugData(fileData, min, max) {
 
   const { trainedMlrModel, trainedMlrModelPos, trainedMlrModelNeg } = trainMlrBatteryModel(fileData)
   const { trainedPolyModelPos, trainedPolyModelNeg } = trainPolyBatteryModel(fileData)
-  const {
-    lossCoeffPosData,
-    lossCoeffNegData,
-    trainedLossCoeffPos,
-    trainedLossCoeffNeg,
-  } = trainLossCoeffBatteryModel(fileData)
+  // const {
+  //   lossCoeffPosData,
+  //   lossCoeffNegData,
+  //   trainedLossCoeffPos,
+  //   trainedLossCoeffNeg,
+  // } = trainLossCoeffBatteryModel(fileData)
 
   return _.reduce(
     fileData,
@@ -163,7 +163,9 @@ function naiveClampedPrediction({ result, chargeDiff, prevChargeDiff, min, max, 
 // _______________________________________________________________________
 function lossCoeffPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
   const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
-  const unclamped = prevBec + chargeDiff
+  const isPositive = chargeDiff > 0
+  const coeff = isPositive ? 0.8 : 1.20749031424
+  const unclamped = prevBec + coeff * chargeDiff
   return _.clamp(unclamped, min, max)
 }
 

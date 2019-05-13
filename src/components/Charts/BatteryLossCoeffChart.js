@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import {
-  // LineChart,
-  // Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
   Dot,
-  // ReferenceLine,
   CartesianGrid,
   ScatterChart,
   Scatter,
 } from 'recharts'
 import { observer, inject } from 'mobx-react'
-// import { Table } from 'semantic-ui-react'
 
 class BatteryLossCoeffChart extends Component {
   render() {
     const { direction } = this.props
     const { viewedGrid } = this.props.store
-    const { lossCoeffData, lossCoeffPosData, lossCoeffNegData } = viewedGrid.batteryLossCoeff
+    const {
+      lossCoeffData,
+      // lossCoeffPosData,
+      // lossCoeffNegData
+    } = viewedGrid.batteryLossCoeff
     // let data = direction === 'pos' ? lossCoeffPosData : lossCoeffNegData
     let data = lossCoeffData
     data = _.slice(data, 0, 14)

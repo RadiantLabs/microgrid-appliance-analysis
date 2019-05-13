@@ -29,8 +29,8 @@ const chartLines = [
 
 class BatteryDebugChart extends Component {
   state = {
-    checkedItems: new Set(['originalBec', 'naiveClamped']),
-    radioSelection: 'naiveClamped',
+    checkedItems: new Set(['originalBec', 'lossCoeffClamped']),
+    radioSelection: 'lossCoeffClamped',
   }
 
   handleCheckedChange = (e, { value }) => {
