@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { asPercent } from '../utils/helpers'
 import { trainMlrBatteryModel } from './trainMlrBatteryModel'
 import { trainPolyBatteryModel } from './trainPolyBatteryModel'
 // import { trainLossCoeffBatteryModel } from './trainLossCoeffBatteryModel'
@@ -163,10 +164,24 @@ function naiveClampedPrediction({ result, chargeDiff, prevChargeDiff, min, max, 
 // _______________________________________________________________________
 function lossCoeffPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
   const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
-  const isPositive = chargeDiff > 0
-  const coeff = isPositive ? 0.8 : 1.20749031424
+  const isPositive = prevChargeDiff > 0
+  const coeff = isPositive ? calcLossCoeffPos(prevBec, prevChargeDiff, min, max) : 1.28 //1.20749031424
   const unclamped = prevBec + coeff * chargeDiff
   return _.clamp(unclamped, min, max)
+}
+// Upword curve: hour 31 - 41
+
+function calcLossCoeffPos(prevBec, prevChargeDiff, min, max) {
+  const becNaive = prevBec + prevChargeDiff
+  const becAsPercent = asPercent(becNaive, min, max)
+  if (becAsPercent >= 89.7) {
+    return 0.4
+  }
+  if (becAsPercent >= 74) {
+    return 0.7
+  }
+
+  return 0.8
 }
 
 // _______________________________________________________________________
@@ -261,9 +276,7 @@ function manualPolyPrediction({ result, chargeDiff, prevChargeDiff, min, max, st
 // Generalized rescale between any range
 // domain: domain values in the app, 26.4, 56.6....
 // range: what we are mapping the domain values to: -1, 1
-// function rescale(val, domainMin, domainMax, rangeMin = -1, rangeMax = 1) {
-//   const scale = rangeMax - rangeMin
-//   const num = val - domainMin
-//   const den = domainMax - domainMin
-//   return scale * (num / den) - domainMin
-// }
+function rescale(val, domainMin, domainMax, rangeMin = 0, rangeMax = 1) {
+  const scale = rangeMax - rangeMin
+  return scale * ((val - domainMin) / (domainMax - domainMin)) + domainMin
+}

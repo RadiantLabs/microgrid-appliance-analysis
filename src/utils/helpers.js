@@ -242,6 +242,11 @@ export const percentOfYear = count => {
   return _.isFinite(count) ? _.round((count / HOURS_PER_YEAR) * 100, 1) : '-'
 }
 
+export const asPercent = (val, min, max) => {
+  const clamped = _.clamp(val, min, max)
+  return _.round(((clamped - min) * 100) / (max - min), 1)
+}
+
 // Pass in an array of objects and a key, finds the min value for that key.
 // Note: _.minBy doesn't work when there are strings
 export const findColMin = (table, key) => {

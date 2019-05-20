@@ -8,7 +8,7 @@ import _ from 'lodash'
 // E(n) = E(n-1) + L(E) * C(n), therefore
 // L(E) = E(n) - E(n-1) / C(n)
 // Find L(E) for charging (pos) and discharging (neg)
-export function trainLossCoeffBatteryModel(gridData) {
+export function trainLossCoeffBatteryModel(gridData, batteryMin, batteryMax) {
   const dataPos = _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] > 0)
   const dataNeg = _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] <= 0)
 
@@ -23,8 +23,8 @@ export function trainLossCoeffBatteryModel(gridData) {
     lossCoeffData,
     lossCoeffPosData,
     lossCoeffNegData,
-    trainedLossCoeffPos: () => 0.8,
-    trainedLossCoeffNeg: () => 1.2,
+    // trainedLossCoeffPos: () => 0.8,
+    // trainedLossCoeffNeg: () => 1.2,
   }
 }
 

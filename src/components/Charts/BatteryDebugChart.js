@@ -13,6 +13,7 @@ import {
 import { observer, inject } from 'mobx-react'
 import { Table, Form, Checkbox, Grid, Header } from 'semantic-ui-react'
 import { chartColorsByIndex } from '../../utils/constants'
+import { asPercent } from '../../utils/helpers'
 import PredictedVsActual from '../Charts/PredictedVsActual'
 import BatteryLossCoeffChart from '../Charts/BatteryLossCoeffChart'
 
@@ -110,7 +111,7 @@ class BatteryDebugChart extends Component {
           </Grid.Row>
         </Grid>
 
-        <ResponsiveContainer height={500}>
+        <ResponsiveContainer height={800}>
           <LineChart
             key={Math.random()} // Force rerendering every time the data changes
             data={batteryDebugData}
@@ -127,14 +128,22 @@ class BatteryDebugChart extends Component {
               label={{ value: 'Value', angle: -90, position: 'insideLeft' }}
               domain={[yMin, 'auto']}
             />
-            <Tooltip content={<CustomToolTip />} />
+            <Tooltip
+              content={
+                <CustomToolTip
+                  batteryMin={batteryMinEnergyContent}
+                  batteryMax={batteryMaxEnergyContent}
+                />
+              }
+            />
 
             {_.map(chartLines, (chartName, index) => {
               if (checkedItems.has(chartName)) {
                 return (
                   <Line
                     key={chartName}
-                    type="monotone"
+                    type="linear"
+                    // type="monotone"
                     dataKey={chartName}
                     dot={false}
                     stroke={chartColorsByIndex[index]}
@@ -166,7 +175,7 @@ class BatteryDebugChart extends Component {
               stroke="#b9b9b9"
               strokeDasharray="3 3"
             />
-            <Brush startIndex={0} endIndex={200} gap={5} />
+            <Brush startIndex={0} endIndex={100} gap={5} />
           </LineChart>
         </ResponsiveContainer>
         <Grid>
@@ -191,11 +200,10 @@ export default inject('store')(observer(BatteryDebugChart))
 // Custom Tooltip
 // -----------------------------------------------------------------------------
 
-const CustomToolTip = ({ active, payload, label }) => {
+const CustomToolTip = ({ active, payload, label, batteryMin, batteryMax }) => {
   if (!active || _.isEmpty(payload)) {
     return null
   }
-  // const fields = payload[0]['payload']
   return (
     <div className="custom-tooltip">
       <p className="label">Hour of Day: {label}</p>
@@ -205,18 +213,12 @@ const CustomToolTip = ({ active, payload, label }) => {
             return (
               <Table.Row style={{ color: element.color }} key={element.dataKey}>
                 <Table.Cell>{element.dataKey}</Table.Cell>
-                <Table.Cell textAlign="right">{element.value} kWh</Table.Cell>
+                <Table.Cell textAlign="right">
+                  {element.value} kWh ({asPercent(element.value, batteryMin, batteryMax)} %)
+                </Table.Cell>
               </Table.Row>
             )
           })}
-          {/* <Table.Row>
-            <Table.Cell>naiveClampedOriginalDiff</Table.Cell>
-            <Table.Cell textAlign="right">{fields['naiveClampedOriginalDiff']} kWh</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>naiveClampedOriginalPct</Table.Cell>
-            <Table.Cell textAlign="right">{fields['naiveClampedOriginalPct']} %</Table.Cell>
-          </Table.Row> */}
         </Table.Body>
       </Table>
     </div>
