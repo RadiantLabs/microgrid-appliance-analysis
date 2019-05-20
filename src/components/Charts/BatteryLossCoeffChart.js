@@ -21,9 +21,7 @@ class BatteryLossCoeffChart extends Component {
       // lossCoeffPosData,
       // lossCoeffNegData
     } = viewedGrid.batteryLossCoeff
-    // let data = direction === 'pos' ? lossCoeffPosData : lossCoeffNegData
-    let data = lossCoeffData
-    data = _.slice(data, 0, 14)
+    let data = direction === 'pos' ? _.slice(lossCoeffData, 33, 42) : _.slice(lossCoeffData, 43, 55)
     console.table('_______', direction, '___________')
     console.table(data)
 
@@ -32,11 +30,9 @@ class BatteryLossCoeffChart extends Component {
         <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 40 }}>
           <XAxis
             type="number"
-            // dataKey="bateryEnergyContent"
-            dataKey="chargeDiff"
+            dataKey="bateryEnergyContent"
             label={{
-              // value: 'Battery Energy Content',
-              value: 'chargeDiff',
+              value: 'Battery Energy Content',
               offset: -10,
               position: 'insideBottom',
             }}

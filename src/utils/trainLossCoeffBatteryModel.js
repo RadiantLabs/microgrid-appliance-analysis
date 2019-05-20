@@ -9,20 +9,30 @@ import _ from 'lodash'
 // L(E) = E(n) - E(n-1) / C(n)
 // Find L(E) for charging (pos) and discharging (neg)
 export function trainLossCoeffBatteryModel(gridData, batteryMin, batteryMax) {
-  const dataPos = _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] > 0)
-  const dataNeg = _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] <= 0)
+  // const dataPos = _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] > 0)
+  // const dataPos = _.slice(gridData, 33, 42)
+  // const dataNeg = _.slice(
+  //   _.filter(gridData, row => row['originalElectricalProductionLoadDiff'] <= 0),
+  //   0,
+  //   30
+  // )
 
   const lossCoeffData = calcLossCoeffPlottableData(gridData)
-  const lossCoeffPosData = calcLossCoeffPlottableData(dataPos)
-  const lossCoeffNegData = calcLossCoeffPlottableData(dataNeg)
+  // const lossCoeffPosData = calcLossCoeffPlottableData(dataPos)
+  // const lossCoeffNegData = calcLossCoeffPlottableData(dataNeg)
 
   // TODO: from lossCoeffPosData, find regression
   // const modelPos = regression.polynomial(_.take(dataPosPairs, 100), { order: 2 })
   // const modelNeg = regression.polynomial(_.take(dataNegPairs, 100), { order: 2 })
+  // const posSlice =  _.slice(gridData, 31, 42)
+  // const modelPosPairs = _.map(posSlice, row => {
+  //   return [row['originalElectricalProductionLoadDiff'], row['originalBatteryEnergyContent']]
+  // })
+
   return {
     lossCoeffData,
-    lossCoeffPosData,
-    lossCoeffNegData,
+    // lossCoeffPosData,
+    // lossCoeffNegData,
     // trainedLossCoeffPos: () => 0.8,
     // trainedLossCoeffNeg: () => 1.2,
   }
@@ -54,6 +64,7 @@ export function calcLossCoeffPlottableData(gridData) {
       // What if the coefficient was a function of the magnitude of the chargeDiff?
       // I need to plot coeff vs. chargeDiff
       result.push({
+        rowIndex,
         bateryEnergyContent,
         prevBatteryEnergyContent,
         batteryDiff,
