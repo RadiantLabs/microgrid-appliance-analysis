@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { types, flow, getParent } from 'mobx-state-tree'
+import { types, flow, getParent, Instance } from 'mobx-state-tree'
 import prettyBytes from 'pretty-bytes'
 import Papa from 'papaparse'
 import { fetchSampleFile, fetchSnapshotApplianceFile } from '../utils/importFileHelpers'
@@ -54,12 +54,12 @@ export const ApplianceStore = types
     modelInputErrors: types.frozen(),
   })
   .actions(self => ({
-    runInAction(fn) {
+    runInAction(fn: any) {
       return fn()
     },
     // onModelInputChange depends on inputs being validated by the InputField
     // before saving to the model. InputField uses fieldDefinitions for validation
-    onModelInputChange(fieldKey, value, error) {
+    onModelInputChange(fieldKey: string, value: any, error: any) {
       const newModelInputValues = _.clone(self.modelInputValues)
       const newModelInputErrors = _.clone(self.modelInputErrors)
       newModelInputValues[fieldKey] = value
@@ -67,24 +67,25 @@ export const ApplianceStore = types
       self.modelInputValues = newModelInputValues
       self.modelInputErrors = newModelInputErrors
     },
-    onModelInputBlur(fieldKey, value, error) {
+    onModelInputBlur(fieldKey: string, value: any, error: any) {
       if (!Boolean(error)) {
+        // @ts-ignore
         self[fieldKey] = value === 0 ? 0 : value || ''
       } else {
         console.log('Value not saved to store')
       }
     },
     // These files come in through the file upload button
-    handleApplianceFileUpload(rawFile) {
+    handleApplianceFileUpload(rawFile: any) {
       self.fileIsSelected = true
       self.isAnalyzingFile = true
-      const { name, size, type: mimeType } = rawFile
+      const { name: filename, size, type: mimeType } = rawFile
       const timeStamp = getIsoTimestamp()
       const fileInfo = {
-        id: `${name}_${timeStamp}`,
+        id: `${filename}_${timeStamp}`,
         timeStamp,
         fileType: 'appliance',
-        name,
+        filename,
         size,
         isSample: false,
         mimeType,
@@ -93,17 +94,19 @@ export const ApplianceStore = types
         ...csvOptions,
         complete: parsedFile => {
           const analyzedFile = analyzeApplianceFile(parsedFile, fileInfo)
-          const label = removeFileExtension(name)
-          self.runInAction(() => {
+          const label = removeFileExtension(filename)
+          this.runInAction(() => {
             self.label = label
             self.modelInputValues = { ...self.modelInputValues, label }
-            self.updateModel(analyzedFile)
+            this.updateModel(analyzedFile)
 
             // Initialize all ancillary equipment on the imported appliances.
             // For sample files, this is done during app initialization.
             // This ensures the autorun that watches for changes in appliance
             // or grid characteristics reruns the equip.updateValues() function
+            // @ts-ignore
             self.ancillaryEquipment = _.map(ancillaryEquipmentList, ancillaryEquip => {
+              // @ts-ignore
               return AncillaryEquipmentStore.create({
                 ...ancillaryEquip,
                 ...initialAncillaryEquipmentState,
@@ -121,12 +124,13 @@ export const ApplianceStore = types
       const analyzedFile = self.fileInfo.isSample
         ? yield fetchSampleFile(fileInfo, window.location)
         : yield fetchSnapshotApplianceFile(fileInfo)
+      // @ts-ignore
       self.updateModel(analyzedFile)
       self.isAnalyzingFile = false
     }),
 
-    updateModel(analyzedFile) {
-      self.runInAction(() => {
+    updateModel(analyzedFile: any) {
+      this.runInAction(() => {
         self.fileInfo = analyzedFile.fileInfo
         self.fileData = analyzedFile.fileData
         self.fileImportErrors = analyzedFile.fileImportErrors
@@ -134,27 +138,27 @@ export const ApplianceStore = types
         self.isAnalyzingFile = false
       })
     },
-    toggleAppliance(event) {
-      event.preventDefault()
+    toggleAppliance(e: React.FormEvent<EventTarget>) {
+      e.preventDefault()
       self.enabled = !self.enabled
     },
-    handleCapexAssignmentChange(event, data) {
-      event.preventDefault()
+    handleCapexAssignmentChange(e: React.FormEvent<EventTarget>, data: any) {
+      e.preventDefault()
       self.capexAssignment = data.value
     },
-    handlePowerTypeChange(event, data) {
-      event.preventDefault()
+    handlePowerTypeChange(e: React.FormEvent<EventTarget>, data: any) {
+      e.preventDefault()
       self.powerType = data.value
     },
-    handlePhaseChange(event, data) {
-      event.preventDefault()
+    handlePhaseChange(e: React.FormEvent<EventTarget>, data: any) {
+      e.preventDefault()
       self.phase = data.value
     },
-    handleHasMotorChange(event, data) {
-      event.preventDefault()
+    handleHasMotorChange(e: React.FormEvent<EventTarget>, data: any) {
+      e.preventDefault()
       self.hasMotor = data.value
     },
-    toggleCard(toggleState) {
+    toggleCard(toggleState: any) {
       if (_.isBoolean(toggleState)) {
         self.cardIsOpen = toggleState
       } else {
@@ -164,6 +168,8 @@ export const ApplianceStore = types
   }))
   .views(self => ({
     get showAnalyzedResults() {
+      // getParent<typeof MainStoreStoreModel>(self)
+      // @ts-ignore
       if (getParent(self).viewedApplianceIsStaged) {
         return self.fileIsSelected && !self.isAnalyzingFile
       }
@@ -173,7 +179,7 @@ export const ApplianceStore = types
       return calcApplianceColumns(self)
     },
     get applianceSummaryStats() {
-      return calcApplianceSummaryStats(self.calculatedApplianceColumns)
+      return calcApplianceSummaryStats(this.calculatedApplianceColumns)
     },
     get prettyFileSize() {
       return prettyBytes(self.fileInfo.size)
@@ -182,7 +188,7 @@ export const ApplianceStore = types
       return _.filter(self.ancillaryEquipment, equip => equip.enabled)
     },
     get enabledAncillaryEquipmentLabels() {
-      return _(self.enabledAncillaryEquipment)
+      return _(this.enabledAncillaryEquipment)
         .map(equip => equip.label)
         .compact()
         .value()
@@ -197,13 +203,13 @@ export const ApplianceStore = types
       return _.filter(self.ancillaryEquipment, equip => equip.compatibility === 'notuseful')
     },
     get ancillaryEquipmentEfficiency() {
-      return calcCombinedEfficiency(self.enabledAncillaryEquipment)
+      return calcCombinedEfficiency(this.enabledAncillaryEquipment)
     },
     get inputErrorList() {
       return _.compact(_.values(self.modelInputErrors))
     },
     get fileReadyToSave() {
-      const hasNoInputErrors = _.size(self.inputErrorList) === 0
+      const hasNoInputErrors = _.size(this.inputErrorList) === 0
       return _.every([
         self.label,
         self.description,
@@ -221,6 +227,8 @@ export const ApplianceStore = types
       ])
     },
   }))
+
+export type IApplianceStore = Instance<typeof ApplianceStore>
 
 //
 // -----------------------------------------------------------------------------

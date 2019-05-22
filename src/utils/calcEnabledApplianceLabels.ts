@@ -1,6 +1,9 @@
 import _ from 'lodash'
+import { IApplianceStore } from '../stores/ApplianceStore'
 
-export function calcEnabledApplianceLabels(enabledAppliances) {
+// type GenericObject = { [key: any]: any }
+
+export function calcEnabledApplianceLabels(enabledAppliances: IApplianceStore): string {
   const labels = _.map(enabledAppliances, appliance => appliance.label)
   const labelCount = _.size(labels)
   if (labelCount === 0) {
