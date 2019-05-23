@@ -111,7 +111,7 @@ class BatteryDebugChart extends Component {
           </Grid.Row>
         </Grid>
 
-        <ResponsiveContainer height={800}>
+        <ResponsiveContainer height={500}>
           <LineChart
             key={Math.random()} // Force rerendering every time the data changes
             data={batteryDebugData}

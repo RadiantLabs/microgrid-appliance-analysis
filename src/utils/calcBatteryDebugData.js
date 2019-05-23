@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { asPercent } from '../utils/helpers'
+import { asFraction } from '../utils/helpers'
 import { trainMlrBatteryModel } from './trainMlrBatteryModel'
 import { trainPolyBatteryModel } from './trainPolyBatteryModel'
 // import { trainLossCoeffBatteryModel } from './trainLossCoeffBatteryModel'
@@ -165,23 +165,34 @@ function naiveClampedPrediction({ result, chargeDiff, prevChargeDiff, min, max, 
 function lossCoeffPrediction({ result, chargeDiff, prevChargeDiff, min, max, startBec, id }) {
   const prevBec = id === 0 ? startBec : result[id - 1]['lossCoeffClamped']
   const isPositive = prevChargeDiff > 0
-  const coeff = isPositive ? calcLossCoeffPos(prevBec, prevChargeDiff, min, max) : 1.28 //1.20749031424
+  const coeff = isPositive
+    ? calcLossCoeffPos(prevBec, prevChargeDiff, min, max)
+    : calcLossCoeffNeg(prevBec, prevChargeDiff, min, max)
   const unclamped = prevBec + coeff * chargeDiff
   return _.clamp(unclamped, min, max)
 }
 // Upword curve: hour 31 - 41
 
 function calcLossCoeffPos(prevBec, prevChargeDiff, min, max) {
+  const constantLoss = 0.8
   const becNaive = prevBec + prevChargeDiff
-  const becAsPercent = asPercent(becNaive, min, max)
-  if (becAsPercent >= 89.7) {
-    return 0.4
+  const becAsFraction = asFraction(becNaive, min, max)
+  if (becAsFraction <= 0.95) {
+    return constantLoss
   }
-  if (becAsPercent >= 74) {
-    return 0.7
-  }
+  return 1 - Math.tanh(0.9 * becAsFraction)
+}
 
-  return 0.8
+function calcLossCoeffNeg(prevBec, prevChargeDiff, min, max) {
+  const constantLoss = 1.3
+  const becNaive = prevBec + prevChargeDiff
+  const becAsFraction = asFraction(becNaive, min, max)
+  if (becAsFraction >= 0.38) {
+    return constantLoss
+  }
+  const coeff = 1 + Math.tanh(1 - becAsFraction)
+  // debugger
+  return coeff
 }
 
 // _______________________________________________________________________

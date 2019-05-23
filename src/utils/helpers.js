@@ -247,6 +247,11 @@ export const asPercent = (val, min, max) => {
   return _.round(((clamped - min) * 100) / (max - min), 1)
 }
 
+export const asFraction = (val, min, max) => {
+  const clamped = _.clamp(val, min, max)
+  return _.round((clamped - min) / (max - min), 3)
+}
+
 // Pass in an array of objects and a key, finds the min value for that key.
 // Note: _.minBy doesn't work when there are strings
 export const findColMin = (table, key) => {
