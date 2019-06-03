@@ -4,9 +4,10 @@
 Before Launch:
 --------------------------------------------------------------------------------
 - [x] Fix import of appliance template
-- [ ] Renaming tabs:
+- [x] Renaming tabs:
   - Grid Components -> System Components
   - Battery Energy Content -> Battery Analysis
+- [x] Add blank state message for no ancillary equipment recommendations
 
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 

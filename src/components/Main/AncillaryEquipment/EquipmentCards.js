@@ -14,6 +14,7 @@ const EquipmentRowsByStatus = ({ compatibility, header, isFirst }) => {
       <Header as="h2" dividing>
         {header}
       </Header>
+      {_.isEmpty(compatibility) && <p>No equipment in this category</p>}
       {_.map(compatibility, (card, cardIndex) => {
         return <EquipmentCard equipment={card} key={`i${cardIndex}`} />
       })}
