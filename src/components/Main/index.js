@@ -27,12 +27,12 @@ const Main = ({ match, store }) => {
 
       <Menu secondary pointing>
         <Menu.Item as={NavItem} to={`/`} name="Summary" />
+        <Menu.Item as={NavItem} to={`/tool/components`} name="System Components" />
         <Menu.Item as={NavItem} to={`/tool/ancillary`} name="Ancillary Equipment" />
         <Menu.Item as={NavItem} to={`/tool/datatable`} name="Data" />
         <Menu.Item as={NavItem} to={`/tool/loads`} name="Loads" />
-        <Menu.Item as={NavItem} to={`/tool/time-segments`} name="Time Segments" />
-        <Menu.Item as={NavItem} to={`/tool/battery-energy-content`} name="Battery Energy Content" />
-        <Menu.Item as={NavItem} to={`/tool/components`} name="Grid Components" />
+        <Menu.Item as={NavItem} to={`/tool/time-segments`} name="Grid Analysis" />
+        <Menu.Item as={NavItem} to={`/tool/battery-energy-content`} name="Battery Analysis" />
       </Menu>
 
       <div className="mainContent">

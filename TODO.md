@@ -3,9 +3,11 @@
 --------------------------------------------------------------------------------
 Before Launch:
 --------------------------------------------------------------------------------
-Charts:
+- [x] Fix import of appliance template
+- [ ] Renaming tabs:
+  - Grid Components -> System Components
+  - Battery Energy Content -> Battery Analysis
 
-Misc:
 - [ ] When no appliances are enabled, still show HOMER data in the summary view
 
 Battery Model:
