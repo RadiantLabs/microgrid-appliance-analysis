@@ -1,17 +1,22 @@
 import _ from 'lodash'
 import prettyBytes from 'pretty-bytes'
 import moment from 'moment'
+import { logger } from './logger'
 import { hasColumnHeaders, momentApplianceParseFormats, isFileCsv, getMonth } from './helpers'
 
-const requiredColumns = [
+// Column names used if downloading a template
+const requiredColumnsCamel = [
   'datetime',
-  // 'Wut', // for debugging
   'hour',
-  'day',
-  'hour_of_day',
-  'hour_of_week',
-  'kw_factor',
+  'dayOfWeek',
+  'hourOfDay',
+  'hourOfWeek',
+  'month',
+  'kwFactor',
 ]
+
+// Column names used if using export of Python appliance generator
+const requiredColumnsSnake = ['datetime', 'hour', 'day', 'hour_of_day', 'hour_of_week', 'kw_factor']
 
 export function analyzeApplianceFile(parsedFile, fileInfo) {
   const { isSample, fileType, size, mimeType } = fileInfo
@@ -43,16 +48,16 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
 
   const requiredColumnsErrors = checkRequiredApplianceColumns(parsedFile.data)
   fileImportErrors.push(requiredColumnsErrors)
-
   const processedData = _.map(parsedFile.data, row => {
     const processedRow = {
       ...row,
-      ...{ kwFactor: _.round(row['kw_factor'], 5) },
-      ...{ hourOfDay: row['hour_of_day'] },
-      ...{ hourOfWeek: row['hour_of_week'] },
-      ...{ dayOfWeek: row['day'] },
+      ...{ kwFactor: flexibleColumnName(row, 'kw_factor', 'kwFactor', 5) },
+      ...{ hourOfDay: flexibleColumnName(row, 'hour_of_day', 'hourOfDay') },
+      ...{ hourOfWeek: flexibleColumnName(row, 'hour_of_week', 'hourOfWeek') },
+      ...{ dayOfWeek: flexibleColumnName(row, 'day', 'dayOfWeek') },
       ...{ month: getMonth(row['datetime']) },
     }
+
     // Convert incoming to camel case
     return _.omit(processedRow, [
       'production_factor',
@@ -62,6 +67,7 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
       'day',
     ])
   })
+
   return {
     fileInfo,
     fileData: processedData,
@@ -71,12 +77,22 @@ export function analyzeApplianceFile(parsedFile, fileInfo) {
   }
 }
 
+function flexibleColumnName(row, case1, case2, decimals) {
+  if (!_.has(row, case1) && !_.has(row, case2)) {
+    logger(`Did not find camel or snake case version of ${case1} for appliance import `)
+  }
+  const val = _.has(row, case1) ? row[case1] : row[case2]
+  return decimals ? _.round(val, decimals) : val
+}
+
 // _____________________________________________________________________________
 // Check that Appliance files has the right columns for calculations
 // _____________________________________________________________________________
 function checkRequiredApplianceColumns(fileData) {
   const headers = _.keys(_.first(fileData))
-  const requiredErrors = _.map(requiredColumns, col => (_.includes(headers, col) ? null : col))
-  const errors = _.compact(requiredErrors)
-  return _.isEmpty(errors) ? null : `Missing required columns: ${requiredErrors.join(', ')}`
+  const isSnake = _.includes(headers.join(''), '_')
+  const requiredErrors = isSnake
+    ? _.compact(_.map(requiredColumnsSnake, col => (_.includes(headers, col) ? null : col)))
+    : _.compact(_.map(requiredColumnsCamel, col => (_.includes(headers, col) ? null : col)))
+  return _.isEmpty(requiredErrors) ? null : `Missing required columns: ${requiredErrors.join(', ')}`
 }
