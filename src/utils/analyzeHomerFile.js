@@ -238,6 +238,11 @@ function predictOriginalBatteryEnergyContent(
         ? row['originalBatteryEnergyContent']
         : prevResult['originalModeledBatteryEnergyContent']
 
+    const prevElectricalProductionLoadDiff =
+      rowIndex === 0
+        ? row['originalElectricalProductionLoadDiff']
+        : prevResult['originalElectricalProductionLoadDiff']
+
     const {
       batteryEnergyContent: originalModeledBatteryEnergyContent,
       totalExcessProduction,
@@ -245,10 +250,12 @@ function predictOriginalBatteryEnergyContent(
     } = predictBatteryEnergyContent({
       rowIndex,
       prevBatteryEnergyContent,
+      prevElectricalProductionLoadDiff,
       electricalProductionLoadDiff: row['originalElectricalProductionLoadDiff'],
       batteryMinEnergyContent,
       batteryMaxEnergyContent,
     })
+
     result.push({
       ...row,
       ...{

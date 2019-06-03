@@ -171,9 +171,8 @@ function lossCoeffPrediction({ result, chargeDiff, prevChargeDiff, min, max, sta
   const unclamped = prevBec + coeff * chargeDiff
   return _.clamp(unclamped, min, max)
 }
-// Upword curve: hour 31 - 41
 
-function calcLossCoeffPos(prevBec, prevChargeDiff, min, max) {
+export function calcLossCoeffPos(prevBec, prevChargeDiff, min, max) {
   const constantLoss = 0.8
   const becNaive = prevBec + prevChargeDiff
   const becAsFraction = asFraction(becNaive, min, max)
@@ -183,16 +182,14 @@ function calcLossCoeffPos(prevBec, prevChargeDiff, min, max) {
   return 1 - Math.tanh(0.9 * becAsFraction)
 }
 
-function calcLossCoeffNeg(prevBec, prevChargeDiff, min, max) {
+export function calcLossCoeffNeg(prevBec, prevChargeDiff, min, max) {
   const constantLoss = 1.3
   const becNaive = prevBec + prevChargeDiff
   const becAsFraction = asFraction(becNaive, min, max)
   if (becAsFraction >= 0.38) {
     return constantLoss
   }
-  const coeff = 1 + Math.tanh(1 - becAsFraction)
-  // debugger
-  return coeff
+  return 1 + Math.tanh(1 - becAsFraction)
 }
 
 // _______________________________________________________________________

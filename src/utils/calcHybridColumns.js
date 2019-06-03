@@ -56,6 +56,11 @@ export function calcHybridColumns(grid, summedAppliances) {
     const prevBatteryEnergyContent =
       rowIndex === 0 ? homerRow['originalBatteryEnergyContent'] : prevResult['batteryEnergyContent']
 
+    const prevElectricalProductionLoadDiff =
+      rowIndex === 0
+        ? homerRow['originalElectricalProductionLoadDiff']
+        : prevResult['electricalProductionLoadDiff']
+
     const {
       batteryEnergyContent,
       totalExcessProduction,
@@ -63,6 +68,7 @@ export function calcHybridColumns(grid, summedAppliances) {
     } = predictBatteryEnergyContent({
       rowIndex,
       prevBatteryEnergyContent,
+      prevElectricalProductionLoadDiff,
       electricalProductionLoadDiff,
       batteryMinEnergyContent,
       batteryMaxEnergyContent,

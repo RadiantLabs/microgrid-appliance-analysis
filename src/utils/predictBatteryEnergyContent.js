@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { calcLossCoeffPos, calcLossCoeffNeg } from '../utils/calcBatteryDebugData'
 
 // See explanation in README why I'm predicting the battery model like I am.
 // roundTripLosses is for any losses in the battery charge/discharge cycle.
@@ -7,6 +8,7 @@ import _ from 'lodash'
 export function predictBatteryEnergyContent({
   rowIndex,
   prevBatteryEnergyContent,
+  prevElectricalProductionLoadDiff,
   electricalProductionLoadDiff,
   batteryMinEnergyContent,
   batteryMaxEnergyContent,
@@ -23,7 +25,15 @@ export function predictBatteryEnergyContent({
     }
   }
 
-  const unclamped = predict(electricalProductionLoadDiff, prevBatteryEnergyContent, roundTripLosses)
+  // const unclamped = predict(electricalProductionLoadDiff, prevBatteryEnergyContent, roundTripLosses)
+  const unclamped = predictWithLossCoeff({
+    prevBec: prevBatteryEnergyContent,
+    prevChargeDiff: prevElectricalProductionLoadDiff,
+    chargeDiff: electricalProductionLoadDiff,
+    min: batteryMinEnergyContent,
+    max: batteryMaxEnergyContent,
+  })
+
   const clamped = _.clamp(unclamped, batteryMinEnergyContent, batteryMaxEnergyContent)
 
   const totalExcessProduction = unclamped - clamped > 0 ? unclamped - clamped : 0 // always positive
@@ -37,4 +47,13 @@ export function predictBatteryEnergyContent({
 
 export function predict(electricalProductionLoadDiff, prevBatteryEnergyContent, roundTripLosses) {
   return (prevBatteryEnergyContent + electricalProductionLoadDiff) * (1 - roundTripLosses)
+}
+
+export function predictWithLossCoeff({ prevBec, prevChargeDiff, chargeDiff, min, max }) {
+  const coeff =
+    prevChargeDiff > 0
+      ? calcLossCoeffPos(prevBec, prevChargeDiff, min, max)
+      : calcLossCoeffNeg(prevBec, prevChargeDiff, min, max)
+  const unclamped = prevBec + coeff * chargeDiff
+  return _.clamp(unclamped, min, max)
 }
