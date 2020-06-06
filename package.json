@@ -20,7 +20,7 @@
     "express-favicon": "^2.0.1",
     "file-saver": "^2.0.2",
     "localforage": "^1.7.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "luxon": "^1.15.0",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
