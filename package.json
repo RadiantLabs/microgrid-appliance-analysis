@@ -28,7 +28,7 @@
     "mobx-utils": "^5.4.0",
     "moment": "^2.24.0",
     "mst-react-router": "^2.3.1",
-    "papaparse": "^4.6.1",
+    "papaparse": "^5.2.0",
     "path": "^0.12.7",
     "path-browserify": "^1.0.0",
     "pretty-bytes": "^5.2.0",
