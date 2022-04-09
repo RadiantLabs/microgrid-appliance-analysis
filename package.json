@@ -26,7 +26,7 @@
     "mobx-react": "^5.4.4",
     "mobx-state-tree": "^3.14.0",
     "mobx-utils": "^5.4.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mst-react-router": "^2.3.1",
     "papaparse": "^5.2.0",
     "path": "^0.12.7",
